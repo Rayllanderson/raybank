@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/inputs.dart';
+import 'package:mobile/src/components/buttons/login_button.dart';
+import 'package:mobile/src/components/inputs/login_input.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -23,6 +24,10 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: LoginInput('Password', true),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: LoginButton(text: 'LOGIN'),
           ),
         ]));
   }
