@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/alerts/alert.dart';
 import 'package:mobile/src/exceptions/validation_exception.dart';
-import 'package:mobile/src/validations/login_validation.dart';
 import 'package:mobile/src/validations/register_validation.dart';
 
 class RegisterController {
@@ -12,6 +11,9 @@ class RegisterController {
 
   RegisterController(this._nameController, this._usernameController, this._passwordController, this.context);
 
+  ///Valida os campos e realiza o cadastro na aplicação.
+  ///
+  /// Caso o cadastro seja realizado com sucesso, redireciona para [LoginPage], senão, mostra um alert.
   void register() {
     try {
       String name = this._nameController.text;
