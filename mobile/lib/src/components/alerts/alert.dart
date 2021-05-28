@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/main.dart';
 
 class Alert {
-  static void displaySimpleAlert(context, title, message) {
+  static void displaySimpleAlert(title, message) {
     showDialog(
-        context: context,
+        context: navigatorKey.currentContext,
         builder: (context) {
           return AlertDialog(
               title: Text(title),

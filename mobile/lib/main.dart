@@ -3,6 +3,8 @@ import 'package:mobile/src/views/home_page.dart';
 import 'package:mobile/src/views/login_page.dart';
 import 'package:mobile/src/views/register_page.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   runApp(MyApp());
 }
@@ -13,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Raybank',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
