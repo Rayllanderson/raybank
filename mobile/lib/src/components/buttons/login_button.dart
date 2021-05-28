@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/themes/util.dart';
 
 class LoginButton extends StatelessWidget {
-
   final text;
 
   const LoginButton({Key key, this.text}) : super(key: key);
@@ -10,10 +10,13 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         onPressed: () {},
-        child: Text(text),
+        child: Text(
+          text,
+          style: TextStyle(color: Themes.primaryColor, fontSize: 18),
+        ),
         style: ElevatedButton.styleFrom(
-          minimumSize: Size(double.infinity, 40.0),
-        )
-    );
+          primary: Themes.secondaryColor.withAlpha(240),
+          minimumSize: Size(double.infinity, 43.0),
+        ));
   }
 }
