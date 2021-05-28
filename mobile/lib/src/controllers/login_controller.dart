@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobile/src/components/alerts/alert.dart';
 
 class LoginController {
   TextEditingController _usernameController;
@@ -14,8 +15,9 @@ class LoginController {
     //mandar pra api aqui depois
     bool loginIsValid = username == 'ray' && password == '123';
     if(loginIsValid){
-      print('login!');
-      // Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context).pushReplacementNamed('/home');
+    }else{
+      Alert.displaySimpleAlert(context, 'Erro', 'Login ou senha estão incorretos.');
     }
   }
 
