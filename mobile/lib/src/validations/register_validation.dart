@@ -1,6 +1,6 @@
 import 'package:mobile/src/exceptions/validation_exception.dart';
+import 'package:mobile/src/utils/string_util.dart';
 import 'package:mobile/src/validations/login_validation.dart';
-import 'package:mobile/src/validations/string_validation.dart';
 
 //receber depois um model
 void validateRegister(String name, String username, String password){

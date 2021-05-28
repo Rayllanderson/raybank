@@ -1,5 +1,5 @@
 import 'package:mobile/src/exceptions/validation_exception.dart';
-import 'package:mobile/src/validations/string_validation.dart';
+import 'package:mobile/src/utils/string_util.dart';
 
 //receber depois um model
 void validateLogin(String username, String password){
