@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/src/components/buttons/login_button.dart';
 import 'package:mobile/src/components/inputs/login_input.dart';
 import 'package:mobile/src/components/logos/login_logo.dart';
+import 'package:mobile/src/themes/util.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -42,6 +43,29 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: LoginButton(text: 'LOGIN'),
                   ),
+                  SizedBox(height: 20,),
+                  TextButton(
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Criar Conta ",
+                            style: TextStyle(fontSize: 18)
+                          ),
+                          WidgetSpan(
+                            child: Icon(Icons.arrow_forward_rounded, size: 18),
+                          ),
+                        ],
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      primary: Themes.textColor,
+                      textStyle: const TextStyle(fontSize: 18),
+                    ),
+                    onPressed: (){
+
+                    },
+                  )
                 ],
               ),
             ),
