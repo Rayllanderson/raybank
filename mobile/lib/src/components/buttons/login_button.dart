@@ -3,13 +3,14 @@ import 'package:mobile/src/themes/util.dart';
 
 class LoginButton extends StatelessWidget {
   final text;
+  final void Function() onPress;
 
-  const LoginButton({Key key, this.text}) : super(key: key);
+  const LoginButton({Key key, this.text, this.onPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {},
+        onPressed: onPress,
         child: Text(
           text,
           style: TextStyle(color: Themes.primaryColor, fontSize: 18),

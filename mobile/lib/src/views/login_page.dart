@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/src/components/buttons/login_button.dart';
 import 'package:mobile/src/components/inputs/login_input.dart';
 import 'package:mobile/src/components/logos/login_logo.dart';
+import 'package:mobile/src/controllers/login_controller.dart';
 import 'package:mobile/src/themes/util.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,11 +13,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  LoginController _loginController;
+
+  @override
+  void initState() {
+    super.initState();
+    _loginController = LoginController(usernameController, passwordController, context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(children: [
-      Container(color: Colors.purpleAccent),
+      Container(color: Themes.primaryColor),
       Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,33 +37,40 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(8.0),
               child: LoginLogo(),
             ),
-            Container(height: 35,),
+            Container(
+              height: 35,
+            ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: LoginInput('Username', false),
+                    child: LoginInput('Username', false, usernameController),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: LoginInput('Password', true),
+                    child: LoginInput('Password', true, passwordController),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: LoginButton(text: 'LOGIN'),
+                    child: LoginButton(text: 'LOGIN', onPress: (){
+                      _loginController.login();
+                    },),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   TextButton(
                     child: RichText(
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "Criar Conta ",
-                            style: TextStyle(fontSize: 18)
-                          ),
+                              text: "Criar Conta ",
+                              style: TextStyle(fontSize: 18)),
                           WidgetSpan(
                             child: Icon(Icons.arrow_forward_rounded, size: 18),
                           ),
@@ -62,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       primary: Themes.textColor,
                       textStyle: const TextStyle(fontSize: 18),
                     ),
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.of(context).pushNamed('/register');
                     },
                   )

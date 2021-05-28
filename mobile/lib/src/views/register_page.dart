@@ -12,11 +12,16 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+  final nameController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(children: [
-      Container(color: Colors.purpleAccent),
+      Container(color: Themes.primaryColor),
       Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,15 +39,15 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: LoginInput('Nome', false),
+                    child: LoginInput('Nome', false, nameController),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: LoginInput('Username', false),
+                    child: LoginInput('Username', false, usernameController),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: LoginInput('Password', true),
+                    child: LoginInput('Password', true, passwordController),
                   ),
                   SizedBox(
                     height: 20,
