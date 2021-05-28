@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/alerts/alert.dart';
 import 'package:mobile/src/exceptions/validation_exception.dart';
+import 'package:mobile/src/models/register_model.dart';
 import 'package:mobile/src/validations/register_validation.dart';
 
 class RegisterController {
@@ -19,14 +20,11 @@ class RegisterController {
       String name = this._nameController.text;
       String username = this._usernameController.text;
       String password = this._passwordController.text;
-      validateRegister(name, username, password);
-      //mandar pra api aqui depois
-      bool success = true;
-      if (success) {
+      final model = RegisterModel(name, username, password);
+      validateRegister(model);
+      if (true) {
         Navigator.of(context).pushReplacementNamed('/');
         Alert.displaySimpleAlert('Sucesso', 'Cadastro realizado com sucesso!');
-      } else {
-        Alert.displaySimpleAlert('Erro', 'Login ou senha estão incorretos.');
       }
     } on ValidationException catch (e) {
       Alert.displaySimpleAlert(e.title, e.message);

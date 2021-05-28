@@ -13,7 +13,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   LoginController _loginController;
@@ -21,7 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _loginController = LoginController(usernameController, passwordController, context);
+    _loginController =
+        LoginController(usernameController, passwordController, context);
   }
 
   @override
@@ -29,66 +29,72 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         body: Stack(children: [
       Container(color: Themes.primaryColor),
-      Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: LoginLogo(),
-            ),
-            Container(
-              height: 35,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: LoginInput('Username', false, usernameController),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: LoginInput('Password', true, passwordController),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: LoginButton(text: 'LOGIN', onPress: (){
-                      _loginController.login();
-                    },),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextButton(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                              text: "Criar Conta ",
-                              style: TextStyle(fontSize: 18)),
-                          WidgetSpan(
-                            child: Icon(Icons.arrow_forward_rounded, size: 18),
-                          ),
-                        ],
+      Center(
+        child: SingleChildScrollView(
+          child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: LoginLogo(),
+                ),
+                Container(
+                  height: 35,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: LoginInput('Username', false, usernameController),
                       ),
-                    ),
-                    style: TextButton.styleFrom(
-                      primary: Themes.textColor,
-                      textStyle: const TextStyle(fontSize: 18),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/register');
-                    },
-                  )
-                ],
-              ),
-            ),
-          ]),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: LoginInput('Password', true, passwordController),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: LoginButton(
+                          text: 'LOGIN',
+                          onPress: () {
+                            _loginController.login();
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextButton(
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: "Criar Conta ",
+                                  style: TextStyle(fontSize: 18)),
+                              WidgetSpan(
+                                child:
+                                    Icon(Icons.arrow_forward_rounded, size: 18),
+                              ),
+                            ],
+                          ),
+                        ),
+                        style: TextButton.styleFrom(
+                          primary: Themes.textColor,
+                          textStyle: const TextStyle(fontSize: 18),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/register');
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ]),
+        ),
+      ),
     ]));
   }
 }
