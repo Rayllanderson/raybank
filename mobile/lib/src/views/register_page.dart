@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/src/components/buttons/login_button.dart';
 import 'package:mobile/src/components/inputs/login_input.dart';
 import 'package:mobile/src/components/logos/login_logo.dart';
-import 'package:mobile/src/themes/util.dart';
+import 'package:mobile/src/controllers/register_controller.dart';
+import 'package:mobile/src/themes/themes.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key key}) : super(key: key);
@@ -16,6 +17,14 @@ class _RegisterPageState extends State<RegisterPage> {
   final nameController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  RegisterController _registerController;
+
+  @override
+  void initState() {
+    super.initState();
+    _registerController = RegisterController
+      (nameController, usernameController, passwordController, context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +63,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: LoginButton(text: 'REGISTRAR'),
+                    child: LoginButton(text: 'REGISTRAR', onPress: (){
+                      _registerController.register();
+                    },),
                   ),
                   SizedBox(
                     height: 20,
