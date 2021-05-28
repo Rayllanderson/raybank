@@ -4,14 +4,14 @@ import 'package:mobile/src/components/inputs/login_input.dart';
 import 'package:mobile/src/components/logos/login_logo.dart';
 import 'package:mobile/src/themes/util.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,11 +25,17 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(8.0),
               child: LoginLogo(),
             ),
-            Container(height: 35,),
+            Container(
+              height: 35,
+            ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: LoginInput('Nome', false),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: LoginInput('Username', false),
@@ -38,22 +44,26 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: LoginInput('Password', true),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: LoginButton(text: 'LOGIN'),
+                    child: LoginButton(text: 'REGISTRAR'),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   TextButton(
                     child: RichText(
                       text: TextSpan(
                         children: [
-                          TextSpan(
-                            text: "Criar Conta ",
-                            style: TextStyle(fontSize: 18)
-                          ),
                           WidgetSpan(
-                            child: Icon(Icons.arrow_forward_rounded, size: 18),
+                            child: Icon(Icons.arrow_back, size: 18),
+                          ),
+                          TextSpan(
+                              text: "Voltar para o Login",
+                              style: TextStyle(fontSize: 18)
                           ),
                         ],
                       ),
@@ -63,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                       textStyle: const TextStyle(fontSize: 18),
                     ),
                     onPressed: (){
-                      Navigator.of(context).pushNamed('/register');
+                      Navigator.of(context).pushNamed('/');
                     },
                   )
                 ],
