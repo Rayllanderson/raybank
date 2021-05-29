@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/src/components/navigations/bottom_navigation.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/views/inital_screen.dart';
+import 'package:mobile/src/views/transfer_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -21,13 +22,32 @@ class _HomePageState extends State<HomePage> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     InitialScreen(),
-    Text(
-      'Tela de transferência',
-    ),
+    TransferScreen(),
     Text(
       'Tela de depósito',
     ),
   ];
+
+  floatingActionButton(index){
+    bool isOnInitialPage = index == 0;
+    if (isOnInitialPage) return null;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30, right: 10),
+      child: FloatingActionButton(
+        backgroundColor: Themes.primaryColor,
+        child: Icon(Icons.arrow_forward),
+        onPressed: (){
+          if(index == 1){
+            print('indo pra página de transferência');
+          }
+          if(index == 2){
+            print('indo pra página de depósito');
+          }
+        },
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +92,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ]),
+        floatingActionButton: floatingActionButton(_selectedIndex),
         bottomNavigationBar: BottomNavigator(
           selectedIndex: _selectedIndex,
           onItemTapped: (index) {
