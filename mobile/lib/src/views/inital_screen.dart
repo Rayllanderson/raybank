@@ -36,7 +36,7 @@ class InitialScreen extends StatelessWidget {
                         fontWeight: FontWeight.w300,
                         color: Colors.black)),
                 SizedBox(
-                  height: 2,
+                  height: 3,
                 ),
                 Text('R\$ 266,54',
                     style: TextStyle(
@@ -44,7 +44,7 @@ class InitialScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.blue)),
                 SizedBox(
-                  height: 2,
+                  height: 3,
                 ),
                 Row(
                   children: [

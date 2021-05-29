@@ -35,6 +35,35 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text('Raybank'),
         ),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                  currentAccountPicture: ClipOval(
+                      child: Image.network('https://avatars.githubusercontent.com/u/63964369?v=4')
+                  ),
+                  accountName: Text('Rayllanderson'),
+                  accountEmail: Text('ray@gmail.com')
+              ),
+              ListTile(
+                leading: Icon(Icons.home),
+                title: Text('Inicio'),
+                subtitle: Text('Tela de início'),
+                onTap: () {
+                  Navigator.of(context).pushReplacementNamed('/home');
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text('Logout'),
+                subtitle: Text('Sair do aplicativo'),
+                onTap: () {
+                  Navigator.of(context).pushReplacementNamed('/');
+                },
+              )
+            ],
+          ),
+        ),
         body: Stack(children: [
           Container(color: Themes.primaryColor),
           Center(
