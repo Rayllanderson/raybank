@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/navigations/bottom_navigation.dart';
 import 'package:mobile/src/themes/themes.dart';
-import 'package:mobile/src/views/inital_screen.dart';
-import 'package:mobile/src/views/transfer_screen.dart';
+import 'package:mobile/src/views/home_subpages/deposit_screen.dart';
+import 'package:mobile/src/views/home_subpages/inital_screen.dart';
+import 'package:mobile/src/views/home_subpages/transfer_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -23,9 +24,7 @@ class _HomePageState extends State<HomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     InitialScreen(),
     TransferScreen(),
-    Text(
-      'Tela de depósito',
-    ),
+    DepositScreen()
   ];
 
   floatingActionButton(index){

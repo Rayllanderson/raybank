@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/utils/mask_util.dart';
 
@@ -10,6 +11,12 @@ class TransferScreen extends StatefulWidget {
 }
 
 class _TransferScreenState extends State<TransferScreen> {
+
+  final moneyMaskedController = MoneyMaskedTextController(
+      decimalSeparator: ',',
+      thousandSeparator: '.',
+      leftSymbol: 'R\$ '
+  );
 
   @override
   Widget build(BuildContext context) {
