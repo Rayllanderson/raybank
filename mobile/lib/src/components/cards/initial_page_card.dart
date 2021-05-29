@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:mobile/src/themes/themes.dart';
+
+class InitialPageCard extends StatefulWidget {
+  final title;
+  final icon;
+  final body;
+  final height;
+
+  const InitialPageCard({Key key, this.title, this.icon, this.body, this.height})
+      : super(key: key);
+
+  @override
+  _InitialPageCardState createState() => _InitialPageCardState();
+}
+
+class _InitialPageCardState extends State<InitialPageCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 190,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          color: Themes.secondaryColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(left: 15, top: 12, bottom: 8),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        WidgetSpan(
+                          child: widget.icon,
+                        ),
+                        TextSpan(
+                            text: ' ${widget.title}',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.black)),
+                      ],
+                    ),
+                  )),
+              SizedBox(
+                height: widget.height,
+              ),
+               Padding(
+                padding: const EdgeInsets.only(left: 12, top: 8, bottom: 8),
+                 child: widget.body,
+               )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

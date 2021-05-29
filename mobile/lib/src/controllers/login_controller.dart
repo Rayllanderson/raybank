@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/main.dart';
 import 'package:mobile/src/components/alerts/alert.dart';
 import 'package:mobile/src/exceptions/validation_exception.dart';
 import 'package:mobile/src/models/login_model.dart';
@@ -23,7 +24,7 @@ class LoginController {
       validateLogin(model);
       bool isValidLogin = username == 'ray' && password == '123';
       if (isValidLogin) {
-        Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.of(navigatorKey.currentContext).pushReplacementNamed('/home');
       } else {
         Alert.displaySimpleAlert('Erro', 'Login ou senha estão incorretos.');
       }

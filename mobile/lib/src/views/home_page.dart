@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/navigations/bottom_navigation.dart';
+import 'package:mobile/src/themes/themes.dart';
+import 'package:mobile/src/views/inital_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -18,9 +20,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Tela de início',
-    ),
+    InitialScreen(),
     Text(
       'Tela de transferência',
     ),
@@ -33,19 +33,21 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Raybank'),
+          title: Text('Raybank'),
         ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: _widgetOptions.elementAt(_selectedIndex),
+        body: Stack(children: [
+          Container(color: Themes.primaryColor),
+          Center(
+            child: SingleChildScrollView(
+              child: _widgetOptions.elementAt(_selectedIndex),
+            ),
           ),
-        ),
+        ]),
         bottomNavigationBar: BottomNavigator(
           selectedIndex: _selectedIndex,
           onItemTapped: (index) {
             _onItemTapped(index);
           },
-        )
-    );
+        ));
   }
 }
