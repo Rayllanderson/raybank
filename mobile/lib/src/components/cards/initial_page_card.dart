@@ -5,9 +5,10 @@ class InitialPageCard extends StatefulWidget {
   final title;
   final icon;
   final body;
-  final height;
+  final cardHeight;
+  final sizedBoxHeight;
 
-  const InitialPageCard({Key key, this.title, this.icon, this.body, this.height})
+  const InitialPageCard({Key key, this.title, this.icon, this.body, this.sizedBoxHeight = 10.0, this.cardHeight = 190.0})
       : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class _InitialPageCardState extends State<InitialPageCard> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 190,
+      height: widget.cardHeight,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
@@ -28,7 +29,7 @@ class _InitialPageCardState extends State<InitialPageCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 10,
+                height: widget.sizedBoxHeight,
               ),
               Padding(
                   padding: const EdgeInsets.only(left: 15, top: 12, bottom: 8),
@@ -48,7 +49,7 @@ class _InitialPageCardState extends State<InitialPageCard> {
                     ),
                   )),
               SizedBox(
-                height: widget.height,
+                height: widget.sizedBoxHeight,
               ),
                Padding(
                 padding: const EdgeInsets.only(left: 12, top: 8, bottom: 8),
