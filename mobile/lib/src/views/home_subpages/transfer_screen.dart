@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/controllers/transfer_controller.dart';
+import 'package:mobile/src/utils/creator_util.dart';
+import 'package:mobile/src/views/home_page.dart';
 
 class TransferScreen extends StatefulWidget {
 
@@ -14,22 +15,20 @@ class TransferScreen extends StatefulWidget {
 class _TransferScreenState extends State<TransferScreen> {
 
 
-  final _moneyMaskedController = MoneyMaskedTextController(
-      decimalSeparator: ',',
-      thousandSeparator: '.',
-      leftSymbol: 'R\$ '
-  );
+  final _moneyMaskedController = createMoneyMaskedController();
 
   final _receiverController = TextEditingController();
-  final _errorController = TextEditingController();
 
-  TransferController transferController;
+  TransferController _transferController;
 
   @override
   void initState() {
     super.initState();
-    transferController = TransferController(_moneyMaskedController,
+    _transferController = TransferController(_moneyMaskedController,
         _receiverController);
+    MyActions.goToTransferPage = (){
+      _transferController.goToSelectContactPage();
+    };
   }
 
   @override
@@ -39,14 +38,14 @@ class _TransferScreenState extends State<TransferScreen> {
       headerTitle: 'Qual o valor da transferência?',
       headerSubtitle: 'Você tem disponível R\$ 140',
       moneyMaskedController: _moneyMaskedController,
-      errorText: 'O valor é maior que o saldo disponível em sua conta',
+      errorText: 'Você não possui saldo suficiente na sua conta',
       isErrorVisible: (){
-        isErrorVisible = transferController.isAmountInvalid();
+        isErrorVisible = _transferController.isAmountInvalid();
         return isErrorVisible;
       },
       inputChange: (value) {
         setState(() {
-          isErrorVisible = transferController.isAmountInvalid();
+          isErrorVisible = _transferController.isAmountInvalid();
         });
       },
     );

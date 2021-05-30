@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/navigations/bottom_navigation.dart';
-import 'package:mobile/src/controllers/transfer_controller.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/views/home_subpages/deposit_screen.dart';
 import 'package:mobile/src/views/home_subpages/initial_screen.dart';
@@ -38,6 +37,7 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.arrow_forward),
         onPressed: (){
           if(index == 1){
+            MyActions.goToTransferPage();
             print('indo pra página de transferência');
           }
           if(index == 2){
@@ -100,4 +100,8 @@ class _HomePageState extends State<HomePage> {
           },
         ));
   }
+}
+
+class MyActions{
+  static void Function() goToTransferPage = () {return;};
 }

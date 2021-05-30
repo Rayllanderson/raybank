@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/src/views/home_page.dart';
 import 'package:mobile/src/views/login_page.dart';
 import 'package:mobile/src/views/register_page.dart';
+import 'package:mobile/src/views/transfer_page.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
         '/home': (context) => HomePage(),
+        '/transfer': (context) => TransferPage(),
       },
     );
   }
