@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/headers/header.dart';
 import 'package:mobile/src/components/inputs/text_input_masked.dart';
+import 'package:mobile/src/components/texts/styles/text_styles.dart';
 
 class PageCard extends StatefulWidget {
   final headerTitle;
   final headerSubtitle;
   final moneyMaskedController;
+  final String errorText;
+  final bool Function() isErrorVisible;
   final void Function(String) inputChange;
 
   const PageCard(
@@ -13,7 +16,7 @@ class PageCard extends StatefulWidget {
       this.headerTitle,
       this.headerSubtitle,
       this.moneyMaskedController,
-      this.inputChange})
+      this.inputChange, this.isErrorVisible, this.errorText})
       : super(key: key);
 
   @override
@@ -40,7 +43,16 @@ class _PageCardState extends State<PageCard> {
                 child: TextInputMasked(
                   controller: widget.moneyMaskedController,
                   onChange: widget.inputChange,
-                )),
+                )
+            ),
+            SizedBox(height: 60),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: Visibility(
+                  visible: widget.isErrorVisible(),
+                  child: Text(widget.errorText, style: MyTextStyle.errorText(),
+              )),
+            ),
           ],
         ),
       ),

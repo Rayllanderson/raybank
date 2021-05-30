@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class MyTextStyle{
 
@@ -37,6 +38,13 @@ class MyTextStyle{
   static fw400() {
     return TextStyle(
         fontWeight: FontWeight.w400
+    );
+  }
+
+  static errorText(){
+    return TextStyle(
+        fontSize: 18,
+        color: Colors.red,
     );
   }
 }

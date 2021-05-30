@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/navigations/bottom_navigation.dart';
+import 'package:mobile/src/controllers/transfer_controller.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/views/home_subpages/deposit_screen.dart';
-import 'package:mobile/src/views/home_subpages/inital_screen.dart';
+import 'package:mobile/src/views/home_subpages/initial_screen.dart';
 import 'package:mobile/src/views/home_subpages/transfer_screen.dart';
 
 class HomePage extends StatefulWidget {

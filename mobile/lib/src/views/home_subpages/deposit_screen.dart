@@ -24,6 +24,8 @@ class _DepositScreenState extends State<DepositScreen> {
       headerTitle: 'Quanto quer depositar?',
       headerSubtitle: '',
       moneyMaskedController: moneyMaskedController,
+      errorText: '',
+      isErrorVisible: (){return false;},
       inputChange: (value) {
         print(value);
       },
