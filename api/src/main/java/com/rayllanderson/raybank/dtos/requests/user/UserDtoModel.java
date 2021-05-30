@@ -1,19 +1,21 @@
 package com.rayllanderson.raybank.dtos.requests.user;
 
 import com.rayllanderson.raybank.models.User;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.modelmapper.ModelMapper;
 
-@Getter
-@Setter
+@Data
 @SuperBuilder
 @NoArgsConstructor
-public class UserPostDto extends UserDtoModel {
+public abstract class UserDtoModel {
 
-    @Override
+    private String name;
+    private String username;
+    private String password;
+
     public User toUser() {
         return new ModelMapper().map(this, User.class);
     }

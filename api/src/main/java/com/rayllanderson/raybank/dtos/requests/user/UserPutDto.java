@@ -11,7 +11,8 @@ import org.modelmapper.ModelMapper;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class UserPostDto extends UserDtoModel {
+public class UserPutDto extends UserDtoModel{
+    private Long id;
 
     @Override
     public User toUser() {
