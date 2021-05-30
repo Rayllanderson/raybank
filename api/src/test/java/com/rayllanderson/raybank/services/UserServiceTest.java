@@ -35,7 +35,7 @@ class UserServiceTest {
 
     @Test
     void register_saveUser_whenSuccess() {
-        UserPostDto userToBeSaved = UserCreator.createUserToBeSaved();
+        UserPostDto userToBeSaved = UserCreator.createUserPostToBeSaved();
         Long expectedId = UserCreator.createUserWithId().getId();
 
         UserPostResponseDto savedUser = userService.register(userToBeSaved);

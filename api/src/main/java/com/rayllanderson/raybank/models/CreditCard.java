@@ -17,7 +17,7 @@ public class CreditCard {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Integer cardNumber;
+    private Long cardNumber;
     @OneToOne
     private BankAccount bankAccount;
 }

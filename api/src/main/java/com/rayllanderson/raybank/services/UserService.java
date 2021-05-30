@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
 import com.rayllanderson.raybank.dtos.requests.user.UserPutDto;
 import com.rayllanderson.raybank.dtos.responses.UserPostResponseDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.utils.StringUtil;
@@ -17,12 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BankAccountService bankAccountService;
 
     @Transactional
     public UserPostResponseDto register (UserPostDto userDto){
         this.assertThatUsernameNotExists(userDto.getUsername());
         User userToBeSaved =  userDto.toUser();
-        return UserPostResponseDto.fromUser(userRepository.save(userToBeSaved));
+        userToBeSaved = userRepository.save(userToBeSaved);
+        bankAccountService.createAccountBank(userToBeSaved);
+        return UserPostResponseDto.fromUser(userToBeSaved);
     }
 
     @Transactional(readOnly = true)

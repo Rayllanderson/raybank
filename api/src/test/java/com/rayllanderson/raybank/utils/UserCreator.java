@@ -10,7 +10,14 @@ public class UserCreator {
     /**
      * @return username("joao").password("123").name("João")
      */
-    public static UserPostDto createUserToBeSaved() {
+    public static User createUserToBeSaved() {
+        return User.builder().username("joao").password("123").name("João").build();
+    }
+
+    /**
+     * @return username("joao").password("123").name("João")
+     */
+    public static UserPostDto createUserPostToBeSaved() {
         return UserPostDto.builder().username("joao").password("123").name("João").build();
     }
 
