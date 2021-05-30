@@ -19,7 +19,7 @@ class TransferController {
     Navigator.pushNamed(navigatorKey.currentContext, '/transfer');
   }
 
-  /// verifica se o valor passado é menor que o valor disponível na conta
+  /// verifica se o valor é menor que o valor disponível na conta
   bool isAmountInvalid(){
     double value = double.tryParse(unmaskMoney(moneyController.text)) ?? 0.0;
     double accountBalance = 550.59; //dado mockado
