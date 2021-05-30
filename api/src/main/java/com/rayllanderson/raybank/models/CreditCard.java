@@ -12,14 +12,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class BankAccount {
+public class CreditCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Integer accountNumber;
+    private Integer cardNumber;
     @OneToOne
-    private CreditCard creditCard;
-    @OneToOne
-    private User user;
+    private BankAccount bankAccount;
 }
