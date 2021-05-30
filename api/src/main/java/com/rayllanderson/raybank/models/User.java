@@ -1,11 +1,19 @@
 package com.rayllanderson.raybank.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "users")
 public class User {
 
@@ -18,4 +26,8 @@ public class User {
     private String username;
     @Size(min = 3, max = 100)
     private String password;
+    @OneToOne
+    private BankAccount bankAccount;
+    @OneToMany
+    private Set<Pix> pixKeys = new HashSet<>();
 }

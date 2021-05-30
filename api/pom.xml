@@ -12,7 +12,7 @@
     <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>api</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Api for Raybank</description>
     <properties>
         <java.version>11</java.version>
     </properties>
