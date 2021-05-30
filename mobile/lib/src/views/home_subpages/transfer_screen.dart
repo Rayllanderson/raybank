@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/controllers/transfer_controller.dart';
+import 'package:mobile/src/utils/actions_util.dart';
 import 'package:mobile/src/utils/creator_util.dart';
-import 'package:mobile/src/views/home_page.dart';
 
 class TransferScreen extends StatefulWidget {
 

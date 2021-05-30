@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/navigations/bottom_navigation.dart';
 import 'package:mobile/src/themes/themes.dart';
+import 'package:mobile/src/utils/actions_util.dart';
 import 'package:mobile/src/views/home_subpages/deposit_screen.dart';
 import 'package:mobile/src/views/home_subpages/initial_screen.dart';
 import 'package:mobile/src/views/home_subpages/transfer_screen.dart';
@@ -100,8 +101,4 @@ class _HomePageState extends State<HomePage> {
           },
         ));
   }
-}
-
-class MyActions{
-  static void Function() goToTransferPage = () {return;};
 }
