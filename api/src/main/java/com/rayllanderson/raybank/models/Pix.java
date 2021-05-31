@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Pix {
     private Long id;
     @Size(min = 5, max = 99)
     private String key;
+    @JsonIgnore
     @ManyToOne
     private User user;
 }

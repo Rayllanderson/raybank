@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -19,8 +20,23 @@ public class CreditCard {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long cardNumber;
-
+    private BigDecimal balance;
+    private BigDecimal invoice;
     @JsonIgnore
     @OneToOne
     private BankAccount bankAccount;
+
+    public void payTheInvoice(BigDecimal amount){
+        invoice = invoice.subtract(amount);
+        balance = balance.add(amount);
+    }
+
+    public void makePurchase(BigDecimal amount){
+        invoice = invoice.add(amount);
+        balance = balance.subtract(amount);
+    }
+
+    public boolean hasLimit(){
+        return balance.equals(BigDecimal.ZERO);
+    }
 }

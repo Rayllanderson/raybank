@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -19,6 +20,7 @@ public class BankAccount {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Integer accountNumber;
+    private BigDecimal balance;
     @OneToOne
     private CreditCard creditCard;
     @JsonIgnore
