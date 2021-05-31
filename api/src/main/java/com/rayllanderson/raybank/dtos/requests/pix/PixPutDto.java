@@ -1,11 +1,8 @@
-package com.rayllanderson.raybank.dtos.pix;
+package com.rayllanderson.raybank.dtos.requests.pix;
 
 import com.rayllanderson.raybank.models.Pix;
 import com.rayllanderson.raybank.models.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.NotEmpty;
@@ -15,13 +12,14 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PixPostDto {
+public class PixPutDto {
+    private Long id;
     @NotNull
     @NotEmpty
     private String key;
     private User owner;
 
-    public static Pix toPix(PixPostDto dto){
+    public static Pix toPix(PixPutDto dto){
         return new ModelMapper().map(dto, Pix.class);
     }
 }

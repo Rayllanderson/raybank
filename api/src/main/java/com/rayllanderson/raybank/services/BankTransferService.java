@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.services;
 
-import com.rayllanderson.raybank.dtos.bank.BankTransferDto;
+import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankTransfer;
 import com.rayllanderson.raybank.models.User;
@@ -19,8 +19,8 @@ public class BankTransferService {
 
     @Transactional
     public BankTransfer transfer(BankTransferDto transaction){
-        boolean isTransactionValid = transaction.getFrom().getBankAccount().getBalance().compareTo(transaction.getAmount()) > 0;
-        if(isTransactionValid){
+        boolean isTransactionValid = transaction.getSender().getBankAccount().getBalance().compareTo(transaction.getAmount()) > 0;
+        if(isTransactionValid) {
             String recipientPixKey = transaction.getTo();
             Integer recipientAccountNumber = Integer.parseInt(recipientPixKey);
             User recipient = userRepository
@@ -29,7 +29,7 @@ public class BankTransferService {
             BankTransfer bankTransfer = BankTransferDto.toBankTransfer(transaction);
             bankTransfer.setTo(recipient);
             return bankTransferRepository.save(bankTransfer);
-        }else
+        } else
             throw new BadRequestException("Valor da transferência é maior que o saldo bancário");
     }
 

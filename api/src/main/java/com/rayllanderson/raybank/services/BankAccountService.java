@@ -40,8 +40,8 @@ public class BankAccountService {
         final int NUMBER_OF_DIGITS = 9;
         do {
             generatedNumber = Integer.parseInt(Long.toString(NumberUtil.generateRandom(NUMBER_OF_DIGITS)));
-            isAccountNumberInvalid =
-                    bankAccountRepository.existsByAccountNumber(generatedNumber) && (Integer.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
+            isAccountNumberInvalid = bankAccountRepository.existsByAccountNumber(generatedNumber)
+                    && (Integer.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
         } while (isAccountNumberInvalid);
         return generatedNumber;
     }

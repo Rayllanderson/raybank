@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.dtos.bank;
+package com.rayllanderson.raybank.dtos.requests.bank;
 
 import com.rayllanderson.raybank.models.BankTransfer;
 import com.rayllanderson.raybank.models.User;
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class BankTransferDto {
-    private User from;
+    private User sender;
     @NotNull
     @NotEmpty
     private String to;
