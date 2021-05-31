@@ -12,4 +12,11 @@ public class BankAccountCreator {
                 .creditCard(CreditCardCreator.createCreditCardSaved())
                 .build();
     }
+
+    public static BankAccount createBankAccountTobBeSavedWithoutCrediCard(){
+        return BankAccount.builder()
+                .accountNumber(999999999)
+                .user(UserCreator.createUserWithId())
+                .build();
+    }
 }

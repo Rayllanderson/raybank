@@ -3,6 +3,10 @@ package com.rayllanderson.raybank.repositories;
 import com.rayllanderson.raybank.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
+    boolean existsByPixKeysKeyOrBankAccountAccountNumber(String pixKey, Integer accountNumber);
+    Optional<User> findByPixKeysKeyOrBankAccountAccountNumber(String pixKey, Integer accountNumber);
 }
