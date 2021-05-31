@@ -29,7 +29,7 @@ public class BankStatement {
     @ManyToOne
     private BankAccount accountOwner;
 
-    public static BankStatement createTransferType(BigDecimal amount, BankAccount accountSender, BankAccount accountOwner){
+    public static BankStatement createTransferStatement(BigDecimal amount, BankAccount accountSender, BankAccount accountOwner){
         return BankStatement.builder().
                 moment(LocalDateTime.now())
                 .statementType(StatementType.TRANSFER)
@@ -39,7 +39,7 @@ public class BankStatement {
                 .build();
     }
 
-    public static BankStatement createDepositType(BigDecimal amount, BankAccount accountOwner){
+    public static BankStatement createDepositStatement (BigDecimal amount, BankAccount accountOwner){
         return BankStatement.builder().
                 moment(LocalDateTime.now())
                 .statementType(StatementType.DEPOSIT)

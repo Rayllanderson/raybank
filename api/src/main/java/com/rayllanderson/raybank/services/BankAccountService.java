@@ -1,11 +1,11 @@
 package com.rayllanderson.raybank.services;
 
+import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.BankStatement;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.models.enums.StatementType;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
 import com.rayllanderson.raybank.repositories.BankStatementRepository;
 import com.rayllanderson.raybank.utils.NumberUtil;
@@ -21,7 +21,7 @@ public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
     private final CreditCardService creditCardService;
-    private final BankStatementRepository bankStatementRepository;
+    private final BankStatementRepository statementRepository;
     private final UserFinderService userFinderService;
 
     /**
@@ -41,20 +41,45 @@ public class BankAccountService {
         return bankAccountRepository.save(bankAccountToBeSaved);
     }
 
+    /**
+     * Realiza transferência de uma conta para outra.
+     *
+     * Sender precisa ser setado no objeto transaction antes de ser enviado pra este método;
+     *
+     * Verifica se o sender possui saldo suficiente;
+     *
+     * @param transaction objeto necessário para realização de transferência.
+     * @throws BadRequestException Caso sender não esteja setado E caso o valor de transferência for maior que o saldo do sender
+     */
     @Transactional
-    public void transfer(BankTransferDto transaction){
+    public void transfer(BankTransferDto transaction) throws BadRequestException{
+        if(transaction.getSender() == null) throw new BadRequestException("Sender must be set before send");
         BankAccount senderAccount = transaction.getSender().getBankAccount();
-        boolean isTransactionValid = senderAccount.getBalance().compareTo(transaction.getAmount()) > 0;
-        if(isTransactionValid) {
+        BigDecimal amountToBeTransferred = transaction.getAmount();
+        if(senderAccount.hasAvailableBalance(amountToBeTransferred)) {
             User recipient = this.findUserByPixOrAccountNumber(transaction);
             BankAccount recipientAccount = recipient.getBankAccount();
-            BigDecimal amountToBeTransferred = transaction.getAmount();
             senderAccount.transferTo(recipientAccount, amountToBeTransferred);
             bankAccountRepository.save(senderAccount);
             bankAccountRepository.save(recipientAccount);
-            bankStatementRepository.save(BankStatement.createTransferType(amountToBeTransferred, senderAccount, recipientAccount));
+            statementRepository.save(BankStatement.createTransferStatement(amountToBeTransferred, senderAccount, recipientAccount));
         } else
             throw new BadRequestException("Valor da transferência é maior que o saldo bancário");
+    }
+
+    /**
+     * Realiza o depósito na conta
+     * @param transaction objeto necessário para realização do depósito.
+     * @throws BadRequestException Caso o owner não esteja setado
+     */
+    @Transactional
+    public void deposit(BankDepositDto transaction) throws BadRequestException{
+        if(transaction.getOwner() == null) throw new BadRequestException("Owner must be set before send");
+        var ownerAccount = transaction.getOwner().getBankAccount();
+        var amountToBeDeposited = transaction.getAmount();
+        ownerAccount.deposit(amountToBeDeposited);
+        bankAccountRepository.save(ownerAccount);
+        statementRepository.save(BankStatement.createDepositStatement(amountToBeDeposited, ownerAccount));
     }
 
     private User findUserByPixOrAccountNumber(BankTransferDto transaction){
