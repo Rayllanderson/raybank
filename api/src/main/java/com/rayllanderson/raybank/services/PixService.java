@@ -4,18 +4,19 @@ import com.rayllanderson.raybank.dtos.pix.PixPostDto;
 import com.rayllanderson.raybank.dtos.pix.PixPutDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.Pix;
+import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.PixRepository;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.utils.PixUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class PixService {
 
-    private PixRepository pixRepository;
-    private UserRepository userRepository;
+    private final PixRepository pixRepository;
 
     /**
      * Registra uma chave pix para o usuário contido em @pixDto.
@@ -24,6 +25,7 @@ public class PixService {
      * @param pixDto necessita setar um user cadastrado no banco de dados pra registrar uma chave
      * @throws BadRequestException caso falhe em alguma das verificações.
      */
+    @Transactional
     public void register(PixPostDto pixDto) throws BadRequestException {
         if (pixDto.getOwner() == null) throw new BadRequestException("Owner não está setado no objeto PixDto. Necessita estar setado");
         this.checkThatPixNotExists(pixDto.getKey());
@@ -38,11 +40,17 @@ public class PixService {
         pixRepository.save(PixPostDto.toPix(pixDto));
     }
 
+    @Transactional
     public void update(PixPutDto pixDto) throws BadRequestException {
         checkThatPixNotExists(pixDto.getKey());
         Pix pixToBeUpdated = pixRepository.findById(pixDto.getId()).orElseThrow(() -> new BadRequestException("Pix não existe"));
         PixUpdater.updatePix(pixDto, pixToBeUpdated);
         pixRepository.save(PixPutDto.toPix(pixDto));
+    }
+
+    @Transactional
+    public void deleteById(Long id, User owner) throws BadRequestException {
+        pixRepository.deleteByIdAndOwnerId(id, owner.getId());
     }
 
     /**
