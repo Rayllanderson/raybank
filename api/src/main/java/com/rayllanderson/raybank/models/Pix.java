@@ -23,5 +23,5 @@ public class Pix {
     private String key;
     @JsonIgnore
     @ManyToOne
-    private User user;
+    private User owner;
 }

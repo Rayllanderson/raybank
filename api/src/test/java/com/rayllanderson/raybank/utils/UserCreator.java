@@ -15,6 +15,17 @@ public class UserCreator {
     }
 
     /**
+     * @return username("ray").password("123").name("Ray")
+     */
+    public static User createUserToBeSavedWithCollectionsNonNull() {
+        User user = new User();
+        user.setUsername("ray");
+        user.setPassword("123");
+        user.setName("Ray");
+        return user;
+    }
+
+    /**
      * @return username("joao").password("123").name("João")
      */
     public static UserPostDto createUserPostToBeSaved() {

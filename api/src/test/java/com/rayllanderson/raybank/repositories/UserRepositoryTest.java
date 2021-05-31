@@ -37,7 +37,7 @@ class UserRepositoryTest {
     @Test
     void existsByPixKeysOrBankAccountNumber_ReturnTrue_WhenValueExists() {
         User userToBeSaved = userRepository.save(UserCreator.createUserToBeSaved());
-        BankAccount bankAccount = bankAccountRepository.save(BankAccountCreator.createBankAccountTobBeSavedWithoutCrediCard());
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountCreator.createBankAccountToBeSavedWithoutCreditCard());
         userToBeSaved.setBankAccount(bankAccount);
         User userSaved = userRepository.save(userToBeSaved);
 
@@ -61,7 +61,9 @@ class UserRepositoryTest {
     @Test
     void findByPixKeysOrBankAccountNumber_ReturnUser_WhenValueExists() {
         User userToBeSaved = userRepository.save(UserCreator.createUserToBeSaved());
-        BankAccount bankAccount = bankAccountRepository.save(BankAccountCreator.createBankAccountTobBeSavedWithoutCrediCard());
+        BankAccount bankAccount = BankAccountCreator.createBankAccountToBeSavedWithoutCreditCardAndWithoutUser();
+        bankAccount.setUser(userToBeSaved);
+        bankAccount = bankAccountRepository.save(bankAccount);
         userToBeSaved.setBankAccount(bankAccount);
         User userSaved = userRepository.save(userToBeSaved);
 

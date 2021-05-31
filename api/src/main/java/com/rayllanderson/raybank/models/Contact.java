@@ -16,6 +16,7 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String username;
     private String name;
     private Integer accountNumber;
     @ManyToOne
