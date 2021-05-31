@@ -10,7 +10,7 @@ import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.utils.StringUtil;
-import com.rayllanderson.raybank.utils.UserUpdateUtils;
+import com.rayllanderson.raybank.utils.UserUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,7 +74,7 @@ public class UserService {
         if (hasUpdatedUsername){
             this.assertThatUsernameNotExists(userDto.getUsername());
         }
-        UserUpdateUtils.updateNameOrUsername(userDto, userFromDataBase);
+        UserUpdater.updateNameOrUsername(userDto, userFromDataBase);
     }
 
     /**
@@ -86,7 +86,7 @@ public class UserService {
             throw new IllegalArgumentException("Senha está vazia");
         }
         User userFromDataBase = this.findById(user.getId());
-        UserUpdateUtils.updatePassword(user, userFromDataBase);
+        UserUpdater.updatePassword(user, userFromDataBase);
 //        userFromDataBase.setPassword(encoder.encode(userFromDataBase.getPassword()));
         this.userRepository.save(userFromDataBase);
     }
