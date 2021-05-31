@@ -18,7 +18,7 @@ public class BankTransferService {
     private final BankTransferRepository bankTransferRepository;
 
     @Transactional
-    public void transfer(BankTransferDto transaction){
+    public BankTransfer transfer(BankTransferDto transaction){
         boolean isTransactionValid = transaction.getFrom().getBankAccount().getBalance().compareTo(transaction.getAmount()) > 0;
         if(isTransactionValid){
             String recipientPixKey = transaction.getTo();
@@ -28,7 +28,7 @@ public class BankTransferService {
                     .orElseThrow(() -> new BadRequestException("Pix ou número da conta estão incorretos ou destinatário não existe"));
             BankTransfer bankTransfer = BankTransferDto.toBankTransfer(transaction);
             bankTransfer.setTo(recipient);
-            bankTransferRepository.save(bankTransfer);
+            return bankTransferRepository.save(bankTransfer);
         }else
             throw new BadRequestException("Valor da transferência é maior que o saldo bancário");
     }
