@@ -2,11 +2,11 @@ package com.rayllanderson.raybank.dtos.pix;
 
 import com.rayllanderson.raybank.models.Pix;
 import com.rayllanderson.raybank.models.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.modelmapper.ModelMapper;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 @Builder
 public class PixPutDto {
     private Long id;
+    @NotNull
+    @NotEmpty
     private String key;
     private User owner;
 

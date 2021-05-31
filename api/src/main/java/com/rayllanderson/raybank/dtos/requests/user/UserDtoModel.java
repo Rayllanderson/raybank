@@ -7,13 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.modelmapper.ModelMapper;
 
+import javax.validation.constraints.Size;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
 public abstract class UserDtoModel {
 
+    @Size(min = 1, max = 100)
     private String name;
+    @Size(min = 3, max = 100)
     private String username;
+    @Size(min = 3, max = 100)
     private String password;
 
     public User toUser() {

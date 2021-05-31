@@ -6,7 +6,6 @@ import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.Pix;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.PixRepository;
-import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.utils.PixUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
