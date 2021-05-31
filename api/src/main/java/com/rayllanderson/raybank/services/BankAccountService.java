@@ -32,6 +32,8 @@ public class BankAccountService {
         return bankAccountRepository.save(bankAccountToBeSaved);
     }
 
+
+
     private int generateAccountNumber() {
         boolean isAccountNumberInvalid;
         int generatedNumber;
