@@ -1,12 +1,10 @@
 package com.rayllanderson.raybank.dtos.requests.bank;
 
-import com.rayllanderson.raybank.models.BankTransfer;
 import com.rayllanderson.raybank.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -26,7 +24,7 @@ public class BankTransferDto {
     @Size(max = 20)
     private String message;
 
-    public static BankTransfer toBankTransfer(BankTransferDto dto){
-        return new ModelMapper().map(dto, BankTransfer.class);
-    }
+//    public static BankTransfer toBankTransfer(BankTransferDto dto){
+//        return new ModelMapper().map(dto, BankTransfer.class);
+//    }
 }

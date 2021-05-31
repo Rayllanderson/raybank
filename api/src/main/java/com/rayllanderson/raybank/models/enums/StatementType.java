@@ -1,5 +1,5 @@
 package com.rayllanderson.raybank.models.enums;
 
-public enum BankStatementType {
+public enum StatementType {
     TRANSFER, DEPOSIT
 }

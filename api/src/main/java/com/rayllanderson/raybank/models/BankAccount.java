@@ -29,4 +29,9 @@ public class BankAccount {
     private User user;
     @OneToMany
     private List<BankStatement> statements;
+
+    public void transferTo(BankAccount recipient, BigDecimal amount){
+        recipient.setBalance(recipient.getBalance().add(amount));
+        this.setBalance(recipient.getBalance().subtract(amount));
+    }
 }

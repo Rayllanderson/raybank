@@ -24,6 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BankAccountService bankAccountService;
+    private final UserFinderService userFinderService;
 
     public List<UserResponseDto> findAll(){
         return userRepository.findAll().stream().map(user -> {
@@ -46,14 +47,10 @@ public class UserService {
         return UserPostResponseDto.fromUser(userToBeSaved);
     }
 
-    @Transactional(readOnly = true)
-    public User findById(Long id) throws BadRequestException {
-        return userRepository.findById(id).orElseThrow(() -> new BadRequestException("Usuário não encontrado."));
-    }
 
     @Transactional
     public void deleteById(Long id) throws BadRequestException {
-        findById(id);
+        userFinderService.findById(id);
         //TODO: deletar os pixs e conta bancária
         userRepository.deleteById(id);
     }
@@ -69,7 +66,7 @@ public class UserService {
      */
     @Transactional
     public void updateNameOrUsername(UserPutDto userDto) throws BadRequestException {
-        User userFromDataBase = this.findById(userDto.getId());
+        User userFromDataBase = userFinderService.findById(userDto.getId());
         boolean hasUpdatedUsername = StringUtil.notMatches(userDto.getUsername(), userFromDataBase.getUsername());
         if (hasUpdatedUsername){
             this.assertThatUsernameNotExists(userDto.getUsername());
@@ -85,7 +82,7 @@ public class UserService {
         if(StringUtil.isEmpty(user.getPassword())){
             throw new IllegalArgumentException("Senha está vazia");
         }
-        User userFromDataBase = this.findById(user.getId());
+        User userFromDataBase = userFinderService.findById(user.getId());
         UserUpdater.updatePassword(user, userFromDataBase);
 //        userFromDataBase.setPassword(encoder.encode(userFromDataBase.getPassword()));
         this.userRepository.save(userFromDataBase);

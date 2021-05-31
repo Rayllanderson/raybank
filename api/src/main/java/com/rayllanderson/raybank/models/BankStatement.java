@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.models;
 
-import com.rayllanderson.raybank.models.enums.BankStatementType;
+import com.rayllanderson.raybank.models.enums.StatementType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,18 +22,31 @@ public class BankStatement {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime moment;
     @Enumerated(EnumType.STRING)
-    private BankStatementType statementType;
+    private StatementType statementType;
     private BigDecimal amount;
     @ManyToOne
     private BankAccount accountSender;
     @ManyToOne
     private BankAccount accountOwner;
 
-    public BankStatement(BankStatementType statementType, BigDecimal amount, BankAccount accountSender, BankAccount accountOwner) {
-        this.moment = LocalDateTime.now();
-        this.statementType = statementType;
-        this.amount = amount;
-        this.accountSender = accountSender;
-        this.accountOwner = accountOwner;
+    public static BankStatement createTransferType(BigDecimal amount, BankAccount accountSender, BankAccount accountOwner){
+        return BankStatement.builder().
+                moment(LocalDateTime.now())
+                .statementType(StatementType.TRANSFER)
+                .amount(amount)
+                .accountSender(accountSender)
+                .accountOwner(accountOwner)
+                .build();
     }
+
+    public static BankStatement createDepositType(BigDecimal amount, BankAccount accountOwner){
+        return BankStatement.builder().
+                moment(LocalDateTime.now())
+                .statementType(StatementType.DEPOSIT)
+                .amount(amount)
+                .accountSender(null)
+                .accountOwner(accountOwner)
+                .build();
+    }
+
 }
