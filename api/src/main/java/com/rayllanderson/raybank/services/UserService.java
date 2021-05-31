@@ -2,9 +2,11 @@ package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
 import com.rayllanderson.raybank.dtos.requests.user.UserPutDto;
+import com.rayllanderson.raybank.dtos.responses.BankAccountDto;
+import com.rayllanderson.raybank.dtos.responses.CreditCardDto;
 import com.rayllanderson.raybank.dtos.responses.UserPostResponseDto;
+import com.rayllanderson.raybank.dtos.responses.UserResponseDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.utils.StringUtil;
@@ -13,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -20,12 +25,24 @@ public class UserService {
     private final UserRepository userRepository;
     private final BankAccountService bankAccountService;
 
+    public List<UserResponseDto> findAll(){
+        return userRepository.findAll().stream().map(user -> {
+            UserResponseDto userDto = UserResponseDto.fromUser(user);
+            BankAccountDto bankDto = BankAccountDto.fromBankAccount(user.getBankAccount());
+            CreditCardDto creditCardDto = CreditCardDto.fromCreditCard(user.getBankAccount().getCreditCard());
+            bankDto.setCreditCardDto(creditCardDto);
+            userDto.setBankAccountDto(bankDto);
+            return userDto;
+        }).collect(Collectors.toList());
+    }
+
     @Transactional
     public UserPostResponseDto register (UserPostDto userDto){
         this.assertThatUsernameNotExists(userDto.getUsername());
         User userToBeSaved =  userDto.toUser();
         userToBeSaved = userRepository.save(userToBeSaved);
-        bankAccountService.createAccountBank(userToBeSaved);
+        userToBeSaved.setBankAccount(bankAccountService.createAccountBank(userToBeSaved));
+        userToBeSaved = userRepository.save(userToBeSaved);
         return UserPostResponseDto.fromUser(userToBeSaved);
     }
 

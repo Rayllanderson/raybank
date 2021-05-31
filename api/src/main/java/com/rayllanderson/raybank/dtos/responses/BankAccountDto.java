@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.dtos.responses;
 
+import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +12,13 @@ import org.modelmapper.ModelMapper;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserPostResponseDto {
-
+public class BankAccountDto {
     private Long id;
-    private String name;
-    private String username;
+    private Integer accountNumber;
+    private CreditCardDto creditCardDto;
 
-    public static UserPostResponseDto fromUser(User user){
-        return new ModelMapper().map(user, UserPostResponseDto.class);
+    public static BankAccountDto fromBankAccount(BankAccount bankAccount){
+        return new ModelMapper().map(bankAccount, BankAccountDto.class);
     }
+
 }

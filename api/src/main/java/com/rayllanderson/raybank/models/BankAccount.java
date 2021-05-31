@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class BankAccount {
     private Integer accountNumber;
     @OneToOne
     private CreditCard creditCard;
+    @JsonIgnore
     @OneToOne
     private User user;
 }

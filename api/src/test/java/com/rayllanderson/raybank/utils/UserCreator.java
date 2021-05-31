@@ -32,7 +32,7 @@ public class UserCreator {
      * @return id(1L).username("joao").password("123").name("João")
      */
     public static UserPostResponseDto createUserPostResponseDto(){
-        return UserPostResponseDto.builder().id(1L).username("joao").password("123").name("João").build();
+        return UserPostResponseDto.builder().id(1L).username("joao").name("João").build();
     }
 
     /**

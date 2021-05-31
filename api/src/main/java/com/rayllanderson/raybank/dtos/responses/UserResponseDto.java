@@ -11,13 +11,13 @@ import org.modelmapper.ModelMapper;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserPostResponseDto {
-
+public class UserResponseDto {
     private Long id;
     private String name;
     private String username;
+    private BankAccountDto bankAccountDto;
 
-    public static UserPostResponseDto fromUser(User user){
-        return new ModelMapper().map(user, UserPostResponseDto.class);
+    public static UserResponseDto fromUser(User user){
+        return new ModelMapper().map(user, UserResponseDto.class);
     }
 }

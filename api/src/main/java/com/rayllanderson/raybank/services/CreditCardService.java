@@ -21,12 +21,12 @@ public class CreditCardService {
      * Esta, por sua vez, necessita estar salvo no banco dados
      */
     @Transactional
-    public void createCreditCard(BankAccount savedBankAccount){
+    public CreditCard createCreditCard(BankAccount savedBankAccount){
         var creditCardToBeSaved = CreditCard.builder()
                 .cardNumber(this.generateCreditCardNumber())
                 .bankAccount(savedBankAccount)
                 .build();
-        creditCardRepository.save(creditCardToBeSaved);
+        return creditCardRepository.save(creditCardToBeSaved);
     }
 
     private long generateCreditCardNumber() {

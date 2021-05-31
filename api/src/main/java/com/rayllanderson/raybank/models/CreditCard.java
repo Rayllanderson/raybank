@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,8 @@ public class CreditCard {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long cardNumber;
+
+    @JsonIgnore
     @OneToOne
     private BankAccount bankAccount;
 }

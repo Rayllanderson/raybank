@@ -19,15 +19,17 @@ public class BankAccountService {
      * Cria e salva uma nova conta bancária junta de um cartão de crédito.
      *
      * @param savedUser usuário a receber nova conta. Este, por sua vez, necessita estar salvo no banco dados
+     * @return BankAccount salva com cartão de crédito
      */
     @Transactional
-    public void createAccountBank(User savedUser) {
+    public BankAccount createAccountBank(User savedUser) {
         int accountNumber = this.generateAccountNumber();
         var bankAccountToBeSaved = BankAccount.builder()
                 .accountNumber(accountNumber)
                 .user(savedUser).build();
         bankAccountToBeSaved = bankAccountRepository.save(bankAccountToBeSaved);
-        creditCardService.createCreditCard(bankAccountToBeSaved);
+        bankAccountToBeSaved.setCreditCard(creditCardService.createCreditCard(bankAccountToBeSaved));
+        return bankAccountRepository.save(bankAccountToBeSaved);
     }
 
     private int generateAccountNumber() {
