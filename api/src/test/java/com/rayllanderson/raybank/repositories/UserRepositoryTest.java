@@ -6,6 +6,7 @@ import com.rayllanderson.raybank.utils.BankAccountCreator;
 import com.rayllanderson.raybank.utils.UserCreator;
 import lombok.extern.log4j.Log4j2;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -22,6 +23,13 @@ class UserRepositoryTest {
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
+    @BeforeEach
+    void setUp(){
+        userRepository.deleteAll();
+        bankAccountRepository.deleteAll();
+        log.info("executou");
+    }
+
     @Test
     void save_PersistUser_WhenSuccessful() {
         User userToBeSaved = UserCreator.createUserToBeSaved();
@@ -37,7 +45,7 @@ class UserRepositoryTest {
     @Test
     void existsByPixKeysOrBankAccountNumber_ReturnTrue_WhenValueExists() {
         User userToBeSaved = userRepository.save(UserCreator.createUserToBeSaved());
-        BankAccount bankAccount = bankAccountRepository.save(BankAccountCreator.createBankAccountToBeSavedWithoutCreditCard());
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountCreator.createBankAccountToBeSavedWithoutCreditCardAndWithoutUser());
         userToBeSaved.setBankAccount(bankAccount);
         User userSaved = userRepository.save(userToBeSaved);
 

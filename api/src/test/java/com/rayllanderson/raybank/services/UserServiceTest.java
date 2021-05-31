@@ -3,10 +3,7 @@ package com.rayllanderson.raybank.services;
 import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
 import com.rayllanderson.raybank.dtos.responses.UserPostResponseDto;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.CreditCard;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.repositories.BankAccountRepository;
-import com.rayllanderson.raybank.repositories.CreditCardRepository;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.utils.BankAccountCreator;
 import com.rayllanderson.raybank.utils.CreditCardCreator;
@@ -29,6 +26,10 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
+
+    @Mock
+    private UserFinderService userFinderService;
+
     @Mock
     private BankAccountService bankAccountService;
 
@@ -42,14 +43,18 @@ class UserServiceTest {
     void setUp() {
         //save
         BDDMockito.when(userRepository.save(ArgumentMatchers.any(User.class))).thenReturn(UserCreator.createUserWithId());
+        //user finder - find
+        BDDMockito.when(userFinderService.findById(ArgumentMatchers.anyLong())).thenReturn(UserCreator.createUserWithId());
         //find
         BDDMockito.when(userRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(UserCreator.createUserWithId()));
         //delete
         BDDMockito.doNothing().when(userRepository).deleteById(ArgumentMatchers.anyLong());
         //criando conta bancária
-        BDDMockito.doNothing().when(bankAccountService).createAccountBank(ArgumentMatchers.any(User.class));
+        BDDMockito.when(bankAccountService.createAccountBank(ArgumentMatchers.any(User.class)))
+                .thenReturn(BankAccountCreator.createBankAccountSaved());
         //criando cartão de crédito
-        BDDMockito.doNothing().when(creditCardService).createCreditCard(ArgumentMatchers.any(BankAccount.class));
+        BDDMockito.when(creditCardService.createCreditCard(ArgumentMatchers.any(BankAccount.class)))
+                .thenReturn(CreditCardCreator.createCreditCardSaved());
     }
 
     @Test
@@ -67,7 +72,7 @@ class UserServiceTest {
     @Test
     void findById_ReturnsUser_WhenSuccessful() {
         User expectedUser = UserCreator.createUserWithId();
-        User userFound = userService.findById(UserCreator.createUserWithId().getId());
+        User userFound = userFinderService.findById(UserCreator.createUserWithId().getId());
         Assertions.assertThat(userFound).isNotNull();
         Assertions.assertThat(userFound).isEqualTo(expectedUser);
     }

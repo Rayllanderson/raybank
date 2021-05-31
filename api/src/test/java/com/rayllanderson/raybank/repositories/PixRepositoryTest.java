@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.utils.PixCreator;
 import com.rayllanderson.raybank.utils.UserCreator;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,6 +19,12 @@ class PixRepositoryTest {
 
     @Autowired
     private PixRepository pixRepository;
+
+    @BeforeEach
+    void setUp(){
+        userRepository.deleteAll();
+        pixRepository.deleteAll();
+    }
 
     @Test
     void countUserPixKeysById_ReturnNumberOfPixKeys_WhenUserHasKey() {
