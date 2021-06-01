@@ -2,6 +2,8 @@ package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
 import com.rayllanderson.raybank.dtos.requests.pix.PixPutDto;
+import com.rayllanderson.raybank.dtos.responses.pix.PixPostResponse;
+import com.rayllanderson.raybank.dtos.responses.pix.PixResponseDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.Pix;
 import com.rayllanderson.raybank.models.User;
@@ -25,7 +27,7 @@ public class PixService {
      * @throws BadRequestException caso falhe em alguma das verificações.
      */
     @Transactional
-    public void register(PixPostDto pixDto) throws BadRequestException {
+    public PixPostResponse register(PixPostDto pixDto) throws BadRequestException {
         if (pixDto.getOwner() == null) throw new BadRequestException("Owner não está setado no objeto PixDto. Necessita estar setado");
         this.checkThatPixNotExists(pixDto.getKey());
         int numberOfPixKeysFromUser = pixRepository.countByOwnerId(pixDto.getOwner().getId());
@@ -36,7 +38,7 @@ public class PixService {
             + ". Apague uma chave Pix e tente novamente.";
             throw new BadRequestException(message);
         }
-        pixRepository.save(PixPostDto.toPix(pixDto));
+        return PixPostResponse.fromPix(pixRepository.save(PixPostDto.toPix(pixDto)));
     }
 
     @Transactional
@@ -45,6 +47,10 @@ public class PixService {
         Pix pixToBeUpdated = pixRepository.findById(pixDto.getId()).orElseThrow(() -> new BadRequestException("Pix não existe"));
         PixUpdater.updatePixKey(pixDto, pixToBeUpdated);
         pixRepository.save(PixPutDto.toPix(pixDto));
+    }
+
+    public PixResponseDto findAllFromUser(User user){
+        return PixResponseDto.fromPixList(pixRepository.findAllByOwnerId(user.getId()));
     }
 
     @Transactional
