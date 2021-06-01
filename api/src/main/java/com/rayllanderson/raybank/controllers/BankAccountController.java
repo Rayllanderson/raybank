@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.controllers;
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
+import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
 import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
@@ -37,6 +38,15 @@ public class BankAccountController {
         return ResponseEntity.ok().build();
     }
 
+    // TESTE
+    @PostMapping("/transfer/{id}")
+    public ResponseEntity<Void> transfer(@RequestBody BankTransferDto transaction, @PathVariable Long id) {
+        User sender = userRepository.findById(id).get();
+        transaction.setSender(sender);
+        bankAccountService.transfer(transaction);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/deposit")
     public ResponseEntity<Void> transfer(@RequestBody BankDepositDto transaction) {
         User sender = userRepository.findById(1L).get();
@@ -51,11 +61,31 @@ public class BankAccountController {
         return ResponseEntity.ok(bankAccountService.findAllStatements(owner.getBankAccount()));
     }
 
+    // TESTE
+    @GetMapping("/statements/by-id/{id}")
+    public ResponseEntity<List<StatementDto>> findAllStatements(@PathVariable Long id) {
+        User owner = userRepository.findById(id).get();
+        return ResponseEntity.ok(bankAccountService.findAllStatements(owner.getBankAccount()));
+    }
+
     @GetMapping("/statements/{id}")
     public ResponseEntity<StatementDto> findStatementById(@PathVariable Long id) {
         User owner = userRepository.findById(1L).get();
         return ResponseEntity.ok(bankAccountService.findStatementsById(id, owner.getBankAccount()));
     }
+
+    @GetMapping("/contacts")
+    public ResponseEntity<List<ContactResponseDto>> findAllContacts() {
+        User owner = userRepository.findById(1L).get();
+        return ResponseEntity.ok(bankAccountService.findAllContactsByAccount(owner.getBankAccount()));
+    }
+
+    @GetMapping("/contacts/{id}")
+    public ResponseEntity<ContactResponseDto> findContactById(@PathVariable Long id) {
+        User owner = userRepository.findById(1L).get();
+        return ResponseEntity.ok(bankAccountService.findContactById(id, owner.getBankAccount()));
+    }
+
 
 
 }

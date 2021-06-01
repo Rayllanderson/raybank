@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.services;
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
+import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
 import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -103,18 +105,33 @@ public class BankAccountService {
         bankAccountRepository.save(ownerAccount);
     }
 
+    @Transactional(readOnly = true)
     public BankAccountDto findByUser(User user){
         return BankAccountDto.fromBankAccount(user.getBankAccount());
     }
 
+    @Transactional(readOnly = true)
     public List<StatementDto> findAllStatements(BankAccount account){
         List<BankStatement> allByAccountId = statementRepository.findAllByAccountOwnerId(account.getId());
         return allByAccountId.stream().map(StatementDto::fromStatement).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public StatementDto findStatementsById(Long id, BankAccount account){
         return StatementDto.fromStatement(statementRepository.findByIdAndAccountOwnerId(id, account.getId())
                 .orElseThrow(() -> new BadRequestException("Statement not exists")));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ContactResponseDto> findAllContactsByAccount(BankAccount account){
+        return account.getContacts().stream().map(ContactResponseDto::fromBankAccount).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public ContactResponseDto findContactById(Long id, BankAccount account){
+        var accounts = this.findAllContactsByAccount(account);
+        return accounts.stream().filter(contact -> contact.getId().equals(id)).findFirst()
+                .orElseThrow(() -> new BadRequestException("Contato não encontrado"));
     }
 
     private User findUserByPixOrAccountNumber(BankTransferDto transaction){

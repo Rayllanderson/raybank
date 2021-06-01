@@ -33,7 +33,7 @@ public class BankAccount {
     @OneToMany
     private List<BankStatement> statements = new ArrayList<>();
     @JsonIgnore
-    @OneToMany
+    @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
 
     /**

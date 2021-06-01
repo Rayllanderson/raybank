@@ -57,15 +57,10 @@ public class BankStatement {
      * @return nova instância de BankStatement sem ID e com valor de transação negativo.
      */
     public BankStatement toNegative(){
-        BankStatement source = this;
-        return instantiateStatementFrom(source);
-    }
-
-    /**
-     * @return nova instância de BankStatement sem ID e com valor de transação negativo.
-     */
-    public static BankStatement toNegative(BankStatement source){
-        return instantiateStatementFrom(source);
+        BankStatement source = instantiateStatementFrom(this);
+        source.setAccountSender(this.getAccountOwner());
+        source.setAccountOwner(this.getAccountSender());
+        return source;
     }
 
     private static BankStatement instantiateStatementFrom(BankStatement source) {
@@ -82,7 +77,7 @@ public class BankStatement {
 
 
     private void convertAmountToNegative(){
-        this.amount = this.amount.multiply(new BigDecimal(-1));
+        this.amount = this.amount.negate();
     }
 
     @Override

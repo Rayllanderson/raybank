@@ -1,8 +1,9 @@
 package com.rayllanderson.raybank.dtos.responses.bank;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.rayllanderson.raybank.dtos.responses.bank.enums.IdentificationType;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.BankStatement;
-import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.models.enums.StatementType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,17 +20,31 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class StatementDto {
     private Long id;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String from;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String to;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String message;
     private LocalDateTime moment;
     private StatementType statementType;
     private BigDecimal amount;
-    private String accountSenderName;
+    private IdentificationType identificationType;
 
-    public static StatementDto fromStatement(BankStatement statement){
+    public static StatementDto fromStatement(BankStatement statement) {
         StatementDto dto = new ModelMapper().map(statement, StatementDto.class);
         BankAccount senderAccount = statement.getAccountSender();
-        String senderName = null;
-        if (senderAccount != null) senderName = senderAccount.getUser().getName();
-        dto.setAccountSenderName(senderName);
+        String identificationName = null;
+        if (senderAccount != null)
+            identificationName = senderAccount.getUser().getName();
+        boolean isAmountPositive = statement.getAmount().compareTo(BigDecimal.ZERO) > 0;
+        if(isAmountPositive){
+            dto.setIdentificationType(IdentificationType.RECEIVER);
+            dto.setFrom(identificationName);
+        }else {
+            dto.setIdentificationType(IdentificationType.SENDER);
+            dto.setTo(identificationName);
+        }
         return dto;
     }
 }
