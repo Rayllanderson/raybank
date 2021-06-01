@@ -53,9 +53,15 @@ public class PixService {
         return PixResponseDto.fromPixList(pixRepository.findAllByOwnerId(user.getId()));
     }
 
+    public Pix findById(Long id, User authenticatedUser){
+        return pixRepository.findByIdAndOwnerId(id, authenticatedUser.getId()).orElseThrow(() -> new BadRequestException("Pix não " +
+                "existe na sua conta"));
+    }
+
     @Transactional
     public void deleteById(Long id, User owner) throws BadRequestException {
-        pixRepository.deleteByIdAndOwnerId(id, owner.getId());
+        this.findById(id, owner);
+        pixRepository.deleteById(id);
     }
 
     /**

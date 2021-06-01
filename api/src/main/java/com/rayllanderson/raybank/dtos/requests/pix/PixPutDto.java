@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 public class PixPutDto {
+    @NotNull
     private Long id;
     @NotNull
     @NotEmpty
