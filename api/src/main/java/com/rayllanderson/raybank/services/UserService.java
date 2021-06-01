@@ -2,10 +2,10 @@ package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
 import com.rayllanderson.raybank.dtos.requests.user.UserPutDto;
-import com.rayllanderson.raybank.dtos.responses.BankAccountDto;
-import com.rayllanderson.raybank.dtos.responses.CreditCardDto;
-import com.rayllanderson.raybank.dtos.responses.UserPostResponseDto;
-import com.rayllanderson.raybank.dtos.responses.UserResponseDto;
+import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
+import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
+import com.rayllanderson.raybank.dtos.responses.user.UserPostResponseDto;
+import com.rayllanderson.raybank.dtos.responses.user.UserResponseDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.UserRepository;

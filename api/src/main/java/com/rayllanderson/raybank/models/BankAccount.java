@@ -27,6 +27,7 @@ public class BankAccount {
     @JsonIgnore
     @OneToOne
     private User user;
+    @JsonIgnore
     @OneToMany
     private List<BankStatement> statements;
 

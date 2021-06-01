@@ -1,8 +1,8 @@
 package com.rayllanderson.raybank.controllers;
 
 import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
-import com.rayllanderson.raybank.dtos.responses.UserPostResponseDto;
-import com.rayllanderson.raybank.dtos.responses.UserResponseDto;
+import com.rayllanderson.raybank.dtos.responses.user.UserPostResponseDto;
+import com.rayllanderson.raybank.dtos.responses.user.UserResponseDto;
 import com.rayllanderson.raybank.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

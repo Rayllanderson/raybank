@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.dtos.responses;
+package com.rayllanderson.raybank.dtos.responses.user;
 
 import com.rayllanderson.raybank.models.User;
 import lombok.AllArgsConstructor;

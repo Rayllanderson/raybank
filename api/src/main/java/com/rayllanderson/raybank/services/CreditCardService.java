@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor
 @Service
 public class CreditCardService {
@@ -25,6 +27,8 @@ public class CreditCardService {
         var creditCardToBeSaved = CreditCard.builder()
                 .cardNumber(this.generateCreditCardNumber())
                 .bankAccount(savedBankAccount)
+                .balance(new BigDecimal(5000))
+                .invoice(BigDecimal.ZERO)
                 .build();
         return creditCardRepository.save(creditCardToBeSaved);
     }

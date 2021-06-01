@@ -35,6 +35,7 @@ public class BankAccountService {
         int accountNumber = this.generateAccountNumber();
         var bankAccountToBeSaved = BankAccount.builder()
                 .accountNumber(accountNumber)
+                .balance(BigDecimal.ZERO)
                 .user(savedUser).build();
         bankAccountToBeSaved = bankAccountRepository.save(bankAccountToBeSaved);
         bankAccountToBeSaved.setCreditCard(creditCardService.createCreditCard(bankAccountToBeSaved));
@@ -62,7 +63,11 @@ public class BankAccountService {
             senderAccount.transferTo(recipientAccount, amountToBeTransferred);
             bankAccountRepository.save(senderAccount);
             bankAccountRepository.save(recipientAccount);
-            statementRepository.save(BankStatement.createTransferStatement(amountToBeTransferred, senderAccount, recipientAccount));
+            BankStatement statement = statementRepository.save(BankStatement.createTransferStatement(amountToBeTransferred, senderAccount,recipientAccount));
+            senderAccount.getStatements().add(statement);
+            recipientAccount.getStatements().add(statement);
+            bankAccountRepository.save(senderAccount);
+            bankAccountRepository.save(recipientAccount);
         } else
             throw new BadRequestException("Valor da transferência é maior que o saldo bancário");
     }
@@ -78,8 +83,10 @@ public class BankAccountService {
         var ownerAccount = transaction.getOwner().getBankAccount();
         var amountToBeDeposited = transaction.getAmount();
         ownerAccount.deposit(amountToBeDeposited);
+        ownerAccount = bankAccountRepository.save(ownerAccount);
+        BankStatement statement = statementRepository.save(BankStatement.createDepositStatement(amountToBeDeposited, ownerAccount));
+        ownerAccount.getStatements().add(statement);
         bankAccountRepository.save(ownerAccount);
-        statementRepository.save(BankStatement.createDepositStatement(amountToBeDeposited, ownerAccount));
     }
 
     private User findUserByPixOrAccountNumber(BankTransferDto transaction){
