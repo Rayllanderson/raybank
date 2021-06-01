@@ -39,4 +39,9 @@ public class CreditCard {
     public boolean hasLimit(){
         return balance.equals(BigDecimal.ZERO);
     }
+
+    @Override
+    public String toString() {
+        return "CreditCard{" + "id=" + id + ", cardNumber=" + cardNumber + ", balance=" + balance + ", invoice=" + invoice + '}';
+    }
 }

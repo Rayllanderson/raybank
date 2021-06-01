@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -29,7 +30,7 @@ public class BankAccount {
     private User user;
     @JsonIgnore
     @OneToMany
-    private List<BankStatement> statements;
+    private List<BankStatement> statements = new ArrayList<>();
 
     /**
      * Realiza a ação de transferir. Será reduzido o valor de transferência dessa conta e será adicionado
@@ -40,7 +41,7 @@ public class BankAccount {
      */
     public void transferTo(BankAccount recipient, BigDecimal amountToBeTransferred){
         recipient.setBalance(recipient.getBalance().add(amountToBeTransferred));
-        this.setBalance(recipient.getBalance().subtract(amountToBeTransferred));
+        this.setBalance(this.getBalance().subtract(amountToBeTransferred));
     }
 
     /**
@@ -60,5 +61,10 @@ public class BankAccount {
      */
     public boolean hasAvailableBalance(BigDecimal amount){
         return this.getBalance().compareTo(amount) > 0;
+    }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" + "id=" + id + ", accountNumber=" + accountNumber + ", balance=" + balance + ", creditCard=" + creditCard + ", statements=" + statements + '}';
     }
 }

@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
+import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.BankStatement;
@@ -60,12 +61,13 @@ public class BankAccountService {
         if(senderAccount.hasAvailableBalance(amountToBeTransferred)) {
             User recipient = this.findUserByPixOrAccountNumber(transaction);
             BankAccount recipientAccount = recipient.getBankAccount();
+            if(senderAccount.equals(recipientAccount)) throw new BadRequestException("Você não pode transferir dinheiro pra você mesmo");
             senderAccount.transferTo(recipientAccount, amountToBeTransferred);
-            bankAccountRepository.save(senderAccount);
-            bankAccountRepository.save(recipientAccount);
-            BankStatement statement = statementRepository.save(BankStatement.createTransferStatement(amountToBeTransferred, senderAccount,recipientAccount));
-            senderAccount.getStatements().add(statement);
-            recipientAccount.getStatements().add(statement);
+            BankStatement recipientStatement = statementRepository.save(BankStatement.createTransferStatement(amountToBeTransferred,
+                    senderAccount, recipientAccount, transaction.getMessage()));
+            BankStatement senderStatement = statementRepository.save(recipientStatement.toNegative());
+            recipientAccount.getStatements().add(recipientStatement);
+            senderAccount.getStatements().add(senderStatement);
             bankAccountRepository.save(senderAccount);
             bankAccountRepository.save(recipientAccount);
         } else
@@ -83,10 +85,13 @@ public class BankAccountService {
         var ownerAccount = transaction.getOwner().getBankAccount();
         var amountToBeDeposited = transaction.getAmount();
         ownerAccount.deposit(amountToBeDeposited);
-        ownerAccount = bankAccountRepository.save(ownerAccount);
         BankStatement statement = statementRepository.save(BankStatement.createDepositStatement(amountToBeDeposited, ownerAccount));
         ownerAccount.getStatements().add(statement);
         bankAccountRepository.save(ownerAccount);
+    }
+
+    public BankAccountDto findByUser(User user){
+        return BankAccountDto.fromBankAccount(user.getBankAccount());
     }
 
     private User findUserByPixOrAccountNumber(BankTransferDto transaction){

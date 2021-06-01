@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.controllers;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
+import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
@@ -22,8 +23,9 @@ public class BankAccountController {
     private final UserRepository userRepository;
 
     @GetMapping
-    public ResponseEntity<List<BankAccount>> findAll(){
-        return ResponseEntity.ok(repository.findAll());
+    public ResponseEntity<BankAccountDto> findUserBankAccount(){
+        User user = userRepository.findById(1L).get();
+        return ResponseEntity.ok(bankAccountService.findByUser(user));
     }
 
     @PostMapping("/transfer")
@@ -42,7 +44,7 @@ public class BankAccountController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/statement")
+    @GetMapping("/statements")
     public ResponseEntity<Void> getStatements(){
 //        User sender = userRepository.findById(1L).get();
 //        transaction.setOwner(sender);

@@ -10,7 +10,8 @@ public class StatementCreator {
         return BankStatement.createTransferStatement(
                 new BigDecimal(500),
                 BankAccountCreator.createBankAccountSaved(),
-                BankAccountCreator.createAnotherBankAccountSaved()
+                BankAccountCreator.createAnotherBankAccountSaved(),
+                "whatever there"
         );
     }
 
