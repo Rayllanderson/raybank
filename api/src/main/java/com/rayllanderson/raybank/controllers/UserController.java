@@ -19,7 +19,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-//    private final UserFinderService userFinderService;
 
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findAll(){
@@ -30,9 +29,4 @@ public class UserController {
     public ResponseEntity<UserPostResponseDto> register(@RequestBody UserPostDto userDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(userDto));
     }
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<BankAccountDto> findById(@PathVariable Long id){
-//        return ResponseEntity.ok(BankAccountDto.fromBankAccount(userFinderService.findById(id).getBankAccount()));
-//    }
 }

@@ -1,6 +1,8 @@
 package com.rayllanderson.raybank.dtos.responses.bank;
 
+import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.models.enums.StatementType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +26,10 @@ public class StatementDto {
 
     public static StatementDto fromStatement(BankStatement statement){
         StatementDto dto = new ModelMapper().map(statement, StatementDto.class);
-        dto.setAccountSenderName(statement.getAccountSender().getUser().getName());
+        BankAccount senderAccount = statement.getAccountSender();
+        String senderName = null;
+        if (senderAccount != null) senderName = senderAccount.getUser().getName();
+        dto.setAccountSenderName(senderName);
         return dto;
     }
 }

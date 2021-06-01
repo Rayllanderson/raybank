@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.services;
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
+import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.BankStatement;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -92,6 +95,16 @@ public class BankAccountService {
 
     public BankAccountDto findByUser(User user){
         return BankAccountDto.fromBankAccount(user.getBankAccount());
+    }
+
+    public List<StatementDto> findAllStatements(BankAccount account){
+        List<BankStatement> allByAccountId = statementRepository.findAllByAccountOwnerId(account.getId());
+        return allByAccountId.stream().map(StatementDto::fromStatement).collect(Collectors.toList());
+    }
+
+    public StatementDto findStatementsById(Long id, BankAccount account){
+        return StatementDto.fromStatement(statementRepository.findByIdAndAccountOwnerId(id, account.getId())
+                .orElseThrow(() -> new BadRequestException("Statement not exists")));
     }
 
     private User findUserByPixOrAccountNumber(BankTransferDto transaction){
