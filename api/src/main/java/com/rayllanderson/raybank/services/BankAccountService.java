@@ -66,11 +66,21 @@ public class BankAccountService {
             BankAccount recipientAccount = recipient.getBankAccount();
             if(senderAccount.equals(recipientAccount)) throw new BadRequestException("Você não pode transferir dinheiro pra você mesmo");
             senderAccount.transferTo(recipientAccount, amountToBeTransferred);
+
+            //criando e salvando extratos
             BankStatement recipientStatement = statementRepository.save(BankStatement.createTransferStatement(amountToBeTransferred,
                     senderAccount, recipientAccount, transaction.getMessage()));
             BankStatement senderStatement = statementRepository.save(recipientStatement.toNegative());
+
+            //adicionando extratos nas contas
             recipientAccount.getStatements().add(recipientStatement);
             senderAccount.getStatements().add(senderStatement);
+
+            //adicionando ambos aos contatos
+            senderAccount.addContact(recipientAccount);
+            recipientAccount.addContact(senderAccount);
+
+            //salvando
             bankAccountRepository.save(senderAccount);
             bankAccountRepository.save(recipientAccount);
         } else

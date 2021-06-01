@@ -1,16 +1,16 @@
 package com.rayllanderson.raybank.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Builder
 @NoArgsConstructor
@@ -18,6 +18,7 @@ import java.util.List;
 @Entity
 public class BankAccount {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -31,6 +32,9 @@ public class BankAccount {
     @JsonIgnore
     @OneToMany
     private List<BankStatement> statements = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany
+    private Set<BankAccount> contacts = new HashSet<>();
 
     /**
      * Realiza a ação de transferir. Será reduzido o valor de transferência dessa conta e será adicionado
@@ -61,6 +65,10 @@ public class BankAccount {
      */
     public boolean hasAvailableBalance(BigDecimal amount){
         return this.getBalance().compareTo(amount) > 0;
+    }
+
+    public void addContact(BankAccount contact) {
+        this.contacts.add(contact);
     }
 
     @Override

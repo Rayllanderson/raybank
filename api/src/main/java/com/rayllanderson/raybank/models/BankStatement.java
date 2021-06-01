@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 public class BankStatement {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

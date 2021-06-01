@@ -47,7 +47,6 @@ public class UserService {
         return UserPostResponseDto.fromUser(userToBeSaved);
     }
 
-
     @Transactional
     public void deleteById(Long id) throws BadRequestException {
         userFinderService.findById(id);

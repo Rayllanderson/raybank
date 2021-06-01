@@ -1,14 +1,12 @@
 package com.rayllanderson.raybank.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,6 +14,7 @@ import java.math.BigDecimal;
 @Entity
 public class CreditCard {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

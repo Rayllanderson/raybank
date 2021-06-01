@@ -1,14 +1,12 @@
 package com.rayllanderson.raybank.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,6 +14,7 @@ import javax.validation.constraints.Size;
 @Entity
 public class Pix {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

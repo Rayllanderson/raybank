@@ -30,6 +30,4 @@ public class User {
     private BankAccount bankAccount;
     @OneToMany
     private Set<Pix> pixKeys = new HashSet<>();
-    @OneToMany
-    private Set<Contact> contacts = new HashSet<>();
 }

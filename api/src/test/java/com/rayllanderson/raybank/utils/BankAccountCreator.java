@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.models.BankAccount;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class BankAccountCreator {
 
@@ -14,7 +15,8 @@ public class BankAccountCreator {
                 new BigDecimal(500),
                 CreditCardCreator.createCreditCardSaved(),
                 UserCreator.createUserWithId(),
-                new ArrayList<>()
+                new ArrayList<>(),
+                new HashSet<>()
         );
     }
 
