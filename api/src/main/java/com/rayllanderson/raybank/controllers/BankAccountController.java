@@ -37,15 +37,6 @@ public class BankAccountController {
         return ResponseEntity.ok().build();
     }
 
-    // TESTE
-    @PostMapping("/transfer/{id}")
-    public ResponseEntity<Void> transfer(@RequestBody BankTransferDto transaction, @PathVariable Long id) {
-        User sender = userRepository.findById(id).get();
-        transaction.setSender(sender);
-        bankAccountService.transfer(transaction);
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/deposit")
     public ResponseEntity<Void> deposit(@RequestBody BankDepositDto transaction) {
         User sender = userRepository.findById(1L).get();
@@ -59,7 +50,6 @@ public class BankAccountController {
         User owner = userRepository.findById(1L).get();
         return ResponseEntity.ok(statementFinderService.findAllAccountStatements(owner.getBankAccount()));
     }
-
 
     @GetMapping("/contacts")
     public ResponseEntity<List<ContactResponseDto>> findAllContacts() {
