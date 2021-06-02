@@ -64,7 +64,7 @@ public class BankAccount {
      * @return true se a conta atual tiver saldo disponível. False se não.
      */
     public boolean hasAvailableBalance(BigDecimal amount){
-        return this.getBalance().compareTo(amount) > 0;
+        return this.getBalance().compareTo(amount) >= 0;
     }
 
     public void addContact(BankAccount contact) {

@@ -36,11 +36,16 @@ public class CreditCard {
      */
     public void payTheInvoice(BigDecimal amount) throws IllegalArgumentException, BadRequestException {
         if (this.hasInvoice()) {
-            if (isAmountGreaterThanInvoice(amount)){
-                throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
-            }
-            invoice = invoice.subtract(amount);
-            balance = balance.add(amount);
+           if(this.bankAccount.hasAvailableBalance(amount)) {
+               if (isAmountGreaterThanInvoice(amount)) {
+                   throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
+               }
+               invoice = invoice.subtract(amount);
+               balance = balance.add(amount);
+               bankAccount.setBalance(bankAccount.getBalance().subtract(amount));
+           }else {
+               throw new BadRequestException("Sua conta não possui saldo suficiente para pagar a fatura.");
+           }
         } else {
             throw new BadRequestException("Ops, parece que seu cartão não possui nenhuma fatura.");
         }
@@ -69,7 +74,6 @@ public class CreditCard {
      */
     public void payInvoiceAndRefundRemaining(BigDecimal amount){
         BigDecimal refund = amount.subtract(invoice);
-        this.bankAccount.setBalance(bankAccount.getBalance().add(refund));
         this.payTheInvoice(amount.subtract(refund));
     }
 
