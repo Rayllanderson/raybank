@@ -29,6 +29,7 @@ public class StatementDto {
     private LocalDateTime moment;
     private StatementType statementType;
     private BigDecimal amount;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private IdentificationType identificationType;
 
     public static StatementDto fromStatement(BankStatement statement) {
@@ -37,13 +38,16 @@ public class StatementDto {
         String identificationName = null;
         if (senderAccount != null)
             identificationName = senderAccount.getUser().getName();
-        boolean isAmountPositive = statement.getAmount().compareTo(BigDecimal.ZERO) > 0;
-        if(isAmountPositive){
-            dto.setIdentificationType(IdentificationType.RECEIVER);
-            dto.setFrom(identificationName);
-        }else {
-            dto.setIdentificationType(IdentificationType.SENDER);
-            dto.setTo(identificationName);
+        boolean isAmountPositive = statement.getAmount().compareTo(BigDecimal.ZERO) > 0,
+        isTransfer = statement.getStatementType().equals(StatementType.TRANSFER);
+        if (isTransfer) {
+            if(isAmountPositive) {
+                dto.setIdentificationType(IdentificationType.RECEIVER);
+                dto.setFrom(identificationName);
+            } else {
+                dto.setIdentificationType(IdentificationType.SENDER);
+                dto.setTo(identificationName);
+            }
         }
         return dto;
     }

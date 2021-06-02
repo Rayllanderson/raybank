@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.controllers;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
+import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
@@ -48,10 +49,18 @@ public class BankAccountController {
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<Void> transfer(@RequestBody BankDepositDto transaction) {
+    public ResponseEntity<Void> deposit(@RequestBody BankDepositDto transaction) {
         User sender = userRepository.findById(1L).get();
         transaction.setOwner(sender);
         bankAccountService.deposit(transaction);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/pay")
+    public ResponseEntity<Void> pay(@RequestBody BankPaymentDto transaction) {
+        User sender = userRepository.findById(1L).get();
+        transaction.setOwner(sender);
+        bankAccountService.pay(transaction);
         return ResponseEntity.ok().build();
     }
 
@@ -85,7 +94,4 @@ public class BankAccountController {
         User owner = userRepository.findById(1L).get();
         return ResponseEntity.ok(bankAccountService.findContactById(id, owner.getBankAccount()));
     }
-
-
-
 }

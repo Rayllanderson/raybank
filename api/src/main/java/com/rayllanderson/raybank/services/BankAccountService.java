@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
+import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
@@ -87,6 +88,17 @@ public class BankAccountService {
             bankAccountRepository.save(recipientAccount);
         } else
             throw new BadRequestException("Valor da transferência é maior que o saldo bancário");
+    }
+
+    @Transactional
+    public void pay(BankPaymentDto transaction){
+        if(transaction.getOwner() == null) throw new BadRequestException("Owner must be set before send");
+        BankAccount bankAccount = transaction.getOwner().getBankAccount();
+        var amountToBePaid = transaction.getAmount();
+        bankAccount.pay(amountToBePaid);
+        BankStatement statement = statementRepository.save(BankStatement.createBoletoPaymentStatement(amountToBePaid, bankAccount));
+        bankAccount.getStatements().add(statement);
+        this.bankAccountRepository.save(bankAccount);
     }
 
     /**

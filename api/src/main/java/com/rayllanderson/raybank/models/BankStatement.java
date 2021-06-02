@@ -54,6 +54,51 @@ public class BankStatement {
     }
 
     /**
+     * Usando quando faz uma compra via boleto
+     * @return BankStatement setado com [StatementType.BRAZILIAN_BOLETO] e já nega q quantia [amount.negate()]
+     */
+    public static BankStatement createBoletoPaymentStatement (BigDecimal amount, BankAccount accountOwner){
+        return BankStatement.builder().
+                moment(LocalDateTime.now())
+                .statementType(StatementType.BRAZILIAN_BOLETO)
+                .amount(amount.negate())
+                .accountSender(null)
+                .message(null)
+                .accountOwner(accountOwner)
+                .build();
+    }
+
+    /**
+     * Usando quando realiza uma compra no cartão de crédito
+     * @return BankStatement setado com [StatementType.CREDIT_CARD_PAYMENT] e já nega q quantia [amount.negate()]
+     */
+    public static BankStatement createCreditPaymentStatement (BigDecimal amount, BankAccount accountOwner){
+        return BankStatement.builder().
+                moment(LocalDateTime.now())
+                .statementType(StatementType.CREDIT_CARD_PAYMENT)
+                .amount(amount.negate())
+                .accountSender(null)
+                .message(null)
+                .accountOwner(accountOwner)
+                .build();
+    }
+
+    /**
+     * Usado quando se paga faturas de cartão de crédito
+     * @return BankStatement setado com [StatementType.INVOICE_PAYMENT] e já nega q quantia [amount.negate()]
+     */
+    public static BankStatement createInvoicePaymentStatement (BigDecimal amount, BankAccount accountOwner){
+        return BankStatement.builder().
+                moment(LocalDateTime.now())
+                .statementType(StatementType.INVOICE_PAYMENT)
+                .amount(amount.negate())
+                .accountSender(null)
+                .message(null)
+                .accountOwner(accountOwner)
+                .build();
+    }
+
+    /**
      * @return nova instância de BankStatement sem ID e com valor de transação negativo.
      */
     public BankStatement toNegative(){

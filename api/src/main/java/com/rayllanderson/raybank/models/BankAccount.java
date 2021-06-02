@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rayllanderson.raybank.exceptions.BadRequestException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -46,6 +47,12 @@ public class BankAccount {
     public void transferTo(BankAccount recipient, BigDecimal amountToBeTransferred){
         recipient.setBalance(recipient.getBalance().add(amountToBeTransferred));
         this.setBalance(this.getBalance().subtract(amountToBeTransferred));
+    }
+
+    public void pay (BigDecimal amount){
+        if (this.hasAvailableBalance(amount)){
+            this.balance = this.balance.subtract(amount);
+        } else throw new BadRequestException("Sua conta não tem saldo disponível");
     }
 
     /**

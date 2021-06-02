@@ -47,6 +47,7 @@ public class CreditCardService {
      */
     @Transactional
     public void makePurchase(CreditCardDto dto) {
+        if(dto.getAccount() == null)  throw new BadRequestException("Account must be set before send");
         CreditCard creditCard = findByAccountId(dto.getAccount().getId());
         creditCard.makePurchase(dto.getAmount());
         creditCardRepository.save(creditCard);
@@ -63,6 +64,7 @@ public class CreditCardService {
      */
     @Transactional
     public void payInvoice(CreditCardDto dto) {
+        if(dto.getAccount() == null)  throw new BadRequestException("Account must be set before send");
         CreditCard creditCard = findByAccountId(dto.getAccount().getId());
         try {
             creditCard.payTheInvoice(dto.getAmount());

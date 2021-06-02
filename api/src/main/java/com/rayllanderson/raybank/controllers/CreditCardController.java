@@ -23,6 +23,11 @@ public class CreditCardController {
         return ResponseEntity.ok(CreditCardDto.fromCreditCard(creditCardService.findByAccountId(accountId)));
     }
 
+    @GetMapping("/statements")
+    public ResponseEntity<CreditCardDto> findStatements(){
+        return null;
+    }
+
     //TESTE
     @PostMapping
     public ResponseEntity<Void> purchase(@RequestBody com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto dto){
