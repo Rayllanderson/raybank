@@ -1,12 +1,15 @@
 package com.rayllanderson.raybank.controllers;
 
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
+import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.services.CreditCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/users/authenticated/bank-account/credit-card")
@@ -24,21 +27,13 @@ public class CreditCardController {
     }
 
     @GetMapping("/statements")
-    public ResponseEntity<CreditCardDto> findStatements(){
-        return null;
-    }
-
-    //TESTE
-    @PostMapping
-    public ResponseEntity<Void> purchase(@RequestBody com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto dto){
+    public ResponseEntity<List<StatementDto>> findStatements(){
         User user = userRepository.findById(1L).get();
-        dto.setAccount(user.getBankAccount());
-        creditCardService.makePurchase(dto);
-        return ResponseEntity.noContent().build();
+        Long accountId = user.getBankAccount().getId();
+        return ResponseEntity.ok(creditCardService.findStatemens(accountId));
     }
 
-    //TESTE
-    @PostMapping("/invoice")
+    @PostMapping("/pay/invoice")
     public ResponseEntity<Void> payInvoice(@RequestBody com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto dto){
         User user = userRepository.findById(1L).get();
         dto.setAccount(user.getBankAccount());

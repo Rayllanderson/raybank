@@ -36,4 +36,9 @@ public class UserController {
         return ResponseEntity.ok(userFinderService.findById(id));
     }
 
+    @GetMapping("/authenticated")
+    public ResponseEntity<User> findAuthenticated(){
+        return ResponseEntity.ok(userFinderService.findById(1L));
+    }
+
 }

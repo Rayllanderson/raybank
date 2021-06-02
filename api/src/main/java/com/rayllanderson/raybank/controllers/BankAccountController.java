@@ -56,24 +56,9 @@ public class BankAccountController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/pay")
-    public ResponseEntity<Void> pay(@RequestBody BankPaymentDto transaction) {
-        User sender = userRepository.findById(1L).get();
-        transaction.setOwner(sender);
-        bankAccountService.pay(transaction);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/statements")
     public ResponseEntity<List<StatementDto>> findAllStatements() {
         User owner = userRepository.findById(1L).get();
-        return ResponseEntity.ok(bankAccountService.findAllStatements(owner.getBankAccount()));
-    }
-
-    // TESTE
-    @GetMapping("/statements/by-id/{id}")
-    public ResponseEntity<List<StatementDto>> findAllStatements(@PathVariable Long id) {
-        User owner = userRepository.findById(id).get();
         return ResponseEntity.ok(bankAccountService.findAllStatements(owner.getBankAccount()));
     }
 

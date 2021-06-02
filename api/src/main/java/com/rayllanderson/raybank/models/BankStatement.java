@@ -70,9 +70,9 @@ public class BankStatement {
 
     /**
      * Usando quando realiza uma compra no cartão de crédito
-     * @return BankStatement setado com [StatementType.CREDIT_CARD_PAYMENT] e já nega q quantia [amount.negate()]
+     * @return BankStatement setado com [StatementType.CREDIT_CARD_PURCHASE] e já nega q quantia [amount.negate()]
      */
-    public static BankStatement createCreditPaymentStatement (BigDecimal amount, BankAccount accountOwner){
+    public static BankStatement createCreditPurchaseStatement (BigDecimal amount, BankAccount accountOwner){
         return BankStatement.builder().
                 moment(LocalDateTime.now())
                 .statementType(StatementType.CREDIT_CARD_PAYMENT)
@@ -84,14 +84,16 @@ public class BankStatement {
     }
 
     /**
-     * Usado quando se paga faturas de cartão de crédito
-     * @return BankStatement setado com [StatementType.INVOICE_PAYMENT] e já nega q quantia [amount.negate()]
+     * Usado quando se paga faturas de cartão de crédito;
+     * Não é setado pro negativo.
+     * Exemplo: Pagou a fatura no valor de xxx necessita ser positivo
+     * @return BankStatement setado com [StatementType.INVOICE_PAYMENT];
      */
     public static BankStatement createInvoicePaymentStatement (BigDecimal amount, BankAccount accountOwner){
         return BankStatement.builder().
                 moment(LocalDateTime.now())
                 .statementType(StatementType.INVOICE_PAYMENT)
-                .amount(amount.negate())
+                .amount(amount)
                 .accountSender(null)
                 .message(null)
                 .accountOwner(accountOwner)

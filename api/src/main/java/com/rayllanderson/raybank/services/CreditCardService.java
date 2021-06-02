@@ -1,18 +1,23 @@
 package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
+import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.models.BankStatement;
 import com.rayllanderson.raybank.models.CreditCard;
+import com.rayllanderson.raybank.models.enums.StatementType;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
+import com.rayllanderson.raybank.repositories.BankStatementRepository;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
 import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.And;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +25,7 @@ public class CreditCardService {
 
     private final CreditCardRepository creditCardRepository;
     private final BankAccountRepository bankAccountRepository;
+    private final BankStatementRepository statementRepository;
 
     /**
      * Cria e salva um novo cartão de crédito.
@@ -50,6 +56,10 @@ public class CreditCardService {
         if(dto.getAccount() == null)  throw new BadRequestException("Account must be set before send");
         CreditCard creditCard = findByAccountId(dto.getAccount().getId());
         creditCard.makePurchase(dto.getAmount());
+        var statement = statementRepository.save(BankStatement.createCreditPurchaseStatement(
+                dto.getAmount(), creditCard.getBankAccount()
+        ));
+        creditCard.getStatements().add(statement);
         creditCardRepository.save(creditCard);
     }
 
@@ -71,6 +81,10 @@ public class CreditCardService {
         } catch (IllegalArgumentException e){
             creditCard.payInvoiceAndRefundRemaining(dto.getAmount());
         }finally {
+            var statement = statementRepository.save(BankStatement.createInvoicePaymentStatement(
+                    dto.getAmount(), creditCard.getBankAccount()
+            ));
+            creditCard.getStatements().add(statement);
             bankAccountRepository.save(creditCard.getBankAccount());
             creditCardRepository.save(creditCard);
         }
@@ -80,6 +94,15 @@ public class CreditCardService {
     public CreditCard findByAccountId(Long accountId){
         return creditCardRepository.findByBankAccountId(accountId)
                 .orElseThrow(()-> new BadRequestException("Este cartão de crédito não existe"));
+    }
+
+    public List<StatementDto> findStatemens(Long accountOwnerId){
+        var creditCardStatements = statementRepository.findAllByAccountOwnerIdAndStatementType(
+                accountOwnerId, StatementType.CREDIT_CARD_PAYMENT
+        );
+        creditCardStatements.addAll(statementRepository.findAllByAccountOwnerIdAndStatementType(
+                accountOwnerId, StatementType.INVOICE_PAYMENT));
+        return creditCardStatements.stream().map(StatementDto::fromStatement).collect(Collectors.toList());
     }
 
     private long generateCreditCardNumber() {

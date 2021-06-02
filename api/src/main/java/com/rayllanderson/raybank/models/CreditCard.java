@@ -6,6 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
@@ -25,6 +27,9 @@ public class CreditCard {
     @JsonIgnore
     @OneToOne
     private BankAccount bankAccount;
+    @JsonIgnore
+    @OneToMany
+    private List<BankStatement> statements = new ArrayList<>();
 
     /**
      * Realiza o pagamento da fatura.

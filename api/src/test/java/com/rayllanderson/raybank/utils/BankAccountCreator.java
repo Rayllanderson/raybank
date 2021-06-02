@@ -39,9 +39,9 @@ public class BankAccountCreator {
     }
 
     public static BankAccount createBankAccountToBeSavedWithoutCreditCardAndWithoutUser(){
-        return BankAccount.builder()
-                .accountNumber(999999999)
-                .balance(new BigDecimal(500))
-                .build();
+        BankAccount account = new BankAccount();
+        account.setBalance(BigDecimal.valueOf(800));
+        account.setAccountNumber(999889999);
+        return account;
     }
 }
