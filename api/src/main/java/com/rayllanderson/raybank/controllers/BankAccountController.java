@@ -1,16 +1,14 @@
 package com.rayllanderson.raybank.controllers;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
-import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
 import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
-import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.repositories.BankAccountRepository;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.services.BankAccountService;
+import com.rayllanderson.raybank.services.StatementFinderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BankAccountController {
     private final BankAccountService bankAccountService;
-    private final BankAccountRepository repository;
+    private final StatementFinderService statementFinderService;
     private final UserRepository userRepository;
 
     @GetMapping
@@ -59,14 +57,9 @@ public class BankAccountController {
     @GetMapping("/statements")
     public ResponseEntity<List<StatementDto>> findAllStatements() {
         User owner = userRepository.findById(1L).get();
-        return ResponseEntity.ok(bankAccountService.findAllStatements(owner.getBankAccount()));
+        return ResponseEntity.ok(statementFinderService.findAllAccountStatements(owner.getBankAccount()));
     }
 
-    @GetMapping("/statements/{id}")
-    public ResponseEntity<StatementDto> findStatementById(@PathVariable Long id) {
-        User owner = userRepository.findById(1L).get();
-        return ResponseEntity.ok(bankAccountService.findStatementsById(id, owner.getBankAccount()));
-    }
 
     @GetMapping("/contacts")
     public ResponseEntity<List<ContactResponseDto>> findAllContacts() {

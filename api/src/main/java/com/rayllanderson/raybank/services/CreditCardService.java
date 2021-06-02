@@ -1,12 +1,10 @@
 package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
-import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.BankStatement;
 import com.rayllanderson.raybank.models.CreditCard;
-import com.rayllanderson.raybank.models.enums.StatementType;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
 import com.rayllanderson.raybank.repositories.BankStatementRepository;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
@@ -16,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -92,17 +88,7 @@ public class CreditCardService {
 
     @Transactional(readOnly = true)
     public CreditCard findByAccountId(Long accountId){
-        return creditCardRepository.findByBankAccountId(accountId)
-                .orElseThrow(()-> new BadRequestException("Este cartão de crédito não existe"));
-    }
-
-    public List<StatementDto> findStatemens(Long accountOwnerId){
-        var creditCardStatements = statementRepository.findAllByAccountOwnerIdAndStatementType(
-                accountOwnerId, StatementType.CREDIT_CARD_PAYMENT
-        );
-        creditCardStatements.addAll(statementRepository.findAllByAccountOwnerIdAndStatementType(
-                accountOwnerId, StatementType.INVOICE_PAYMENT));
-        return creditCardStatements.stream().map(StatementDto::fromStatement).collect(Collectors.toList());
+        return creditCardRepository.findByBankAccountId(accountId).orElseThrow(()-> new BadRequestException("Este cartão de crédito não existe"));
     }
 
     private long generateCreditCardNumber() {

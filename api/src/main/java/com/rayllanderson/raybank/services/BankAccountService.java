@@ -5,7 +5,6 @@ import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
-import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.BankStatement;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -122,17 +120,6 @@ public class BankAccountService {
         return BankAccountDto.fromBankAccount(user.getBankAccount());
     }
 
-    @Transactional(readOnly = true)
-    public List<StatementDto> findAllStatements(BankAccount account){
-        List<BankStatement> allByAccountId = statementRepository.findAllByAccountOwnerId(account.getId());
-        return allByAccountId.stream().map(StatementDto::fromStatement).collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public StatementDto findStatementsById(Long id, BankAccount account){
-        return StatementDto.fromStatement(statementRepository.findByIdAndAccountOwnerId(id, account.getId())
-                .orElseThrow(() -> new BadRequestException("Statement not exists")));
-    }
 
     @Transactional(readOnly = true)
     public List<ContactResponseDto> findAllContactsByAccount(BankAccount account){
