@@ -1,10 +1,14 @@
 package com.rayllanderson.raybank.services;
 
+import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
+import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.CreditCard;
+import com.rayllanderson.raybank.repositories.BankAccountRepository;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
 import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.And;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +19,7 @@ import java.math.BigDecimal;
 public class CreditCardService {
 
     private final CreditCardRepository creditCardRepository;
+    private final BankAccountRepository bankAccountRepository;
 
     /**
      * Cria e salva um novo cartão de crédito.
@@ -31,6 +36,31 @@ public class CreditCardService {
                 .invoice(BigDecimal.ZERO)
                 .build();
         return creditCardRepository.save(creditCardToBeSaved);
+    }
+
+    @Transactional
+    public void makePurchase(CreditCardDto dto){
+        CreditCard creditCard = findByAccountId(dto.getAccount().getId());
+        creditCard.makePurchase(dto.getAmount());
+        creditCardRepository.save(creditCard);
+    }
+
+    @Transactional
+    public void payInvoice(CreditCardDto dto){
+        CreditCard creditCard = findByAccountId(dto.getAccount().getId());
+        try {
+            creditCard.payTheInvoice(dto.getAmount());
+        } catch (IllegalArgumentException e){
+            creditCard.payInvoiceAndRefundRemaining(dto.getAmount());
+            bankAccountRepository.save(creditCard.getBankAccount());
+        }finally {
+            creditCardRepository.save(creditCard);
+        }
+    }
+
+    public CreditCard findByAccountId(Long accountId){
+        return creditCardRepository.findByBankAccountId(accountId)
+                .orElseThrow(()-> new BadRequestException("Este cartão de crédito não existe"));
     }
 
     private long generateCreditCardNumber() {
