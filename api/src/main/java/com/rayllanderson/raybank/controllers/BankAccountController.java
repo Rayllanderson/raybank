@@ -29,16 +29,16 @@ public class BankAccountController {
 
     @PostMapping("/transfer")
     public ResponseEntity<Void> transfer(@RequestBody BankTransferDto transaction, @AuthenticationPrincipal User authenticatedUser) {
-        transaction.setSender(authenticatedUser);
+        transaction.setSenderId(authenticatedUser.getId());
         bankAccountService.transfer(transaction);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/deposit")
     public ResponseEntity<Void> deposit(@RequestBody BankDepositDto transaction, @AuthenticationPrincipal User authenticatedUser) {
-        transaction.setOwner(authenticatedUser);
+        transaction.setOwnerId(authenticatedUser.getId());
         bankAccountService.deposit(transaction);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/statements")
@@ -48,11 +48,11 @@ public class BankAccountController {
 
     @GetMapping("/contacts")
     public ResponseEntity<List<ContactResponseDto>> findAllContacts(@AuthenticationPrincipal User authenticatedUser) {
-        return ResponseEntity.ok(bankAccountService.findAllContactsByAccount(authenticatedUser.getBankAccount()));
+        return ResponseEntity.ok(bankAccountService.findAllContactsUserId(authenticatedUser.getId()));
     }
 
     @GetMapping("/contacts/{id}")
     public ResponseEntity<ContactResponseDto> findContactById(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
-        return ResponseEntity.ok(bankAccountService.findContactById(id, authenticatedUser.getBankAccount()));
+        return ResponseEntity.ok(bankAccountService.findContactById(id, authenticatedUser.getId()));
     }
 }

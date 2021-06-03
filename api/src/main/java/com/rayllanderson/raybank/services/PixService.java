@@ -8,6 +8,7 @@ import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.Pix;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.PixRepository;
+import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.utils.PixUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PixService {
 
     private final PixRepository pixRepository;
+    private final UserRepository userRepository;
 
     /**
      * Registra uma chave pix para o usuário contido em @pixDto.
@@ -28,9 +30,9 @@ public class PixService {
      */
     @Transactional
     public PixPostResponse register(PixPostDto pixDto) throws BadRequestException {
-        if (pixDto.getOwner() == null) throw new BadRequestException("Owner não está setado no objeto PixDto. Necessita estar setado");
+        User owner = userRepository.findById(pixDto.getOwnerId()).orElseThrow(() -> new BadRequestException("User não existe"));
         this.checkThatPixNotExists(pixDto.getKey());
-        int numberOfPixKeysFromUser = pixRepository.countByOwnerId(pixDto.getOwner().getId());
+        int numberOfPixKeysFromUser = pixRepository.countByOwnerId(pixDto.getOwnerId());
         final int MAX_NUMBER_OF_KEYS = 5;
         boolean hasExceededNumberOfKeys = numberOfPixKeysFromUser >= MAX_NUMBER_OF_KEYS;
         if (hasExceededNumberOfKeys){
@@ -38,14 +40,21 @@ public class PixService {
             + ". Apague uma chave Pix e tente novamente.";
             throw new BadRequestException(message);
         }
-        return PixPostResponse.fromPix(pixRepository.save(PixPostDto.toPix(pixDto)));
+        Pix pix = pixRepository.save(PixPostDto.toPix(pixDto));
+        owner.getPixKeys().add(pix);
+        userRepository.save(owner);
+        return PixPostResponse.fromPix(pix);
     }
 
     @Transactional
     public void update(PixPutDto pixDto) throws BadRequestException {
+        User owner = userRepository.findById(pixDto.getOwnerId()).orElseThrow(() -> new BadRequestException("User não existe"));
         checkThatPixNotExists(pixDto.getKey());
         Pix pixToBeUpdated = pixRepository.findById(pixDto.getId()).orElseThrow(() -> new BadRequestException("Pix não existe"));
         PixUpdater.updatePixKey(pixDto, pixToBeUpdated);
+        Pix pix = pixRepository.save(PixPutDto.toPix(pixDto));
+        owner.getPixKeys().add(pix);
+        userRepository.save(owner);
         pixRepository.save(PixPutDto.toPix(pixDto));
     }
 

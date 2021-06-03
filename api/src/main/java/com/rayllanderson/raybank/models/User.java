@@ -36,6 +36,14 @@ public class User implements UserDetails {
     @OneToMany
     private Set<Pix> pixKeys = new HashSet<>();
 
+    public User(Long id, String name, String username, String password, String authorities) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.stream(authorities.split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());

@@ -59,8 +59,9 @@ public class BankAccountService {
      */
     @Transactional
     public void transfer(BankTransferDto transaction) throws BadRequestException{
-        if(transaction.getSender() == null) throw new BadRequestException("Sender must be set before send");
-        BankAccount senderAccount = transaction.getSender().getBankAccount();
+        Long senderId = transaction.getSenderId();
+        if(senderId == null) throw new BadRequestException("Sender must be set before send");
+        BankAccount senderAccount = bankAccountRepository.findAccountWithStatementsAndContactsByUserId(senderId);
         BigDecimal amountToBeTransferred = transaction.getAmount();
         if(senderAccount.hasAvailableBalance(amountToBeTransferred)) {
             User recipient = this.findUserByPixOrAccountNumber(transaction);
@@ -90,8 +91,9 @@ public class BankAccountService {
 
     @Transactional
     public void pay(BankPaymentDto transaction){
-        if(transaction.getOwner() == null) throw new BadRequestException("Owner must be set before send");
-        BankAccount bankAccount = transaction.getOwner().getBankAccount();
+        Long ownerId = transaction.getOwnerId();
+        if(ownerId == null) throw new BadRequestException("Owner must be set before send");
+        BankAccount bankAccount = bankAccountRepository.findAccountWithStatementsByUserId(ownerId);
         var amountToBePaid = transaction.getAmount();
         bankAccount.pay(amountToBePaid);
         BankStatement statement = statementRepository.save(BankStatement.createBoletoPaymentStatement(amountToBePaid, bankAccount));
@@ -106,8 +108,9 @@ public class BankAccountService {
      */
     @Transactional
     public void deposit(BankDepositDto transaction) throws BadRequestException{
-        if(transaction.getOwner() == null) throw new BadRequestException("Owner must be set before send");
-        var ownerAccount = transaction.getOwner().getBankAccount();
+        Long ownerId = transaction.getOwnerId();
+        if(ownerId == null) throw new BadRequestException("Owner must be set before send");
+        var ownerAccount = bankAccountRepository.findAccountWithStatementsByUserId(ownerId);
         var amountToBeDeposited = transaction.getAmount();
         ownerAccount.deposit(amountToBeDeposited);
         BankStatement statement = statementRepository.save(BankStatement.createDepositStatement(amountToBeDeposited, ownerAccount));
@@ -122,21 +125,28 @@ public class BankAccountService {
 
 
     @Transactional(readOnly = true)
-    public List<ContactResponseDto> findAllContactsByAccount(BankAccount account){
+    public List<ContactResponseDto> findAllContactsUserId(Long userId){
+        var account = bankAccountRepository.findAccountWithContactsByUserId(userId);
         return account.getContacts().stream().map(ContactResponseDto::fromBankAccount).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public ContactResponseDto findContactById(Long id, BankAccount account){
-        var accounts = this.findAllContactsByAccount(account);
+    public ContactResponseDto findContactById(Long id, Long userId){
+        var accounts = this.findAllContactsUserId(userId);
         return accounts.stream().filter(contact -> contact.getId().equals(id)).findFirst()
                 .orElseThrow(() -> new BadRequestException("Contato não encontrado"));
     }
 
-    private User findUserByPixOrAccountNumber(BankTransferDto transaction){
+    private User findUserByPixOrAccountNumber(BankTransferDto transaction) {
         String recipientPixKey = transaction.getTo();
-        int recipientAccountNumber = Integer.parseInt(recipientPixKey);
+        int recipientAccountNumber;
+        try {
+            recipientAccountNumber = Integer.parseInt(recipientPixKey);
+        }catch (NumberFormatException e){
+            recipientAccountNumber = -1;
+        }
         return userFinderService.findByPixOrAccountNumber(recipientPixKey, recipientAccountNumber);
+
     }
 
     private int generateAccountNumber() {

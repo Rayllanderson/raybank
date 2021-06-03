@@ -22,7 +22,7 @@ public class PixController {
 
     @PostMapping
     public ResponseEntity<PixPostResponse> save(@RequestBody PixPostDto pixPostDto, @AuthenticationPrincipal User authenticatedUser) {
-        pixPostDto.setOwner(authenticatedUser);
+        pixPostDto.setOwnerId(authenticatedUser.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(pixService.register(pixPostDto));
     }
 
@@ -38,7 +38,7 @@ public class PixController {
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody PixPutDto pixPutDto, @AuthenticationPrincipal User authenticatedUser) {
-        pixPutDto.setOwner(authenticatedUser);
+        pixPutDto.setOwnerId(authenticatedUser.getId());
         pixService.update(pixPutDto);
         return ResponseEntity.noContent().build();
     }

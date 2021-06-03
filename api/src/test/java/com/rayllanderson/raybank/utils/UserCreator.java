@@ -11,7 +11,11 @@ public class UserCreator {
      * @return username("joao").password("123").name("João")
      */
     public static User createUserToBeSaved() {
-        return User.builder().username("joao").password("123").name("João").build();
+        User user = new User();
+        user.setName("João");
+        user.setUsername("joao");
+        user.setPassword("123");
+        return user;
     }
 
     /**

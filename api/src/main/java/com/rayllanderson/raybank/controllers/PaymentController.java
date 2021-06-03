@@ -23,7 +23,7 @@ public class PaymentController {
 
     @PostMapping("/boleto")
     public ResponseEntity<Void> pay(@RequestBody BankPaymentDto transaction, @AuthenticationPrincipal User authenticatedUser) {
-        transaction.setOwner(authenticatedUser);
+        transaction.setOwnerId(authenticatedUser.getId());
         bankAccountService.pay(transaction);
         return ResponseEntity.noContent().build();
     }

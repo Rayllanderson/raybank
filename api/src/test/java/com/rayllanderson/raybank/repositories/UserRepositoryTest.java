@@ -1,7 +1,9 @@
 package com.rayllanderson.raybank.repositories;
 
 import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.models.Pix;
 import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.services.UserService;
 import com.rayllanderson.raybank.utils.BankAccountCreator;
 import com.rayllanderson.raybank.utils.UserCreator;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +24,9 @@ class UserRepositoryTest {
 
     @Autowired
     private BankAccountRepository bankAccountRepository;
+
+    @Autowired
+    private PixRepository pixRepository;
 
     @BeforeEach
     void setUp(){
@@ -91,5 +96,25 @@ class UserRepositoryTest {
         Assertions.assertThat(userRepository
                 .findByPixKeysKeyOrBankAccountAccountNumber("99995", 5466121))
                 .isNotPresent();
+    }
+
+    @Test
+    void findByPixKeysOrBankAccountNumber_ReturnPix_WhenPixExists() {
+        User userToBeSaved = userRepository.save(UserCreator.createUserToBeSaved());
+        BankAccount bankAccount = BankAccountCreator.createBankAccountToBeSavedWithoutCreditCardAndWithoutUser();
+        bankAccount.setUser(userToBeSaved);
+        bankAccount = bankAccountRepository.save(bankAccount);
+        userToBeSaved.setBankAccount(bankAccount);
+        Pix pix = new Pix(null, "rayllanderson", userToBeSaved);
+        pixRepository.save(pix);
+        userToBeSaved.getPixKeys().add(pix);
+
+        userRepository.save(userToBeSaved);
+
+        Assertions.assertThat(pix.getId()).isNotNull();
+
+        Assertions.assertThat(userRepository
+                .findByPixKeysKeyOrBankAccountAccountNumber(pix.getKey(), 5466121))
+                .isPresent();
     }
 }

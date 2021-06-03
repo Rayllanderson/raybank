@@ -18,7 +18,7 @@ public class PixPutDto {
     @NotNull
     @NotEmpty
     private String key;
-    private User owner;
+    private Long ownerId;
 
     public static Pix toPix(PixPutDto dto){
         return new ModelMapper().map(dto, Pix.class);

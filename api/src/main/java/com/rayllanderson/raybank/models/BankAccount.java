@@ -38,6 +38,12 @@ public class BankAccount {
     @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
 
+    public BankAccount(Long id, Integer accountNumber, BigDecimal balance) {
+        this.id = id;
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
+
     /**
      * Realiza a ação de transferir. Será reduzido o valor de transferência dessa conta e será adicionado
      * na conta de destino.
@@ -77,5 +83,10 @@ public class BankAccount {
 
     public void addContact(BankAccount contact) {
         this.contacts.add(contact);
+    }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" + "id=" + id + ", accountNumber=" + accountNumber + ", balance=" + balance + ", creditCard=" + creditCard + ", user=" + user + ", statements=" + statements + ", contacts=" + contacts + '}';
     }
 }

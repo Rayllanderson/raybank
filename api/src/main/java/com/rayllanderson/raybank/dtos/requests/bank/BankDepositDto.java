@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.dtos.requests.bank;
 
-import com.rayllanderson.raybank.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.math.BigDecimal;
 @Builder
 public class BankDepositDto {
 
-    private User owner;
+    private Long ownerId;
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal amount;
 

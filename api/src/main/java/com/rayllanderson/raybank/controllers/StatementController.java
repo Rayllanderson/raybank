@@ -27,7 +27,7 @@ public class StatementController {
         return ResponseEntity.ok(statementService.findAllByAccountId(accountId));
     }
 
-    @GetMapping("/statements/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<StatementDto> findStatementById(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
         Long accountId = authenticatedUser.getBankAccount().getId();
         return ResponseEntity.ok(statementService.findByIdAndAccountId(id, accountId));

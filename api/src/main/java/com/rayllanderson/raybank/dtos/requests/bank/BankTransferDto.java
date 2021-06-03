@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.dtos.requests.bank;
 
-import com.rayllanderson.raybank.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class BankTransferDto {
-    private User sender;
+    private Long senderId;
     @NotNull
     @NotEmpty
     private String to;

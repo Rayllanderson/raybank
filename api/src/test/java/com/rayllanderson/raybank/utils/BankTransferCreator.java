@@ -11,7 +11,7 @@ public class BankTransferCreator {
                 .amount(new BigDecimal(400))
                 .message("Hey, take this!")
                 .to(UserCreator.createAnotherUserSavedWithAccount().getBankAccount().getAccountNumber().toString())
-                .sender(UserCreator.createUserSavedWithAccount())
+                .senderId(UserCreator.createUserSavedWithAccount().getId())
                 .build();
     }
 }

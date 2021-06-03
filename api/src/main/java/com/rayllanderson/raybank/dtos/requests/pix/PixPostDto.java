@@ -19,7 +19,7 @@ public class PixPostDto {
     @NotNull
     @NotEmpty
     private String key;
-    private User owner;
+    private Long ownerId;
 
     public static Pix toPix(PixPostDto dto){
         return new ModelMapper().map(dto, Pix.class);
