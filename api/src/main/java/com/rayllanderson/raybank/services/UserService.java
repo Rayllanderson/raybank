@@ -54,7 +54,6 @@ public class UserService {
     @Transactional
     public void deleteById(Long id) throws BadRequestException {
         userFinderService.findById(id);
-        //TODO: deletar os pixs e conta bancária
         userRepository.deleteById(id);
     }
 
