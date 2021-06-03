@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,14 +29,16 @@ public class BankAccountController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Void> transfer(@RequestBody BankTransferDto transaction, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<Void> transfer(@RequestBody @Valid BankTransferDto transaction,
+                                         @AuthenticationPrincipal User authenticatedUser) {
         transaction.setSenderId(authenticatedUser.getId());
         bankAccountService.transfer(transaction);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<Void> deposit(@RequestBody BankDepositDto transaction, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<Void> deposit(@RequestBody @Valid BankDepositDto transaction,
+                                        @AuthenticationPrincipal User authenticatedUser) {
         transaction.setOwnerId(authenticatedUser.getId());
         bankAccountService.deposit(transaction);
         return ResponseEntity.noContent().build();

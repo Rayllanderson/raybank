@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/users/authenticated/pix")
 @RequiredArgsConstructor
@@ -21,7 +23,8 @@ public class PixController {
     private final PixService pixService;
 
     @PostMapping
-    public ResponseEntity<PixPostResponse> save(@RequestBody PixPostDto pixPostDto, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<PixPostResponse> save(@RequestBody @Valid PixPostDto pixPostDto,
+                                                @AuthenticationPrincipal User authenticatedUser) {
         pixPostDto.setOwnerId(authenticatedUser.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(pixService.register(pixPostDto));
     }
@@ -37,7 +40,7 @@ public class PixController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody PixPutDto pixPutDto, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<Void> update(@RequestBody @Valid PixPutDto pixPutDto, @AuthenticationPrincipal User authenticatedUser) {
         pixPutDto.setOwnerId(authenticatedUser.getId());
         pixService.update(pixPutDto);
         return ResponseEntity.noContent().build();

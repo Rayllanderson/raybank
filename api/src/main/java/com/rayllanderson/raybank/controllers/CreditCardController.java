@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class CreditCardController {
     }
 
     @PostMapping("/pay/invoice")
-    public ResponseEntity<Void> payInvoice(@RequestBody com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto dto,
+    public ResponseEntity<Void> payInvoice(@RequestBody @Valid com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto dto,
                                            @AuthenticationPrincipal User authenticatedUser){
         dto.setAccount(authenticatedUser.getBankAccount());
         creditCardService.payInvoice(dto);

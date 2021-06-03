@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users/authenticated/payment")
 @RestController
@@ -22,14 +24,14 @@ public class PaymentController {
     private final CreditCardService creditCardService;
 
     @PostMapping("/boleto")
-    public ResponseEntity<Void> pay(@RequestBody BankPaymentDto transaction, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<Void> pay(@RequestBody @Valid BankPaymentDto transaction, @AuthenticationPrincipal User authenticatedUser) {
         transaction.setOwnerId(authenticatedUser.getId());
         bankAccountService.pay(transaction);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/credit-card")
-    public ResponseEntity<Void> purchase(@RequestBody CreditCardDto dto, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<Void> purchase(@RequestBody @Valid CreditCardDto dto, @AuthenticationPrincipal User authenticatedUser) {
         dto.setAccount(authenticatedUser.getBankAccount());
         creditCardService.makePurchase(dto);
         return ResponseEntity.noContent().build();
