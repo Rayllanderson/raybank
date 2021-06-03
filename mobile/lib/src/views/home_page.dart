@@ -4,6 +4,7 @@ import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/actions_util.dart';
 import 'package:mobile/src/views/home_subpages/deposit_screen.dart';
 import 'package:mobile/src/views/home_subpages/initial_screen.dart';
+import 'package:mobile/src/views/home_subpages/pay_screen.dart';
 import 'package:mobile/src/views/home_subpages/transfer_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,7 +25,9 @@ class _HomePageState extends State<HomePage> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     InitialScreen(),
+    PayScreen(),
     TransferScreen(),
+    DepositScreen(),
     DepositScreen()
   ];
 
@@ -64,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                       child: Image.network('https://avatars.githubusercontent.com/u/63964369?v=4')
                   ),
                   accountName: Text('Rayllanderson'),
-                  accountEmail: Text('ray@gmail.com')
+                accountEmail: null,
               ),
               ListTile(
                 leading: Icon(Icons.home),

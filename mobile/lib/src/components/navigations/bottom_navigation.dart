@@ -14,11 +14,16 @@ class BottomNavigator extends StatelessWidget {
       backgroundColor: Colors.purple,
       selectedItemColor: Themes.secondaryColor,
       unselectedItemColor: Themes.secondaryColor.withAlpha(150),
+      type: BottomNavigationBarType.fixed,
       onTap: onItemTapped,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Início',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.qr_code),
+          label: 'Pagar',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.api),
