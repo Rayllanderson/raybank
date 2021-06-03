@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Data
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -76,10 +77,5 @@ public class BankAccount {
 
     public void addContact(BankAccount contact) {
         this.contacts.add(contact);
-    }
-
-    @Override
-    public String toString() {
-        return "BankAccount{" + "id=" + id + ", accountNumber=" + accountNumber + ", balance=" + balance + ", creditCard=" + creditCard + ", statements=" + statements + '}';
     }
 }

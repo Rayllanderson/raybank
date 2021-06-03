@@ -6,11 +6,11 @@ import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
 import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.services.BankAccountService;
 import com.rayllanderson.raybank.services.StatementFinderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,45 +21,38 @@ import java.util.List;
 public class BankAccountController {
     private final BankAccountService bankAccountService;
     private final StatementFinderService statementFinderService;
-    private final UserRepository userRepository;
 
     @GetMapping
-    public ResponseEntity<BankAccountDto> findUserBankAccount() {
-        User user = userRepository.findById(1L).get();
-        return ResponseEntity.ok(bankAccountService.findByUser(user));
+    public ResponseEntity<BankAccountDto> findUserBankAccount(@AuthenticationPrincipal User authenticatedUser) {
+        return ResponseEntity.ok(bankAccountService.findByUser(authenticatedUser));
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Void> transfer(@RequestBody BankTransferDto transaction) {
-        User sender = userRepository.findById(1L).get();
-        transaction.setSender(sender);
+    public ResponseEntity<Void> transfer(@RequestBody BankTransferDto transaction, @AuthenticationPrincipal User authenticatedUser) {
+        transaction.setSender(authenticatedUser);
         bankAccountService.transfer(transaction);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<Void> deposit(@RequestBody BankDepositDto transaction) {
-        User sender = userRepository.findById(1L).get();
-        transaction.setOwner(sender);
+    public ResponseEntity<Void> deposit(@RequestBody BankDepositDto transaction, @AuthenticationPrincipal User authenticatedUser) {
+        transaction.setOwner(authenticatedUser);
         bankAccountService.deposit(transaction);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/statements")
-    public ResponseEntity<List<StatementDto>> findAllStatements() {
-        User owner = userRepository.findById(1L).get();
-        return ResponseEntity.ok(statementFinderService.findAllAccountStatements(owner.getBankAccount()));
+    public ResponseEntity<List<StatementDto>> findAllStatements(@AuthenticationPrincipal User authenticatedUser) {
+        return ResponseEntity.ok(statementFinderService.findAllAccountStatements(authenticatedUser.getBankAccount()));
     }
 
     @GetMapping("/contacts")
-    public ResponseEntity<List<ContactResponseDto>> findAllContacts() {
-        User owner = userRepository.findById(1L).get();
-        return ResponseEntity.ok(bankAccountService.findAllContactsByAccount(owner.getBankAccount()));
+    public ResponseEntity<List<ContactResponseDto>> findAllContacts(@AuthenticationPrincipal User authenticatedUser) {
+        return ResponseEntity.ok(bankAccountService.findAllContactsByAccount(authenticatedUser.getBankAccount()));
     }
 
     @GetMapping("/contacts/{id}")
-    public ResponseEntity<ContactResponseDto> findContactById(@PathVariable Long id) {
-        User owner = userRepository.findById(1L).get();
-        return ResponseEntity.ok(bankAccountService.findContactById(id, owner.getBankAccount()));
+    public ResponseEntity<ContactResponseDto> findContactById(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
+        return ResponseEntity.ok(bankAccountService.findContactById(id, authenticatedUser.getBankAccount()));
     }
 }

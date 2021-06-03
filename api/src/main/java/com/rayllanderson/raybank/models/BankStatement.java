@@ -130,6 +130,6 @@ public class BankStatement {
     @Override
     public String toString() {
         return "BankStatement{" + "id=" + id + ", moment=" + moment + ", statementType=" + statementType + ", amount=" + amount + "," +
-                " accountSenderName=" + accountSender.getUser().getName() + ", accountOwnerName=" + accountOwner.getUser().getName() + '}';
+                " message='" + message + '\'' + '}';
     }
 }

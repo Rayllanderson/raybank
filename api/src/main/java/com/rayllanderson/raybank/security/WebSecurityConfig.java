@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         AuthenticationManager authManager = authenticationManager();
-        http     .authorizeRequests()
+        http    .authorizeRequests()
                 .antMatchers("/api/v1/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()

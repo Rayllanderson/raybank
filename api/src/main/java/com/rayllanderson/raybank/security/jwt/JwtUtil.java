@@ -68,7 +68,7 @@ public class JwtUtil {
 
         byte[] signingKey = JwtUtil.JWT_SECRET.getBytes();
 
-        int days = 10;
+        long days = 1000;
         long time = days * 24 /*horas*/ * 60 /*min*/ * 60 /*seg*/ * 1000  /*millis*/;
         Date expiration = new Date(System.currentTimeMillis() + time);
 

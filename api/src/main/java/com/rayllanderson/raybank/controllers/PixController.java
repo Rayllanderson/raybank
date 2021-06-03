@@ -6,11 +6,11 @@ import com.rayllanderson.raybank.dtos.responses.pix.PixPostResponse;
 import com.rayllanderson.raybank.dtos.responses.pix.PixResponseDto;
 import com.rayllanderson.raybank.models.Pix;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.services.PixService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,35 +19,33 @@ import org.springframework.web.bind.annotation.*;
 public class PixController {
 
     private final PixService pixService;
-    private final UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<PixPostResponse> save(@RequestBody PixPostDto pixPostDto){
-        pixPostDto.setOwner(userRepository.findById(1L).get());
+    public ResponseEntity<PixPostResponse> save(@RequestBody PixPostDto pixPostDto, @AuthenticationPrincipal User authenticatedUser) {
+        pixPostDto.setOwner(authenticatedUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(pixService.register(pixPostDto));
     }
 
     @GetMapping
-    public ResponseEntity<PixResponseDto> findAll(){
-        return ResponseEntity.ok(pixService.findAllFromUser(userRepository.findById(1L).get()));
+    public ResponseEntity<PixResponseDto> findAll(@AuthenticationPrincipal User authenticatedUser) {
+        return ResponseEntity.ok(pixService.findAllFromUser(authenticatedUser));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pix> findById(@PathVariable Long id){
-        return ResponseEntity.ok(pixService.findById(id, userRepository.findById(1L).get()));
+    public ResponseEntity<Pix> findById(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
+        return ResponseEntity.ok(pixService.findById(id, authenticatedUser));
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody PixPutDto pixPutDto){
-        pixPutDto.setOwner(userRepository.findById(1L).get());
+    public ResponseEntity<Void> update(@RequestBody PixPutDto pixPutDto, @AuthenticationPrincipal User authenticatedUser) {
+        pixPutDto.setOwner(authenticatedUser);
         pixService.update(pixPutDto);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-        User owner = userRepository.findById(1L).get();
-        pixService.deleteById(id, owner);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
+        pixService.deleteById(id, authenticatedUser);
         return ResponseEntity.noContent().build();
     }
 }

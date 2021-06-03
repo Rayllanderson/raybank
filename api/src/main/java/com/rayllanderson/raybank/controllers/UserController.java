@@ -4,11 +4,11 @@ import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
 import com.rayllanderson.raybank.dtos.responses.user.UserPostResponseDto;
 import com.rayllanderson.raybank.dtos.responses.user.UserResponseDto;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.services.UserFinderService;
 import com.rayllanderson.raybank.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +19,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserFinderService userFinderService;
 
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findAll(){
@@ -32,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/authenticated")
-    public ResponseEntity<User> findAuthenticated(){
-        return ResponseEntity.ok(userFinderService.findById(1L));
+    public ResponseEntity<User> findAuthenticated(@AuthenticationPrincipal User authenticatedUser){
+        return ResponseEntity.ok(authenticatedUser);
     }
 }
