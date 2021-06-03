@@ -14,4 +14,13 @@ public class BankTransferCreator {
                 .senderId(UserCreator.createUserSavedWithAccount().getId())
                 .build();
     }
+
+    public static BankTransferDto createBankTransferDto(BigDecimal toTransfer, String receiver){
+        return BankTransferDto.builder()
+                .amount(toTransfer)
+                .message("Hey, take this!")
+                .to(receiver)
+                .senderId(UserCreator.createUserSavedWithAccount().getId())
+                .build();
+    }
 }
