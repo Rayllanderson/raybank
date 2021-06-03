@@ -26,7 +26,7 @@ import java.util.List;
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class BankAccountControllerIT extends BaseApiTest{
+class BankAccountControllerIT extends BaseBankOperation {
 
     final String API_URL = "/api/v1/users/authenticated/bank-account";
 
@@ -74,7 +74,8 @@ class BankAccountControllerIT extends BaseApiTest{
 
         BigDecimal toTransfer = BigDecimal.valueOf(300.00);
 
-        BankTransferDto transaction = BankTransferCreator.createBankTransferDto(toTransfer, secondUserAccount.getAccountNumber().toString());
+        BankTransferDto transaction = BankTransferCreator.createBankTransferDto(toTransfer,
+                secondUserAccount.getAccountNumber().toString());
         ResponseEntity<Void> response = super.post(API_URL + "/transfer", transaction, Void.class);
 
         Assertions.assertThat(response).isNotNull();
@@ -131,9 +132,8 @@ class BankAccountControllerIT extends BaseApiTest{
         deposit400(); //gerou 1 statement
         transfer300(); //gerou outro
         int expectedSize = 2;
-        var expectedStatement = StatementDto.fromStatement(BankStatement.createDepositStatement(
-                new BigDecimal("400"), authenticatedUserAccount
-        ));
+        var expectedStatement = StatementDto.fromStatement(BankStatement.createDepositStatement(new BigDecimal("400"),
+                authenticatedUserAccount));
 
         ResponseEntity<List<StatementDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
                 new HttpEntity<>(super.getHeaders()), new ParameterizedTypeReference<>() {
@@ -163,8 +163,11 @@ class BankAccountControllerIT extends BaseApiTest{
 
     @Test
     void findAllContacts_ReturnsListOfContacts_WhenSuccessful() {
-        deposit400();
+        var toDeposit = new BigDecimal("400.00");
+        var toTransfer = new BigDecimal("300");
         //ao transferir, se o contato não estiver na lista, ele é adicionado
+        depositAndTransfer(toDeposit, toTransfer);
+
         transfer300();
         int expectedSize = 1;
         ResponseEntity<List<ContactResponseDto>> response = rest.exchange(API_URL + "/contacts", HttpMethod.GET,
@@ -181,7 +184,7 @@ class BankAccountControllerIT extends BaseApiTest{
         int expectedSize = 0;
         ResponseEntity<List<ContactResponseDto>> response = rest.exchange(API_URL + "/contacts", HttpMethod.GET,
                 new HttpEntity<>(super.getHeaders()), new ParameterizedTypeReference<>() {
-                });
+        });
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody()).isNotNull().isEmpty();
