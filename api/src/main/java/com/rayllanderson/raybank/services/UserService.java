@@ -12,6 +12,7 @@ import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.utils.StringUtil;
 import com.rayllanderson.raybank.utils.UserUpdater;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BankAccountService bankAccountService;
     private final UserFinderService userFinderService;
+    private final PasswordEncoder encoder;
 
     public List<UserResponseDto> findAll(){
         return userRepository.findAll().stream().map(user -> {
@@ -43,6 +45,8 @@ public class UserService {
         User userToBeSaved =  userDto.toUser();
         userToBeSaved = userRepository.save(userToBeSaved);
         userToBeSaved.setBankAccount(bankAccountService.createAccountBank(userToBeSaved));
+        userToBeSaved.setPassword(encoder.encode(userDto.getPassword()));
+        userToBeSaved.setAuthorities("ROLE_USER");
         userToBeSaved = userRepository.save(userToBeSaved);
         return UserPostResponseDto.fromUser(userToBeSaved);
     }
@@ -83,7 +87,7 @@ public class UserService {
         }
         User userFromDataBase = userFinderService.findById(user.getId());
         UserUpdater.updatePassword(user, userFromDataBase);
-//        userFromDataBase.setPassword(encoder.encode(userFromDataBase.getPassword()));
+        userFromDataBase.setPassword(encoder.encode(userFromDataBase.getPassword()));
         this.userRepository.save(userFromDataBase);
     }
 

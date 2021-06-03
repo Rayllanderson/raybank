@@ -18,12 +18,10 @@ public class BankAccountDto {
     private String userName;
     private Integer accountNumber;
     private BigDecimal balance;
-    private CreditCardDto creditCardDto;
 
     public static BankAccountDto fromBankAccount(BankAccount bankAccount){
         BankAccountDto dto = new ModelMapper().map(bankAccount, BankAccountDto.class);
         dto.setUserName(bankAccount.getUser().getName());
         return dto;
     }
-
 }

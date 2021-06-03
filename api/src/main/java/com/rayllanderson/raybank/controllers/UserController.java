@@ -31,14 +31,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(userDto));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
-        return ResponseEntity.ok(userFinderService.findById(id));
-    }
-
     @GetMapping("/authenticated")
     public ResponseEntity<User> findAuthenticated(){
         return ResponseEntity.ok(userFinderService.findById(1L));
     }
-
 }
