@@ -100,14 +100,14 @@ public class CreditCard {
      * @return true caso o cartão tenha saldo disponível
      */
     public boolean hasLimit() {
-        return !balance.equals(BigDecimal.ZERO);
+        return !(balance.equals(BigDecimal.ZERO) || balance.equals(new BigDecimal("0.00")));
     }
 
     /**
      * @return true caso o cartão tenha algum valor na fatura
      */
     public boolean hasInvoice() {
-        return !invoice.equals(BigDecimal.ZERO);
+        return !(invoice.equals(BigDecimal.ZERO) || invoice.equals(new BigDecimal("0.00")));
     }
 
     @Override

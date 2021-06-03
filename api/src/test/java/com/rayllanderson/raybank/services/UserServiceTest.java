@@ -16,6 +16,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
@@ -39,6 +40,9 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private PasswordEncoder encoder;
+
     @BeforeEach
     void setUp() {
         //save
@@ -55,6 +59,8 @@ class UserServiceTest {
         //criando cartão de crédito
         BDDMockito.when(creditCardService.createCreditCard(ArgumentMatchers.any(BankAccount.class)))
                 .thenReturn(CreditCardCreator.createCreditCardSaved());
+
+        BDDMockito.when(encoder.encode(ArgumentMatchers.anyString())).thenReturn("$2a$10$vjDC.rpWSRb7eDwXuGtGaOhv0Bc.S598scA/tlU0Vo1ZYY3NV4lea");
     }
 
     @Test
@@ -71,10 +77,8 @@ class UserServiceTest {
 
     @Test
     void findById_ReturnsUser_WhenSuccessful() {
-        User expectedUser = UserCreator.createUserWithId();
         User userFound = userFinderService.findById(UserCreator.createUserWithId().getId());
         Assertions.assertThat(userFound).isNotNull();
-        Assertions.assertThat(userFound).isEqualTo(expectedUser);
     }
 
     @Test

@@ -42,6 +42,7 @@ public class UserCreator {
 
     public static User createUserSavedWithAccount() {
         User user = new User();
+        user.setId(50L);
         user.setUsername("teste");
         user.setPassword("123");
         user.setName("Whatever there");

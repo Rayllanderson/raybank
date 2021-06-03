@@ -61,8 +61,8 @@ public class BaseBankOperation extends BaseApiTest {
     /**
      * Realiza o pagamento da fatura no valor de 300 reais
      */
-    protected void pay300Invoice(BigDecimal value){
-        var obj = CreditCardDto.builder().amount(value).account(authenticatedUserAccount).build();
+    protected void pay300Invoice(){
+        var obj = CreditCardDto.builder().amount(new BigDecimal("300.00")).account(authenticatedUserAccount).build();
         super.post("/api/v1/users/authenticated/bank-account/credit-card/pay/invoice", obj, Void.class);
     }
 

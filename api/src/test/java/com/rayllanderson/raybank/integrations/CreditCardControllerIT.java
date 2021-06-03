@@ -102,6 +102,22 @@ class CreditCardControllerIT extends BaseBankOperation{
     }
 
     @Test
+    void payInvoice_DoNotPayInvoice_WhenInvoiceIsZero(){
+        deposit300();
+        var amountToPay= new BigDecimal("300.00");
+
+        var obj =
+                com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto
+                        .builder().amount(amountToPay)
+                        .account(authenticatedUserAccount)
+                        .build();
+        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/credit-card/pay/invoice", obj, Void.class);
+
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
     void payInvoice_NotPayInvoice_WhenUserHasNoMoney(){
         buy500WithCreditCard();
         var amountToPay= new BigDecimal("300.00");

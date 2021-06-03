@@ -45,6 +45,7 @@ public abstract class BaseApiTest {
 
     @BeforeEach
     public void setupTest() {
+        log.info("Ta passando aqui 2x??");
         userService.register(UserCreator.createUserToLogIn()); //registrando o usuário
         userService.register(UserCreator.createAnotherUserToLogIn()); //registrando usuário 2
         User user = (User) userDetailsService.loadUserByUsername(UserCreator.createUserToLogIn().getUsername());
