@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/users/authenticated/pix")
@@ -30,7 +31,7 @@ public class PixController {
     }
 
     @GetMapping
-    public ResponseEntity<PixResponseDto> findAll(@AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<List<PixResponseDto>> findAll(@AuthenticationPrincipal User authenticatedUser) {
         return ResponseEntity.ok(pixService.findAllFromUser(authenticatedUser));
     }
 

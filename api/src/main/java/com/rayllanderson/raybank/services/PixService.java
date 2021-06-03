@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class PixService {
@@ -58,10 +61,12 @@ public class PixService {
         pixRepository.save(PixPutDto.toPix(pixDto));
     }
 
-    public PixResponseDto findAllFromUser(User user){
-        return PixResponseDto.fromPixList(pixRepository.findAllByOwnerId(user.getId()));
+    @Transactional
+    public List<PixResponseDto> findAllFromUser(User user){
+        return pixRepository.findAllByOwnerId(user.getId()).stream().map(PixResponseDto::fromPix).collect(Collectors.toList());
     }
 
+    @Transactional
     public Pix findById(Long id, User authenticatedUser){
         return pixRepository.findByIdAndOwnerId(id, authenticatedUser.getId()).orElseThrow(() -> new BadRequestException("Pix não " +
                 "existe na sua conta"));
@@ -69,7 +74,9 @@ public class PixService {
 
     @Transactional
     public void deleteById(Long id, User owner) throws BadRequestException {
-        this.findById(id, owner);
+        User user = userRepository.findByIdWithPix(owner.getId()).orElseThrow(() -> new BadRequestException("User not found"));
+        Pix pixToBeDeleted = this.findById(id, owner);
+        user.getPixKeys().removeIf(pix -> pix.equals(pixToBeDeleted));
         pixRepository.deleteById(id);
     }
 

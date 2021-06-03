@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class PixPutDto {
     private Long id;
     @NotNull
     @NotEmpty
+    @Size(min = 5, max = 99)
     private String key;
     private Long ownerId;
 

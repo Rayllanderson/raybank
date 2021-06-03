@@ -6,20 +6,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PixResponseDto {
-    List<PixPostResponse>pixKeys = new ArrayList<>();
+    private Long id;
+    private String pixKeys;
 
-    public static PixResponseDto fromPixList(List<Pix> pixKeys){
+    public static PixResponseDto fromPix(Pix pix){
         PixResponseDto pixDto = new PixResponseDto();
-        pixDto.getPixKeys().addAll(pixKeys.stream().map(PixPostResponse::fromPix).collect(Collectors.toList()));
+        pixDto.setPixKeys(pix.getKey());
+        pixDto.setId(pix.getId());
         return pixDto;
     }
 }

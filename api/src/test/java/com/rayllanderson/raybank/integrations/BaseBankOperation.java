@@ -3,8 +3,11 @@ package com.rayllanderson.raybank.integrations;
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
+import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
+import com.rayllanderson.raybank.dtos.responses.pix.PixPostResponse;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
 import com.rayllanderson.raybank.utils.BankTransferCreator;
+import com.rayllanderson.raybank.utils.PixCreator;
 
 import java.math.BigDecimal;
 
@@ -76,5 +79,13 @@ public class BaseBankOperation extends BaseApiTest {
      */
     protected void buy500WithCreditCard(){
         buyWithCreditCard(new BigDecimal("500.00"));
+    }
+
+    /**
+     * Key: rayllanderson@gmail.com
+     */
+    protected PixPostResponse registerAPix(){
+        PixPostDto pixToBeSaved = PixCreator.createPixPixPostDto();
+        return post("/api/v1/users/authenticated/pix", pixToBeSaved, PixPostResponse.class).getBody();
     }
 }
