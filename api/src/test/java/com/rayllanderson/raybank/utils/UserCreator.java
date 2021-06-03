@@ -66,6 +66,21 @@ public class UserCreator {
         return UserPostDto.builder().username("joao").password("123").name("João").build();
     }
 
+    public static UserPostDto createUserToLogIn() {
+        return UserPostDto.builder().username("login").password("123").name("Login").build();
+    }
+
+    public static UserPostDto createAnotherUserToLogIn() {
+        return UserPostDto.builder().username("login2").password("123").name("Login two").build();
+    }
+
+    /**
+     * @return username("ray").password("123").name("Ray").build();
+     */
+    public static UserPostDto createAnotherUserToBeSaved() {
+        return UserPostDto.builder().username("ray").password("123").name("Ray").build();
+    }
+
     /**
      * @return id(1L).username("joao").password("123").name("João")
      */

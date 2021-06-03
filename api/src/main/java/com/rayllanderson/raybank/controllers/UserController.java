@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/authenticated")
-    public ResponseEntity<User> findAuthenticated(@AuthenticationPrincipal User authenticatedUser){
-        return ResponseEntity.ok(authenticatedUser);
+    public ResponseEntity<UserResponseDto> findAuthenticated(@AuthenticationPrincipal User authenticatedUser){
+        return ResponseEntity.ok(UserResponseDto.fromUser(authenticatedUser));
     }
 }
