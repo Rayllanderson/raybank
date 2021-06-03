@@ -31,7 +31,7 @@ public class PaymentController {
     }
 
     @PostMapping("/credit-card")
-    public ResponseEntity<Void> purchase(@RequestBody @Valid CreditCardDto dto, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<Void> pay(@RequestBody @Valid CreditCardDto dto, @AuthenticationPrincipal User authenticatedUser) {
         dto.setAccount(authenticatedUser.getBankAccount());
         creditCardService.makePurchase(dto);
         return ResponseEntity.noContent().build();
