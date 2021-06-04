@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/utils/storage_util.dart';
 import 'package:mobile/src/views/home_page.dart';
 import 'package:mobile/src/views/login_page.dart';
 import 'package:mobile/src/views/register_page.dart';
 import 'package:mobile/src/views/transfer_page.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
+final Storage storage = new Storage();
 
-void main() {
-  runApp(MyApp());
-}
+void main() async {
+  String initialPage = '/';
+  WidgetsFlutterBinding.ensureInitialized();
+  await storage.getToken().then((value) {
+    if (value.isNotEmpty) initialPage = '/home';
+  });
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Raybank',
-      navigatorKey: navigatorKey,
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => LoginPage(),
-        '/register': (context) => RegisterPage(),
-        '/home': (context) => HomePage(),
-        '/transfer': (context) => TransferPage(),
-      },
-    );
-  }
+  runApp(MaterialApp(
+    title: 'Raybank',
+    navigatorKey: navigatorKey,
+    theme: ThemeData(
+      primarySwatch: Colors.purple,
+    ),
+    initialRoute: initialPage,
+    routes: {
+      '/': (context) => LoginPage(),
+      '/register': (context) => RegisterPage(),
+      '/home': (context) => HomePage(),
+      '/transfer': (context) => TransferPage(),
+    },
+  ));
 }

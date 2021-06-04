@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/cards/initial_page_card.dart';
+import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/themes/themes.dart';
 
 class InitialScreen extends StatelessWidget {
-  const InitialScreen({Key key}) : super(key: key);
+
+  final BankAccountModel accountModel;
+
+  const InitialScreen({Key key, this.accountModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +18,7 @@ class InitialScreen extends StatelessWidget {
           child: Container(
             alignment: Alignment.topLeft,
             child: Text(
-              'Olá, João!',
+              'Olá, ' + accountModel.userName,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Themes.textColor,
@@ -38,7 +42,7 @@ class InitialScreen extends StatelessWidget {
                 SizedBox(
                   height: 3,
                 ),
-                Text('R\$ 266,54',
+                Text('R\$ ' + accountModel.creditCardDto.invoice.toString(),
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -53,7 +57,7 @@ class InitialScreen extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.w300,
                             color: Colors.black)),
-                    Text(' R\$ 547,57',
+                    Text(' R\$ ' + accountModel.creditCardDto.balance.toString(),
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -66,7 +70,7 @@ class InitialScreen extends StatelessWidget {
           title: 'Saldo disponível',
           icon: Icon(Icons.account_balance_wallet),
           cardHeight: 170.0,
-          body: Text('R\$ 50,75',
+          body: Text('R\$ ' + accountModel.balance.toString(),
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,

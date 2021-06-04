@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/main.dart';
 import 'package:mobile/src/components/navigations/bottom_navigation.dart';
+import 'package:mobile/src/controllers/bank_account_controller.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/actions_util.dart';
-import 'package:mobile/src/utils/storage_util.dart';
 import 'package:mobile/src/views/home_subpages/deposit_screen.dart';
 import 'package:mobile/src/views/home_subpages/initial_screen.dart';
 import 'package:mobile/src/views/home_subpages/pay_screen.dart';
 import 'package:mobile/src/views/home_subpages/transfer_screen.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -23,14 +25,6 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
   }
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    InitialScreen(),
-    PayScreen(),
-    TransferScreen(),
-    DepositScreen(),
-    DepositScreen()
-  ];
 
   floatingActionButton(index){
     bool isOnInitialPage = index == 0;
@@ -53,9 +47,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+
+  BankAccountController bankAccountController;
+
   @override
   void initState() {
     super.initState();
+    bankAccountController = new BankAccountController();
+    bankAccountController.fetchBankAccount();
   }
 
   @override
@@ -71,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   currentAccountPicture: ClipOval(
                       child: Image.network('https://avatars.githubusercontent.com/u/63964369?v=4')
                   ),
-                  accountName: Text('Rayllanderson'),
+                  accountName: Text(bankAccountController.bankAccountModel.userName ?? ''),
                 accountEmail: null,
               ),
               ListTile(
@@ -87,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                 title: Text('Logout'),
                 subtitle: Text('Sair do aplicativo'),
                 onTap: () {
-                  Storage.setToken('');
+                  storage.setToken('');
                   Navigator.of(context).pushReplacementNamed('/');
                 },
               )
@@ -98,7 +97,13 @@ class _HomePageState extends State<HomePage> {
           Container(color: Themes.primaryColor),
           Center(
             child: SingleChildScrollView(
-              child: _widgetOptions.elementAt(_selectedIndex),
+              child: [
+                InitialScreen(accountModel: bankAccountController.bankAccountModel),
+                PayScreen(),
+                TransferScreen(),
+                DepositScreen(),
+                DepositScreen()
+              ].elementAt(_selectedIndex),
             ),
           ),
         ]),

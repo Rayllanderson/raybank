@@ -4,7 +4,6 @@ import 'package:mobile/src/components/inputs/login_input.dart';
 import 'package:mobile/src/components/logos/login_logo.dart';
 import 'package:mobile/src/controllers/login_controller.dart';
 import 'package:mobile/src/themes/themes.dart';
-import 'package:mobile/src/utils/storage_util.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -18,20 +17,9 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   LoginController _loginController;
 
-  void getInitialRoute() {
-    Storage.getToken().then((value) {
-      if (value != null && value.isNotEmpty) {
-        Navigator.of(context).pushReplacementNamed("/home");
-      } else {
-        Navigator.of(context).pushReplacementNamed("/");
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    getInitialRoute();
     _loginController =
         LoginController(usernameController, passwordController, context);
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:mobile/main.dart';
 import 'package:mobile/src/exceptions/bad_request_exception.dart';
 import 'package:mobile/src/models/api_response.dart';
 import 'package:mobile/src/models/login_model.dart';
@@ -8,9 +9,9 @@ import 'package:mobile/src/models/register_model.dart';
 import 'package:mobile/src/models/user_model.dart';
 import 'package:mobile/src/repositories/util.dart';
 import 'package:mobile/src/services/api.dart';
-import 'package:mobile/src/utils/storage_util.dart';
 
 class UserRepository {
+
   static Future<void> register(RegisterModel userToBeRegistered) async {
     final url = Uri.parse(registerUrl);
     await http.post(url, body: json.encode(userToBeRegistered.toJson()), headers: getHeaders()).then((data) {
@@ -36,7 +37,7 @@ class UserRepository {
         throw BadRequestException(
             title: "Erro", message: message);
       } else {
-        Storage.setToken(UserModel.fromJson(jsonData).token);
+        storage.setToken(UserModel.fromJson(jsonData).token);
       }
     });
   }
