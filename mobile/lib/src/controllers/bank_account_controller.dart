@@ -6,7 +6,8 @@ class BankAccountController {
   BankAccountModel bankAccountModel = BankAccountModel.empty();
   final BankAccountService accountService = new BankAccountService();
 
-  Future fetchBankAccount() async {
+  Future<BankAccountModel> fetchBankAccount() async {
     bankAccountModel = await accountService.getBankAccount();
+    return accountService.getBankAccount();
   }
 }

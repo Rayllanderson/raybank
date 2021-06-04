@@ -6,8 +6,8 @@ import 'package:mobile/src/utils/creator_util.dart';
 
 class TransferScreen extends StatefulWidget {
 
-  const TransferScreen({Key key}) : super(key: key);
-
+  const TransferScreen({Key key, this.balance}) : super(key: key);
+  final double balance;
   @override
   _TransferScreenState createState() => _TransferScreenState();
 }
@@ -21,11 +21,12 @@ class _TransferScreenState extends State<TransferScreen> {
 
   TransferController _transferController;
 
+
   @override
   void initState() {
     super.initState();
     _transferController = TransferController(_moneyMaskedController,
-        _receiverController);
+        _receiverController, widget.balance);
     MyActions.goToTransferPage = (){
       _transferController.goToSelectContactPage();
     };
@@ -36,7 +37,7 @@ class _TransferScreenState extends State<TransferScreen> {
     bool isErrorVisible = false;
     return PageCard(
       headerTitle: 'Qual o valor da transferência?',
-      headerSubtitle: 'Você tem disponível R\$ 140',
+      headerSubtitle: 'Você tem disponível R\$ ${widget.balance}',
       moneyMaskedController: _moneyMaskedController,
       errorText: 'Você não possui saldo suficiente na sua conta',
       isErrorVisible: (){

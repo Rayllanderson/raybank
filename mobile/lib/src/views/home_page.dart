@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/src/components/navigations/bottom_navigation.dart';
 import 'package:mobile/src/controllers/bank_account_controller.dart';
+import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/actions_util.dart';
 import 'package:mobile/src/views/home_subpages/deposit_screen.dart';
@@ -37,7 +38,6 @@ class _HomePageState extends State<HomePage> {
         onPressed: (){
           if(index == 2){
             MyActions.goToTransferPage();
-            print('indo pra página de transferência');
           }
           if(index == 3){
             print('indo pra página de depósito');
@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
 
 
   BankAccountController bankAccountController;
+  Future<BankAccountModel> account;
 
   @override
   void initState() {
@@ -64,34 +65,43 @@ class _HomePageState extends State<HomePage> {
           title: Text('Raybank'),
         ),
         drawer: Drawer(
-          child: Column(
-            children: [
-              UserAccountsDrawerHeader(
-                  currentAccountPicture: ClipOval(
-                      child: Image.network('https://avatars.githubusercontent.com/u/63964369?v=4')
+          child: FutureBuilder<BankAccountModel>(
+            future: bankAccountController.fetchBankAccount(),
+            builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  UserAccountsDrawerHeader(
+                    currentAccountPicture: ClipOval(
+                        child: Image.network(
+                            'https://avatars.githubusercontent.com/u/63964369?v=4')
+                    ),
+                    accountName: Text(
+                        bankAccountController.bankAccountModel.userName ?? ''),
+                    accountEmail: null,
                   ),
-                  accountName: Text(bankAccountController.bankAccountModel.userName ?? ''),
-                accountEmail: null,
-              ),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Inicio'),
-                subtitle: Text('Tela de início'),
-                onTap: () {
-                  Navigator.of(context).pushReplacementNamed('/home');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Logout'),
-                subtitle: Text('Sair do aplicativo'),
-                onTap: () {
-                  storage.setToken('');
-                  Navigator.of(context).pushReplacementNamed('/');
-                },
-              )
-            ],
-          ),
+                  ListTile(
+                    leading: Icon(Icons.home),
+                    title: Text('Inicio'),
+                    subtitle: Text('Tela de início'),
+                    onTap: () {
+                      Navigator.of(navigatorKey.currentContext).pushReplacementNamed('/home');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    title: Text('Logout'),
+                    subtitle: Text('Sair do aplicativo'),
+                    onTap: () {
+                      storage.setToken('');
+                      Navigator.of(context).pushReplacementNamed('/');
+                    },
+                  )
+                ],
+              );
+            }
+            return CircularProgressIndicator();
+           }),
         ),
         body: Stack(children: [
           Container(color: Themes.primaryColor),
@@ -100,9 +110,8 @@ class _HomePageState extends State<HomePage> {
               child: [
                 InitialScreen(accountModel: bankAccountController.bankAccountModel),
                 PayScreen(),
-                TransferScreen(),
+                TransferScreen(balance: bankAccountController.bankAccountModel.balance,),
                 DepositScreen(),
-                DepositScreen()
               ].elementAt(_selectedIndex),
             ),
           ),

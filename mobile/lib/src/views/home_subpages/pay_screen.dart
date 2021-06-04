@@ -23,8 +23,6 @@ class _PayScreenState extends State<PayScreen> {
   @override
   void initState() {
     super.initState();
-    _transferController = TransferController(_moneyMaskedController,
-        _receiverController);
   }
 
   @override
