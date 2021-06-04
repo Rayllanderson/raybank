@@ -1,4 +1,5 @@
 
+
 import 'package:dio/dio.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/repositories/util.dart';
@@ -11,6 +12,6 @@ class BankAccountRepository{
   Future<BankAccountModel> fetchBankAccount() async {
     dio.options.headers = await getAuthHeaders();
     var response = await dio.get(bankAccountUrl);
-    return response.data;
+    return BankAccountModel.fromJson(response.data);
   }
 }

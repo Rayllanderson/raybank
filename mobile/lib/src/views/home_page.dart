@@ -47,12 +47,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  final BankAccountController bankAccountController = new BankAccountController();
+
+  BankAccountController bankAccountController;
 
   @override
   void initState() {
-    print('hey hey');
     super.initState();
+    bankAccountController = new BankAccountController();
     bankAccountController.fetchBankAccount();
   }
 
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   currentAccountPicture: ClipOval(
                       child: Image.network('https://avatars.githubusercontent.com/u/63964369?v=4')
                   ),
-                  accountName: Text('${bankAccountController.bankAccountModel.userName} '),
+                  accountName: Text(bankAccountController.bankAccountModel.userName ?? ''),
                 accountEmail: null,
               ),
               ListTile(
