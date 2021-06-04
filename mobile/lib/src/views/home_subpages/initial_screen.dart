@@ -18,7 +18,7 @@ class InitialScreen extends StatelessWidget {
           child: Container(
             alignment: Alignment.topLeft,
             child: Text(
-              'Olá, ' + accountModel.userName,
+              'Olá, ' + accountModel.userName ?? '',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Themes.textColor,

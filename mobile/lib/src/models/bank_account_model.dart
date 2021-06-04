@@ -12,6 +12,14 @@ class BankAccountModel {
         this.balance,
         this.creditCardDto});
 
+  BankAccountModel.empty(){
+    id = -1;
+    userName = '';
+    accountNumber = -1;
+    balance = -1;
+    creditCardDto = CreditCardDto.empty();
+  }
+
   BankAccountModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userName = json['userName'];
@@ -42,6 +50,13 @@ class CreditCardDto {
   double invoice;
 
   CreditCardDto({this.id, this.cardNumber, this.balance, this.invoice});
+
+  CreditCardDto.empty(){
+    this.id = -1;
+    this.cardNumber = -1;
+    this.balance = -1;
+    this.invoice = -1;
+  }
 
   CreditCardDto.fromJson(Map<String, dynamic> json) {
     id = json['id'];

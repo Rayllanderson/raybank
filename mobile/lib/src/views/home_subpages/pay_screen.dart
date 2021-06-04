@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/controllers/transfer_controller.dart';
-import 'package:mobile/src/utils/actions_util.dart';
 import 'package:mobile/src/utils/creator_util.dart';
 
 class PayScreen extends StatefulWidget {
@@ -26,9 +25,6 @@ class _PayScreenState extends State<PayScreen> {
     super.initState();
     _transferController = TransferController(_moneyMaskedController,
         _receiverController);
-    MyActions.goToTransferPage = (){
-      _transferController.goToSelectContactPage();
-    };
   }
 
   @override

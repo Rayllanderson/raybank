@@ -35,11 +35,11 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Themes.primaryColor,
         child: Icon(Icons.arrow_forward),
         onPressed: (){
-          if(index == 1){
+          if(index == 2){
             MyActions.goToTransferPage();
             print('indo pra página de transferência');
           }
-          if(index == 2){
+          if(index == 3){
             print('indo pra página de depósito');
           }
         },
@@ -47,13 +47,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
-  BankAccountController bankAccountController;
+  final BankAccountController bankAccountController = new BankAccountController();
 
   @override
   void initState() {
+    print('hey hey');
     super.initState();
-    bankAccountController = new BankAccountController();
     bankAccountController.fetchBankAccount();
   }
 
@@ -70,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                   currentAccountPicture: ClipOval(
                       child: Image.network('https://avatars.githubusercontent.com/u/63964369?v=4')
                   ),
-                  accountName: Text(bankAccountController.bankAccountModel.userName ?? ''),
+                  accountName: Text('${bankAccountController.bankAccountModel.userName} '),
                 accountEmail: null,
               ),
               ListTile(
