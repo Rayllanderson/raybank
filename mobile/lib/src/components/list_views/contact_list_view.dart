@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/alerts/alert.dart';
+import 'package:mobile/src/models/contact_model.dart';
 
 class ContactListView extends StatelessWidget {
-  final List<String> contacts;
+  final List<ContactModel> contacts;
 
   const ContactListView({Key key, this.contacts}) : super(key: key);
 
@@ -16,7 +17,7 @@ class ContactListView extends StatelessWidget {
           var contact = contacts[index];
           return ListTile(
             leading: Icon(Icons.account_circle_rounded),
-            title: Text(contact),
+            title: Text(contact.username),
             onTap: (){
               Alert.displaySimpleAlert('Clicou', 'Selecionado -> $contact');
             },
