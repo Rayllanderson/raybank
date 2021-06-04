@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobile/src/exceptions/bad_request_exception.dart';
 import 'package:mobile/src/models/api_response.dart';
+import 'package:mobile/src/models/login_model.dart';
 import 'package:mobile/src/models/register_model.dart';
+import 'package:mobile/src/models/user_model.dart';
 import 'package:mobile/src/repositories/util.dart';
 import 'package:mobile/src/services/api.dart';
+import 'package:mobile/src/utils/storage_util.dart';
 
 class UserRepository {
   static Future<void> register(RegisterModel userToBeRegistered) async {
-    print(json.encode(userToBeRegistered.toJson()));
-    print(userToBeRegistered.toJson());
     final url = Uri.parse(registerUrl);
     await http.post(url, body: json.encode(userToBeRegistered.toJson()), headers: getHeaders()).then((data) {
       bool fail = !(data.statusCode == 201);
@@ -20,6 +21,22 @@ class UserRepository {
         String message = error.getMessageError();
         throw BadRequestException(
             title: "Ocorreu um erro", message: message);
+      }
+    });
+  }
+
+  static Future<void> login(LoginModel userToLogin) async {
+    final url = Uri.parse(loginUrl);
+    await http.post(url, body: json.encode(userToLogin.toJson()), headers: getHeaders()).then((data) {
+      bool fail = !(data.statusCode == 200);
+      final jsonData = json.decode(utf8.decode(data.bodyBytes));
+      if (fail) {
+        var error = APIResponseError.fromJson(jsonData);
+        String message = error.getMessageError();
+        throw BadRequestException(
+            title: "Erro", message: message);
+      } else {
+        Storage.setToken(UserModel.fromJson(jsonData).token);
       }
     });
   }

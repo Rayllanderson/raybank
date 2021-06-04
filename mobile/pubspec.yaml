@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_masked_text: ^0.8.0
   http: ^0.13.3
+  flutter_secure_storage: ^4.2.0
 
 dev_dependencies:
   flutter_test:
