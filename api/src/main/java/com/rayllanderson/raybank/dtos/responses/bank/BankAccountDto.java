@@ -23,6 +23,7 @@ public class BankAccountDto {
     public static BankAccountDto fromBankAccount(BankAccount bankAccount){
         BankAccountDto dto = new ModelMapper().map(bankAccount, BankAccountDto.class);
         dto.setUserName(bankAccount.getUser().getName());
+        dto.setCreditCardDto(CreditCardDto.fromCreditCard(bankAccount.getCreditCard()));
         return dto;
     }
 }
