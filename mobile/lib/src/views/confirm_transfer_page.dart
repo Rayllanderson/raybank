@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/src/components/buttons/primary_button.dart';
-import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/components/headers/header.dart';
 import 'package:mobile/src/controllers/confirm_transfer_controller.dart';
 import 'package:mobile/src/models/transfer_model.dart';
@@ -62,6 +61,7 @@ class _ConfirmTransferPageState extends State<ConfirmTransferPage> {
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
                   child: TextField(
+                    maxLength: 40,
                     controller: messageController,
                     decoration: InputDecoration(
                       labelText: "Escreva uma mensagem...",

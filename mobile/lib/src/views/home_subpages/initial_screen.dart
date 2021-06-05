@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/main.dart';
 import 'package:mobile/src/components/cards/initial_page_card.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/themes/themes.dart';
@@ -32,6 +33,7 @@ class _InitialScreenState extends State<InitialScreen> {
           ),
         ),
         InitialPageCard(
+            cardTap: (){print('cartão de credito');},
             title: 'Cartão de crédito',
             icon: Icon(Icons.credit_card_rounded),
             sizedBoxHeight: 5.0,
@@ -72,6 +74,9 @@ class _InitialScreenState extends State<InitialScreen> {
               ],
             )),
         InitialPageCard(
+          cardTap: (){
+            Navigator.of(navigatorKey.currentContext).pushNamed('/balance');
+          },
           title: 'Saldo disponível',
           icon: Icon(Icons.account_balance_wallet),
           cardHeight: 170.0,
@@ -82,6 +87,7 @@ class _InitialScreenState extends State<InitialScreen> {
                   color: Colors.black)),
         ),
         InitialPageCard(
+            cardTap: (){print(' pix');},
             title: 'Pix',
             icon: Image.asset("assets/images/pix.png", width: 24),
             cardHeight: 170.0,

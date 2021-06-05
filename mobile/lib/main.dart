@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/src/utils/storage_util.dart';
 import 'package:mobile/src/views/confirm_transfer_page.dart';
 import 'package:mobile/src/views/home_page.dart';
+import 'package:mobile/src/views/home_subpages/initial_screen_subpages/balace_screen.dart';
 import 'package:mobile/src/views/login_page.dart';
 import 'package:mobile/src/views/register_page.dart';
 import 'package:mobile/src/views/transfer_page.dart';
@@ -29,6 +30,7 @@ void main() async {
       '/home': (context) => HomePage(),
       '/transfer': (context) => TransferPage(),
       '/confirm-transfer': (context) => ConfirmTransferPage(),
+      '/balance': (context) => BalanceScreen(),
     },
   ));
 }

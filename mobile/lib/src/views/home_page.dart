@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     accountName: Text(
                         account.userName ?? ''),
-                    accountEmail: null,
+                    accountEmail: Text('Nº Conta ${account.accountNumber}'),
                   ),
                   ListTile(
                     leading: Icon(Icons.home),
