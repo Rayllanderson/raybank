@@ -29,6 +29,9 @@ class _PageCardState extends State<PageCard> {
     return Container(
       height: 600,
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(
           children: [
             SizedBox(

@@ -17,7 +17,10 @@ class PrimaryButton extends StatelessWidget {
         ),
         style: ElevatedButton.styleFrom(
           primary: Themes.primaryColor,
-          minimumSize: Size(double.infinity, 43.0),
+          minimumSize: Size(double.infinity, 45.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // <-- Radius
+           ),
         ));
   }
 }

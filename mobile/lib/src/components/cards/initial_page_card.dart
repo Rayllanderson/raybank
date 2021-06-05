@@ -24,6 +24,9 @@ class _InitialPageCardState extends State<InitialPageCard> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           color: Themes.secondaryColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

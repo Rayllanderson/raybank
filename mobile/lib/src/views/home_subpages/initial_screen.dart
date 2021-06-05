@@ -3,12 +3,17 @@ import 'package:mobile/src/components/cards/initial_page_card.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/themes/themes.dart';
 
-class InitialScreen extends StatelessWidget {
+class InitialScreen extends StatefulWidget {
 
   final BankAccountModel accountModel;
 
   const InitialScreen({Key key, this.accountModel}) : super(key: key);
 
+  @override
+  _InitialScreenState createState() => _InitialScreenState();
+}
+
+class _InitialScreenState extends State<InitialScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,7 +23,7 @@ class InitialScreen extends StatelessWidget {
           child: Container(
             alignment: Alignment.topLeft,
             child: Text(
-              'Olá, ' + accountModel.userName ?? '',
+              'Olá, ' + widget.accountModel.userName ?? '',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Themes.textColor,
@@ -42,7 +47,7 @@ class InitialScreen extends StatelessWidget {
                 SizedBox(
                   height: 3,
                 ),
-                Text('R\$ ' + accountModel.creditCardDto.invoice.toString(),
+                Text('R\$ ' + widget.accountModel.creditCardDto.invoice.toString(),
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -57,7 +62,7 @@ class InitialScreen extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: FontWeight.w300,
                             color: Colors.black)),
-                    Text(' R\$ ' + accountModel.creditCardDto.balance.toString(),
+                    Text(' R\$ ${widget.accountModel.creditCardDto.balance}',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -70,7 +75,7 @@ class InitialScreen extends StatelessWidget {
           title: 'Saldo disponível',
           icon: Icon(Icons.account_balance_wallet),
           cardHeight: 170.0,
-          body: Text('R\$ ' + accountModel.balance.toString(),
+          body: Text('R\$ ' + widget.accountModel.balance.toString(),
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -88,7 +93,11 @@ class InitialScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   minimumSize: Size(0, 43.0),
                   primary: Themes.textColor,
-                  side: BorderSide(color: Themes.primaryColor)),
+                  side: BorderSide(color: Themes.primaryColor),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20), // <-- Radius
+                  ),
+              ),
               onPressed: () {},
             )),
       ],

@@ -13,6 +13,19 @@ class MyTextStyle{
     );
   }
 
+  static listTitle(){
+    return TextStyle(
+        fontSize: 20,
+    );
+  }
+
+  static listSubtitle(){
+    return TextStyle(
+      fontSize: 18,
+    );
+  }
+
+
   static subtitle(){
     return TextStyle(
         fontSize: 18,

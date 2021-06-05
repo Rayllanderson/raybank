@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/utils/storage_util.dart';
+import 'package:mobile/src/views/confirm_transfer_page.dart';
 import 'package:mobile/src/views/home_page.dart';
 import 'package:mobile/src/views/login_page.dart';
 import 'package:mobile/src/views/register_page.dart';
@@ -27,6 +28,7 @@ void main() async {
       '/register': (context) => RegisterPage(),
       '/home': (context) => HomePage(),
       '/transfer': (context) => TransferPage(),
+      '/confirm-transfer': (context) => ConfirmTransferPage(),
     },
   ));
 }

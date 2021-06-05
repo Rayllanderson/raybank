@@ -48,14 +48,18 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  BankAccountController bankAccountController;
-  Future<BankAccountModel> account;
+  BankAccountController bankAccountController = new BankAccountController();
+  BankAccountModel account = new BankAccountModel.empty();
+
+  fetchData() async {
+    account = await bankAccountController.fetchBankAccount();
+    _onItemTapped(0);
+  }
 
   @override
   void initState() {
+    fetchData();
     super.initState();
-    bankAccountController = new BankAccountController();
-    bankAccountController.fetchBankAccount();
   }
 
   @override
@@ -68,7 +72,6 @@ class _HomePageState extends State<HomePage> {
           child: FutureBuilder<BankAccountModel>(
             future: bankAccountController.fetchBankAccount(),
             builder: (context, snapshot) {
-            if (snapshot.hasData) {
               return Column(
                 children: [
                   UserAccountsDrawerHeader(
@@ -77,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                             'https://avatars.githubusercontent.com/u/63964369?v=4')
                     ),
                     accountName: Text(
-                        bankAccountController.bankAccountModel.userName ?? ''),
+                        account.userName ?? ''),
                     accountEmail: null,
                   ),
                   ListTile(
@@ -99,8 +102,6 @@ class _HomePageState extends State<HomePage> {
                   )
                 ],
               );
-            }
-            return CircularProgressIndicator();
            }),
         ),
         body: Stack(children: [
@@ -108,9 +109,9 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: SingleChildScrollView(
               child: [
-                InitialScreen(accountModel: bankAccountController.bankAccountModel),
+                InitialScreen(accountModel: account,),
                 PayScreen(),
-                TransferScreen(balance: bankAccountController.bankAccountModel.balance,),
+                TransferScreen(balance: account.balance,),
                 DepositScreen(),
               ].elementAt(_selectedIndex),
             ),
