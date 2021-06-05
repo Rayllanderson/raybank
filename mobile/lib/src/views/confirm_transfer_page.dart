@@ -3,6 +3,7 @@ import 'package:mobile/main.dart';
 import 'package:mobile/src/components/buttons/primary_button.dart';
 import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/components/headers/header.dart';
+import 'package:mobile/src/controllers/confirm_transfer_controller.dart';
 import 'package:mobile/src/models/transfer_model.dart';
 
 class ConfirmTransferPage extends StatefulWidget {
@@ -15,6 +16,8 @@ class ConfirmTransferPage extends StatefulWidget {
 class _ConfirmTransferPageState extends State<ConfirmTransferPage> {
 
   TransferModel transaction = TransferModel.empty();
+  TextEditingController messageController = new TextEditingController();
+  ConfirmTransferController controller;
 
   void fetchData() async {
     transaction = await storage.getTransfer();
@@ -23,6 +26,7 @@ class _ConfirmTransferPageState extends State<ConfirmTransferPage> {
   @override
   void initState() {
     fetchData();
+    controller = new ConfirmTransferController(messageController);
     super.initState();
   }
 
@@ -48,7 +52,7 @@ class _ConfirmTransferPageState extends State<ConfirmTransferPage> {
                         title:
                         'Transferindo R\$ ${transaction.amount}',
                         subtitle:
-                        'Para ${transaction.to}');
+                        'Para: ${transaction.toName}');
                   },
                 ),
               ),
@@ -58,6 +62,7 @@ class _ConfirmTransferPageState extends State<ConfirmTransferPage> {
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40.0),
                   child: TextField(
+                    controller: messageController,
                     decoration: InputDecoration(
                       labelText: "Escreva uma mensagem...",
                       fillColor: Colors.white,
@@ -73,7 +78,9 @@ class _ConfirmTransferPageState extends State<ConfirmTransferPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: PrimaryButton(
-                      onPress: () {},
+                      onPress: () {
+                        controller.transfer();
+                      },
                       text: 'Transferir',
                     ),
                   ),

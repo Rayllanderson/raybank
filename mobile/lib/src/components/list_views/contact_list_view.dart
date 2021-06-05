@@ -31,6 +31,7 @@ class ContactListView extends StatelessWidget {
             onTap: () async {
               TransferModel transaction = await storage.getTransfer();
               transaction.to = contact.accountNumber.toString();
+              transaction.toName = contact.name;
               storage.setTransfer(transaction);
               Navigator.of(navigatorKey.currentContext).pushNamed("/confirm-transfer");
             },

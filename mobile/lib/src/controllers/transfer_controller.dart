@@ -22,10 +22,6 @@ class TransferController {
     Navigator.pushNamed(navigatorKey.currentContext, '/transfer');
   }
 
-  void goToMessagePage(){
-
-  }
-
   /// verifica se o valor é menor que o valor disponível na conta
   bool isAmountInvalid(){
     double value = double.tryParse(unmaskMoney(moneyController.text)) ?? 0.0;
