@@ -26,6 +26,7 @@ class _TransferPageState extends State<TransferPage> {
   }
 
   BankAccountRepository bankAccountRepository = new BankAccountRepository();
+  TextEditingController controller = new TextEditingController();
 
   @override
   void initState() {
@@ -62,7 +63,7 @@ class _TransferPageState extends State<TransferPage> {
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: NumberInput(
-                  controller: TextEditingController(),
+                  controller: controller,
                   onChange: (value) {},
                   hintText: 'Pix ou número da conta',
                 )),
@@ -72,7 +73,14 @@ class _TransferPageState extends State<TransferPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: PrimaryButton(
-                    onPress: () {},
+                    onPress: () async {
+                      String to = controller.text;
+                      TransferModel transaction = await storage.getTransfer();
+                      transaction.to = to;
+                      transaction.toName = to;
+                      storage.setTransfer(transaction);
+                      Navigator.of(navigatorKey.currentContext).pushNamed("/confirm-transfer");
+                    },
                     text: 'Transferir',
                   ),
                 ),
