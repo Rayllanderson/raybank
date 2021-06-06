@@ -94,8 +94,10 @@ class StatementModel {
     String message = 'Valor: ${getSubtitle()}\n';
     String day = DateFormat("d", 'pt_BR').format(DateTime.parse(moment).toUtc());
     String month = DateFormat("MMMM", 'pt_BR').format(DateTime.parse(moment).toUtc());
-    String hour = DateFormat("jm", 'pt_BR').format(DateTime.parse(moment).toUtc());
-    message += 'Data: $day de $month, $hour\n';
+    String hour = DateFormat("HH", 'pt_BR').format(DateTime.parse(moment).toUtc());
+    String min = DateFormat("mm", 'pt_BR').format(DateTime.parse(moment).toUtc());
+    hour = (int.parse(hour) - 3).toString();
+    message += 'Data: $day de $month, $hour:$min\n';
     if (this.message != null && this.message.isNotEmpty){
       message += "Mensagem: ${this.message}\n";
     }

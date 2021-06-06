@@ -32,7 +32,7 @@ void main() async {
       '/home': (context) => HomePage(),
       '/transfer': (context) => TransferPage(),
       '/confirm-transfer': (context) => ConfirmTransferPage(),
-      '/balance': (context) => BalanceScreen(),
+      '/pix': (context) => BalanceScreen(),
     },
   ));
 }

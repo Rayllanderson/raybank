@@ -5,6 +5,7 @@ import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/string_util.dart';
 import 'package:mobile/src/views/home_subpages/initial_screen_subpages/balace_screen.dart';
 import 'package:mobile/src/views/home_subpages/initial_screen_subpages/credit_card_screen.dart';
+import 'package:mobile/src/views/home_subpages/initial_screen_subpages/pix_screen.dart';
 
 class InitialScreen extends StatefulWidget {
 
@@ -92,7 +93,9 @@ class _InitialScreenState extends State<InitialScreen> {
                   color: Colors.black)),
         ),
         InitialPageCard(
-            cardTap: (){print(' pix');},
+            cardTap: (){
+              Navigator.push(context,MaterialPageRoute(builder: (context) => PixScreen()));
+            },
             title: 'Pix',
             icon: Image.asset("assets/images/pix.png", width: 24),
             cardHeight: 170.0,
@@ -109,7 +112,9 @@ class _InitialScreenState extends State<InitialScreen> {
                     borderRadius: BorderRadius.circular(10), // <-- Radius
                   ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,MaterialPageRoute(builder: (context) => PixScreen()));
+              },
             )),
       ],
     );
