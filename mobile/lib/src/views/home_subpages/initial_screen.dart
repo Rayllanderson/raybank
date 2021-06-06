@@ -3,6 +3,7 @@ import 'package:mobile/main.dart';
 import 'package:mobile/src/components/cards/initial_page_card.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/themes/themes.dart';
+import 'package:mobile/src/utils/string_util.dart';
 
 class InitialScreen extends StatefulWidget {
 
@@ -49,7 +50,7 @@ class _InitialScreenState extends State<InitialScreen> {
                 SizedBox(
                   height: 3,
                 ),
-                Text('R\$ ' + widget.accountModel.creditCardDto.invoice.toString(),
+                Text(convertToBRL(widget.accountModel.creditCardDto.invoice),
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -64,7 +65,7 @@ class _InitialScreenState extends State<InitialScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w300,
                             color: Colors.black)),
-                    Text(' R\$ ${widget.accountModel.creditCardDto.balance}',
+                    Text(convertToBRL(widget.accountModel.creditCardDto.balance),
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -80,7 +81,7 @@ class _InitialScreenState extends State<InitialScreen> {
           title: 'Saldo disponível',
           icon: Icon(Icons.account_balance_wallet),
           cardHeight: 170.0,
-          body: Text('R\$ ' + widget.accountModel.balance.toString(),
+          body: Text(convertToBRL(widget.accountModel.balance),
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,

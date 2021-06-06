@@ -5,6 +5,7 @@ import 'package:mobile/src/controllers/bank_account_controller.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/models/statement_model.dart';
 import 'package:mobile/src/themes/themes.dart';
+import 'package:mobile/src/utils/string_util.dart';
 
 class BalanceScreen extends StatefulWidget {
   const BalanceScreen({Key key}) : super(key: key);
@@ -60,7 +61,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   width: double.infinity,
-                  height: 100,
+                  height: 110,
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -75,7 +76,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                           children: [
                             Text('Saldo na conta', style: MyTextStyle.subtitle()),
                             SizedBox(height: 10,),
-                            Text('R\$ ${account.balance}', style: MyTextStyle.title(),)
+                            Text(convertToBRL(account.balance), style: MyTextStyle.title(),)
                           ]
                         );},
                       ),
@@ -83,7 +84,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 15,),
+              SizedBox(height: 5,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(

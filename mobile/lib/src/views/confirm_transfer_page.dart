@@ -4,6 +4,7 @@ import 'package:mobile/src/components/buttons/primary_button.dart';
 import 'package:mobile/src/components/headers/header.dart';
 import 'package:mobile/src/controllers/confirm_transfer_controller.dart';
 import 'package:mobile/src/models/transfer_model.dart';
+import 'package:mobile/src/utils/string_util.dart';
 
 class ConfirmTransferPage extends StatefulWidget {
   const ConfirmTransferPage({Key key}) : super(key: key);
@@ -49,7 +50,7 @@ class _ConfirmTransferPageState extends State<ConfirmTransferPage> {
                   builder: (context, snapshot) {
                     return Header(
                         title:
-                        'Transferindo R\$ ${transaction.amount}',
+                        'Transferindo ${convertToBRL(transaction.amount)}',
                         subtitle:
                         'Para: ${transaction.toName}');
                   },

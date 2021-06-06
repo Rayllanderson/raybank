@@ -3,6 +3,7 @@ import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/controllers/transfer_controller.dart';
 import 'package:mobile/src/utils/actions_util.dart';
 import 'package:mobile/src/utils/creator_util.dart';
+import 'package:mobile/src/utils/string_util.dart';
 
 class TransferScreen extends StatefulWidget {
 
@@ -37,7 +38,7 @@ class _TransferScreenState extends State<TransferScreen> {
     bool isErrorVisible = false;
     return PageCard(
       headerTitle: 'Qual o valor da transferência?',
-      headerSubtitle: 'Você tem disponível R\$ ${widget.balance}',
+      headerSubtitle: 'Você tem disponível ${convertToBRL(widget.balance)}',
       moneyMaskedController: _moneyMaskedController,
       errorText: 'Você não possui saldo suficiente na sua conta',
       isErrorVisible: (){

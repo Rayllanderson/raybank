@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:mobile/src/components/cards/page_card.dart';
-import 'package:mobile/src/utils/mask_util.dart';
 
 class DepositScreen extends StatefulWidget {
   const DepositScreen({Key key}) : super(key: key);
