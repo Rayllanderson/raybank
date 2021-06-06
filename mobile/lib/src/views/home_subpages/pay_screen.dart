@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/buttons/pay_button.dart';
+import 'package:mobile/src/models/bank_account_model.dart';
+import 'package:mobile/src/models/enums/payment_type.dart';
+import 'package:mobile/src/models/payment_model.dart';
 import 'package:mobile/src/views/payment_page.dart';
 
 class PayScreen extends StatefulWidget {
 
-  const PayScreen({Key key}) : super(key: key);
-
+  const PayScreen({Key key, this.account}) : super(key: key);
+  final BankAccountModel account;
   @override
   _PayScreenState createState() => _PayScreenState();
 }
@@ -41,7 +44,10 @@ class _PayScreenState extends State<PayScreen> {
                 text: 'Pagar um boleto',
                 icon: Icons.qr_code,
                 onPress: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(paymentType: "Boleto")));
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(
+                    paymentModel: PaymentModel(PaymentType.BRAZILIAN_BOLETO,
+                        widget.account.balance),
+                  )));
                 },
               ),
               SizedBox(
@@ -51,7 +57,9 @@ class _PayScreenState extends State<PayScreen> {
                 text: 'Pagar com crédito',
                 icon: Icons.credit_card_rounded,
                 onPress: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(paymentType: "Cartão de crédito")));
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(
+                    paymentModel: PaymentModel(PaymentType.CREDIT_CARD,
+                        widget.account.creditCardDto.balance),)));
                 },
               ),
               SizedBox(
@@ -61,7 +69,9 @@ class _PayScreenState extends State<PayScreen> {
                 text: 'Pagar Fatura',
                 icon: Icons.analytics_sharp,
                 onPress: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(paymentType: "Fatura")));
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(
+                    paymentModel: PaymentModel(PaymentType.INVOICE,
+                        widget.account.creditCardDto.invoice),)));
                 },
               )
             ],

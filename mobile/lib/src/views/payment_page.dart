@@ -5,12 +5,14 @@ import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/components/inputs/text_input_masked.dart';
 import 'package:mobile/src/components/list_views/payment_list_title.dart';
 import 'package:mobile/src/components/texts/styles/text_styles.dart';
+import 'package:mobile/src/models/payment_model.dart';
 import 'package:mobile/src/themes/themes.dart';
+import 'package:mobile/src/utils/string_util.dart';
 
 class PaymentPage extends StatefulWidget {
-  const PaymentPage({Key key, this.paymentType}) : super(key: key);
+  const PaymentPage({Key key, this.paymentModel}) : super(key: key);
 
-  final paymentType;
+  final PaymentModel paymentModel;
 
   @override
   _PaymentPageState createState() => _PaymentPageState();
@@ -66,12 +68,12 @@ class _PaymentPageState extends State<PaymentPage> {
                        ),
                        PaymentListTitle(
                          title: 'Tipo de pagamento',
-                         subtitle: widget.paymentType,
+                         subtitle: widget.paymentModel.getPaymentType(),
                          icon: Icons.assignment_late,
                        ),
                        PaymentListTitle(
-                         title: 'Saldo disponível',
-                         subtitle: 'R\$ 200',
+                         title: widget.paymentModel.getTitle(),
+                         subtitle: convertToBRL(widget.paymentModel.availableAmount),
                          icon: Icons.account_balance_wallet,
                        ),
 

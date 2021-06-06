@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
             child: SingleChildScrollView(
               child: [
                 InitialScreen(accountModel: account,),
-                PayScreen(),
+                PayScreen(account: account,),
                 TransferScreen(balance: account.balance,),
                 DepositScreen(),
               ].elementAt(_selectedIndex),
