@@ -7,7 +7,7 @@ import 'package:mobile/src/models/pix_response.dart';
 import 'package:mobile/src/repositories/util.dart';
 import 'package:mobile/src/services/api.dart';
 
-class PaymentRepository{
+class PixRepository{
 
   final dio = Dio();
 
