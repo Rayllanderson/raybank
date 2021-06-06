@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/texts/styles/text_styles.dart';
+import 'package:mobile/src/components/alerts/alert.dart';
 import 'package:mobile/src/models/statement_model.dart';
 
 class StatementList extends StatelessWidget {
@@ -15,19 +15,29 @@ class StatementList extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           var statement = statements[index];
-          return ListTile(
-            title: Text('${statement.getTitle()}', style: TextStyle(
-                fontSize: 18
-            )),
-            subtitle: Text('${statement.getSubtitle()}', style: TextStyle(
-              fontSize: 17
-            )),
-            leading: Icon(
-              statement.getIcon(),
-              size: 24,
-              color: statement.getIconColor(),
-            ),
-            trailing: Text(statement.getMoment()),
+          return Column(
+            children: [
+              ListTile(
+                onTap: (){
+                  Alert.displaySimpleAlert(' ${statement.getTitle()}', '${statement.getMessage()}');
+                },
+                title: Text('${statement.getTitle()}', style: TextStyle(
+                    fontSize: 18
+                )),
+                subtitle: Text('${statement.getSubtitle()}', style: TextStyle(
+                  fontSize: 17
+                )),
+                leading: Icon(
+                  statement.getIcon(),
+                  size: 24,
+                  color: statement.getIconColor(),
+                ),
+                trailing: Text(statement.getMoment()),
+              ),
+              Divider(
+                thickness: 0.5,
+              )
+            ],
           );
         });
   }

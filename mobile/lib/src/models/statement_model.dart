@@ -86,4 +86,17 @@ class StatementModel {
     }
     return '${convertToBRL(amount)}';
   }
+
+  getMessage(){
+    String message = 'Valor: ${getSubtitle()}\n';
+    String day = DateFormat("d", 'pt_BR').format(DateTime.parse(moment));
+    String month = DateFormat("MMMM", 'pt_BR').format(DateTime.parse(moment));
+    String hour = DateFormat("jm", 'pt_BR').format(DateTime.parse(moment));
+    message += 'Data: $day de $month as $hour\n';
+    if (this.message != null && this.message.isNotEmpty){
+      message += "Mensagem: ${this.message}\n";
+    }
+
+    return message;
+  }
 }

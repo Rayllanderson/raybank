@@ -78,8 +78,4 @@ class CreditCardDto {
     data['invoice'] = this.invoice;
     return data;
   }
-
-  String getBalance() {
-    return convertToBRL(balance);
-  }
 }
