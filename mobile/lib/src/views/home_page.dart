@@ -65,44 +65,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  homeDrawer(){
-    Drawer(
-      child: FutureBuilder<BankAccountModel>(
-          future: bankAccountController.fetchBankAccount(),
-          builder: (context, snapshot) {
-            return Column(
-              children: [
-                UserAccountsDrawerHeader(
-                  currentAccountPicture: ClipOval(
-                      child: Image.network(
-                          'https://avatars.githubusercontent.com/u/63964369?v=4')
-                  ),
-                  accountName: Text(
-                      account.userName ?? ''),
-                  accountEmail: Text('Nº Conta ${account.accountNumber}'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.home),
-                  title: Text('Inicio'),
-                  subtitle: Text('Tela de início'),
-                  onTap: () {
-                    Navigator.of(navigatorKey.currentContext).pushReplacementNamed('/home');
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.logout),
-                  title: Text('Logout'),
-                  subtitle: Text('Sair do aplicativo'),
-                  onTap: () {
-                    storage.setToken('');
-                    Navigator.of(context).pushReplacementNamed('/');
-                  },
-                )
-              ],
-            );
-          }),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +72,42 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text('Raybank'),
         ),
-        drawer: homeDrawer(),
+        drawer: Drawer(
+          child: FutureBuilder<BankAccountModel>(
+              future: bankAccountController.fetchBankAccount(),
+              builder: (context, snapshot) {
+                return Column(
+                  children: [
+                    UserAccountsDrawerHeader(
+                      currentAccountPicture: ClipOval(
+                          child: Image.network(
+                              'https://avatars.githubusercontent.com/u/63964369?v=4')
+                      ),
+                      accountName: Text(
+                          account.userName ?? ''),
+                      accountEmail: Text('Nº Conta ${account.accountNumber}'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.home),
+                      title: Text('Inicio'),
+                      subtitle: Text('Tela de início'),
+                      onTap: () {
+                        Navigator.of(navigatorKey.currentContext).pushReplacementNamed('/home');
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.logout),
+                      title: Text('Logout'),
+                      subtitle: Text('Sair do aplicativo'),
+                      onTap: () {
+                        storage.setToken('');
+                        Navigator.of(context).pushReplacementNamed('/');
+                      },
+                    )
+                  ],
+                );
+              }),
+        ),
         body: Stack(children: [
           Container(color: Themes.primaryColor),
           Center(

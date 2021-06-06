@@ -14,8 +14,11 @@ class LoginInput extends StatelessWidget {
       child: TextField(
         controller: controller,
         obscureText: _isPassword,
-        style: TextStyle(color: Themes.textColor),
+        keyboardType: _isPassword ? TextInputType.number : TextInputType.text,
+        style: TextStyle(color: Themes.textColor, fontSize: 17),
+        maxLength: _isPassword ? 6 : null,
         decoration: InputDecoration(
+          counterStyle: TextStyle(color: Themes.textColor),
           hintText: _labelText,
           hintStyle: TextStyle(color: Themes.textColor),
           enabledBorder:  UnderlineInputBorder(
