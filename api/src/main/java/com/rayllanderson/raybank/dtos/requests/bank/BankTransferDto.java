@@ -23,7 +23,7 @@ public class BankTransferDto {
     @NotNull
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal amount;
-    @Size(max = 20)
+    @Size(max = 40)
     private String message;
 
 }
