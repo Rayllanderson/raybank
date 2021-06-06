@@ -4,6 +4,7 @@ import 'package:mobile/src/components/buttons/primary_button.dart';
 import 'package:mobile/src/components/inputs/text_input_masked.dart';
 import 'package:mobile/src/components/list_views/payment_list_title.dart';
 import 'package:mobile/src/components/texts/styles/text_styles.dart';
+import 'package:mobile/src/controllers/payment_controller.dart';
 import 'package:mobile/src/models/payment_model.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/mask_util.dart';
@@ -23,7 +24,15 @@ class _PaymentPageState extends State<PaymentPage> {
       decimalSeparator: ',', thousandSeparator: '.', leftSymbol: 'R\$ ');
 
   bool isErrorVisible = false;
-  String errorText = '';
+
+  PaymentController paymentController;
+
+  @override
+  void initState() {
+    this.paymentController = new PaymentController(moneyMaskedController, widget.paymentModel);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +66,7 @@ class _PaymentPageState extends State<PaymentPage> {
                              controller: moneyMaskedController,
                              onChange: (value){
                                setState(() {
-                                 isErrorVisible =
-                                     double.parse(unmaskMoney(moneyMaskedController.text)) > widget.paymentModel.availableAmount;
+                                 isErrorVisible = paymentController.isAmountInvalid();
                                });
                              },
                            )
@@ -87,7 +95,9 @@ class _PaymentPageState extends State<PaymentPage> {
                          padding: const EdgeInsets.all(8.0),
                          child: PrimaryButton(
                            text: "Pagar",
-                           onPress: isErrorVisible ? null : (){},
+                           onPress: isErrorVisible ? null : (){
+                             paymentController.pay();
+                           },
                          ),
                        ),
                      ],

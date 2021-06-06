@@ -1,15 +1,22 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:mobile/main.dart';
 import 'package:mobile/src/components/alerts/alert.dart';
 import 'package:mobile/src/models/erro_model.dart';
+import 'package:mobile/src/models/payment_model.dart';
 import 'package:mobile/src/repositories/payment_repository.dart';
 import 'package:mobile/src/utils/throw_error.dart';
 
-class BankAccountService {
+class PaymentService {
   final PaymentRepository repository = new PaymentRepository();
 
-  Future<void> payBoleto(double amount) async {
+  Future<void> payBoleto(PaymentModel model) async {
     try {
-      await repository.payBoleto(amount);
+      await repository.payBoleto(model);
+      Navigator.of(navigatorKey.currentContext).pushReplacementNamed('/home');
+      Alert.displaySimpleAlert("Sucesso", "Sua pagamento via boleto foi aprovado!");
     } on DioError catch (e) {
       ApiError err = catchError(e.response);
       Alert.displaySimpleAlert(err.title, err.message);
@@ -17,9 +24,11 @@ class BankAccountService {
     }
   }
 
-  Future<void> payWithCreditCard(double amount) async {
+  Future<void> payWithCreditCard(PaymentModel model) async {
     try {
-      await repository.payWithCreditCard(amount);
+      await repository.payWithCreditCard(model);
+      Navigator.of(navigatorKey.currentContext).pushReplacementNamed('/home');
+      Alert.displaySimpleAlert("Sucesso", "Sua compra no cartão de crédito foi aprovada!");
     } on DioError catch (e) {
       ApiError err = catchError(e.response);
       Alert.displaySimpleAlert(err.title, err.message);
@@ -27,9 +36,11 @@ class BankAccountService {
     }
   }
 
-  Future<void> payInvoice(double amount) async {
+  Future<void> payInvoice(PaymentModel model) async {
     try {
-      await repository.payInvoice(amount);
+      await repository.payInvoice(model);
+      Navigator.of(navigatorKey.currentContext).pushReplacementNamed('/home');
+      Alert.displaySimpleAlert("Pronto", "Sua fatura foi paga com sucesso!");
     } on DioError catch (e) {
       ApiError err = catchError(e.response);
       Alert.displaySimpleAlert(err.title, err.message);

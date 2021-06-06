@@ -77,7 +77,7 @@ class StatementModel {
       return 'Pagamento da fatura';
     }
     if (statementType == 'CREDIT_CARD_PAYMENT') {
-      return 'Pagamento com cartão de crédito';
+      return 'Compra no cartão de crédito';
     }
   }
 

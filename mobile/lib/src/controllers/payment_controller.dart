@@ -1,31 +1,36 @@
-import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/src/models/transfer_model.dart';
+import 'package:mobile/src/models/enums/payment_type.dart';
+import 'package:mobile/src/models/payment_model.dart';
+import 'package:mobile/src/services/payment_service.dart';
 import 'package:mobile/src/utils/mask_util.dart';
 
 class PaymentController {
 
   final moneyController;
-  final receiverController;
-  final available;
+  final PaymentService service = new PaymentService();
+  final PaymentModel paymentModel;
 
-  PaymentController(this.moneyController, this.receiverController, this.available);
+  PaymentController(this.moneyController, this.paymentModel);
 
-  void goToSelectContactPage(){
-    double value = double.tryParse(unmaskMoney(moneyController.text)) ?? 0.0;
-    if (isAmountInvalid() || value == 0)
-      return;
-
-    var transaction = TransferModel(amount: value);
-    storage.setTransfer(transaction);
-
-    Navigator.pushNamed(navigatorKey.currentContext, '/transfer');
+  void pay(){
+    double valueToBePaid = double.parse(unmaskMoney(moneyController.text));
+    paymentModel.amount = valueToBePaid;
+    if(valueToBePaid == 0.0) return;
+    switch(paymentModel.type){
+      case PaymentType.BRAZILIAN_BOLETO:
+        service.payBoleto(paymentModel);
+        break;
+      case PaymentType.CREDIT_CARD:
+        service.payWithCreditCard(paymentModel);
+        break;
+      case PaymentType.INVOICE:
+        service.payInvoice(paymentModel);
+        break;
+    }
   }
 
-  /// verifica se o valor é menor que o valor disponível na conta
+
   bool isAmountInvalid(){
     double value = double.tryParse(unmaskMoney(moneyController.text)) ?? 0.0;
-    double accountBalance = available;
-    return value > accountBalance;
+    return value > paymentModel.availableAmount;
   }
 }
