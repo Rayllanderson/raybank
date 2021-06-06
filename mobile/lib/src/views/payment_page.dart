@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:mobile/src/components/buttons/primary_button.dart';
-import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/components/inputs/text_input_masked.dart';
 import 'package:mobile/src/components/list_views/payment_list_title.dart';
 import 'package:mobile/src/components/texts/styles/text_styles.dart';
 import 'package:mobile/src/models/payment_model.dart';
 import 'package:mobile/src/themes/themes.dart';
+import 'package:mobile/src/utils/mask_util.dart';
 import 'package:mobile/src/utils/string_util.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -55,7 +55,12 @@ class _PaymentPageState extends State<PaymentPage> {
                            padding: const EdgeInsets.symmetric(horizontal: 25.0),
                            child: TextInputMasked(
                              controller: moneyMaskedController,
-                             onChange: (value){},
+                             onChange: (value){
+                               setState(() {
+                                 isErrorVisible =
+                                     double.parse(unmaskMoney(moneyMaskedController.text)) > widget.paymentModel.availableAmount;
+                               });
+                             },
                            )
                        ),
                        SizedBox(height: 30),
@@ -63,7 +68,7 @@ class _PaymentPageState extends State<PaymentPage> {
                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
                          child: Visibility(
                              visible: isErrorVisible,
-                             child: Text(errorText, style: MyTextStyle.errorText(),
+                             child: Text('A quantia é maior que o ${widget.paymentModel.getTitle()}', style: MyTextStyle.errorText(),
                              )),
                        ),
                        PaymentListTitle(
@@ -82,7 +87,7 @@ class _PaymentPageState extends State<PaymentPage> {
                          padding: const EdgeInsets.all(8.0),
                          child: PrimaryButton(
                            text: "Pagar",
-                           onPress: (){},
+                           onPress: isErrorVisible ? null : (){},
                          ),
                        ),
                      ],
