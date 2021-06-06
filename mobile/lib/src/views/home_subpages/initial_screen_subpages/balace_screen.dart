@@ -8,21 +8,22 @@ import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/string_util.dart';
 
 class BalanceScreen extends StatefulWidget {
-  const BalanceScreen({Key key}) : super(key: key);
+  const BalanceScreen({Key key, this.account}) : super(key: key);
+
+  final BankAccountModel account;
 
   @override
   _BalanceScreenState createState() => _BalanceScreenState();
 }
 
 class _BalanceScreenState extends State<BalanceScreen> {
-  BankAccountController bankAccountController = new BankAccountController();
-  BankAccountModel account = new BankAccountModel.empty();
-  List<StatementModel> statements = List.empty();
 
   fetchData() async {
-    account = await bankAccountController.fetchBankAccount();
     statements = await bankAccountController.fetchStatements();
   }
+
+  BankAccountController bankAccountController = new BankAccountController();
+  List<StatementModel> statements = List.empty();
 
   @override
   void initState() {
@@ -42,20 +43,16 @@ class _BalanceScreenState extends State<BalanceScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 15, top: 8, bottom: 8),
-                child: FutureBuilder(
-                    future: bankAccountController.fetchBankAccount(),
-                    builder: (context, snapshot) {
-                      return Container(
+                child: Container(
                         alignment: Alignment.center,
                         child: Text(
-                          'Olá, ${account.userName}!',
+                          'Olá, ${widget.account.userName}!',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Themes.textColor,
                               fontSize: 28),
                         ),
-                      );
-                    }),
+                    ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -68,7 +65,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 8, bottom: 8),
-                      child: FutureBuilder(
+                      child: FutureBuilder<BankAccountModel>(
                         future: bankAccountController.fetchBankAccount(),
                         builder: (context, snapshot) {
                         return Column(
@@ -76,9 +73,10 @@ class _BalanceScreenState extends State<BalanceScreen> {
                           children: [
                             Text('Saldo na conta', style: MyTextStyle.subtitle()),
                             SizedBox(height: 10,),
-                            Text(convertToBRL(account.balance), style: MyTextStyle.title(),)
+                            Text(convertToBRL(widget.account.balance), style: MyTextStyle.title(),)
                           ]
-                        );},
+                        );
+                        },
                       ),
                     ),
                   ),
@@ -98,7 +96,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                       padding: const EdgeInsets.only(left: 15, top: 8, bottom: 8),
                       child: SizedBox(
                         height: 100,
-                        child: FutureBuilder(
+                        child: FutureBuilder<List<StatementModel>>(
                           future: bankAccountController.fetchStatements(),
                           builder: (context, snapshot) {
                           return Column(

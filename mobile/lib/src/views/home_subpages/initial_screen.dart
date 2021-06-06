@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
 import 'package:mobile/src/components/cards/initial_page_card.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/string_util.dart';
+import 'package:mobile/src/views/home_subpages/initial_screen_subpages/balace_screen.dart';
 
 class InitialScreen extends StatefulWidget {
 
@@ -76,7 +76,7 @@ class _InitialScreenState extends State<InitialScreen> {
             )),
         InitialPageCard(
           cardTap: (){
-            Navigator.of(navigatorKey.currentContext).pushNamed('/balance');
+            Navigator.push(context,MaterialPageRoute(builder: (context) => BalanceScreen(account: widget.accountModel)));
           },
           title: 'Saldo disponível',
           icon: Icon(Icons.account_balance_wallet),
