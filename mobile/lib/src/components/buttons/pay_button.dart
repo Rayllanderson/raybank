@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:mobile/src/themes/themes.dart';
 
 class PayButton extends StatelessWidget {
-  const PayButton({Key key, this.text, this.icon}) : super(key: key);
+  const PayButton({Key key, this.text, this.icon, this.onPress}) : super(key: key);
 
   final text;
   final icon;
+  final onPress;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: ElevatedButton(onPressed: () {},
+      child: ElevatedButton(onPressed: onPress,
         child: Container(
           height: 90,
           width: 155,

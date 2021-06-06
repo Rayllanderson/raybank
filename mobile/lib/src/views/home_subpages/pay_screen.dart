@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/buttons/pay_button.dart';
-import 'package:mobile/src/components/cards/page_card.dart';
-import 'package:mobile/src/controllers/transfer_controller.dart';
-import 'package:mobile/src/themes/themes.dart';
-import 'package:mobile/src/utils/creator_util.dart';
+import 'package:mobile/src/views/payment_page.dart';
 
 class PayScreen extends StatefulWidget {
 
@@ -43,6 +40,9 @@ class _PayScreenState extends State<PayScreen> {
               PayButton(
                 text: 'Pagar um boleto',
                 icon: Icons.qr_code,
+                onPress: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(paymentType: "Boleto")));
+                },
               ),
               SizedBox(
                 height: 20,
@@ -50,6 +50,9 @@ class _PayScreenState extends State<PayScreen> {
               PayButton(
                 text: 'Pagar com crédito',
                 icon: Icons.credit_card_rounded,
+                onPress: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(paymentType: "Cartão de crédito")));
+                },
               ),
               SizedBox(
                 height: 20,
@@ -57,6 +60,9 @@ class _PayScreenState extends State<PayScreen> {
               PayButton(
                 text: 'Pagar Fatura',
                 icon: Icons.analytics_sharp,
+                onPress: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(paymentType: "Fatura")));
+                },
               )
             ],
           ),
