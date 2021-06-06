@@ -29,7 +29,8 @@ class _HomePageState extends State<HomePage> {
 
   floatingActionButton(index){
     bool isOnInitialPage = index == 0;
-    if (isOnInitialPage) return null;
+    bool isOnPaymentPage = index == 1;
+    if (isOnInitialPage || isOnPaymentPage) return null;
     return Padding(
       padding: const EdgeInsets.only(bottom: 30, right: 10),
       child: FloatingActionButton(

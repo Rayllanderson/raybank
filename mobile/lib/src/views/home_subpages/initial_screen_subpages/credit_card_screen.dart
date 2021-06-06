@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile/src/components/alerts/alert.dart';
 import 'package:mobile/src/components/cards/statement_card.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
+import 'package:mobile/src/models/enums/payment_type.dart';
+import 'package:mobile/src/models/payment_model.dart';
 import 'package:mobile/src/models/statement_model.dart';
 import 'package:mobile/src/repositories/credit_card_repository.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/string_util.dart';
+import 'package:mobile/src/views/payment_page.dart';
 
 class CreditCardScreen extends StatefulWidget {
   const CreditCardScreen({Key key, this.creditCard}) : super(key: key);
@@ -33,7 +36,9 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
   payInvoice(){
     bool hasInvoice = widget.creditCard.invoice != 0;
     if (hasInvoice){
-
+      Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(
+        paymentModel: PaymentModel(PaymentType.INVOICE,
+            widget.creditCard.invoice),)));
     } else {
       Alert.displaySimpleAlert("", "Não há faturas no momento");
     }
@@ -101,6 +106,9 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                 style: ElevatedButton.styleFrom(
                                   primary: Themes.textColor,
                                   side: BorderSide(color: Themes.primaryColor),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5), // <-- Radius
+                                  ),
                                 ),
                                 onPressed: (){
                                   payInvoice();
