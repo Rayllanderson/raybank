@@ -4,6 +4,7 @@ import 'package:mobile/main.dart';
 import 'package:mobile/src/components/alerts/alert.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/models/erro_model.dart';
+import 'package:mobile/src/models/statement_model.dart';
 import 'package:mobile/src/models/transfer_model.dart';
 import 'package:mobile/src/repositories/bank_account_repository.dart';
 import 'package:mobile/src/utils/throw_error.dart';
@@ -18,6 +19,15 @@ class BankAccountService {
       ApiError err = catchError(e.response);
       Alert.displaySimpleAlert(err.title, err.message);
       return null;
+    }
+  }
+
+  Future<List<StatementModel>> getAllStatements() async {
+    try {
+      return await repository.fetchStatements();
+    } on DioError {
+      Alert.displaySimpleAlert("Ocorreu um erro", "Não foi possível carregar seus dados.");
+      return List.empty();
     }
   }
 

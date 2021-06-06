@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mobile/src/utils/storage_util.dart';
 import 'package:mobile/src/views/confirm_transfer_page.dart';
 import 'package:mobile/src/views/home_page.dart';
@@ -11,6 +12,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 final Storage storage = new Storage();
 
 void main() async {
+  initializeDateFormatting();
   String initialPage = '/';
   WidgetsFlutterBinding.ensureInitialized();
   await storage.getToken().then((value) {

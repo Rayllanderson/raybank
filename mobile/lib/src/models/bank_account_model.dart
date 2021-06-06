@@ -1,3 +1,7 @@
+
+
+import 'package:mobile/src/utils/string_util.dart';
+
 class BankAccountModel {
   int id;
   String userName;
@@ -43,6 +47,7 @@ class BankAccountModel {
   }
 }
 
+
 class CreditCardDto {
   int id;
   int cardNumber;
@@ -72,5 +77,9 @@ class CreditCardDto {
     data['balance'] = this.balance;
     data['invoice'] = this.invoice;
     return data;
+  }
+
+  String getBalance() {
+    return convertToBRL(balance);
   }
 }

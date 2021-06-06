@@ -8,6 +8,7 @@ import 'package:mobile/src/components/texts/styles/text_styles.dart';
 import 'package:mobile/src/models/contact_model.dart';
 import 'package:mobile/src/models/transfer_model.dart';
 import 'package:mobile/src/repositories/bank_account_repository.dart';
+import 'package:mobile/src/utils/string_util.dart';
 
 class TransferPage extends StatefulWidget {
   TransferPage({Key key}) : super(key: key);
@@ -51,7 +52,7 @@ class _TransferPageState extends State<TransferPage> {
                 builder: (context, snapshot) {
                   return Header(
                       title:
-                          'Pra quem você quer transferir R\$ ${transaction.amount}?',
+                          'Pra quem você quer transferir ${convertToBRL(transaction.amount)}?',
                       subtitle:
                           'Digite um pix ou o número da conta para iniciar uma nova transferência');
                 },

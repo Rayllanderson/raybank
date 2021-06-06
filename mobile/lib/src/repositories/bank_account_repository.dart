@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/models/contact_model.dart';
+import 'package:mobile/src/models/statement_model.dart';
 import 'package:mobile/src/models/transfer_model.dart';
 import 'package:mobile/src/repositories/util.dart';
 import 'package:mobile/src/services/api.dart';
@@ -26,5 +27,11 @@ class BankAccountRepository{
     dio.options.headers = await getAuthHeaders();
     final response = await dio.get(bankAccountUrl + "/contacts");
     return List.from(response.data).map((contact) => ContactModel.fromJson(contact)).toList();
+  }
+
+  Future<List<StatementModel>> fetchStatements() async {
+    dio.options.headers = await getAuthHeaders();
+    final response = await dio.get(bankAccountUrl + "/statements");
+    return List.from(response.data).map((statement) => StatementModel.fromJson(statement)).toList();
   }
 }

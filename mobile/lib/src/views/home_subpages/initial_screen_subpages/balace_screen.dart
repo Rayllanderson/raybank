@@ -3,6 +3,7 @@ import 'package:mobile/src/components/list_views/statement_list_view.dart';
 import 'package:mobile/src/components/texts/styles/text_styles.dart';
 import 'package:mobile/src/controllers/bank_account_controller.dart';
 import 'package:mobile/src/models/bank_account_model.dart';
+import 'package:mobile/src/models/statement_model.dart';
 import 'package:mobile/src/themes/themes.dart';
 
 class BalanceScreen extends StatefulWidget {
@@ -15,9 +16,11 @@ class BalanceScreen extends StatefulWidget {
 class _BalanceScreenState extends State<BalanceScreen> {
   BankAccountController bankAccountController = new BankAccountController();
   BankAccountModel account = new BankAccountModel.empty();
+  List<StatementModel> statements = List.empty();
 
   fetchData() async {
     account = await bankAccountController.fetchBankAccount();
+    statements = await bankAccountController.fetchStatements();
   }
 
   @override
@@ -64,13 +67,17 @@ class _BalanceScreenState extends State<BalanceScreen> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 8, bottom: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Saldo na conta', style: MyTextStyle.subtitle()),
-                          SizedBox(height: 10,),
-                          Text('R\$ ${account.balance}', style: MyTextStyle.title(),)
-                        ]
+                      child: FutureBuilder(
+                        future: bankAccountController.fetchBankAccount(),
+                        builder: (context, snapshot) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Saldo na conta', style: MyTextStyle.subtitle()),
+                            SizedBox(height: 10,),
+                            Text('R\$ ${account.balance}', style: MyTextStyle.title(),)
+                          ]
+                        );},
                       ),
                     ),
                   ),
@@ -90,19 +97,24 @@ class _BalanceScreenState extends State<BalanceScreen> {
                       padding: const EdgeInsets.only(left: 15, top: 8, bottom: 8),
                       child: SizedBox(
                         height: 100,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Histórico', style: MyTextStyle.subtitle()),
-                              SizedBox(height: 10,),
-                              Expanded(child: StatementList()),
-                            ]
+                        child: FutureBuilder(
+                          future: bankAccountController.fetchStatements(),
+                          builder: (context, snapshot) {
+                          return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Histórico', style: MyTextStyle.subtitle()),
+                                SizedBox(height: 10,),
+                                Expanded(child: StatementList(statements: List.from(statements.reversed),)),
+                              ]
+                            );
+                          }
+                  ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              )
             ],
           ),
         ),
