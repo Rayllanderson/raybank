@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/alerts/alert.dart';
-import 'package:mobile/src/exceptions/bad_request_exception.dart';
-import 'package:mobile/src/exceptions/validation_exception.dart';
 import 'package:mobile/src/models/register_model.dart';
 import 'package:mobile/src/services/user_service.dart';
-import 'package:mobile/src/validations/register_validation.dart';
-import 'package:mobile/src/repositories/user_repository.dart';
 
 class RegisterController {
   TextEditingController _nameController;

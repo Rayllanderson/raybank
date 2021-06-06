@@ -1,7 +1,6 @@
 
 
 import 'package:dio/dio.dart';
-import 'package:mobile/src/models/payment_model.dart';
 import 'package:mobile/src/models/pix_request.dart';
 import 'package:mobile/src/models/pix_response.dart';
 import 'package:mobile/src/repositories/util.dart';
@@ -18,7 +17,7 @@ class PixRepository{
 
   Future<List<PixResponse>> findAll() async {
     dio.options.headers = await getAuthHeaders();
-    var response = await dio.get(payCreditCardUrl);
+    var response = await dio.get(pixUrl);
     return List.from(response.data).map((pix) => PixResponse.fromJson(pix)).toList();
   }
 

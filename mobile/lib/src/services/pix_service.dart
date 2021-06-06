@@ -16,6 +16,16 @@ import 'package:mobile/src/views/home_subpages/initial_screen_subpages/pix_scree
 class PixService {
   final PixRepository repository = new PixRepository();
 
+  Future<List<PixResponse>> findAll() async {
+    try {
+      return await repository.findAll();
+    } on DioError catch (e) {
+      ApiError err = catchError(e.response);
+      Alert.displaySimpleAlert(err.title, err.message);
+      return null;
+    }
+  }
+
   Future<void> register(PixRequest model) async {
     try {
       await repository.register(model);
