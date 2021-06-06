@@ -24,4 +24,25 @@ class Storage {
      SharedPreferences prefs = await SharedPreferences.getInstance();
      return TransferModel.fromJson(json.decode(prefs.get('transaction')));
    }
+
+   Future setAccountName(String name) async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     await prefs.setString('accountName', name);
+   }
+
+   Future<String> getAccountName() async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     return prefs.getString('accountName');
+   }
+
+   Future setAccountNumber(String number) async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     await prefs.setString('accountNumber', number);
+   }
+
+   Future<String> getAccountNumber() async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     return prefs.getString('accountNumber');
+   }
+
 }

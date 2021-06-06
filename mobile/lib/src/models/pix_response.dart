@@ -1,6 +1,7 @@
 class PixResponse {
   int id;
   String pixKeys;
+  String type;
 
   PixResponse({this.id, this.pixKeys});
 

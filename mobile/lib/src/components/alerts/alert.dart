@@ -19,4 +19,35 @@ class Alert {
               ]);
         });
   }
+
+  static Future<void> displayConfirmAlert(title, message, void Function() onPressed) async {
+    return showDialog<void>(
+      context: navigatorKey.currentContext,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirmar'),
+              onPressed: onPressed,
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

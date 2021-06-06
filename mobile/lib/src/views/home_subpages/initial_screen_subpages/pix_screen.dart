@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/components/drawer/drawer.dart';
 import 'package:mobile/src/components/headers/header.dart';
 import 'package:mobile/src/controllers/pix_controller.dart';
+import 'package:mobile/src/models/enums/pixType.dart';
 import 'package:mobile/src/models/pix_response.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/views/home_subpages/initial_screen_subpages/pix_details_screen.dart';
@@ -15,7 +17,6 @@ class PixScreen extends StatefulWidget {
 class _PixScreenState extends State<PixScreen> {
   List<PixResponse> items = List.empty();
   PixController controller;
-  TextEditingController inputController = new TextEditingController();
 
   fetchData() async {
     items = await controller.findAll();
@@ -23,15 +24,15 @@ class _PixScreenState extends State<PixScreen> {
 
   @override
   void initState() {
-    controller = new PixController(inputController);
+    controller = new PixController(null);
     fetchData();
-    print(items);
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
+      drawer: MyDrawer(),
       body: Stack(children: [
         Container(color: Themes.primaryColor),
         Center(
@@ -77,7 +78,7 @@ class _PixScreenState extends State<PixScreen> {
                                     leading: Icon(Icons.vpn_key, size: 18,),
                                     title: Text(item.pixKeys),
                                     onTap: (){
-                                      Navigator.push(context,MaterialPageRoute(builder: (context) => PixDetails(pix: item,)));
+                                      Navigator.push(context,MaterialPageRoute(builder: (context) => PixDetails(pix: item, type: PixDetailsType.EDIT,)));
                                     },
                                   )
                                   );
@@ -99,7 +100,9 @@ class _PixScreenState extends State<PixScreen> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40, right: 10),
         child: FloatingActionButton(
-          onPressed: (){},
+          onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context) => PixDetails(type: PixDetailsType.NEW,)));
+          },
           child: Icon(Icons.add),
         ),
       ),
