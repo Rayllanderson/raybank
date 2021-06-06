@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/components/headers/header.dart';
+import 'package:mobile/src/models/pix_response.dart';
 import 'package:mobile/src/themes/themes.dart';
+import 'package:mobile/src/views/home_subpages/initial_screen_subpages/pix_details_screen.dart';
 
 class PixScreen extends StatefulWidget {
   const PixScreen({Key key}) : super(key: key);
@@ -10,7 +12,7 @@ class PixScreen extends StatefulWidget {
 }
 
 class _PixScreenState extends State<PixScreen> {
-  var items = ['item 4', 'item ', 'joao lucas', '222'];
+  List<PixResponse> items = [PixResponse(id: 2, pixKeys: 'keys1'), PixResponse(id: 3, pixKeys: 'key@fowjwfw')];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +57,10 @@ class _PixScreenState extends State<PixScreen> {
                               return (
                               ListTile(
                                 leading: Icon(Icons.vpn_key, size: 18,),
-                                title: Text(item),
+                                title: Text(item.pixKeys),
+                                onTap: (){
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) => PixDetails(pix: item,)));
+                                },
                               )
                               );
                             }

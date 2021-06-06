@@ -16,7 +16,7 @@ void main() async {
   String initialPage = '/';
   WidgetsFlutterBinding.ensureInitialized();
   await storage.getToken().then((value) {
-    if (value.isNotEmpty) initialPage = '/home';
+    if (value != null && value.isNotEmpty) initialPage = '/home';
   });
 
   runApp(MaterialApp(

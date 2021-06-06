@@ -1,4 +1,4 @@
-name: mobile
+name: Raybank
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -31,7 +31,6 @@ dependencies:
   flutter_masked_text: ^0.8.0
   dio: ^4.0.0
   intl: ^0.17.0
-  flutter_slidable: ^0.6.0
   shared_preferences: ^2.0.6
 
 dev_dependencies:

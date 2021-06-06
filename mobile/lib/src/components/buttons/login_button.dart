@@ -18,6 +18,9 @@ class LoginButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           primary: Themes.secondaryColor.withAlpha(240),
           minimumSize: Size(double.infinity, 43.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // <-- Radius
+          ),
         ));
   }
 }
