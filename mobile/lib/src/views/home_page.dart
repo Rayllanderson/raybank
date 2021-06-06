@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
             MyActions.goToTransferPage();
           }
           if(index == 3){
-            print('indo pra página de depósito');
+            MyActions.doADeposit();
           }
         },
       ),

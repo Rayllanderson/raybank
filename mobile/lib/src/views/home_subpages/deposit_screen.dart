@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:mobile/src/components/cards/page_card.dart';
+import 'package:mobile/src/controllers/deposit_controller.dart';
+import 'package:mobile/src/utils/actions_util.dart';
 
 class DepositScreen extends StatefulWidget {
   const DepositScreen({Key key}) : super(key: key);
@@ -17,6 +19,18 @@ class _DepositScreenState extends State<DepositScreen> {
       leftSymbol: 'R\$ '
   );
 
+  DepositController controller;
+
+  @override
+  void initState() {
+    controller = new DepositController(moneyMaskedController);
+    MyActions.doADeposit = (){
+      controller.deposit();
+    };
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return PageCard(
@@ -26,7 +40,6 @@ class _DepositScreenState extends State<DepositScreen> {
       errorText: '',
       isErrorVisible: (){return false;},
       inputChange: (value) {
-        print(value);
       },
     );
   }

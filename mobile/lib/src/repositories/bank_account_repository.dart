@@ -23,6 +23,13 @@ class BankAccountRepository{
     await dio.post(bankAccountUrl + "/transfer", data: transaction);
   }
 
+  Future<void> deposit(double amount) async {
+    dio.options.headers = await getAuthHeaders();
+    var data = Map<String, double>();
+    data['amount'] = amount;
+    await dio.post(bankAccountUrl + "/deposit", data: data);
+  }
+
   Future<List<ContactModel>> fetchContacts() async {
     dio.options.headers = await getAuthHeaders();
     final response = await dio.get(bankAccountUrl + "/contacts");
