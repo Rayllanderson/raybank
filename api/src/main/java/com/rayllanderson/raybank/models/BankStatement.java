@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
@@ -20,7 +20,7 @@ public class BankStatement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime moment;
+    private Instant moment;
     @Enumerated(EnumType.STRING)
     private StatementType statementType;
     private BigDecimal amount;
@@ -33,7 +33,7 @@ public class BankStatement {
     public static BankStatement createTransferStatement(BigDecimal amount, BankAccount accountSender, BankAccount accountOwner,
                                                         String message){
         return BankStatement.builder().
-                moment(LocalDateTime.now())
+                moment(Instant.now())
                 .statementType(StatementType.TRANSFER)
                 .amount(amount)
                 .message(message)
@@ -44,7 +44,7 @@ public class BankStatement {
 
     public static BankStatement createDepositStatement (BigDecimal amount, BankAccount accountOwner){
         return BankStatement.builder().
-                moment(LocalDateTime.now())
+                moment(Instant.now())
                 .statementType(StatementType.DEPOSIT)
                 .amount(amount)
                 .accountSender(null)
@@ -59,7 +59,7 @@ public class BankStatement {
      */
     public static BankStatement createBoletoPaymentStatement (BigDecimal amount, BankAccount accountOwner){
         return BankStatement.builder().
-                moment(LocalDateTime.now())
+                moment(Instant.now())
                 .statementType(StatementType.BRAZILIAN_BOLETO)
                 .amount(amount.negate())
                 .accountSender(null)
@@ -74,7 +74,7 @@ public class BankStatement {
      */
     public static BankStatement createCreditPurchaseStatement (BigDecimal amount, BankAccount accountOwner){
         return BankStatement.builder().
-                moment(LocalDateTime.now())
+                moment(Instant.now())
                 .statementType(StatementType.CREDIT_CARD_PAYMENT)
                 .amount(amount.negate())
                 .accountSender(null)
@@ -91,7 +91,7 @@ public class BankStatement {
      */
     public static BankStatement createInvoicePaymentStatement (BigDecimal amount, BankAccount accountOwner){
         return BankStatement.builder().
-                moment(LocalDateTime.now())
+                moment(Instant.now())
                 .statementType(StatementType.INVOICE_PAYMENT)
                 .amount(amount)
                 .accountSender(null)

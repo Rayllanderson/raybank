@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -26,7 +26,7 @@ public class StatementDto {
     private String to;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
-    private LocalDateTime moment;
+    private Instant moment;
     private StatementType statementType;
     private BigDecimal amount;
     @JsonInclude(JsonInclude.Include.NON_NULL)

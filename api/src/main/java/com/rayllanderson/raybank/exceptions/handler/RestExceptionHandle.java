@@ -59,8 +59,9 @@ public class RestExceptionHandle extends ResponseEntityExceptionHandler {
     @NonNull
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, @NonNull HttpHeaders headers,
                                                              HttpStatus status, WebRequest request) {
+        String title = ex.getCause() != null ? ex.getCause().getMessage() : "erro";
         StandardError standardError = StandardError.builder().timestamp(LocalDateTime.now())
-                .title(ex.getCause().getMessage())
+                .title(title)
                 .message(ex.getMessage())
                 .path(request.getContextPath())
                 .status(status.value())
