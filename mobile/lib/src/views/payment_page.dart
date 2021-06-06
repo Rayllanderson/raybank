@@ -68,7 +68,7 @@ class _PaymentPageState extends State<PaymentPage> {
                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
                          child: Visibility(
                              visible: isErrorVisible,
-                             child: Text('A quantia é maior que o ${widget.paymentModel.getTitle()}', style: MyTextStyle.errorText(),
+                             child: Text('A quantia é maior que o ${widget.paymentModel.getTitle().toString().toLowerCase()}', style: MyTextStyle.errorText(),
                              )),
                        ),
                        PaymentListTitle(
