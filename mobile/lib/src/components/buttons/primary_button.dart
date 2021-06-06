@@ -19,7 +19,7 @@ class PrimaryButton extends StatelessWidget {
           primary: Themes.primaryColor,
           minimumSize: Size(double.infinity, 45.0),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20), // <-- Radius
+            borderRadius: BorderRadius.circular(10), // <-- Radius
            ),
         ));
   }

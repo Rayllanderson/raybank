@@ -4,6 +4,7 @@ import 'package:mobile/src/models/bank_account_model.dart';
 import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/string_util.dart';
 import 'package:mobile/src/views/home_subpages/initial_screen_subpages/balace_screen.dart';
+import 'package:mobile/src/views/home_subpages/initial_screen_subpages/credit_card_screen.dart';
 
 class InitialScreen extends StatefulWidget {
 
@@ -34,7 +35,10 @@ class _InitialScreenState extends State<InitialScreen> {
           ),
         ),
         InitialPageCard(
-            cardTap: (){print('cartão de credito');},
+            cardTap: (){
+              Navigator.push(context,MaterialPageRoute(builder: (context) =>
+                  CreditCardScreen(creditCard: widget.accountModel.creditCardDto)));
+            },
             title: 'Cartão de crédito',
             icon: Icon(Icons.credit_card_rounded),
             sizedBoxHeight: 5.0,
@@ -102,7 +106,7 @@ class _InitialScreenState extends State<InitialScreen> {
                   primary: Themes.textColor,
                   side: BorderSide(color: Themes.primaryColor),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // <-- Radius
+                    borderRadius: BorderRadius.circular(10), // <-- Radius
                   ),
               ),
               onPressed: () {},

@@ -45,7 +45,7 @@ class StatementModel {
   }
 
   String getMoment() {
-    return DateFormat("MMMM d", 'pt_BR').format(DateTime.parse(moment));
+    return DateFormat("MMMM d", 'pt_BR').format(DateTime.parse(moment).toLocal());
   }
 
   bool hasMoneyCameIn() {
@@ -76,6 +76,9 @@ class StatementModel {
     if (statementType == 'INVOICE_PAYMENT') {
       return 'Pagamento da fatura';
     }
+    if (statementType == 'CREDIT_CARD_PAYMENT') {
+      return 'Pagamento com cartão de crédito';
+    }
   }
 
   getSubtitle() {
@@ -89,9 +92,9 @@ class StatementModel {
 
   getMessage(){
     String message = 'Valor: ${getSubtitle()}\n';
-    String day = DateFormat("d", 'pt_BR').format(DateTime.parse(moment));
-    String month = DateFormat("MMMM", 'pt_BR').format(DateTime.parse(moment));
-    String hour = DateFormat("jm", 'pt_BR').format(DateTime.parse(moment));
+    String day = DateFormat("d", 'pt_BR').format(DateTime.parse(moment).toUtc());
+    String month = DateFormat("MMMM", 'pt_BR').format(DateTime.parse(moment).toUtc());
+    String hour = DateFormat("jm", 'pt_BR').format(DateTime.parse(moment).toUtc());
     message += 'Data: $day de $month, $hour\n';
     if (this.message != null && this.message.isNotEmpty){
       message += "Mensagem: ${this.message}\n";

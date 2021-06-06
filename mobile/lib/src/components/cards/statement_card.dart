@@ -9,11 +9,15 @@ class StatementCard extends StatelessWidget {
 
   final List<StatementModel> statements;
 
+  List<StatementModel> getSortedList(){
+    statements.sort((a, b) => a.moment.compareTo(b.moment));
+    return List.of(statements.reversed);
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 500,
+      height: statements.isEmpty ? 100 : 500,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -29,11 +33,24 @@ class StatementCard extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Expanded(
-                        child: StatementList(
-                      statements: List.from(statements.reversed),
-                    )),
-                  ])),
+                    Visibility(
+                      visible: statements.isNotEmpty,
+                      child: Expanded(
+                          child: StatementList(
+                        statements: getSortedList(),
+                      )),
+                    ),
+                    Visibility(
+                      visible: statements.isEmpty,
+                      child: Center(
+                        child: Text('Sem histórico',
+                          style: MyTextStyle.subtitle(),
+                        ),
+                      )
+                    ),
+                  ]
+              )
+          ),
         ),
       ),
     );

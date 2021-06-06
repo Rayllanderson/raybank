@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/components/buttons/pay_button.dart';
 import 'package:mobile/src/components/cards/page_card.dart';
 import 'package:mobile/src/controllers/transfer_controller.dart';
+import 'package:mobile/src/themes/themes.dart';
 import 'package:mobile/src/utils/creator_util.dart';
 
 class PayScreen extends StatefulWidget {
@@ -13,13 +15,6 @@ class PayScreen extends StatefulWidget {
 
 class _PayScreenState extends State<PayScreen> {
 
-
-  final _moneyMaskedController = createMoneyMaskedController();
-
-  final _receiverController = TextEditingController();
-
-  TransferController _transferController;
-
   @override
   void initState() {
     super.initState();
@@ -27,22 +22,46 @@ class _PayScreenState extends State<PayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isErrorVisible = false;
-    return PageCard(
-      headerTitle: 'Qual o valor do pagamento?',
-      headerSubtitle: '',
-      moneyMaskedController: _moneyMaskedController,
-      errorText: 'Você não possui saldo suficiente na sua conta',
-      isErrorVisible: (){
-        isErrorVisible = _transferController.isAmountInvalid();
-        return isErrorVisible;
-      },
-      inputChange: (value) {
-        setState(() {
-          isErrorVisible = _transferController.isAmountInvalid();
-        });
-      },
+    return Container(
+      height: 600,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Escolha o que deseja pagar', style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w500
+              ),),
+              SizedBox(
+                height: 20,
+              ),
+              PayButton(
+                text: 'Pagar um boleto',
+                icon: Icons.qr_code,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              PayButton(
+                text: 'Pagar com crédito',
+                icon: Icons.credit_card_rounded,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              PayButton(
+                text: 'Pagar Fatura',
+                icon: Icons.analytics_sharp,
+              )
+            ],
+          ),
+        ),
+      ),
     );
-
   }
 }

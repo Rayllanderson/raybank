@@ -62,27 +62,21 @@ class _BalanceScreenState extends State<BalanceScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 15, top: 8, bottom: 8),
-                      child: FutureBuilder<BankAccountModel>(
-                        future: bankAccountController.fetchBankAccount(),
-                        builder: (context, snapshot) {
-                          return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Saldo na conta',
-                                    style: MyTextStyle.subtitle()),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  convertToBRL(widget.account.balance),
-                                  style: MyTextStyle.title(),
-                                )
-                              ]);
-                        },
-                      ),
-                    ),
+                        padding:
+                            const EdgeInsets.only(left: 15, top: 15, bottom: 5),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Saldo na conta',
+                                  style: MyTextStyle.subtitle()),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                convertToBRL(widget.account.balance),
+                                style: MyTextStyle.title(),
+                              )
+                            ])),
                   ),
                 ),
               ),

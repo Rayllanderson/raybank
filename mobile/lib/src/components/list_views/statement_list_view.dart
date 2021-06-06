@@ -19,7 +19,7 @@ class StatementList extends StatelessWidget {
             children: [
               ListTile(
                 onTap: (){
-                  Alert.displaySimpleAlert(' ${statement.getTitle()}', '${statement.getMessage()}');
+                  Alert.displaySimpleAlert('${statement.getTitle()}', '${statement.getMessage()}');
                 },
                 title: Text('${statement.getTitle()}', style: TextStyle(
                     fontSize: 18
