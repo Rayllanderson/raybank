@@ -90,7 +90,7 @@ class _PaymentPageState extends State<PaymentPage> {
                          icon: Icons.account_balance_wallet,
                        ),
 
-                       SizedBox(height: 130),
+                       SizedBox(height: 120),
                        Padding(
                          padding: const EdgeInsets.all(8.0),
                          child: PrimaryButton(

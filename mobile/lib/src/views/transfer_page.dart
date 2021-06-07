@@ -38,7 +38,11 @@ class _TransferPageState extends State<TransferPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+        IconButton(icon: Icon(Icons.refresh_outlined),
+            onPressed: fetchData
+        )],),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -58,15 +62,25 @@ class _TransferPageState extends State<TransferPage> {
                 },
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: Align(
+              alignment: Alignment.centerLeft,
+                child:
+                Text('Experimente enviar para o pix: rayllanderson', style: MyTextStyle.subtitle(),),
+              ),
+            ),
             SizedBox(
               height: 40,
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: NumberInput(
+                child: TextField(
                   controller: controller,
-                  onChange: (value) {},
-                  hintText: 'Pix ou número da conta',
+                  decoration: InputDecoration(
+                    hintText: 'Pix ou número da conta',
+                  ),
+                  style: TextStyle(fontSize: 26),
                 )),
             Column(
               children: [

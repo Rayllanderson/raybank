@@ -33,7 +33,12 @@ class _BalanceScreenState extends State<BalanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(icon: Icon(Icons.refresh_outlined),
+              onPressed: fetchData
+          )],
+      ),
       body: Stack(children: [
         Container(color: Themes.primaryColor),
         SingleChildScrollView(

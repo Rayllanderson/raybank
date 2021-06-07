@@ -57,6 +57,10 @@ class _HomePageState extends State<HomePage> {
     _onItemTapped(0);
   }
 
+  reload () async {
+    account = await bankAccountController.fetchBankAccount();
+  }
+
   @override
   void initState() {
     fetchData();
@@ -71,6 +75,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Raybank'),
+          actions: [
+            IconButton(icon: Icon(Icons.refresh_outlined),
+                onPressed: reload
+            )],
         ),
         drawer: Drawer(
           child: FutureBuilder<BankAccountModel>(
@@ -80,8 +88,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     UserAccountsDrawerHeader(
                       currentAccountPicture: ClipOval(
-                          child: Image.network(
-                              'https://avatars.githubusercontent.com/u/63964369?v=4')
+                          child: Icon(Icons.account_circle_rounded, size: 58, color: Themes.textColor)
                       ),
                       accountName: Text(
                           account.userName ?? ''),

@@ -31,7 +31,12 @@ class _PixScreenState extends State<PixScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(icon: Icon(Icons.refresh_outlined),
+              onPressed: fetchData
+          )],
+      ),
       drawer: MyDrawer(),
       body: Stack(children: [
         Container(color: Themes.primaryColor),
