@@ -1,4 +1,4 @@
-# 🏦 Rankbank
+# 🏦 Raybank
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/Rayllanderson/raybank/blob/main/LICENSE) 
 
 ## Sobre o projeto
