@@ -1,9 +1,9 @@
 
 
 import 'package:dio/dio.dart';
-import 'package:mobile/src/models/payment_model.dart';
-import 'package:mobile/src/repositories/util.dart';
-import 'package:mobile/src/services/api.dart';
+import 'package:Raybank/src/models/payment_model.dart';
+import 'package:Raybank/src/repositories/util.dart';
+import 'package:Raybank/src/services/api.dart';
 
 class PaymentRepository{
 

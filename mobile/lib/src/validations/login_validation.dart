@@ -1,6 +1,6 @@
-import 'package:mobile/src/exceptions/validation_exception.dart';
-import 'package:mobile/src/models/login_model.dart';
-import 'package:mobile/src/utils/string_util.dart';
+import 'package:Raybank/src/exceptions/validation_exception.dart';
+import 'package:Raybank/src/models/login_model.dart';
+import 'package:Raybank/src/utils/string_util.dart';
 
 /// Verifica se os campos de login estão vazios.
 ///

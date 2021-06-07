@@ -1,8 +1,8 @@
 
 import 'package:dio/dio.dart';
-import 'package:mobile/src/models/login_model.dart';
-import 'package:mobile/src/models/register_model.dart';
-import 'package:mobile/src/services/api.dart';
+import 'package:Raybank/src/models/login_model.dart';
+import 'package:Raybank/src/models/register_model.dart';
+import 'package:Raybank/src/services/api.dart';
 
 class UserRepository {
   final dio = Dio();

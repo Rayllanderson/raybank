@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/themes/themes.dart';
+import 'package:Raybank/src/themes/themes.dart';
 
 class LoginLogo extends StatelessWidget {
   const LoginLogo({Key key}) : super(key: key);

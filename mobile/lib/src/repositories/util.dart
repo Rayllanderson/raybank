@@ -1,4 +1,4 @@
-import 'package:mobile/main.dart';
+import 'package:Raybank/main.dart';
 
 Map<String, String> getHeaders(){
   Map<String, String> headers = Map();

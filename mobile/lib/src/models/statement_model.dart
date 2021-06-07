@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mobile/src/utils/string_util.dart';
+import 'package:Raybank/src/utils/string_util.dart';
 
 class StatementModel {
   int id;

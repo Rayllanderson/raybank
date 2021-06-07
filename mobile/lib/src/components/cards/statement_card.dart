@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/list_views/statement_list_view.dart';
-import 'package:mobile/src/components/texts/styles/text_styles.dart';
-import 'package:mobile/src/models/statement_model.dart';
+import 'package:Raybank/src/components/list_views/statement_list_view.dart';
+import 'package:Raybank/src/components/texts/styles/text_styles.dart';
+import 'package:Raybank/src/models/statement_model.dart';
 
 class StatementCard extends StatelessWidget {
   const StatementCard({Key key, this.statements})

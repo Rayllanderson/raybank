@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/src/components/alerts/alert.dart';
-import 'package:mobile/src/components/texts/styles/text_styles.dart';
-import 'package:mobile/src/models/contact_model.dart';
-import 'package:mobile/src/models/transfer_model.dart';
+import 'package:Raybank/main.dart';
+import 'package:Raybank/src/components/alerts/alert.dart';
+import 'package:Raybank/src/components/texts/styles/text_styles.dart';
+import 'package:Raybank/src/models/contact_model.dart';
+import 'package:Raybank/src/models/transfer_model.dart';
 
 class ContactListView extends StatelessWidget {
   final List<ContactModel> contacts;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/themes/themes.dart';
+import 'package:Raybank/src/themes/themes.dart';
 
 class InitialPageCard extends StatefulWidget {
   final title;

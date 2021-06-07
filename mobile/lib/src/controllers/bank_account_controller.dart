@@ -1,7 +1,7 @@
-import 'package:mobile/src/controllers/statementInterface.dart';
-import 'package:mobile/src/models/bank_account_model.dart';
-import 'package:mobile/src/models/statement_model.dart';
-import 'package:mobile/src/services/bank_account_service.dart';
+import 'package:Raybank/src/controllers/statementInterface.dart';
+import 'package:Raybank/src/models/bank_account_model.dart';
+import 'package:Raybank/src/models/statement_model.dart';
+import 'package:Raybank/src/services/bank_account_service.dart';
 
 class BankAccountController extends StatementInterface{
 

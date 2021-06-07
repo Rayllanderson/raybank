@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/alerts/alert.dart';
-import 'package:mobile/src/models/statement_model.dart';
+import 'package:Raybank/src/components/alerts/alert.dart';
+import 'package:Raybank/src/models/statement_model.dart';
 
 class StatementList extends StatelessWidget {
   const StatementList({Key key, this.statements}) : super(key: key);

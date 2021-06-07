@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/texts/styles/text_styles.dart';
+import 'package:Raybank/src/components/texts/styles/text_styles.dart';
 
 class PaymentListTitle extends StatelessWidget {
   const PaymentListTitle({Key key, this.title, this.subtitle, this.icon}) : super(key: key);

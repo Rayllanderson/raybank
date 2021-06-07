@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/alerts/alert.dart';
-import 'package:mobile/src/components/cards/statement_card.dart';
-import 'package:mobile/src/models/bank_account_model.dart';
-import 'package:mobile/src/models/enums/payment_type.dart';
-import 'package:mobile/src/models/payment_model.dart';
-import 'package:mobile/src/models/statement_model.dart';
-import 'package:mobile/src/repositories/credit_card_repository.dart';
-import 'package:mobile/src/themes/themes.dart';
-import 'package:mobile/src/utils/string_util.dart';
-import 'package:mobile/src/views/payment_page.dart';
+import 'package:Raybank/src/components/alerts/alert.dart';
+import 'package:Raybank/src/components/cards/statement_card.dart';
+import 'package:Raybank/src/models/bank_account_model.dart';
+import 'package:Raybank/src/models/enums/payment_type.dart';
+import 'package:Raybank/src/models/payment_model.dart';
+import 'package:Raybank/src/models/statement_model.dart';
+import 'package:Raybank/src/repositories/credit_card_repository.dart';
+import 'package:Raybank/src/themes/themes.dart';
+import 'package:Raybank/src/utils/string_util.dart';
+import 'package:Raybank/src/views/payment_page.dart';
 
 class CreditCardScreen extends StatefulWidget {
   const CreditCardScreen({Key key, this.creditCard}) : super(key: key);

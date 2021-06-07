@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/buttons/pay_button.dart';
-import 'package:mobile/src/models/bank_account_model.dart';
-import 'package:mobile/src/models/enums/payment_type.dart';
-import 'package:mobile/src/models/payment_model.dart';
-import 'package:mobile/src/views/payment_page.dart';
+import 'package:Raybank/src/components/buttons/pay_button.dart';
+import 'package:Raybank/src/models/bank_account_model.dart';
+import 'package:Raybank/src/models/enums/payment_type.dart';
+import 'package:Raybank/src/models/payment_model.dart';
+import 'package:Raybank/src/views/payment_page.dart';
 
 class PayScreen extends StatefulWidget {
 

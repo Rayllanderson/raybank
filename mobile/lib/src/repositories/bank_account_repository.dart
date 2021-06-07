@@ -1,12 +1,12 @@
 
 
 import 'package:dio/dio.dart';
-import 'package:mobile/src/models/bank_account_model.dart';
-import 'package:mobile/src/models/contact_model.dart';
-import 'package:mobile/src/models/statement_model.dart';
-import 'package:mobile/src/models/transfer_model.dart';
-import 'package:mobile/src/repositories/util.dart';
-import 'package:mobile/src/services/api.dart';
+import 'package:Raybank/src/models/bank_account_model.dart';
+import 'package:Raybank/src/models/contact_model.dart';
+import 'package:Raybank/src/models/statement_model.dart';
+import 'package:Raybank/src/models/transfer_model.dart';
+import 'package:Raybank/src/repositories/util.dart';
+import 'package:Raybank/src/services/api.dart';
 
 class BankAccountRepository{
 

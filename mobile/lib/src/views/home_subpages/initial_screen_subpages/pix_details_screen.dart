@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/alerts/alert.dart';
-import 'package:mobile/src/components/buttons/pix_details_buttons.dart';
-import 'package:mobile/src/components/buttons/primary_button.dart';
-import 'package:mobile/src/components/headers/header.dart';
-import 'package:mobile/src/controllers/pix_controller.dart';
-import 'package:mobile/src/models/enums/pixType.dart';
-import 'package:mobile/src/models/pix_response.dart';
-import 'package:mobile/src/themes/themes.dart';
+import 'package:Raybank/src/components/alerts/alert.dart';
+import 'package:Raybank/src/components/buttons/pix_details_buttons.dart';
+import 'package:Raybank/src/components/buttons/primary_button.dart';
+import 'package:Raybank/src/components/headers/header.dart';
+import 'package:Raybank/src/controllers/pix_controller.dart';
+import 'package:Raybank/src/models/enums/pixType.dart';
+import 'package:Raybank/src/models/pix_response.dart';
+import 'package:Raybank/src/themes/themes.dart';
 
 class PixDetails extends StatefulWidget {
   const PixDetails({Key key, this.pix, this.type}) : super(key: key);

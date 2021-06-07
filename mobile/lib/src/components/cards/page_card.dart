@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/headers/header.dart';
-import 'package:mobile/src/components/inputs/text_input_masked.dart';
-import 'package:mobile/src/components/texts/styles/text_styles.dart';
+import 'package:Raybank/src/components/headers/header.dart';
+import 'package:Raybank/src/components/inputs/text_input_masked.dart';
+import 'package:Raybank/src/components/texts/styles/text_styles.dart';
 
 class PageCard extends StatefulWidget {
   final headerTitle;

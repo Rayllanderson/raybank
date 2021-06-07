@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/models/login_model.dart';
-import 'package:mobile/src/services/user_service.dart';
+import 'package:Raybank/src/models/login_model.dart';
+import 'package:Raybank/src/services/user_service.dart';
 
 class LoginController {
   TextEditingController _usernameController;

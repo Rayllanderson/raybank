@@ -1,7 +1,7 @@
-import 'package:mobile/src/models/enums/payment_type.dart';
-import 'package:mobile/src/models/payment_model.dart';
-import 'package:mobile/src/services/payment_service.dart';
-import 'package:mobile/src/utils/mask_util.dart';
+import 'package:Raybank/src/models/enums/payment_type.dart';
+import 'package:Raybank/src/models/payment_model.dart';
+import 'package:Raybank/src/services/payment_service.dart';
+import 'package:Raybank/src/utils/mask_util.dart';
 
 class PaymentController {
 

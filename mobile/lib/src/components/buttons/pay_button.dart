@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/themes/themes.dart';
+import 'package:Raybank/src/themes/themes.dart';
 
 class PayButton extends StatelessWidget {
   const PayButton({Key key, this.text, this.icon, this.onPress}) : super(key: key);

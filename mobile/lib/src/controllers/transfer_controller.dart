@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/src/models/transfer_model.dart';
-import 'package:mobile/src/utils/mask_util.dart';
+import 'package:Raybank/main.dart';
+import 'package:Raybank/src/models/transfer_model.dart';
+import 'package:Raybank/src/utils/mask_util.dart';
 
 class TransferController {
 

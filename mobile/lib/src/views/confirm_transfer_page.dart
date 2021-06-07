@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/src/components/buttons/primary_button.dart';
-import 'package:mobile/src/components/headers/header.dart';
-import 'package:mobile/src/controllers/confirm_transfer_controller.dart';
-import 'package:mobile/src/models/transfer_model.dart';
-import 'package:mobile/src/utils/string_util.dart';
+import 'package:Raybank/main.dart';
+import 'package:Raybank/src/components/buttons/primary_button.dart';
+import 'package:Raybank/src/components/headers/header.dart';
+import 'package:Raybank/src/controllers/confirm_transfer_controller.dart';
+import 'package:Raybank/src/models/transfer_model.dart';
+import 'package:Raybank/src/utils/string_util.dart';
 
 class ConfirmTransferPage extends StatefulWidget {
   const ConfirmTransferPage({Key key}) : super(key: key);

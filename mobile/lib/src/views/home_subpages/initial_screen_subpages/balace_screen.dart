@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/cards/statement_card.dart';
-import 'package:mobile/src/components/texts/styles/text_styles.dart';
-import 'package:mobile/src/controllers/bank_account_controller.dart';
-import 'package:mobile/src/models/bank_account_model.dart';
-import 'package:mobile/src/models/statement_model.dart';
-import 'package:mobile/src/themes/themes.dart';
-import 'package:mobile/src/utils/string_util.dart';
+import 'package:Raybank/src/components/cards/statement_card.dart';
+import 'package:Raybank/src/components/texts/styles/text_styles.dart';
+import 'package:Raybank/src/controllers/bank_account_controller.dart';
+import 'package:Raybank/src/models/bank_account_model.dart';
+import 'package:Raybank/src/models/statement_model.dart';
+import 'package:Raybank/src/themes/themes.dart';
+import 'package:Raybank/src/utils/string_util.dart';
 
 class BalanceScreen extends StatefulWidget {
   const BalanceScreen({Key key, this.account}) : super(key: key);

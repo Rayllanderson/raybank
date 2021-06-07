@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/buttons/login_button.dart';
-import 'package:mobile/src/components/inputs/login_input.dart';
-import 'package:mobile/src/components/logos/login_logo.dart';
-import 'package:mobile/src/controllers/register_controller.dart';
-import 'package:mobile/src/themes/themes.dart';
+import 'package:Raybank/src/components/buttons/login_button.dart';
+import 'package:Raybank/src/components/inputs/login_input.dart';
+import 'package:Raybank/src/components/logos/login_logo.dart';
+import 'package:Raybank/src/controllers/register_controller.dart';
+import 'package:Raybank/src/themes/themes.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key key}) : super(key: key);

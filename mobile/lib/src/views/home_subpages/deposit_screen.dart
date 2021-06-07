@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:mobile/src/components/cards/page_card.dart';
-import 'package:mobile/src/controllers/deposit_controller.dart';
-import 'package:mobile/src/utils/actions_util.dart';
+import 'package:Raybank/src/components/cards/page_card.dart';
+import 'package:Raybank/src/controllers/deposit_controller.dart';
+import 'package:Raybank/src/utils/actions_util.dart';
 
 class DepositScreen extends StatefulWidget {
   const DepositScreen({Key key}) : super(key: key);

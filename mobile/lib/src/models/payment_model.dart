@@ -1,4 +1,4 @@
-import 'package:mobile/src/models/enums/payment_type.dart';
+import 'package:Raybank/src/models/enums/payment_type.dart';
 
 class PaymentModel {
   PaymentType type;

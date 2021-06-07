@@ -1,17 +1,16 @@
+import 'package:Raybank/main.dart';
+import 'package:Raybank/src/components/alerts/alert.dart';
+import 'package:Raybank/src/exceptions/validation_exception.dart';
+import 'package:Raybank/src/models/erro_model.dart';
+import 'package:Raybank/src/models/login_model.dart';
+import 'package:Raybank/src/models/register_model.dart';
+import 'package:Raybank/src/models/user_model.dart';
+import 'package:Raybank/src/repositories/user_repository.dart';
+import 'package:Raybank/src/utils/throw_error.dart';
+import 'package:Raybank/src/validations/login_validation.dart';
+import 'package:Raybank/src/validations/register_validation.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/src/components/alerts/alert.dart';
-import 'package:mobile/src/exceptions/bad_request_exception.dart';
-import 'package:mobile/src/exceptions/validation_exception.dart';
-import 'package:mobile/src/models/erro_model.dart';
-import 'package:mobile/src/models/login_model.dart';
-import 'package:mobile/src/models/register_model.dart';
-import 'package:mobile/src/models/user_model.dart';
-import 'package:mobile/src/repositories/user_repository.dart';
-import 'package:mobile/src/utils/throw_error.dart';
-import 'package:mobile/src/validations/login_validation.dart';
-import 'package:mobile/src/validations/register_validation.dart';
 
 class UserService {
   final UserRepository userRepository = new UserRepository();
@@ -25,7 +24,7 @@ class UserService {
     } on ValidationException catch (e) {
       Alert.displaySimpleAlert(e.title, e.message);
     } on DioError catch (e) {
-      ApiError err = catchError(e.response);
+      ApiError err = catchError(e);
       Alert.displaySimpleAlert(err.title, err.message);
     }
   }
@@ -39,7 +38,7 @@ class UserService {
     } on ValidationException catch (e) {
       Alert.displaySimpleAlert(e.title, e.message);
     } on DioError catch (e) {
-      ApiError err = catchError(e.response);
+      ApiError err = catchError(e);
       Alert.displaySimpleAlert(err.title, err.message);
     }
   }

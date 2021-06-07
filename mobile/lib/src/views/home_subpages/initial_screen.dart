@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/cards/initial_page_card.dart';
-import 'package:mobile/src/models/bank_account_model.dart';
-import 'package:mobile/src/themes/themes.dart';
-import 'package:mobile/src/utils/string_util.dart';
-import 'package:mobile/src/views/home_subpages/initial_screen_subpages/balace_screen.dart';
-import 'package:mobile/src/views/home_subpages/initial_screen_subpages/credit_card_screen.dart';
-import 'package:mobile/src/views/home_subpages/initial_screen_subpages/pix_screen.dart';
+import 'package:Raybank/src/components/cards/initial_page_card.dart';
+import 'package:Raybank/src/models/bank_account_model.dart';
+import 'package:Raybank/src/themes/themes.dart';
+import 'package:Raybank/src/utils/string_util.dart';
+import 'package:Raybank/src/views/home_subpages/initial_screen_subpages/balace_screen.dart';
+import 'package:Raybank/src/views/home_subpages/initial_screen_subpages/credit_card_screen.dart';
+import 'package:Raybank/src/views/home_subpages/initial_screen_subpages/pix_screen.dart';
 
 class InitialScreen extends StatefulWidget {
 

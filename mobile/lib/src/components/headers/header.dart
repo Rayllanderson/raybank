@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/texts/styles/text_styles.dart';
+import 'package:Raybank/src/components/texts/styles/text_styles.dart';
 
 class Header extends StatelessWidget {
   const Header({Key key, this.title, this.subtitle, this.crossAxisAlignment = CrossAxisAlignment.center}) : super(key: key);

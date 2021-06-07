@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/drawer/drawer.dart';
-import 'package:mobile/src/components/headers/header.dart';
-import 'package:mobile/src/controllers/pix_controller.dart';
-import 'package:mobile/src/models/enums/pixType.dart';
-import 'package:mobile/src/models/pix_response.dart';
-import 'package:mobile/src/themes/themes.dart';
-import 'package:mobile/src/views/home_subpages/initial_screen_subpages/pix_details_screen.dart';
+import 'package:Raybank/src/components/drawer/drawer.dart';
+import 'package:Raybank/src/components/headers/header.dart';
+import 'package:Raybank/src/controllers/pix_controller.dart';
+import 'package:Raybank/src/models/enums/pixType.dart';
+import 'package:Raybank/src/models/pix_response.dart';
+import 'package:Raybank/src/themes/themes.dart';
+import 'package:Raybank/src/views/home_subpages/initial_screen_subpages/pix_details_screen.dart';
 
 class PixScreen extends StatefulWidget {
   const PixScreen({Key key}) : super(key: key);

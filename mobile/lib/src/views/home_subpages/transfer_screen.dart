@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/components/cards/page_card.dart';
-import 'package:mobile/src/controllers/transfer_controller.dart';
-import 'package:mobile/src/utils/actions_util.dart';
-import 'package:mobile/src/utils/creator_util.dart';
-import 'package:mobile/src/utils/string_util.dart';
+import 'package:Raybank/src/components/cards/page_card.dart';
+import 'package:Raybank/src/controllers/transfer_controller.dart';
+import 'package:Raybank/src/utils/actions_util.dart';
+import 'package:Raybank/src/utils/creator_util.dart';
+import 'package:Raybank/src/utils/string_util.dart';
 
 class TransferScreen extends StatefulWidget {
 

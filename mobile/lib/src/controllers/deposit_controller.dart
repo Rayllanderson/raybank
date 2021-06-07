@@ -1,5 +1,5 @@
-import 'package:mobile/src/services/bank_account_service.dart';
-import 'package:mobile/src/utils/mask_util.dart';
+import 'package:Raybank/src/services/bank_account_service.dart';
+import 'package:Raybank/src/utils/mask_util.dart';
 
 class DepositController {
 

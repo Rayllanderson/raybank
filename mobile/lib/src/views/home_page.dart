@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/src/components/navigations/bottom_navigation.dart';
-import 'package:mobile/src/controllers/bank_account_controller.dart';
-import 'package:mobile/src/models/bank_account_model.dart';
-import 'package:mobile/src/themes/themes.dart';
-import 'package:mobile/src/utils/actions_util.dart';
-import 'package:mobile/src/views/home_subpages/deposit_screen.dart';
-import 'package:mobile/src/views/home_subpages/initial_screen.dart';
-import 'package:mobile/src/views/home_subpages/pay_screen.dart';
-import 'package:mobile/src/views/home_subpages/transfer_screen.dart';
+import 'package:Raybank/main.dart';
+import 'package:Raybank/src/components/navigations/bottom_navigation.dart';
+import 'package:Raybank/src/controllers/bank_account_controller.dart';
+import 'package:Raybank/src/models/bank_account_model.dart';
+import 'package:Raybank/src/themes/themes.dart';
+import 'package:Raybank/src/utils/actions_util.dart';
+import 'package:Raybank/src/views/home_subpages/deposit_screen.dart';
+import 'package:Raybank/src/views/home_subpages/initial_screen.dart';
+import 'package:Raybank/src/views/home_subpages/pay_screen.dart';
+import 'package:Raybank/src/views/home_subpages/transfer_screen.dart';
 
 
 class HomePage extends StatefulWidget {

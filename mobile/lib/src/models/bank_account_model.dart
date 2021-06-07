@@ -1,6 +1,6 @@
 
 
-import 'package:mobile/src/utils/string_util.dart';
+import 'package:Raybank/src/utils/string_util.dart';
 
 class BankAccountModel {
   int id;

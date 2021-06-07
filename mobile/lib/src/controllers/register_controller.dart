@@ -1,6 +1,7 @@
+import 'package:Raybank/src/services/user_service.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/src/models/register_model.dart';
-import 'package:mobile/src/services/user_service.dart';
+import 'package:Raybank/src/models/register_model.dart';
+import 'package:Raybank/src/services/user_service.dart';
 
 class RegisterController {
   TextEditingController _nameController;

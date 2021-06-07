@@ -1,10 +1,10 @@
 
 
 import 'package:dio/dio.dart';
-import 'package:mobile/src/models/pix_request.dart';
-import 'package:mobile/src/models/pix_response.dart';
-import 'package:mobile/src/repositories/util.dart';
-import 'package:mobile/src/services/api.dart';
+import 'package:Raybank/src/models/pix_request.dart';
+import 'package:Raybank/src/models/pix_response.dart';
+import 'package:Raybank/src/repositories/util.dart';
+import 'package:Raybank/src/services/api.dart';
 
 class PixRepository{
 

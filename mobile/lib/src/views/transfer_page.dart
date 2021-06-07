@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/src/components/buttons/primary_button.dart';
-import 'package:mobile/src/components/headers/header.dart';
-import 'package:mobile/src/components/inputs/number_input.dart';
-import 'package:mobile/src/components/list_views/contact_list_view.dart';
-import 'package:mobile/src/components/texts/styles/text_styles.dart';
-import 'package:mobile/src/models/contact_model.dart';
-import 'package:mobile/src/models/transfer_model.dart';
-import 'package:mobile/src/repositories/bank_account_repository.dart';
-import 'package:mobile/src/utils/string_util.dart';
+import 'package:Raybank/main.dart';
+import 'package:Raybank/src/components/buttons/primary_button.dart';
+import 'package:Raybank/src/components/headers/header.dart';
+import 'package:Raybank/src/components/inputs/number_input.dart';
+import 'package:Raybank/src/components/list_views/contact_list_view.dart';
+import 'package:Raybank/src/components/texts/styles/text_styles.dart';
+import 'package:Raybank/src/models/contact_model.dart';
+import 'package:Raybank/src/models/transfer_model.dart';
+import 'package:Raybank/src/repositories/bank_account_repository.dart';
+import 'package:Raybank/src/utils/string_util.dart';
 
 class TransferPage extends StatefulWidget {
   TransferPage({Key key}) : super(key: key);

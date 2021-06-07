@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:mobile/src/models/pix_request.dart';
-import 'package:mobile/src/models/pix_response.dart';
-import 'package:mobile/src/services/pix_service.dart';
+import 'package:Raybank/src/models/pix_request.dart';
+import 'package:Raybank/src/models/pix_response.dart';
+import 'package:Raybank/src/services/pix_service.dart';
 
 class PixController {
 

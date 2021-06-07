@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
-import 'package:mobile/src/components/alerts/alert.dart';
-import 'package:mobile/src/models/transfer_model.dart';
-import 'package:mobile/src/services/bank_account_service.dart';
+import 'package:Raybank/main.dart';
+import 'package:Raybank/src/components/alerts/alert.dart';
+import 'package:Raybank/src/models/transfer_model.dart';
+import 'package:Raybank/src/services/bank_account_service.dart';
 
 class ConfirmTransferController {
 

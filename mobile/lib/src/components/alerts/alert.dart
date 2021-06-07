@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/main.dart';
+import 'package:Raybank/main.dart';
 
 class Alert {
   static void displaySimpleAlert(title, message) {

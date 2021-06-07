@@ -1,4 +1,4 @@
-import 'package:mobile/src/models/login_model.dart';
+import 'package:Raybank/src/models/login_model.dart';
 
 class RegisterModel {
   String name;

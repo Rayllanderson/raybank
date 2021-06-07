@@ -1,7 +1,7 @@
-import 'package:mobile/src/exceptions/validation_exception.dart';
-import 'package:mobile/src/models/register_model.dart';
-import 'package:mobile/src/utils/string_util.dart';
-import 'package:mobile/src/validations/login_validation.dart';
+import 'package:Raybank/src/exceptions/validation_exception.dart';
+import 'package:Raybank/src/models/register_model.dart';
+import 'package:Raybank/src/utils/string_util.dart';
+import 'package:Raybank/src/validations/login_validation.dart';
 
 /// Verifica se os campos de cadastro estão vazios.
 ///

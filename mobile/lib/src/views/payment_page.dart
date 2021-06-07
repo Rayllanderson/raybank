@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
-import 'package:mobile/src/components/buttons/primary_button.dart';
-import 'package:mobile/src/components/inputs/text_input_masked.dart';
-import 'package:mobile/src/components/list_views/payment_list_title.dart';
-import 'package:mobile/src/components/texts/styles/text_styles.dart';
-import 'package:mobile/src/controllers/payment_controller.dart';
-import 'package:mobile/src/models/payment_model.dart';
-import 'package:mobile/src/themes/themes.dart';
-import 'package:mobile/src/utils/mask_util.dart';
-import 'package:mobile/src/utils/string_util.dart';
+import 'package:Raybank/src/components/buttons/primary_button.dart';
+import 'package:Raybank/src/components/inputs/text_input_masked.dart';
+import 'package:Raybank/src/components/list_views/payment_list_title.dart';
+import 'package:Raybank/src/components/texts/styles/text_styles.dart';
+import 'package:Raybank/src/controllers/payment_controller.dart';
+import 'package:Raybank/src/models/payment_model.dart';
+import 'package:Raybank/src/themes/themes.dart';
+import 'package:Raybank/src/utils/mask_util.dart';
+import 'package:Raybank/src/utils/string_util.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key key, this.paymentModel}) : super(key: key);
