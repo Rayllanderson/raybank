@@ -21,6 +21,7 @@ Raybank é um aplicativo de simulação de banco desenvolvida para experimentar 
 
 
 Ah, toda transferência, depósito e pagamento, gera um extrato. Você pode conferi-los no saldo da conta ou no cartão de crédito
+
 <img src="https://user-images.githubusercontent.com/63964369/121005996-ca539900-c766-11eb-84ee-496b6d0462d8.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121007348-51554100-c768-11eb-8306-6ffb190b7dd9.png" width="49%">
 
 
