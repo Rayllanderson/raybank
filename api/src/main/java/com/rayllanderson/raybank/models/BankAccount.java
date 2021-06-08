@@ -6,12 +6,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
 @Getter
 @Setter
@@ -20,7 +18,6 @@ import java.util.Set;
 @Entity
 public class BankAccount {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -33,7 +30,7 @@ public class BankAccount {
     private User user;
     @JsonIgnore
     @OneToMany
-    private List<BankStatement> statements = new ArrayList<>();
+    private Set<BankStatement> statements = new HashSet<>();
     @JsonIgnore
     @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
@@ -83,6 +80,21 @@ public class BankAccount {
 
     public void addContact(BankAccount contact) {
         this.contacts.add(contact);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        BankAccount account = (BankAccount) o;
+        return Objects.equals(id, account.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

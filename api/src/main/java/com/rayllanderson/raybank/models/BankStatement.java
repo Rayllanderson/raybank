@@ -6,16 +6,16 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Objects;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class BankStatement {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -122,9 +122,23 @@ public class BankStatement {
         return statement;
     }
 
-
     private void convertAmountToNegative(){
         this.amount = this.amount.negate();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        BankStatement statement = (BankStatement) o;
+        return Objects.equals(id, statement.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
