@@ -26,6 +26,15 @@ class _TransferPageState extends State<TransferPage> {
     contacts = await bankAccountRepository.fetchContacts();
   }
 
+  refresh() async {
+    var resultTransaction = await storage.getTransfer();
+    var resultContacts = await bankAccountRepository.fetchContacts();
+    setState(() {
+      transaction = resultTransaction;
+      contacts = resultContacts;
+    });
+  }
+
   BankAccountRepository bankAccountRepository = new BankAccountRepository();
   TextEditingController controller = new TextEditingController();
 
@@ -41,7 +50,7 @@ class _TransferPageState extends State<TransferPage> {
       appBar: AppBar(
         actions: [
         IconButton(icon: Icon(Icons.refresh_outlined),
-            onPressed: fetchData
+            onPressed: refresh
         )],),
       body: SingleChildScrollView(
         child: Column(

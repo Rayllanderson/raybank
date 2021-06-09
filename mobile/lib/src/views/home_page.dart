@@ -57,8 +57,11 @@ class _HomePageState extends State<HomePage> {
     _onItemTapped(0);
   }
 
-  reload () async {
-    account = await bankAccountController.fetchBankAccount();
+  refresh () async {
+    var result = await bankAccountController.fetchBankAccount();
+    setState(() {
+      account = result;
+    });
   }
 
   @override
@@ -77,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           title: Text('Raybank'),
           actions: [
             IconButton(icon: Icon(Icons.refresh_outlined),
-                onPressed: reload
+                onPressed: refresh
             )],
         ),
         drawer: Drawer(

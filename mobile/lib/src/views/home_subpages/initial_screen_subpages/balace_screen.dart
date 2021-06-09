@@ -25,10 +25,19 @@ class _BalanceScreenState extends State<BalanceScreen> {
   BankAccountController bankAccountController = new BankAccountController();
   List<StatementModel> statements = List.empty();
 
+  refresh() async {
+    var result = await bankAccountController.fetchStatements();
+    print(result);
+    setState(() {
+      statements = result;
+    });
+  }
+
   @override
   void initState() {
-    fetchData();
+    bankAccountController.fetchStatements();
     super.initState();
+    fetchData();
   }
 
   @override
@@ -37,7 +46,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
       appBar: AppBar(
         actions: [
           IconButton(icon: Icon(Icons.refresh_outlined),
-              onPressed: fetchData
+              onPressed: refresh
           )],
       ),
       body: Stack(children: [

@@ -7,17 +7,12 @@ import 'package:Raybank/src/views/home_subpages/initial_screen_subpages/balace_s
 import 'package:Raybank/src/views/home_subpages/initial_screen_subpages/credit_card_screen.dart';
 import 'package:Raybank/src/views/home_subpages/initial_screen_subpages/pix_screen.dart';
 
-class InitialScreen extends StatefulWidget {
+class InitialScreen extends StatelessWidget {
 
-  final BankAccountModel accountModel;
+   final BankAccountModel accountModel;
 
   const InitialScreen({Key key, this.accountModel}) : super(key: key);
 
-  @override
-  _InitialScreenState createState() => _InitialScreenState();
-}
-
-class _InitialScreenState extends State<InitialScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,7 +22,7 @@ class _InitialScreenState extends State<InitialScreen> {
           child: Container(
             alignment: Alignment.topLeft,
             child: Text(
-              'Olá, ' + widget.accountModel.userName ?? '',
+              'Olá, ' +  accountModel.userName ?? '',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Themes.textColor,
@@ -38,7 +33,7 @@ class _InitialScreenState extends State<InitialScreen> {
         InitialPageCard(
             cardTap: (){
               Navigator.push(context,MaterialPageRoute(builder: (context) =>
-                  CreditCardScreen(creditCard: widget.accountModel.creditCardDto)));
+                  CreditCardScreen(creditCard:  accountModel.creditCardDto)));
             },
             title: 'Cartão de crédito',
             icon: Icon(Icons.credit_card),
@@ -55,7 +50,7 @@ class _InitialScreenState extends State<InitialScreen> {
                 SizedBox(
                   height: 3,
                 ),
-                Text(convertToBRL(widget.accountModel.creditCardDto.invoice),
+                Text(convertToBRL( accountModel.creditCardDto.invoice),
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -70,7 +65,7 @@ class _InitialScreenState extends State<InitialScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w300,
                             color: Colors.black)),
-                    Text(convertToBRL(widget.accountModel.creditCardDto.balance),
+                    Text(convertToBRL( accountModel.creditCardDto.balance),
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -81,12 +76,12 @@ class _InitialScreenState extends State<InitialScreen> {
             )),
         InitialPageCard(
           cardTap: (){
-            Navigator.push(context,MaterialPageRoute(builder: (context) => BalanceScreen(account: widget.accountModel)));
+            Navigator.push(context,MaterialPageRoute(builder: (context) => BalanceScreen(account:  accountModel)));
           },
           title: 'Saldo disponível',
           icon: Icon(Icons.account_balance_wallet),
           cardHeight: 170.0,
-          body: Text(convertToBRL(widget.accountModel.balance),
+          body: Text(convertToBRL( accountModel.balance),
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,

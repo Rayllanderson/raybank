@@ -25,6 +25,13 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
     statements = await creditCardRepository.fetchStatements();
   }
 
+  refresh() async {
+    var result = await creditCardRepository.fetchStatements();
+    setState(() {
+      statements = result;
+    });
+  }
+
   CreditCardRepository creditCardRepository = new CreditCardRepository();
   List<StatementModel> statements = List.empty();
 
@@ -51,7 +58,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
       appBar: AppBar(
         actions: [
           IconButton(icon: Icon(Icons.refresh_outlined),
-              onPressed: fetchData
+              onPressed: refresh
           )],
       ),
       body: Stack(children: [
