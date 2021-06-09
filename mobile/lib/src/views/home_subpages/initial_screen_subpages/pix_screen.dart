@@ -1,3 +1,4 @@
+import 'package:Raybank/src/components/loaders/index.dart';
 import 'package:flutter/material.dart';
 import 'package:Raybank/src/components/drawer/drawer.dart';
 import 'package:Raybank/src/components/headers/header.dart';
@@ -56,6 +57,9 @@ class _PixScreenState extends State<PixScreen> {
                       child: FutureBuilder<List<PixResponse>>(
                         future: controller.findAll(),
                         builder: (context, snapshot){
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return loading();
+                          }
                          return Column(
                             children: [
                               SizedBox(height: 30,),

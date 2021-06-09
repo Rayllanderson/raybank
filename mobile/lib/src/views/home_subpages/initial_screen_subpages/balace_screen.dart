@@ -1,3 +1,4 @@
+import 'package:Raybank/src/components/loaders/index.dart';
 import 'package:flutter/material.dart';
 import 'package:Raybank/src/components/cards/statement_card.dart';
 import 'package:Raybank/src/components/texts/styles/text_styles.dart';
@@ -94,6 +95,9 @@ class _BalanceScreenState extends State<BalanceScreen> {
                   child: FutureBuilder<List<StatementModel>>(
                       future: bankAccountController.fetchStatements(),
                       builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return loading();
+                        }
                         return StatementCard(statements: statements);
                       }),
                 ),

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:Raybank/main.dart';
 import 'package:Raybank/src/components/navigations/bottom_navigation.dart';
 import 'package:Raybank/src/controllers/bank_account_controller.dart';
@@ -9,6 +8,7 @@ import 'package:Raybank/src/views/home_subpages/deposit_screen.dart';
 import 'package:Raybank/src/views/home_subpages/initial_screen.dart';
 import 'package:Raybank/src/views/home_subpages/pay_screen.dart';
 import 'package:Raybank/src/views/home_subpages/transfer_screen.dart';
+import 'package:flutter/material.dart';
 
 
 class HomePage extends StatefulWidget {

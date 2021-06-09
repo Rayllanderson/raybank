@@ -8,7 +8,7 @@ class Alert {
         builder: (context) {
           return AlertDialog(
               title: Text(title),
-              content: Text(message),
+              content: Text(message != null ? message : "Erro desconhecido"),
               actions: [
                 TextButton(
                   child: Text("Ok"),

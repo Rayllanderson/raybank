@@ -41,7 +41,7 @@ class _InitialScreenState extends State<InitialScreen> {
                   CreditCardScreen(creditCard: widget.accountModel.creditCardDto)));
             },
             title: 'Cartão de crédito',
-            icon: Icon(Icons.credit_card_rounded),
+            icon: Icon(Icons.credit_card),
             sizedBoxHeight: 5.0,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.start,

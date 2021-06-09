@@ -1,3 +1,4 @@
+import 'package:Raybank/src/components/loaders/index.dart';
 import 'package:flutter/material.dart';
 import 'package:Raybank/src/components/alerts/alert.dart';
 import 'package:Raybank/src/components/cards/statement_card.dart';
@@ -132,6 +133,9 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                   child: FutureBuilder<List<StatementModel>>(
                       future: creditCardRepository.fetchStatements(),
                       builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return loading();
+                        }
                         return StatementCard(statements: statements);
                       }),
                 ),
