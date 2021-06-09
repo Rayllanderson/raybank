@@ -5,20 +5,11 @@ import 'package:Raybank/src/models/enums/payment_type.dart';
 import 'package:Raybank/src/models/payment_model.dart';
 import 'package:Raybank/src/views/payment_page.dart';
 
-class PayScreen extends StatefulWidget {
+class PayScreen extends StatelessWidget {
+
+  final BankAccountModel account;
 
   const PayScreen({Key key, this.account}) : super(key: key);
-  final BankAccountModel account;
-  @override
-  _PayScreenState createState() => _PayScreenState();
-}
-
-class _PayScreenState extends State<PayScreen> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +37,7 @@ class _PayScreenState extends State<PayScreen> {
                 onPress: (){
                   Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(
                     paymentModel: PaymentModel(PaymentType.BRAZILIAN_BOLETO,
-                        widget.account.balance),
+                         account.balance),
                   )));
                 },
               ),
@@ -59,7 +50,7 @@ class _PayScreenState extends State<PayScreen> {
                 onPress: (){
                   Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(
                     paymentModel: PaymentModel(PaymentType.CREDIT_CARD,
-                        widget.account.creditCardDto.balance),)));
+                         account.creditCardDto.balance),)));
                 },
               ),
               SizedBox(
@@ -71,7 +62,7 @@ class _PayScreenState extends State<PayScreen> {
                 onPress: (){
                   Navigator.push(context,MaterialPageRoute(builder: (context) => PaymentPage(
                     paymentModel: PaymentModel(PaymentType.INVOICE,
-                        widget.account.creditCardDto.invoice),)));
+                         account.creditCardDto.invoice),)));
                 },
               )
             ],

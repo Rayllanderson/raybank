@@ -16,11 +16,18 @@ class PixScreen extends StatefulWidget {
 }
 
 class _PixScreenState extends State<PixScreen> {
-  List<PixResponse> items = List.empty();
+  List<PixResponse> keys = List.empty();
   PixController controller;
 
   fetchData() async {
-    items = await controller.findAll();
+    keys = await controller.findAll();
+  }
+
+  refresh() async {
+    var result = await controller.findAll();
+    setState(() {
+      keys = result;
+    });
   }
 
   @override
@@ -35,7 +42,7 @@ class _PixScreenState extends State<PixScreen> {
       appBar: AppBar(
         actions: [
           IconButton(icon: Icon(Icons.refresh_outlined),
-              onPressed: fetchData
+              onPressed: refresh
           )],
       ),
       drawer: MyDrawer(),
@@ -72,16 +79,16 @@ class _PixScreenState extends State<PixScreen> {
                                 ),
                               ),
                               SizedBox(height: 40,),
-                              Text('${items.length} de 5 chaves', style: TextStyle(
+                              Text('${keys.length} de 5 chaves', style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.black54,
                               ),),
                               ListView.builder(
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
-                                itemCount: items.length,
+                                itemCount: keys.length,
                                 itemBuilder: (context, index) {
-                                  var item = items[index];
+                                  var item = keys[index];
                                   return (
                                   ListTile(
                                     leading: Icon(Icons.vpn_key, size: 18,),
