@@ -1,3 +1,4 @@
+import 'package:Raybank/src/themes/themes.dart';
 import 'package:Raybank/src/utils/storage_util.dart';
 import 'package:Raybank/src/views/confirm_transfer_page.dart';
 import 'package:Raybank/src/views/home_page.dart';
@@ -23,7 +24,7 @@ void main() async {
     title: 'Raybank',
     navigatorKey: navigatorKey,
     theme: ThemeData(
-      primarySwatch: Colors.purple,
+      primarySwatch: Themes.defaultColor,
     ),
     initialRoute: initialPage,
     routes: {

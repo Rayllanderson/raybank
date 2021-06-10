@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Brunismobank'),
+          title: Text('Raybank'),
           actions: [
             IconButton(icon: Icon(Icons.refresh_outlined),
                 onPressed: refresh

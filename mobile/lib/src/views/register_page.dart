@@ -22,7 +22,19 @@ class _RegisterPageState extends State<RegisterPage> {
   void initState() {
     super.initState();
     _registerController = RegisterController(
-        nameController, usernameController, passwordController, context);
+        nameController, usernameController, passwordController);
+  }
+
+  bool isLoading = false;
+  setLoading(bool state) => setState(() => isLoading = state);
+
+  void doRegister () async {
+    try {
+      setLoading(true);
+      await _registerController.register();
+    } finally {
+      setLoading(false);
+    }
   }
 
   @override
@@ -73,10 +85,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: LoginButton(
-                              text: 'REGISTRAR',
-                              onPress: () {
-                                _registerController.register();
-                              },
+                              text: isLoading ? 'REGISTRANDO' : 'REGISTRAR',
+                              onPress: isLoading ? null : doRegister
                             ),
                           ),
                           SizedBox(

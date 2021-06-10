@@ -3,7 +3,7 @@ import 'package:Raybank/src/themes/themes.dart';
 
 class LoginButton extends StatelessWidget {
   final text;
-  final void Function() onPress;
+  final onPress;
 
   const LoginButton({Key key, this.text, this.onPress}) : super(key: key);
 

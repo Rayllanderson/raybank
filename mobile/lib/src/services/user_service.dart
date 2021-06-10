@@ -1,6 +1,7 @@
 import 'package:Raybank/main.dart';
 import 'package:Raybank/src/components/alerts/alert.dart';
 import 'package:Raybank/src/exceptions/validation_exception.dart';
+import 'package:Raybank/src/models/enums/request.dart';
 import 'package:Raybank/src/models/erro_model.dart';
 import 'package:Raybank/src/models/login_model.dart';
 import 'package:Raybank/src/models/register_model.dart';
@@ -15,31 +16,37 @@ import 'package:flutter/material.dart';
 class UserService {
   final UserRepository userRepository = new UserRepository();
 
-  void login(LoginModel user) async {
+  Future<RequestState> login(LoginModel user) async {
     try {
       validateLogin(user);
       var response = await userRepository.login(user);
       storage.setToken(UserModel.fromJson(response.data).token);
       Navigator.of(navigatorKey.currentContext).pushReplacementNamed('/home');
+      return RequestState.SUCCESSFUL;
     } on ValidationException catch (e) {
       Alert.displaySimpleAlert(e.title, e.message);
+      return RequestState.NONE;
     } on DioError catch (e) {
       ApiError err = catchError(e);
       Alert.displaySimpleAlert(err.title, err.message);
+      return RequestState.ERROR;
     }
   }
 
-  void register(RegisterModel model) async {
+  Future<RequestState> register(RegisterModel model) async {
     try {
       validateRegister(model);
       await userRepository.register(model);
       Navigator.of(navigatorKey.currentContext).pushReplacementNamed('/');
       Alert.displaySimpleAlert('Sucesso', 'Cadastro realizado com sucesso!');
+      return RequestState.SUCCESSFUL;
     } on ValidationException catch (e) {
       Alert.displaySimpleAlert(e.title, e.message);
+      return RequestState.NONE;
     } on DioError catch (e) {
       ApiError err = catchError(e);
       Alert.displaySimpleAlert(err.title, err.message);
+      return RequestState.ERROR;
     }
   }
 }

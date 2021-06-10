@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:Raybank/src/components/buttons/login_button.dart';
 import 'package:Raybank/src/components/inputs/login_input.dart';
 import 'package:Raybank/src/components/logos/login_logo.dart';
 import 'package:Raybank/src/controllers/login_controller.dart';
+import 'package:Raybank/src/models/enums/request.dart';
 import 'package:Raybank/src/themes/themes.dart';
+import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -16,12 +17,24 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   LoginController _loginController;
-
+  RequestState state;
   @override
   void initState() {
     super.initState();
     _loginController =
-        LoginController(usernameController, passwordController, context);
+        LoginController(usernameController, passwordController);
+  }
+
+  bool isLoading = false;
+  setLoading(bool state) => setState(() => isLoading = state);
+
+  void doLogin () async {
+    try {
+      setLoading(true);
+      await _loginController.login();
+    } finally {
+      setLoading(false);
+    }
   }
 
   @override
@@ -69,10 +82,8 @@ class _LoginPageState extends State<LoginPage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: LoginButton(
-                              text: 'LOGIN',
-                              onPress: () {
-                                _loginController.login();
-                              },
+                              text: isLoading ? 'LOGANDO...' : 'LOGIN',
+                              onPress: isLoading ? null : doLogin,
                             ),
                           ),
                           SizedBox(
