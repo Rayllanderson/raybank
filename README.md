@@ -15,7 +15,7 @@ Raybank é um aplicativo de simulação de banco desenvolvida para experimentar 
 
 ### Telas
 
-<img src="https://user-images.githubusercontent.com/63964369/121003982-8364a400-c764-11eb-9d7d-c9560ee75dfa.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121005753-8365a380-c766-11eb-9bad-583be4002b7a.png" width="49%">
+<img src="https://user-images.githubusercontent.com/63964369/121518673-20bf1280-c9c7-11eb-80b3-71da5ae29cb4.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121005753-8365a380-c766-11eb-9bad-583be4002b7a.png" width="49%">
 
 <img src="https://user-images.githubusercontent.com/63964369/121006628-79907000-c767-11eb-8c34-5221b5ccb12d.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121006884-c8d6a080-c767-11eb-918a-6d9476ac2299.png" width="49%">
 
@@ -68,7 +68,7 @@ cd api
 
 Pré-requisitos: Dispositivo móvel android e ou flutter instalado em sua máquina
 
-Instale o [apk](https://drive.google.com/file/d/13WrgWx4KHNrQwPyKLSZSrRsimQ2AqdOU/view?usp=sharing) e pronto!
+Instale o [apk](https://drive.google.com/file/d/1AYUgURkTkrlTIkiXiZOhcgc6zIXZegnh/view?usp=sharing) e pronto!
 
 Caso queira buildar seu próprio apk, siga os passos: (flutter sdk é necessário)
 
