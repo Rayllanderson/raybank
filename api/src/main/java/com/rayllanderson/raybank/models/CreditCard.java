@@ -2,9 +2,19 @@ package com.rayllanderson.raybank.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
-import lombok.*;
+import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +41,6 @@ public class CreditCard {
     @OneToMany
     private List<BankStatement> statements = new ArrayList<>();
 
-    /**
-     * Realiza o pagamento da fatura.
-     * Verifica se existe fatura;
-     * Verifica se o valor da compra é maior que o valor da fatura.
-     * @param amount valor da compra
-     * @throws BadRequestException caso o cartão não tenha faturas
-     * @throws IllegalArgumentException caso o valor da compra seja maior que o valor da fatura.
-     */
     public void payTheInvoice(BigDecimal amount) throws IllegalArgumentException, BadRequestException {
         if (this.hasInvoice()) {
            if(this.bankAccount.hasAvailableBalance(amount)) {
@@ -56,56 +58,33 @@ public class CreditCard {
         }
     }
 
-    /**
-     * Realiza um pagamento.
-     * Verifica se tem limite;
-     * Verifica se o valor da compra é maior que o saldo do cartão disponível
-     * @param amount valor da compra
-     * @throws BadRequestException caso falhe em uma das verificações
-     */
     public void makePurchase(BigDecimal amount) throws BadRequestException {
         if (this.hasLimit()) {
             if (isAmountGreaterThanBalance(amount)) {
-                throw new BadRequestException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
+                throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
             }
             invoice = invoice.add(amount);
             balance = balance.subtract(amount);
-        } else throw new BadRequestException("Seu cartão não possui saldo suficiente para esta compra.");
+        } else throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
     }
 
-    /**
-     * Calcula a diferença entre amount e a fatura, gerando o reembolso.
-     * Adiciona o valor de reembolso na conta bancária e realiza o pagamento completo da fatura.
-     */
     public void payInvoiceAndRefundRemaining(BigDecimal amount){
         BigDecimal refund = amount.subtract(invoice);
         this.payTheInvoice(amount.subtract(refund));
     }
 
-    /**
-     * @return true caso o valor do parameter seja maior que o saldo disponível
-     */
     public boolean isAmountGreaterThanBalance(BigDecimal amount) {
         return amount.compareTo(balance) > 0;
     }
 
-    /**
-     * @return true caso o valor do parameter seja maior que a fatura atual
-     */
     public boolean isAmountGreaterThanInvoice(BigDecimal amount) {
         return amount.compareTo(invoice) > 0;
     }
 
-    /**
-     * @return true caso o cartão tenha saldo disponível
-     */
     public boolean hasLimit() {
         return !(balance.equals(BigDecimal.ZERO) || balance.equals(new BigDecimal("0.00")));
     }
 
-    /**
-     * @return true caso o cartão tenha algum valor na fatura
-     */
     public boolean hasInvoice() {
         return !(invoice.equals(BigDecimal.ZERO) || invoice.equals(new BigDecimal("0.00")));
     }
