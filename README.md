@@ -15,14 +15,14 @@ Raybank é um aplicativo de simulação de banco desenvolvida para experimentar 
 
 ### Telas
 
-<img src="https://user-images.githubusercontent.com/63964369/121003982-8364a400-c764-11eb-9d7d-c9560ee75dfa.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121005753-8365a380-c766-11eb-9bad-583be4002b7a.png" width="49%">
+<img src="https://user-images.githubusercontent.com/63964369/121674468-7b6c7300-ca88-11eb-9a04-c9eac58a6da8.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121675067-4876af00-ca89-11eb-9e0c-02520814aaef.png" width="49%">
 
-<img src="https://user-images.githubusercontent.com/63964369/121006628-79907000-c767-11eb-8c34-5221b5ccb12d.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121006884-c8d6a080-c767-11eb-918a-6d9476ac2299.png" width="49%">
+<img src="https://user-images.githubusercontent.com/63964369/121675068-4876af00-ca89-11eb-887e-061b7757656e.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121675069-490f4580-ca89-11eb-8a24-a7a162ced021.png" width="49%">
 
 
 Ah, toda transferência, depósito e pagamento, gera um extrato. Você pode conferi-los no saldo da conta ou no cartão de crédito
 
-<img src="https://user-images.githubusercontent.com/63964369/121005996-ca539900-c766-11eb-84ee-496b6d0462d8.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121007348-51554100-c768-11eb-8306-6ffb190b7dd9.png" width="49%">
+<img src="https://user-images.githubusercontent.com/63964369/121675065-47de1880-ca89-11eb-86ca-f2da137e5dd1.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121674465-7ad3dc80-ca88-11eb-9f0b-0abfa449b219.png" width="49%">
 
 
 
@@ -68,7 +68,7 @@ cd api
 
 Pré-requisitos: Dispositivo móvel android e ou flutter instalado em sua máquina
 
-Instale o [apk](https://drive.google.com/file/d/13WrgWx4KHNrQwPyKLSZSrRsimQ2AqdOU/view?usp=sharing) e pronto!
+Instale o [apk](https://drive.google.com/file/d/1AYUgURkTkrlTIkiXiZOhcgc6zIXZegnh/view?usp=sharing) e pronto!
 
 Caso queira buildar seu próprio apk, siga os passos: (flutter sdk é necessário)
 
