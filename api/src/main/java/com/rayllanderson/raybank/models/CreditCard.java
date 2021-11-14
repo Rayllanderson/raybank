@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,7 +39,7 @@ public class CreditCard {
     @OneToOne
     private BankAccount bankAccount;
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<BankStatement> statements = new ArrayList<>();
 
     public void payTheInvoice(BigDecimal amount) throws IllegalArgumentException, BadRequestException {
@@ -50,6 +51,7 @@ public class CreditCard {
                invoice = invoice.subtract(amount);
                balance = balance.add(amount);
                bankAccount.setBalance(bankAccount.getBalance().subtract(amount));
+               createInvoiceStatement(amount);
            }else {
                throw new BadRequestException("Sua conta não possui saldo suficiente para pagar a fatura.");
            }
@@ -65,7 +67,18 @@ public class CreditCard {
             }
             invoice = invoice.add(amount);
             balance = balance.subtract(amount);
+            this.createPurchaseStatement(amount);
         } else throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
+    }
+
+    private void createInvoiceStatement(BigDecimal amount) {
+        var statement = BankStatement.createInvoicePaymentStatement(amount, bankAccount);
+        this.getStatements().add(statement);
+    }
+
+    private void createPurchaseStatement(BigDecimal amount) {
+        var statement = BankStatement.createCreditPurchaseStatement(amount, bankAccount);
+        this.getStatements().add(statement);
     }
 
     public void payInvoiceAndRefundRemaining(BigDecimal amount){

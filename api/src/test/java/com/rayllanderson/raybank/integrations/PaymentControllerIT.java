@@ -76,7 +76,7 @@ class PaymentControllerIT extends BaseBankOperation {
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
 
         Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
 
         var creditCard = getAuthCreditCard();
         Assertions.assertThat(creditCard.getBalance()).isEqualTo(defaultCreditCardBalance);

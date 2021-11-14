@@ -3,10 +3,8 @@ package com.rayllanderson.raybank.services;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.BankStatement;
 import com.rayllanderson.raybank.models.CreditCard;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
-import com.rayllanderson.raybank.repositories.BankStatementRepository;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
 import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,6 @@ public class CreditCardService {
 
     private final CreditCardRepository creditCardRepository;
     private final BankAccountRepository bankAccountRepository;
-    private final BankStatementRepository statementRepository;
 
     /**
      * Cria e salva um novo cartão de crédito.
@@ -52,10 +49,6 @@ public class CreditCardService {
         if(dto.getAccount() == null)  throw new BadRequestException("Account must be set before send");
         CreditCard creditCard = findByAccountId(dto.getAccount().getId());
         creditCard.makePurchase(dto.getAmount());
-        var statement = statementRepository.save(BankStatement.createCreditPurchaseStatement(
-                dto.getAmount(), creditCard.getBankAccount()
-        ));
-        creditCard.getStatements().add(statement);
         creditCardRepository.save(creditCard);
     }
 
@@ -77,10 +70,6 @@ public class CreditCardService {
         } catch (IllegalArgumentException e){
             creditCard.payInvoiceAndRefundRemaining(dto.getAmount());
         }finally {
-            var statement = statementRepository.save(BankStatement.createInvoicePaymentStatement(
-                    dto.getAmount(), creditCard.getBankAccount()
-            ));
-            creditCard.getStatements().add(statement);
             bankAccountRepository.save(creditCard.getBankAccount());
             creditCardRepository.save(creditCard);
         }
