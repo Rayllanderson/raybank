@@ -1,13 +1,17 @@
 package com.rayllanderson.raybank.external.exceptions;
 
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.*;
 
+@ToString
 public enum RaybankExternalTypeError {
 
     CREDIT_CARD_NOT_FOUND("Credit Card not found", "CNF404", NOT_FOUND),
     CREDIT_CARD_BADLY_FORMATTED("Credit Card number is badly formatted", "CMF400", BAD_REQUEST),
+    INSUFFICIENT_LIMIT("Credit Card has no available limit", "INL422", UNPROCESSABLE_ENTITY),
+    INVALID_PAYMENT_METHOD("The payment method is not valid", "IPM400", BAD_REQUEST),
     TOKEN_ALREADY_REGISTERED("The client has already registered a token", "TAR422", UNPROCESSABLE_ENTITY),
     TOKEN_UNREGISTERED("The token is not registered. Please, register before proceed", "TUN401", UNAUTHORIZED);
 
