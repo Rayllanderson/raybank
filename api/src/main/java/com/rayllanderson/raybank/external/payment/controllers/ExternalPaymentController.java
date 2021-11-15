@@ -1,10 +1,15 @@
-package com.rayllanderson.raybank.external.payment;
+package com.rayllanderson.raybank.external.payment.controllers;
 
 import com.rayllanderson.raybank.external.exceptions.RaybankExternalException;
+import com.rayllanderson.raybank.external.payment.services.ExternalCreditCardPaymentService;
+import com.rayllanderson.raybank.external.payment.services.ExternalDebitCardPaymentService;
+import com.rayllanderson.raybank.external.payment.services.ExternalPaymentMethod;
 import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentRequest;
 import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentType;
+import com.rayllanderson.raybank.external.payment.responses.ExternalPaymentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,14 +32,14 @@ public class ExternalPaymentController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Void> pay(@Valid @RequestBody ExternalPaymentRequest request) {
+    public ResponseEntity<ExternalPaymentResponse> pay(@Valid @RequestBody ExternalPaymentRequest request) {
         log.info("Novo pagamento recebido: {}", request);
 
-        this.getPaymentMethod(request.getPaymentMethod()).pay(request);
+        var response = this.getPaymentMethod(request.getPaymentMethod()).pay(request);
 
-        log.info("Pagamento processado com sucesso: {}", request);
+        log.info("Pagamento processado com sucesso: {}", response);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     private ExternalPaymentMethod getPaymentMethod(ExternalPaymentType paymentMethod) {

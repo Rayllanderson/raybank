@@ -1,8 +1,10 @@
-package com.rayllanderson.raybank.external.payment;
+package com.rayllanderson.raybank.external.payment.services;
 
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.exceptions.RaybankExternalException;
+import com.rayllanderson.raybank.external.payment.CardUtil;
 import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentRequest;
+import com.rayllanderson.raybank.external.payment.responses.ExternalPaymentResponse;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +23,7 @@ public class ExternalCreditCardPaymentService implements ExternalPaymentMethod {
 
     @Override
     @Transactional
-    public void pay(ExternalPaymentRequest request) {
+    public ExternalPaymentResponse pay(ExternalPaymentRequest request) {
 
         var creditCard = creditCardRepository.findByCardNumber(CardUtil.getCardNumber(request)).orElseThrow(() -> {
             log.error("Pagamento não efetuado. Cartão de crédito {} não encontrado.", request.getNumberIdentifier());
@@ -33,9 +35,10 @@ public class ExternalCreditCardPaymentService implements ExternalPaymentMethod {
             creditCard.makeCreditPurchase(total);
             creditCardRepository.save(creditCard);
             log.info("Pagamento efetuado com sucesso para cartão de crédito {}", request.getNumberIdentifier());
+            return ExternalPaymentResponse.fromRequest(request);
         } catch (UnprocessableEntityException e) {
             log.error("Pagamento não efetuado. Cartão de crédito {} não possui limite suficiente.", request.getNumberIdentifier());
-            throw new RaybankExternalException(INSUFFICIENT_CREDIT_CARD_LIMIT, "Card " + request.getNumberIdentifier() + " has no " +
+            throw new RaybankExternalException(INSUFFICIENT_CREDIT_CARD_LIMIT, "Card=" + request.getNumberIdentifier() + " has no " +
                     "available limit");
         }
     }
