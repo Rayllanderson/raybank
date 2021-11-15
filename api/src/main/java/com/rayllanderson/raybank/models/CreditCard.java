@@ -44,23 +44,23 @@ public class CreditCard {
 
     public void payTheInvoice(BigDecimal amount) throws IllegalArgumentException, BadRequestException {
         if (this.hasInvoice()) {
-           if(this.bankAccount.hasAvailableBalance(amount)) {
-               if (isAmountGreaterThanInvoice(amount)) {
-                   throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
-               }
-               invoice = invoice.subtract(amount);
-               balance = balance.add(amount);
-               bankAccount.setBalance(bankAccount.getBalance().subtract(amount));
-               createInvoiceStatement(amount);
-           }else {
-               throw new BadRequestException("Sua conta não possui saldo suficiente para pagar a fatura.");
-           }
+            if (this.bankAccount.hasAvailableBalance(amount)) {
+                if (isAmountGreaterThanInvoice(amount)) {
+                    throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
+                }
+                invoice = invoice.subtract(amount);
+                balance = balance.add(amount);
+                bankAccount.setBalance(bankAccount.getBalance().subtract(amount));
+                createInvoiceStatement(amount);
+            } else {
+                throw new BadRequestException("Sua conta não possui saldo suficiente para pagar a fatura.");
+            }
         } else {
             throw new BadRequestException("Ops, parece que seu cartão não possui nenhuma fatura.");
         }
     }
 
-    public void makePurchase(BigDecimal amount) throws BadRequestException {
+    public void makeCreditPurchase(BigDecimal amount) throws UnprocessableEntityException {
         if (this.hasLimit()) {
             if (isAmountGreaterThanBalance(amount)) {
                 throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
@@ -68,11 +68,26 @@ public class CreditCard {
             invoice = invoice.add(amount);
             balance = balance.subtract(amount);
             this.createPurchaseStatement(amount);
-        } else throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
+        } else
+            throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
+    }
+
+    public void makeDebitPurchase(BigDecimal amount) throws UnprocessableEntityException {
+        try {
+            this.bankAccount.pay(amount);
+            this.createDebitStatement(amount);
+        } catch (UnprocessableEntityException e) {
+            throw new UnprocessableEntityException("Saldo em conta insuficiente para efetuar compra no débito");
+        }
     }
 
     private void createInvoiceStatement(BigDecimal amount) {
         var statement = BankStatement.createInvoicePaymentStatement(amount, bankAccount);
+        this.getStatements().add(statement);
+    }
+
+    private void createDebitStatement(BigDecimal amount) {
+        var statement = BankStatement.createDebitCardPurchaseStatement(amount, bankAccount);
         this.getStatements().add(statement);
     }
 
@@ -81,7 +96,7 @@ public class CreditCard {
         this.getStatements().add(statement);
     }
 
-    public void payInvoiceAndRefundRemaining(BigDecimal amount){
+    public void payInvoiceAndRefundRemaining(BigDecimal amount) {
         BigDecimal refund = amount.subtract(invoice);
         this.payTheInvoice(amount.subtract(refund));
     }

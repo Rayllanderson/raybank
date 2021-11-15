@@ -7,6 +7,8 @@ import lombok.ToString;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -43,6 +45,9 @@ public class Boleto {
     @Column(nullable = false)
     private final LocalDate expirationDate = generateExpirationDate();
 
+    @Enumerated(EnumType.STRING)
+    private BoletoStatus status;
+
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     private BoletoHolder holder;
 
@@ -56,6 +61,7 @@ public class Boleto {
         this.id = UUID.randomUUID().toString();
         this.value = value;
         this.holder = holder;
+        this.status = BoletoStatus.NOT_PAID;
         this.code = this.generateCode();
     }
 
@@ -66,6 +72,18 @@ public class Boleto {
     public boolean isExpired() {
         var today = LocalDate.now();
         return today.isAfter(expirationDate);
+    }
+
+    public void expire() {
+        if (isExpired()) {
+            this.status = BoletoStatus.EXPIRED;
+            return;
+        }
+        throw new IllegalStateException("Não é possível expirar o boleto. Data de vencimento: " + expirationDate);
+    }
+
+    public void liquidate() {
+        this.status = BoletoStatus.PAID;
     }
 
     private LocalDate generateExpirationDate() {

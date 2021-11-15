@@ -38,8 +38,8 @@ public class StatementDto {
         String identificationName = null;
         if (senderAccount != null)
             identificationName = senderAccount.getUser().getName();
-        boolean isAmountPositive = statement.getAmount().compareTo(BigDecimal.ZERO) > 0,
-        isTransfer = statement.getStatementType().equals(StatementType.TRANSFER);
+        boolean isAmountPositive = statement.getAmount().compareTo(BigDecimal.ZERO) > 0;
+        boolean isTransfer = statement.getStatementType().equals(StatementType.TRANSFER);
         if (isTransfer) {
             if(isAmountPositive) {
                 dto.setIdentificationType(IdentificationType.RECEIVER);

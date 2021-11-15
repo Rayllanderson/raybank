@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,10 +64,10 @@ public class BankAccount {
         this.setBalance(this.getBalance().subtract(amountToBeTransferred));
     }
 
-    public void pay (BigDecimal amount){
+    public void pay (BigDecimal amount) throws UnprocessableEntityException{
         if (this.hasAvailableBalance(amount)){
             this.balance = this.balance.subtract(amount);
-        } else throw new BadRequestException("Sua conta não tem saldo disponível");
+        } else throw new UnprocessableEntityException("Sua conta não tem saldo disponível");
     }
 
     /**

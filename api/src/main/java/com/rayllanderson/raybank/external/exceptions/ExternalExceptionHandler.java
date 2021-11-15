@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExternalExceptionHandler {
 
     @ExceptionHandler(RaybankExternalException.class)
-    public ResponseEntity<ExternalErrorDto> handleExternalException(RaybankExternalException e) {
+    public ResponseEntity<ExternalErrorResponse> handleExternalException(RaybankExternalException e) {
         log.error("Handling external exception: {}", e.toString());
-        return ResponseEntity.status(e.getStatus()).body(ExternalErrorDto.fromExternalException(e));
+        return ResponseEntity.status(e.getStatus()).body(ExternalErrorResponse.fromExternalException(e));
     }
 }

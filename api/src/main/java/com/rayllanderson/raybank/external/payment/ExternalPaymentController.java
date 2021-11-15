@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.external.payment;
 
 import com.rayllanderson.raybank.external.exceptions.RaybankExternalException;
-import com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError;
 import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentRequest;
 import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentType;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.*;
+import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.INVALID_PAYMENT_METHOD;
 
 @Slf4j
 @RestController
@@ -24,6 +23,7 @@ import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeE
 public class ExternalPaymentController {
 
     private final ExternalCreditCardPaymentService creditCardPaymentService;
+    private final ExternalDebitCardPaymentService debitCardPaymentService;
 
     @Transactional
     @PostMapping
@@ -32,6 +32,8 @@ public class ExternalPaymentController {
 
         this.getPaymentMethod(request.getPaymentMethod()).pay(request);
 
+        log.info("Pagamento processado com sucesso: {}", request);
+
         return ResponseEntity.ok().build();
     }
 
@@ -39,11 +41,11 @@ public class ExternalPaymentController {
         switch (paymentMethod) {
             case CREDIT_CARD:
                 return creditCardPaymentService;
-            case BRAZILIAN_BOLETO:
-                return null;
+            case DEBIT_CARD:
+                return debitCardPaymentService;
             default: {
                 log.error("Tipo de pagamento externo inválido: {}", paymentMethod);
-                throw new RaybankExternalException(INVALID_PAYMENT_METHOD, "Tipo de pagamento=" + paymentMethod + " não é válido");
+                throw new RaybankExternalException(INVALID_PAYMENT_METHOD, "Payment type=" + paymentMethod + " is invalid");
             }
         }
     }

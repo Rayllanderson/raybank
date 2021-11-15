@@ -80,6 +80,21 @@ public class BankStatement {
     }
 
     /**
+     * Usando quando faz uma compra via cartão de débito
+     * @return BankStatement setado com [StatementType.DEBIT_CARD_PAYMENT] e já nega q quantia [amount.negate()]
+     */
+    public static BankStatement createDebitCardPurchaseStatement (BigDecimal amount, BankAccount accountOwner){
+        return BankStatement.builder().
+                moment(Instant.now())
+                .statementType(StatementType.DEBIT_CARD_PAYMENT)
+                .amount(amount.negate())
+                .accountSender(null)
+                .message(null)
+                .accountOwner(accountOwner)
+                .build();
+    }
+
+    /**
      * Usando quando realiza uma compra no cartão de crédito
      * @return BankStatement setado com [StatementType.CREDIT_CARD_PURCHASE] e já nega q quantia [amount.negate()]
      */
