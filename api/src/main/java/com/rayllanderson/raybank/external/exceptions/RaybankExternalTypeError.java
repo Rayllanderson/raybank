@@ -10,8 +10,7 @@ public enum RaybankExternalTypeError {
 
     CREDIT_CARD_NOT_FOUND("Credit Card not found", "CNF404", NOT_FOUND),
     DEBIT_CARD_NOT_FOUND("Debit Card not found", "DNF404", NOT_FOUND),
-    CARD_BADLY_FORMATTED("Card number is badly formatted", "CMF400", BAD_REQUEST),
-    CREDIT_CARD_BADLY_FORMATTED("Credit Card number is badly formatted", "CMF400", BAD_REQUEST),
+    CARD_BADLY_FORMATTED("Card number is badly formatted", "CBF400", BAD_REQUEST),
     INSUFFICIENT_CREDIT_CARD_LIMIT("Credit Card has no available limit", "ICL422", UNPROCESSABLE_ENTITY),
     INSUFFICIENT_ACCOUNT_BALANCE("Client has no available balance", "IAC422", UNPROCESSABLE_ENTITY),
     INVALID_PAYMENT_METHOD("The payment method is not valid", "IPM400", BAD_REQUEST),
