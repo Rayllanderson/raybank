@@ -1,7 +1,8 @@
 package com.rayllanderson.raybank.external.payment.responses;
 
+import com.rayllanderson.raybank.external.payment.models.ExternalTransaction;
 import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentRequest;
-import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentType;
+import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentTypeDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -13,12 +14,15 @@ import java.time.LocalDateTime;
 @ToString
 @RequiredArgsConstructor
 public class ExternalPaymentResponse {
+    private final String id;
     private final String numberIdentifier;
     private final BigDecimal value;
-    private final ExternalPaymentType paymentMethod;
+    private final ExternalPaymentTypeDto paymentMethod;
     private final LocalDateTime timestamp;
 
-    public static ExternalPaymentResponse fromRequest(ExternalPaymentRequest request) {
-        return new ExternalPaymentResponse(request.getNumberIdentifier(), request.getValue(), request.getPaymentMethod(), LocalDateTime.now());
+    public static ExternalPaymentResponse fromModel(ExternalTransaction externalTransaction) {
+        var paymentType = ExternalPaymentTypeDto.fromString(externalTransaction.getPaymentType().toString());
+        return new ExternalPaymentResponse(externalTransaction.getId(), externalTransaction.getNumberIdentifier(), externalTransaction.getValue(),
+                paymentType, externalTransaction.getTimestamp());
     }
 }

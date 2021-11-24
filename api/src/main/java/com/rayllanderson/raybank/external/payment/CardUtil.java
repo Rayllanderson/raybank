@@ -4,8 +4,6 @@ import com.rayllanderson.raybank.external.exceptions.RaybankExternalException;
 import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentRequest;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.CARD_BADLY_FORMATTED;
-
 @Slf4j
 public class CardUtil {
 
@@ -18,7 +16,7 @@ public class CardUtil {
         } catch (NumberFormatException e) {
             var message = "Card=" + request.getNumberIdentifier() + " is badly formatted";
             log.error("Pagamento não efetuado. {}", message);
-            throw new RaybankExternalException(CARD_BADLY_FORMATTED, message);
+            throw new RaybankExternalException.CardBadlyFormatted(message, request.toModel());
         }
     }
 }

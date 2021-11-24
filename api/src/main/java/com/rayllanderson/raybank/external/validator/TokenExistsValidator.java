@@ -39,7 +39,7 @@ public class TokenExistsValidator implements ConstraintValidator<TokenExists, Ob
         if (result.isEmpty()) {
             var reason = RaybankExternalTypeError.TOKEN_UNREGISTERED;
             log.warn("Tentativa de comunicação externa não processada. Motivo: {}", reason.getDescription());
-            throw new RaybankExternalException(reason);
+            throw new RaybankExternalException.TokenUnregistered();
         }
         return true;
     }

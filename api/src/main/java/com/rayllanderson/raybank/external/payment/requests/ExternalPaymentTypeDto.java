@@ -2,21 +2,24 @@ package com.rayllanderson.raybank.external.payment.requests;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.rayllanderson.raybank.external.exceptions.RaybankExternalException;
+import com.rayllanderson.raybank.external.payment.models.ExternalTransactionType;
 
 import java.util.Arrays;
 
-import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.INVALID_PAYMENT_METHOD;
-
-public enum ExternalPaymentType {
+public enum ExternalPaymentTypeDto {
     CREDIT_CARD, DEBIT_CARD;
 
     @JsonCreator
-    public static ExternalPaymentType fromString(String value) {
+    public static ExternalPaymentTypeDto fromString(String value) {
         try {
-            return ExternalPaymentType.valueOf(value);
+            return ExternalPaymentTypeDto.valueOf(value);
         } catch (IllegalArgumentException e) {
-            var message =  "Payment type=" + value + " is invalid. Available: " + Arrays.toString(ExternalPaymentType.values());
-            throw new RaybankExternalException(INVALID_PAYMENT_METHOD, message);
+            var message =  "Payment type=" + value + " is invalid. Available: " + Arrays.toString(ExternalPaymentTypeDto.values());
+            throw new RaybankExternalException.InvalidPaymentMethod(message);
         }
+    }
+
+    public ExternalTransactionType toModel() {
+        return ExternalTransactionType.valueOf(this.toString());
     }
 }

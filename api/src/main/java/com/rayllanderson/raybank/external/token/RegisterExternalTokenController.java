@@ -33,7 +33,7 @@ public class RegisterExternalTokenController {
         var isTokenAlreadyRegistered = externalAuthorizationTokenRepository.existsByClientName(externalToken.getClientName());
         if (isTokenAlreadyRegistered) {
             log.error("Falha ao registrar token para: {}. Motivo: Cliente já registrou o token", request.getClientName());
-            throw new RaybankExternalException(TOKEN_ALREADY_REGISTERED, "Client " + request.getClientName() + " has already " +
+            throw new RaybankExternalException.TokenAlreadyRegistered("Client " + request.getClientName() + " has already " +
                     "registered a token");
         }
 

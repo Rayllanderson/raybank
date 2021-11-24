@@ -1,12 +1,12 @@
 package com.rayllanderson.raybank.external.payment.controllers;
 
 import com.rayllanderson.raybank.external.exceptions.RaybankExternalException;
+import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentRequest;
+import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentTypeDto;
+import com.rayllanderson.raybank.external.payment.responses.ExternalPaymentResponse;
 import com.rayllanderson.raybank.external.payment.services.ExternalCreditCardPaymentService;
 import com.rayllanderson.raybank.external.payment.services.ExternalDebitCardPaymentService;
 import com.rayllanderson.raybank.external.payment.services.ExternalPaymentMethod;
-import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentRequest;
-import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentType;
-import com.rayllanderson.raybank.external.payment.responses.ExternalPaymentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-
-import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.INVALID_PAYMENT_METHOD;
 
 @Slf4j
 @RestController
@@ -42,7 +40,7 @@ public class ExternalPaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    private ExternalPaymentMethod getPaymentMethod(ExternalPaymentType paymentMethod) {
+    private ExternalPaymentMethod getPaymentMethod(ExternalPaymentTypeDto paymentMethod) {
         switch (paymentMethod) {
             case CREDIT_CARD:
                 return creditCardPaymentService;
@@ -50,7 +48,7 @@ public class ExternalPaymentController {
                 return debitCardPaymentService;
             default: {
                 log.error("Tipo de pagamento externo inválido: {}", paymentMethod);
-                throw new RaybankExternalException(INVALID_PAYMENT_METHOD, "Payment type=" + paymentMethod + " is invalid");
+                throw new RaybankExternalException.InvalidPaymentMethod("Payment type=" + paymentMethod + " is invalid");
             }
         }
     }

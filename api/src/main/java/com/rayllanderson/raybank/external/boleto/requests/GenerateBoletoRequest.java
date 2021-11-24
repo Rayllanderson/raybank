@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Getter
 @ToString
 public class GenerateBoletoRequest {
+    @NotNull
     @DecimalMin("0.1")
     private final BigDecimal value;
 
