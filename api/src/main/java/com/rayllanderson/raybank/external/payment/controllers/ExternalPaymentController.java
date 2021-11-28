@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/public/external/payment")
+@RequestMapping("/api/v1/public/external/payments")
 @RequiredArgsConstructor
 public class ExternalPaymentController {
 

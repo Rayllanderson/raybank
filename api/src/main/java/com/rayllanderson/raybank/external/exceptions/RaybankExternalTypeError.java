@@ -15,7 +15,9 @@ public enum RaybankExternalTypeError {
     INSUFFICIENT_ACCOUNT_BALANCE("Client has no available balance", "IAC422", UNPROCESSABLE_ENTITY),
     INVALID_PAYMENT_METHOD("The payment method is not valid", "IPM400", BAD_REQUEST),
     TOKEN_ALREADY_REGISTERED("The client has already registered a token", "TAR422", UNPROCESSABLE_ENTITY),
-    TOKEN_UNREGISTERED("The token is not registered. Please, register before proceed", "TUN401", UNAUTHORIZED);
+    TOKEN_UNREGISTERED("The token is not registered. Please, register before proceed", "TUN401", UNAUTHORIZED),
+    TOKEN_INVALID("The token is not valid.", "TNV401", UNAUTHORIZED),
+    TRANSACTION_NOT_FOUND("Transaction not found", "TNF404", NOT_FOUND);
 
     private final String description;
     private final String rayBankCode;

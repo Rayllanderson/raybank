@@ -11,7 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,7 +25,11 @@ public class ExternalTransaction {
     @Id
     private final String id = UUID.randomUUID().toString();
 
-    @NotEmpty
+    @NotBlank
+    @Column(nullable = false)
+    private String externalToken;
+
+    @NotBlank
     @Column(nullable = false)
     private String numberIdentifier;
 
@@ -50,14 +54,19 @@ public class ExternalTransaction {
     public ExternalTransaction() {
     }
 
-    public ExternalTransaction(String numberIdentifier, ExternalTransactionType paymentType, BigDecimal value) {
+    public ExternalTransaction(String numberIdentifier, BigDecimal value, ExternalTransactionType paymentType, String externalToken) {
         this.numberIdentifier = numberIdentifier;
         this.paymentType = paymentType;
         this.value = value;
+        this.externalToken = externalToken;
     }
 
     public void setSituation(ExternalTransactionSituation situation) {
         this.situation = situation;
+    }
+
+    public boolean isValidToken(String token) {
+        return this.externalToken.equals(token);
     }
 
     @PrePersist

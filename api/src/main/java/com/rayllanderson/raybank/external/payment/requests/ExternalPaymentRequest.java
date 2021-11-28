@@ -31,6 +31,6 @@ public class ExternalPaymentRequest {
     private final BigDecimal value;
 
     public ExternalTransaction toModel() {
-        return new ExternalTransaction(numberIdentifier, paymentMethod.toModel(), value);
+        return new ExternalTransaction(numberIdentifier, value, paymentMethod.toModel(), token);
     }
 }

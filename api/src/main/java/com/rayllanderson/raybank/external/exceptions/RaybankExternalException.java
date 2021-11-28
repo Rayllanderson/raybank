@@ -13,7 +13,9 @@ import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeE
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.INSUFFICIENT_CREDIT_CARD_LIMIT;
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.INVALID_PAYMENT_METHOD;
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.TOKEN_ALREADY_REGISTERED;
+import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.TOKEN_INVALID;
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.TOKEN_UNREGISTERED;
+import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.TRANSACTION_NOT_FOUND;
 
 @ToString
 public class RaybankExternalException extends RuntimeException {
@@ -121,6 +123,18 @@ public class RaybankExternalException extends RuntimeException {
         }
         public TokenUnregistered(String message) {
             super(TOKEN_UNREGISTERED, message);
+        }
+    }
+
+    public static class TokenInvalid extends RaybankExternalException {
+        public TokenInvalid(String message) {
+            super(TOKEN_INVALID, message);
+        }
+    }
+
+    public static class TransactionNotFound extends RaybankExternalException {
+        public TransactionNotFound(String s) {
+            super(TRANSACTION_NOT_FOUND, s);
         }
     }
 

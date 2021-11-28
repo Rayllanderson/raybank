@@ -39,9 +39,9 @@ public class ExternalErrorResponse {
         var rayBankCode = e.getRayBankCode();
         var errorDescription = e.getDescription();
         var message = e.getMessage();
-        var possibleRequestId = e.getTransaction();
-        if (possibleRequestId.isPresent()) {
-            var transactionId = possibleRequestId.get().getId();
+        var possibleTransaction = e.getTransaction();
+        if (possibleTransaction.isPresent()) {
+            var transactionId = possibleTransaction.get().getId();
             return new ExternalErrorResponse(title, statusCode, rayBankCode, errorDescription, message, transactionId);
         }
         return new ExternalErrorResponse(title, statusCode, rayBankCode, errorDescription, message);
