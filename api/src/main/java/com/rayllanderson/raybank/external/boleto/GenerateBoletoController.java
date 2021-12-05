@@ -30,7 +30,7 @@ public class GenerateBoletoController {
                                                                  UriComponentsBuilder uriBuilder) {
         log.info("Nova emissão de boleto recebida: {}", request);
 
-        Boleto boleto = request.generateBoleto();
+        Boleto boleto = request.toModel();
         boletoRepository.save(boleto);
 
         log.info("Boleto emitido com sucesso: {}", boleto);

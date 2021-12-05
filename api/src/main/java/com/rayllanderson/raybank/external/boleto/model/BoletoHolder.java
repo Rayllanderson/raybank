@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-@ToString
 @Entity
 public class BoletoHolder {
     @Id
@@ -33,5 +32,10 @@ public class BoletoHolder {
     public BoletoHolder(String name, String document) {
         this.name = name;
         this.document = document;
+    }
+
+    @Override
+    public String toString() {
+        return "BoletoHolder{" + "document='" + document + '\'' + ", name='" + name + '\'' + '}';
     }
 }

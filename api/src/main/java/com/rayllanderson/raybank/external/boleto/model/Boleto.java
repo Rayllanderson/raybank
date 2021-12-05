@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
@@ -29,13 +29,21 @@ public class Boleto {
     @Id
     private String id;
 
-    @NotEmpty
+    @NotBlank
     @Column(nullable = false)
     private String code;
 
     @DecimalMin("0.1")
     @Column(nullable = false)
     private BigDecimal value;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String postBackUrl;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String requester;
 
     @NotNull
     @Column(nullable = false)
@@ -57,16 +65,18 @@ public class Boleto {
     @Deprecated(since = "0.0.1")
     public Boleto() { }
 
-    public Boleto(BigDecimal value, BoletoHolder holder) {
+    public Boleto(BigDecimal value, String postBackUrl, String requester, BoletoHolder holder) {
         this.id = UUID.randomUUID().toString();
         this.value = value;
+        this.postBackUrl = postBackUrl;
+        this.requester = requester;
+        this.status = BoletoStatus.WAITING_PAYMENT;
         this.holder = holder;
-        this.status = BoletoStatus.NOT_PAID;
         this.code = this.generateCode();
     }
 
-    public static Boleto generate(BigDecimal value, BoletoHolder holder) {
-        return new Boleto(value, holder);
+    public static Boleto generate(BigDecimal value, String postBackUrl, String requester, BoletoHolder holder) {
+        return new Boleto(value, postBackUrl, requester, holder);
     }
 
     public boolean isExpired() {
@@ -89,8 +99,8 @@ public class Boleto {
     private LocalDate generateExpirationDate() {
         var expiration = creationDate.plusDays(3);
         var dayOfWeek = expiration.getDayOfWeek();
-        var isWeekend = dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY);
-        if (isWeekend) {
+        var expirationIsWeekend = dayOfWeek.equals(DayOfWeek.SATURDAY) || dayOfWeek.equals(DayOfWeek.SUNDAY);
+        if (expirationIsWeekend) {
             return creationDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
         }
         return expiration;
