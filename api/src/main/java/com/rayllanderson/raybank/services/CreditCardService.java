@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.services;
 
+import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.YearMonth;
 
 @RequiredArgsConstructor
@@ -45,13 +45,20 @@ public class CreditCardService {
      * Realiza um pagamento.
      * Verifica se tem limite;
      * Verifica se o valor da compra é maior que o saldo do cartão disponível
-     * @param dto setar conta bancária antes de ser enviado.
      * @throws BadRequestException caso falhe em uma das verificações
      */
     @Transactional
-    public void makePurchase(CreditCardDto dto) {
-        if(dto.getAccount() == null)  throw new BadRequestException("Account must be set before send");
-        CreditCard creditCard = findByAccountId(dto.getAccount().getId());
+    public void pay(final PaymentCrediCardDto dto) {
+        final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
+
+        final CreditCard creditCard = creditCardRepository.findByCardNumber(dto.getCardNumber())
+                .orElseThrow(()-> badRequestException);
+
+        final boolean isValidCvvAndExpiration = creditCard.isValidCvv(dto.getCvv()) && creditCard.isValidExpiration(dto.getExpiration());
+        if (!isValidCvvAndExpiration) {
+            throw badRequestException;
+        }
+
         creditCard.makeCreditPurchase(dto.getAmount());
         creditCardRepository.save(creditCard);
     }

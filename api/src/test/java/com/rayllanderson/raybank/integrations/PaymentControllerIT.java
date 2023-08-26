@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.integrations;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
-import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
+import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
+import java.time.YearMonth;
 
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -44,7 +45,7 @@ class PaymentControllerIT extends BaseBankOperation {
         ResponseEntity<Void> response = post(API_URL + "/boleto", payment, Void.class);
 
         Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
 
         Assertions.assertThat(authAccount.getBalance()).isEqualTo(expectedBalance);
     }
@@ -54,8 +55,13 @@ class PaymentControllerIT extends BaseBankOperation {
         var toPay = new BigDecimal("300.00");
         var defaultCreditCardBalance = new BigDecimal("5000.00");
         var expectedBalance = defaultCreditCardBalance.subtract(toPay);
-        var expectedInvoice = toPay;
-        var payment = CreditCardDto.builder().amount(toPay).build();
+        final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
+        var payment = PaymentCrediCardDto.builder()
+                .amount(toPay)
+                .cardNumber(userCreditCard.getCardNumber())
+                .cvv(userCreditCard.getCvv())
+                .expiration(userCreditCard.getExpiration())
+                .build();
 
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
 
@@ -64,19 +70,45 @@ class PaymentControllerIT extends BaseBankOperation {
 
         var creditCard = getAuthCreditCard();
         Assertions.assertThat(creditCard.getBalance()).isEqualTo(expectedBalance);
-        Assertions.assertThat(creditCard.getInvoice()).isEqualTo(expectedInvoice);
+        Assertions.assertThat(creditCard.getInvoice()).isEqualTo(toPay);
     }
 
     @Test
     void pay_NotPayWithCreditCard_WhenCreditCardHasNoBalance() {
         var toPay = new BigDecimal("9999.00");
         var defaultCreditCardBalance = new BigDecimal("5000.00");
-        var payment = CreditCardDto.builder().amount(toPay).build();
+        final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
+        var payment = PaymentCrediCardDto.builder()
+                .amount(toPay)
+                .cardNumber(userCreditCard.getCardNumber())
+                .cvv(userCreditCard.getCvv())
+                .expiration(userCreditCard.getExpiration())
+                .build();
 
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+
+        var creditCard = getAuthCreditCard();
+        Assertions.assertThat(creditCard.getBalance()).isEqualTo(defaultCreditCardBalance);
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenCardNotExists() {
+        var toPay = new BigDecimal("10.00");
+        var defaultCreditCardBalance = new BigDecimal("5000.00");
+        var payment = PaymentCrediCardDto.builder()
+                .amount(toPay)
+                .cardNumber(1111111111111111L)
+                .cvv(123)
+                .expiration(YearMonth.now())
+                .build();
+
+        ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
+
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
         var creditCard = getAuthCreditCard();
         Assertions.assertThat(creditCard.getBalance()).isEqualTo(defaultCreditCardBalance);

@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.controllers;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
-import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
+import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.services.BankAccountService;
 import com.rayllanderson.raybank.services.CreditCardService;
@@ -31,9 +31,8 @@ public class PaymentController {
     }
 
     @PostMapping("/credit-card")
-    public ResponseEntity<Void> pay(@RequestBody @Valid CreditCardDto dto, @AuthenticationPrincipal User authenticatedUser) {
-        dto.setAccount(authenticatedUser.getBankAccount());
-        creditCardService.makePurchase(dto);
+    public ResponseEntity<?> pay(@RequestBody @Valid PaymentCrediCardDto dto) {
+        creditCardService.pay(dto);
         return ResponseEntity.noContent().build();
     }
 

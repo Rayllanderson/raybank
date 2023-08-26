@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Builder
@@ -103,6 +104,14 @@ public class CreditCard {
     public void payInvoiceAndRefundRemaining(BigDecimal amount) {
         BigDecimal refund = amount.subtract(invoice);
         this.payTheInvoice(amount.subtract(refund));
+    }
+
+    public boolean isValidCvv(final Integer cvv) {
+        return Objects.equals(this.cvv, cvv);
+    }
+
+    public boolean isValidExpiration(final YearMonth expiration) {
+        return Objects.equals(this.expiration, expiration);
     }
 
     public boolean isAmountGreaterThanBalance(BigDecimal amount) {
