@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
@@ -17,11 +18,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Data
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +35,8 @@ public class CreditCard {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long cardNumber;
+    private Integer cvv;
+    private YearMonth expiration;
     private BigDecimal balance;
     private BigDecimal invoice;
     @JsonIgnore

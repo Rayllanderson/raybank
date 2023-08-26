@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 @RequiredArgsConstructor
 @Service
@@ -33,6 +35,8 @@ public class CreditCardService {
                 .bankAccount(savedBankAccount)
                 .balance(new BigDecimal(5000))
                 .invoice(BigDecimal.ZERO)
+                .cvv(generateCVV())
+                .expiration(generateExpiration())
                 .build();
         return creditCardRepository.save(creditCardToBeSaved);
     }
@@ -90,5 +94,13 @@ public class CreditCardService {
                     creditCardRepository.existsByCardNumber(generatedNumber) && (Long.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
         } while (isCardNumberInvalid);
         return generatedNumber;
+    }
+
+    private int generateCVV() {
+        return NumberUtil.generateRandom(3).intValue();
+    }
+
+    private YearMonth generateExpiration() {
+        return YearMonth.now().plusYears(8);
     }
 }
