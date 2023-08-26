@@ -6,7 +6,7 @@ import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
 import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.models.BankStatement;
-import com.rayllanderson.raybank.models.enums.StatementType;
+import com.rayllanderson.raybank.models.StatementType;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
 import com.rayllanderson.raybank.utils.BankTransferCreator;
 import org.assertj.core.api.Assertions;

@@ -5,7 +5,7 @@ import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.BankStatement;
-import com.rayllanderson.raybank.models.enums.StatementType;
+import com.rayllanderson.raybank.models.StatementType;
 import com.rayllanderson.raybank.repositories.BankStatementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.models;
 
-import com.rayllanderson.raybank.models.enums.StatementType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
