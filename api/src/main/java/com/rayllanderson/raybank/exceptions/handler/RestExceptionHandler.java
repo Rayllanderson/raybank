@@ -4,13 +4,11 @@ import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -19,7 +17,6 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
-
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<StandardError> handleBadRequestException(BadRequestException e, HttpServletRequest request) {
@@ -48,18 +45,16 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationError> handleMethodArgumentNotValid(MethodArgumentNotValidException e, @NonNull HttpStatus status, WebRequest request) {
+    public ResponseEntity<ValidationError> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         String fields = fieldErrors.stream().map(FieldError::getField).collect(Collectors.joining(", "));
         String fieldsMessages = fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(", "));
 
-        return ResponseEntity.status(status).body(
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ValidationError.builder()
                         .timestamp(LocalDateTime.now())
                         .title("Bad Request. Invalid Fields")
-                        .message(e.getMessage())
-                        .path(request.getContextPath())
-                        .status(status.value())
+                        .status(HttpStatus.BAD_REQUEST.value())
                         .fields(fields)
                         .fieldsMessage(fieldsMessages)
                         .build());
@@ -76,7 +71,6 @@ public class RestExceptionHandler {
                 ValidationError.builder()
                         .timestamp(LocalDateTime.now())
                         .title("Bad Request. Invalid Fields")
-                        .message(e.getMessage())
                         .status(status.value())
                         .fields(fields)
                         .fieldsMessage(fieldsMessages)
@@ -86,10 +80,10 @@ public class RestExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardError> handleExceptionInternal(Exception ex) {
         String title = ex.getCause() != null ? ex.getCause().getMessage() : "erro";
-        int status = HttpStatus.BAD_GATEWAY.value();
+        int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
         StandardError standardError = StandardError.builder().timestamp(LocalDateTime.now())
                 .title(title)
-                .message(ex.getMessage())
+                .message("Erro Interno")
                 .status(status)
                 .build();
         return ResponseEntity.status(status).body(standardError);

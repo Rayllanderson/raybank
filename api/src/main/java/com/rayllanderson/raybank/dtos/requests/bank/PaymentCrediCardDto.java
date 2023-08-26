@@ -6,8 +6,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.YearMonth;
 
@@ -21,12 +21,12 @@ public class PaymentCrediCardDto {
     private BigDecimal amount;
 
     @NotNull
-    @Max(16)
-    private Long cardNumber;
+    @Size(min = 16, max = 16)
+    private String cardNumber;
 
     @NotNull
-    @Max(3)
-    private Integer cvv;
+    @Size(min = 3, max = 3)
+    private String cvv;
 
     @NotNull
     @FutureOrPresent

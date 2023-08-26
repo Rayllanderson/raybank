@@ -51,10 +51,10 @@ public class CreditCardService {
     public void pay(final PaymentCrediCardDto dto) {
         final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
 
-        final CreditCard creditCard = creditCardRepository.findByCardNumber(dto.getCardNumber())
+        final CreditCard creditCard = creditCardRepository.findByCardNumber(Long.valueOf(dto.getCardNumber()))
                 .orElseThrow(()-> badRequestException);
 
-        final boolean isValidCvvAndExpiration = creditCard.isValidCvv(dto.getCvv()) && creditCard.isValidExpiration(dto.getExpiration());
+        final boolean isValidCvvAndExpiration = creditCard.isValidCvv(Integer.valueOf(dto.getCvv())) && creditCard.isValidExpiration(dto.getExpiration());
         if (!isValidCvvAndExpiration) {
             throw badRequestException;
         }
