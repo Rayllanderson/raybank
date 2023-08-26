@@ -13,10 +13,12 @@ public enum RaybankExternalTypeError {
     CARD_BADLY_FORMATTED("Card number is badly formatted", "CBF400", BAD_REQUEST),
     INSUFFICIENT_CREDIT_CARD_LIMIT("Credit Card has no available limit", "ICL422", UNPROCESSABLE_ENTITY),
     INSUFFICIENT_ACCOUNT_BALANCE("Client has no available balance", "IAC422", UNPROCESSABLE_ENTITY),
+    ACCOUNT_NOT_FOUND("Account not found", "ANF404", NOT_FOUND),
     INVALID_PAYMENT_METHOD("The payment method is not valid", "IPM400", BAD_REQUEST),
     TOKEN_ALREADY_REGISTERED("The client has already registered a token", "TAR422", UNPROCESSABLE_ENTITY),
     TOKEN_UNREGISTERED("The token is not registered. Please, register before proceed", "TUN401", UNAUTHORIZED),
     TOKEN_INVALID("The token is not valid.", "TNV401", UNAUTHORIZED),
+    BOLETO_NOT_FOUND("Boleto was not found", "BNF404", NOT_FOUND),
     TRANSACTION_NOT_FOUND("Transaction not found", "TNF404", NOT_FOUND);
 
     private final String description;

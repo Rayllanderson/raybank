@@ -50,7 +50,7 @@ public class CreditCard {
                 }
                 invoice = invoice.subtract(amount);
                 balance = balance.add(amount);
-                bankAccount.setBalance(bankAccount.getBalance().subtract(amount));
+                bankAccount.pay(amount);
                 createInvoiceStatement(amount);
             } else {
                 throw new BadRequestException("Sua conta não possui saldo suficiente para pagar a fatura.");

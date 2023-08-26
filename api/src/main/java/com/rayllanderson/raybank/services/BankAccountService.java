@@ -43,7 +43,7 @@ public class BankAccountService {
                 .balance(BigDecimal.ZERO)
                 .user(savedUser).build();
         bankAccountToBeSaved = bankAccountRepository.save(bankAccountToBeSaved);
-        bankAccountToBeSaved.setCreditCard(creditCardService.createCreditCard(bankAccountToBeSaved));
+        bankAccountToBeSaved.addCreditCard(creditCardService.createCreditCard(bankAccountToBeSaved));
         return bankAccountRepository.save(bankAccountToBeSaved);
     }
 

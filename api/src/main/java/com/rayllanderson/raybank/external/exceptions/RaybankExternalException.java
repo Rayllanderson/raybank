@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Optional;
 
+import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.*;
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.CARD_BADLY_FORMATTED;
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.CREDIT_CARD_NOT_FOUND;
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.DEBIT_CARD_NOT_FOUND;
@@ -135,6 +136,18 @@ public class RaybankExternalException extends RuntimeException {
     public static class TransactionNotFound extends RaybankExternalException {
         public TransactionNotFound(String s) {
             super(TRANSACTION_NOT_FOUND, s);
+        }
+    }
+
+    public static class AccountNotFound extends RaybankExternalException {
+        public AccountNotFound(String s) {
+            super(ACCOUNT_NOT_FOUND, s);
+        }
+    }
+
+    public static class BoletoNotFound extends RaybankExternalException {
+        public BoletoNotFound(String s) {
+            super(BOLETO_NOT_FOUND, s);
         }
     }
 

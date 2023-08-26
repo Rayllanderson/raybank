@@ -77,7 +77,7 @@ class BankStatementRepositoryTest {
     public User createUserSavedWithBankAccountSaved(){
         User user = userRepository.save(UserCreator.createUserToBeSaved());
         BankAccount account = BankAccountCreator.createBankAccountToBeSavedWithoutCreditCardAndWithoutUser();
-        account.setUser(user);
+        account.attacthUser(user);
         account = bankAccountRepository.save(account);
         user.setBankAccount(account);
        return userRepository.save(user);

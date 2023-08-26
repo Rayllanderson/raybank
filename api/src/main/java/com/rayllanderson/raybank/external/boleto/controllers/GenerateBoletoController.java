@@ -1,10 +1,12 @@
-package com.rayllanderson.raybank.external.boleto;
+package com.rayllanderson.raybank.external.boleto.controllers;
 
+import com.rayllanderson.raybank.external.boleto.BoletoRepository;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import com.rayllanderson.raybank.external.boleto.requests.GenerateBoletoRequest;
 import com.rayllanderson.raybank.external.boleto.response.GenerateBoletoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,13 +26,16 @@ public class GenerateBoletoController {
 
     private final BoletoRepository boletoRepository;
 
+    @Value("${raybank.boleto.postBackUrl}")
+    private String postBackUrl;
+
     @PostMapping
     @Transactional
     public ResponseEntity<GenerateBoletoResponse> generateBoleto(@Valid @RequestBody GenerateBoletoRequest request,
                                                                  UriComponentsBuilder uriBuilder) {
         log.info("Nova emissão de boleto recebida: {}", request);
 
-        Boleto boleto = request.toModel();
+        Boleto boleto = request.toModel(postBackUrl);
         boletoRepository.save(boleto);
 
         log.info("Boleto emitido com sucesso: {}", boleto);

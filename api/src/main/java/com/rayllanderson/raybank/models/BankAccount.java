@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.math.BigDecimal;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -70,6 +72,17 @@ public class BankAccount {
         } else throw new UnprocessableEntityException("Sua conta não tem saldo disponível");
     }
 
+    public void pay (Boleto boleto) throws UnprocessableEntityException {
+        if (boleto.isExpired()) {
+            throw new UnprocessableEntityException("Boleto "+ boleto.getCode() + " vencido");
+        }
+        if (boleto.isPaid()){
+            throw new UnprocessableEntityException("Boleto "+ boleto.getCode() + " já foi pago");
+        }
+        this.pay(boleto.getValue());
+        boleto.liquidate();
+    }
+
     /**
      * Realiza a ação de depositar. Soma e adiciona o valor a conta
      * @param amount Será adicionada essa quantia no saldo da conta.
@@ -111,5 +124,13 @@ public class BankAccount {
     @Override
     public String toString() {
         return "BankAccount{" + "id=" + id + ", accountNumber=" + accountNumber + ", balance=" + balance + ", creditCard=" + creditCard + ", user=" + user + ", statements=" + statements + ", contacts=" + contacts + '}';
+    }
+
+    public void addCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+
+    public void attacthUser(User user) {
+        this.user = user;
     }
 }

@@ -1,9 +1,9 @@
 package com.rayllanderson.raybank.external.boleto.requests;
 
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
+import com.rayllanderson.raybank.external.validator.AccountExists;
 import lombok.Getter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.URL;
 
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
@@ -22,21 +22,17 @@ public class GenerateBoletoRequest {
     @NotNull
     private final GenerateBoletoHolderRequest holder;
 
-    @URL
     @NotBlank
-    private final String postBackUrl;
+    @AccountExists
+    private final String requesterAccountId;
 
-    @NotBlank
-    private final String requester;
-
-    public GenerateBoletoRequest(BigDecimal value, String postBackUrl, String requester, GenerateBoletoHolderRequest holder) {
+    public GenerateBoletoRequest(BigDecimal value, String requesterAccountId, GenerateBoletoHolderRequest holder) {
         this.value = value;
         this.holder = holder;
-        this.postBackUrl = postBackUrl;
-        this.requester = requester;
+        this.requesterAccountId = requesterAccountId;
     }
 
-    public Boleto toModel() {
-        return Boleto.generate(this.value, this.postBackUrl, requester, holder.toModel());
+    public Boleto toModel(String postBackUrl) {
+        return Boleto.generate(this.value, postBackUrl, requesterAccountId, holder.toModel());
     }
 }

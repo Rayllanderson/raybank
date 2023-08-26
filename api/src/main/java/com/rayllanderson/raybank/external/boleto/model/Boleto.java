@@ -43,7 +43,7 @@ public class Boleto {
 
     @NotBlank
     @Column(nullable = false)
-    private String requester;
+    private String requesterAccountId;
 
     @NotNull
     @Column(nullable = false)
@@ -65,11 +65,11 @@ public class Boleto {
     @Deprecated(since = "0.0.1")
     public Boleto() { }
 
-    public Boleto(BigDecimal value, String postBackUrl, String requester, BoletoHolder holder) {
+    public Boleto(BigDecimal value, String postBackUrl, String requesterAccountId, BoletoHolder holder) {
         this.id = UUID.randomUUID().toString();
         this.value = value;
         this.postBackUrl = postBackUrl;
-        this.requester = requester;
+        this.requesterAccountId = requesterAccountId;
         this.status = BoletoStatus.WAITING_PAYMENT;
         this.holder = holder;
         this.code = this.generateCode();
@@ -82,6 +82,10 @@ public class Boleto {
     public boolean isExpired() {
         var today = LocalDate.now();
         return today.isAfter(expirationDate);
+    }
+
+    public boolean isPaid() {
+        return this.status.equals(BoletoStatus.PAID);
     }
 
     public void expire() {

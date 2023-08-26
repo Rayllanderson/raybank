@@ -75,7 +75,7 @@ class UserRepositoryTest {
     void findByPixKeysOrBankAccountNumber_ReturnUser_WhenValueExists() {
         User userToBeSaved = userRepository.save(UserCreator.createUserToBeSaved());
         BankAccount bankAccount = BankAccountCreator.createBankAccountToBeSavedWithoutCreditCardAndWithoutUser();
-        bankAccount.setUser(userToBeSaved);
+        bankAccount.attacthUser(userToBeSaved);
         bankAccount = bankAccountRepository.save(bankAccount);
         userToBeSaved.setBankAccount(bankAccount);
         User userSaved = userRepository.save(userToBeSaved);
@@ -102,7 +102,7 @@ class UserRepositoryTest {
     void findByPixKeysOrBankAccountNumber_ReturnPix_WhenPixExists() {
         User userToBeSaved = userRepository.save(UserCreator.createUserToBeSaved());
         BankAccount bankAccount = BankAccountCreator.createBankAccountToBeSavedWithoutCreditCardAndWithoutUser();
-        bankAccount.setUser(userToBeSaved);
+        bankAccount.attacthUser(userToBeSaved);
         bankAccount = bankAccountRepository.save(bankAccount);
         userToBeSaved.setBankAccount(bankAccount);
         Pix pix = new Pix(null, "rayllanderson", userToBeSaved);
