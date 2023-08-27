@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.controllers;
+package com.rayllanderson.raybank.controllers.v1;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
 import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
