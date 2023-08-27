@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.controllers.v1;
+package com.rayllanderson.raybank.controllers;
 
 import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
 import com.rayllanderson.raybank.dtos.requests.pix.PixPutDto;
