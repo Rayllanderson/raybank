@@ -20,7 +20,7 @@ public class BaseBankOperation extends BaseApiTest {
     }
 
     protected void deposit300(){
-        deposit(new BigDecimal("400.00"));
+        deposit(new BigDecimal("300.00"));
     }
 
     protected void deposit400(){

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -84,6 +85,17 @@ public class RestExceptionHandler {
         StandardError standardError = StandardError.builder().timestamp(LocalDateTime.now())
                 .title(title)
                 .message("Erro Interno")
+                .status(status)
+                .build();
+        return ResponseEntity.status(status).body(standardError);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<StandardError> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+        int status = HttpStatus.METHOD_NOT_ALLOWED.value();
+        StandardError standardError = StandardError.builder().timestamp(LocalDateTime.now())
+                .title(HttpStatus.METHOD_NOT_ALLOWED.name())
+                .message(ex.getMessage())
                 .status(status)
                 .build();
         return ResponseEntity.status(status).body(standardError);

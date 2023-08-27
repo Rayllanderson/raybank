@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
+import com.rayllanderson.raybank.dtos.requests.bank.PaymentTypeDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.CreditCard;
@@ -41,25 +42,23 @@ public class CreditCardService {
         return creditCardRepository.save(creditCardToBeSaved);
     }
 
-    /**
-     * Realiza um pagamento.
-     * Verifica se tem limite;
-     * Verifica se o valor da compra é maior que o saldo do cartão disponível
-     * @throws BadRequestException caso falhe em uma das verificações
-     */
     @Transactional
-    public void pay(final PaymentCrediCardDto dto) {
+    public void pay(final PaymentCrediCardDto payment) {
         final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
 
-        final CreditCard creditCard = creditCardRepository.findByCardNumber(Long.valueOf(dto.getCardNumber()))
-                .orElseThrow(()-> badRequestException);
+        final CreditCard creditCard = creditCardRepository.findByCardNumber(Long.valueOf(payment.getCardNumber()))
+                .orElseThrow(() -> badRequestException);
 
-        final boolean isValidCvvAndExpiration = creditCard.isValidCvv(Integer.valueOf(dto.getCvv())) && creditCard.isValidExpiration(dto.getExpiration());
+        final boolean isValidCvvAndExpiration = creditCard.isValidCvv(Integer.valueOf(payment.getCvv())) && creditCard.isValidExpiration(payment.getExpiration());
         if (!isValidCvvAndExpiration) {
             throw badRequestException;
         }
 
-        creditCard.makeCreditPurchase(dto.getAmount());
+        if (payment.isCreditPayment())
+            creditCard.makeCreditPurchase(payment.getAmount());
+        else
+            creditCard.makeDebitPurchase(payment.getAmount());
+
         creditCardRepository.save(creditCard);
     }
 

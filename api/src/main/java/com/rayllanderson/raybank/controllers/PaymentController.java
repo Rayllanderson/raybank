@@ -31,9 +31,9 @@ public class PaymentController {
     }
 
     @PostMapping("/credit-card")
-    public ResponseEntity<?> pay(@RequestBody @Valid PaymentCrediCardDto dto) {
-        creditCardService.pay(dto);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> pay(@RequestBody @Valid PaymentCrediCardDto request) {
+        creditCardService.pay(request);
+        return ResponseEntity.ok().build();
     }
 
 }

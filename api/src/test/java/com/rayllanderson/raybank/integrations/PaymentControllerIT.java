@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.integrations;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
 import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
+import com.rayllanderson.raybank.dtos.requests.bank.PaymentTypeDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -58,15 +59,16 @@ class PaymentControllerIT extends BaseBankOperation {
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
         var payment = PaymentCrediCardDto.builder()
                 .amount(toPay)
-                .cardNumber(userCreditCard.getCardNumber())
-                .cvv(userCreditCard.getCvv())
+                .cardNumber(userCreditCard.getCardNumber().toString())
+                .cvv(userCreditCard.getCvv().toString())
                 .expiration(userCreditCard.getExpiration())
+                .paymentType(PaymentTypeDto.CREDIT_CARD)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
 
         Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         var creditCard = getAuthCreditCard();
         Assertions.assertThat(creditCard.getBalance()).isEqualTo(expectedBalance);
@@ -80,9 +82,10 @@ class PaymentControllerIT extends BaseBankOperation {
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
         var payment = PaymentCrediCardDto.builder()
                 .amount(toPay)
-                .cardNumber(userCreditCard.getCardNumber())
-                .cvv(userCreditCard.getCvv())
+                .cardNumber(userCreditCard.getCardNumber().toString())
+                .cvv(userCreditCard.getCvv().toString())
                 .expiration(userCreditCard.getExpiration())
+                .paymentType(PaymentTypeDto.CREDIT_CARD)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
@@ -100,9 +103,10 @@ class PaymentControllerIT extends BaseBankOperation {
         var defaultCreditCardBalance = new BigDecimal("5000.00");
         var payment = PaymentCrediCardDto.builder()
                 .amount(toPay)
-                .cardNumber(1111111111111111L)
-                .cvv(123)
+                .cardNumber("1111111111111111")
+                .cvv("123")
                 .expiration(YearMonth.now())
+                .paymentType(PaymentTypeDto.CREDIT_CARD)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
@@ -112,5 +116,28 @@ class PaymentControllerIT extends BaseBankOperation {
 
         var creditCard = getAuthCreditCard();
         Assertions.assertThat(creditCard.getBalance()).isEqualTo(defaultCreditCardBalance);
+    }
+
+    @Test
+    void shouldPayWithDebidCard() {
+        var toPay = new BigDecimal("200.00");
+        deposit300();
+        final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
+        var payment = PaymentCrediCardDto.builder()
+                .amount(toPay)
+                .cardNumber(userCreditCard.getCardNumber().toString())
+                .cvv(userCreditCard.getCvv().toString())
+                .expiration(userCreditCard.getExpiration())
+                .paymentType(PaymentTypeDto.DEBIT_CARD)
+                .build();
+
+        ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
+
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        var creditCard = getAuthCreditCard();
+        var account = getAuthAccount();
+        Assertions.assertThat(creditCard.getInvoice()).isZero();
+        Assertions.assertThat(account.getBalance()).isEqualTo(new BigDecimal("100.00"));
     }
 }

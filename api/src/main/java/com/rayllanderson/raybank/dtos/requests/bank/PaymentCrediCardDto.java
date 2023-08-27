@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.dtos.requests.bank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,4 +32,12 @@ public class PaymentCrediCardDto {
     @NotNull
     @FutureOrPresent
     private YearMonth expiration;
+
+    @NotNull
+    private PaymentTypeDto paymentType;
+
+    @JsonIgnore
+    public boolean isCreditPayment() {
+        return PaymentTypeDto.CREDIT_CARD.equals(this.getPaymentType());
+    }
 }
