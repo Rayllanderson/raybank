@@ -59,10 +59,11 @@ class PaymentControllerIT extends BaseBankOperation {
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
         var payment = PaymentCrediCardDto.builder()
                 .amount(toPay)
-                .cardNumber(userCreditCard.getCardNumber().toString())
-                .cvv(userCreditCard.getCvv().toString())
-                .expiration(userCreditCard.getExpiration())
-                .paymentType(PaymentTypeDto.CREDIT_CARD)
+                .card(PaymentCrediCardDto.Card.builder()
+                        .number(userCreditCard.getCardNumber().toString())
+                        .securityCode(userCreditCard.getSecurityCode().toString())
+                        .expiryDate(userCreditCard.getExpiryDate()).build())
+                .paymentType(PaymentTypeDto.CREDIT)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
@@ -82,10 +83,11 @@ class PaymentControllerIT extends BaseBankOperation {
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
         var payment = PaymentCrediCardDto.builder()
                 .amount(toPay)
-                .cardNumber(userCreditCard.getCardNumber().toString())
-                .cvv(userCreditCard.getCvv().toString())
-                .expiration(userCreditCard.getExpiration())
-                .paymentType(PaymentTypeDto.CREDIT_CARD)
+                .card(PaymentCrediCardDto.Card.builder()
+                        .number(userCreditCard.getCardNumber().toString())
+                        .securityCode(userCreditCard.getSecurityCode().toString())
+                        .expiryDate(userCreditCard.getExpiryDate()).build())
+                .paymentType(PaymentTypeDto.CREDIT)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
@@ -103,10 +105,11 @@ class PaymentControllerIT extends BaseBankOperation {
         var defaultCreditCardBalance = new BigDecimal("5000.00");
         var payment = PaymentCrediCardDto.builder()
                 .amount(toPay)
-                .cardNumber("1111111111111111")
-                .cvv("123")
-                .expiration(YearMonth.now())
-                .paymentType(PaymentTypeDto.CREDIT_CARD)
+                .card(PaymentCrediCardDto.Card.builder()
+                        .number("1111111111111111")
+                        .securityCode("123")
+                        .expiryDate(YearMonth.now()).build())
+                .paymentType(PaymentTypeDto.CREDIT)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);
@@ -125,10 +128,11 @@ class PaymentControllerIT extends BaseBankOperation {
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
         var payment = PaymentCrediCardDto.builder()
                 .amount(toPay)
-                .cardNumber(userCreditCard.getCardNumber().toString())
-                .cvv(userCreditCard.getCvv().toString())
-                .expiration(userCreditCard.getExpiration())
-                .paymentType(PaymentTypeDto.DEBIT_CARD)
+                .card(PaymentCrediCardDto.Card.builder()
+                    .number(userCreditCard.getCardNumber().toString())
+                    .securityCode(userCreditCard.getSecurityCode().toString())
+                    .expiryDate(userCreditCard.getExpiryDate()).build())
+                .paymentType(PaymentTypeDto.DEBIT)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL + "/credit-card", payment, Void.class);

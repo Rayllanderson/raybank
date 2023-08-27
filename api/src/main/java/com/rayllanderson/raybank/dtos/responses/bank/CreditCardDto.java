@@ -17,8 +17,8 @@ import java.time.YearMonth;
 public class CreditCardDto {
     private Long id;
     private Long cardNumber;
-    private Integer cvv;
-    private YearMonth expiration;
+    private Integer securityCode;
+    private YearMonth expiryDate;
     private BigDecimal balance;
     private BigDecimal invoice;
 

@@ -2,7 +2,6 @@ package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
-import com.rayllanderson.raybank.dtos.requests.bank.PaymentTypeDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.CreditCard;
@@ -36,8 +35,8 @@ public class CreditCardService {
                 .bankAccount(savedBankAccount)
                 .balance(new BigDecimal(5000))
                 .invoice(BigDecimal.ZERO)
-                .cvv(generateCVV())
-                .expiration(generateExpiration())
+                .securityCode(generateSecurityCode())
+                .expiryDate(generateExpiryDate())
                 .build();
         return creditCardRepository.save(creditCardToBeSaved);
     }
@@ -46,11 +45,11 @@ public class CreditCardService {
     public void pay(final PaymentCrediCardDto payment) {
         final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
 
-        final CreditCard creditCard = creditCardRepository.findByCardNumber(Long.valueOf(payment.getCardNumber()))
+        final CreditCard creditCard = creditCardRepository.findByCardNumber(payment.getCardNumber())
                 .orElseThrow(() -> badRequestException);
 
-        final boolean isValidCvvAndExpiration = creditCard.isValidCvv(Integer.valueOf(payment.getCvv())) && creditCard.isValidExpiration(payment.getExpiration());
-        if (!isValidCvvAndExpiration) {
+        final boolean isValidCvvAndExpiryDate = creditCard.isValidSecurityCode(payment.getCardSecurityCode()) && creditCard.isValidExpiryDate(payment.getCardExpiryDate());
+        if (!isValidCvvAndExpiryDate) {
             throw badRequestException;
         }
 
@@ -102,11 +101,11 @@ public class CreditCardService {
         return generatedNumber;
     }
 
-    private int generateCVV() {
+    private int generateSecurityCode() {
         return NumberUtil.generateRandom(3).intValue();
     }
 
-    private YearMonth generateExpiration() {
+    private YearMonth generateExpiryDate() {
         return YearMonth.now().plusYears(8);
     }
 }

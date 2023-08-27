@@ -34,8 +34,8 @@ public class CreditCard {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long cardNumber;
-    private Integer cvv;
-    private YearMonth expiration;
+    private Integer securityCode;
+    private YearMonth expiryDate;
     private BigDecimal balance;
     private BigDecimal invoice;
     @JsonIgnore
@@ -104,12 +104,12 @@ public class CreditCard {
         this.payTheInvoice(amount.subtract(refund));
     }
 
-    public boolean isValidCvv(final Integer cvv) {
-        return Objects.equals(this.cvv, cvv);
+    public boolean isValidSecurityCode(final Integer securityCode) {
+        return Objects.equals(this.securityCode, securityCode);
     }
 
-    public boolean isValidExpiration(final YearMonth expiration) {
-        return Objects.equals(this.expiration, expiration);
+    public boolean isValidExpiryDate(final YearMonth expiryDate) {
+        return Objects.equals(this.expiryDate, expiryDate);
     }
 
     public boolean isAmountGreaterThanBalance(BigDecimal amount) {

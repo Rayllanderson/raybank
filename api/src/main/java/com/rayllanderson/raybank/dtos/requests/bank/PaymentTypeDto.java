@@ -6,7 +6,7 @@ import com.rayllanderson.raybank.exceptions.BadRequestException;
 import java.util.Arrays;
 
 public enum PaymentTypeDto {
-    CREDIT_CARD, DEBIT_CARD;
+    CREDIT, DEBIT;
 
     @JsonCreator
     public static PaymentTypeDto fromString(String value) {
