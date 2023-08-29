@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.dtos.inputs.PaymentCardInput;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.models.Transaction;
 import com.rayllanderson.raybank.models.CreditCard;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
@@ -42,7 +43,7 @@ public class CreditCardService {
     }
 
     @Transactional
-    public void pay(final PaymentCardInput payment) {
+    public Transaction pay(final PaymentCardInput payment) {
         final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
 
         final CreditCard creditCard = creditCardRepository.findByCardNumber(payment.getCardNumber())
@@ -53,12 +54,14 @@ public class CreditCardService {
             throw badRequestException;
         }
 
+        final Transaction transaction;
         if (payment.isCreditPayment())
-            creditCard.makeCreditPurchase(payment.getAmount());
+            transaction = creditCard.makeCreditPurchase(payment.getAmount());
         else
-            creditCard.makeDebitPurchase(payment.getAmount());
+            transaction = creditCard.makeDebitPurchase(payment.getAmount());
 
         creditCardRepository.save(creditCard);
+        return transaction;
     }
 
     /**

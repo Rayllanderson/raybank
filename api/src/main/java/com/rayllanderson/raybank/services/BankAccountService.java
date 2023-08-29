@@ -7,10 +7,10 @@ import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.Transaction;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
-import com.rayllanderson.raybank.repositories.BankStatementRepository;
+import com.rayllanderson.raybank.repositories.TransactionRepository;
 import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
     private final CreditCardService creditCardService;
-    private final BankStatementRepository statementRepository;
+    private final TransactionRepository transactionRepository;
     private final UserFinderService userFinderService;
 
     /**
@@ -50,33 +50,33 @@ public class BankAccountService {
     /**
      * Realiza transferência de uma conta para outra.
      *
-     * Sender precisa ser setado no objeto transaction antes de ser enviado pra este método;
+     * Sender precisa ser setado no objeto transferDto antes de ser enviado pra este método;
      *
      * Verifica se o sender possui saldo suficiente;
      *
-     * @param transaction objeto necessário para realização de transferência.
+     * @param transferDto objeto necessário para realização de transferência.
      * @throws BadRequestException Caso sender não esteja setado E caso o valor de transferência for maior que o saldo do sender
      */
     @Transactional
-    public void transfer(BankTransferDto transaction) throws BadRequestException{
-        Long senderId = transaction.getSenderId();
+    public void transfer(BankTransferDto transferDto) throws BadRequestException{
+        Long senderId = transferDto.getSenderId();
         if(senderId == null) throw new BadRequestException("Sender must be set before send");
-        BankAccount senderAccount = bankAccountRepository.findAccountWithStatementsAndContactsByUserId(senderId);
-        BigDecimal amountToBeTransferred = transaction.getAmount();
+        BankAccount senderAccount = bankAccountRepository.findAccountWithTransactionsAndContactsByUserId(senderId);
+        BigDecimal amountToBeTransferred = transferDto.getAmount();
         if(senderAccount.hasAvailableBalance(amountToBeTransferred)) {
-            User recipient = this.findUserByPixOrAccountNumber(transaction);
+            User recipient = this.findUserByPixOrAccountNumber(transferDto);
             BankAccount recipientAccount = recipient.getBankAccount();
             if(senderAccount.equals(recipientAccount)) throw new BadRequestException("Você não pode transferir dinheiro pra você mesmo");
             senderAccount.transferTo(recipientAccount, amountToBeTransferred);
 
             //criando e salvando extratos
-            BankStatement recipientStatement = statementRepository.save(BankStatement.createTransferStatement(amountToBeTransferred,
-                    senderAccount, recipientAccount, transaction.getMessage()));
-            BankStatement senderStatement = statementRepository.save(recipientStatement.toNegative());
+            Transaction recipientTransaction = transactionRepository.save(Transaction.createTransferTransaction(amountToBeTransferred,
+                    senderAccount, recipientAccount, transferDto.getMessage()));
+            Transaction senderTransaction = transactionRepository.save(recipientTransaction.toNegative());
 
             //adicionando extratos nas contas
-            recipientAccount.getStatements().add(recipientStatement);
-            senderAccount.getStatements().add(senderStatement);
+            recipientAccount.getTransactions().add(recipientTransaction);
+            senderAccount.getTransactions().add(senderTransaction);
 
             //adicionando ambos aos contatos
             senderAccount.addContact(recipientAccount);
@@ -90,31 +90,31 @@ public class BankAccountService {
     }
 
     @Transactional
-    public void pay(BankPaymentDto transaction){
-        Long ownerId = transaction.getOwnerId();
+    public void pay(BankPaymentDto paymentDto){
+        Long ownerId = paymentDto.getOwnerId();
         if(ownerId == null) throw new BadRequestException("Owner must be set before send");
-        BankAccount bankAccount = bankAccountRepository.findAccountWithStatementsByUserId(ownerId);
-        var amountToBePaid = transaction.getAmount();
+        BankAccount bankAccount = bankAccountRepository.findAccountWithTransactionsByUserId(ownerId);
+        var amountToBePaid = paymentDto.getAmount();
         bankAccount.pay(amountToBePaid);
-        BankStatement statement = statementRepository.save(BankStatement.createBoletoPaymentStatement(amountToBePaid, bankAccount));
-        bankAccount.getStatements().add(statement);
+        Transaction transaction = transactionRepository.save(Transaction.createBoletoPaymentTransaction(amountToBePaid, bankAccount));
+        bankAccount.getTransactions().add(transaction);
         this.bankAccountRepository.save(bankAccount);
     }
 
     /**
      * Realiza o depósito na conta
-     * @param transaction objeto necessário para realização do depósito.
+     * @param depositDto objeto necessário para realização do depósito.
      * @throws BadRequestException Caso o owner não esteja setado
      */
     @Transactional
-    public void deposit(BankDepositDto transaction) throws BadRequestException{
-        Long ownerId = transaction.getOwnerId();
+    public void deposit(BankDepositDto depositDto) throws BadRequestException{
+        Long ownerId = depositDto.getOwnerId();
         if(ownerId == null) throw new BadRequestException("Owner must be set before send");
-        var ownerAccount = bankAccountRepository.findAccountWithStatementsByUserId(ownerId);
-        var amountToBeDeposited = transaction.getAmount();
+        var ownerAccount = bankAccountRepository.findAccountWithTransactionsByUserId(ownerId);
+        var amountToBeDeposited = depositDto.getAmount();
         ownerAccount.deposit(amountToBeDeposited);
-        BankStatement statement = statementRepository.save(BankStatement.createDepositStatement(amountToBeDeposited, ownerAccount));
-        ownerAccount.getStatements().add(statement);
+        Transaction transaction = transactionRepository.save(Transaction.createDepositTransaction(amountToBeDeposited, ownerAccount));
+        ownerAccount.getTransactions().add(transaction);
         bankAccountRepository.save(ownerAccount);
     }
 
