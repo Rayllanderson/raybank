@@ -46,7 +46,7 @@ public class BankAccountController {
 
     @GetMapping("/statements")
     public ResponseEntity<List<TransactionDto>> findAllStatements(@AuthenticationPrincipal User authenticatedUser) {
-        return ResponseEntity.ok(transactionFinderService.findAllAccountStatements(authenticatedUser.getBankAccount()));
+        return ResponseEntity.ok(transactionFinderService.findAllAccountTransactions(authenticatedUser.getBankAccount()));
     }
 
     @GetMapping("/contacts")

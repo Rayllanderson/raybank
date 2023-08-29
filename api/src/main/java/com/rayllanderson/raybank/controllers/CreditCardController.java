@@ -30,7 +30,7 @@ public class CreditCardController {
     @GetMapping("/statements")
     public ResponseEntity<List<TransactionDto>> findStatements(@AuthenticationPrincipal User authenticatedUser){
         Long accountId = authenticatedUser.getBankAccount().getId();
-        return ResponseEntity.ok(transactionFinderService.findAllCreditCardStatements(accountId));
+        return ResponseEntity.ok(transactionFinderService.findAllCreditCardTransactions(accountId));
     }
 
     @PostMapping("/pay/invoice")
