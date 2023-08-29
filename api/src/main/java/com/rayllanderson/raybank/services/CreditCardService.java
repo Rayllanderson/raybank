@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.services;
 
-import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
+import com.rayllanderson.raybank.dtos.inputs.PaymentCardInput;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
@@ -42,7 +42,7 @@ public class CreditCardService {
     }
 
     @Transactional
-    public void pay(final PaymentCrediCardDto payment) {
+    public void pay(final PaymentCardInput payment) {
         final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
 
         final CreditCard creditCard = creditCardRepository.findByCardNumber(payment.getCardNumber())
