@@ -1,7 +1,5 @@
 package com.rayllanderson.raybank.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import lombok.AllArgsConstructor;
@@ -18,7 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.math.BigDecimal;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -38,13 +35,10 @@ public class BankAccount {
     private BigDecimal balance;
     @OneToOne
     private CreditCard creditCard;
-    @JsonIgnore
     @OneToOne
     private User user;
-    @JsonIgnore
     @OneToMany
-    private Set<BankStatement> statements = new HashSet<>();
-    @JsonIgnore
+    private Set<Transaction> transactions = new HashSet<>();
     @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
 
@@ -119,11 +113,6 @@ public class BankAccount {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "BankAccount{" + "id=" + id + ", accountNumber=" + accountNumber + ", balance=" + balance + ", creditCard=" + creditCard + ", user=" + user + ", statements=" + statements + ", contacts=" + contacts + '}';
     }
 
     public void addCreditCard(CreditCard creditCard) {

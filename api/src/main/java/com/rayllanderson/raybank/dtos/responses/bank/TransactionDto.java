@@ -3,8 +3,8 @@ package com.rayllanderson.raybank.dtos.responses.bank;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rayllanderson.raybank.dtos.responses.bank.enums.IdentificationType;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.BankStatement;
-import com.rayllanderson.raybank.models.StatementType;
+import com.rayllanderson.raybank.models.Transaction;
+import com.rayllanderson.raybank.models.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,19 +27,19 @@ public class StatementDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
     private Instant moment;
-    private StatementType statementType;
+    private TransactionType transactionType;
     private BigDecimal amount;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private IdentificationType identificationType;
 
-    public static StatementDto fromStatement(BankStatement statement) {
-        StatementDto dto = new ModelMapper().map(statement, StatementDto.class);
-        BankAccount senderAccount = statement.getAccountSender();
+    public static StatementDto fromStatement(Transaction transaction) {
+        StatementDto dto = new ModelMapper().map(transaction, StatementDto.class);
+        BankAccount senderAccount = transaction.getAccountSender();
         String identificationName = null;
         if (senderAccount != null)
             identificationName = senderAccount.getUser().getName();
-        boolean isAmountPositive = statement.getAmount().compareTo(BigDecimal.ZERO) > 0;
-        boolean isTransfer = statement.getStatementType().equals(StatementType.TRANSFER);
+        boolean isAmountPositive = transaction.getAmount().compareTo(BigDecimal.ZERO) > 0;
+        boolean isTransfer = transaction.getType().equals(TransactionType.TRANSFER);
         if (isTransfer) {
             if(isAmountPositive) {
                 dto.setIdentificationType(IdentificationType.RECEIVER);

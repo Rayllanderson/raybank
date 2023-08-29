@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
@@ -24,16 +20,15 @@ import java.util.UUID;
 @Setter
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class BankStatement {
+public class Transaction {
 
     @Id
     private String id;
     @Column(columnDefinition = "TIMESTAMP")
     private Instant moment;
     @Enumerated(EnumType.STRING)
-    private StatementType statementType;
+    private TransactionType type;
     private BigDecimal amount;
     private String message;
     @ManyToOne
@@ -41,11 +36,21 @@ public class BankStatement {
     @ManyToOne
     private BankAccount accountOwner;
 
-    public static BankStatement createTransferStatement(BigDecimal amount, BankAccount accountSender, BankAccount accountOwner,
+    public Transaction(String id, Instant moment, TransactionType type, BigDecimal amount, String message, BankAccount accountSender, BankAccount accountOwner) {
+        this.id = id == null ? UUID.randomUUID().toString() : id;
+        this.moment = moment;
+        this.type = type;
+        this.amount = amount;
+        this.message = message;
+        this.accountSender = accountSender;
+        this.accountOwner = accountOwner;
+    }
+
+    public static Transaction createTransferTransaction(BigDecimal amount, BankAccount accountSender, BankAccount accountOwner,
                                                         String message){
-        return BankStatement.builder().
+        return Transaction.builder().
                 moment(Instant.now())
-                .statementType(StatementType.TRANSFER)
+                .type(TransactionType.TRANSFER)
                 .amount(amount)
                 .message(message)
                 .accountSender(accountSender)
@@ -53,10 +58,10 @@ public class BankStatement {
                 .build();
     }
 
-    public static BankStatement createDepositStatement (BigDecimal amount, BankAccount accountOwner){
-        return BankStatement.builder().
+    public static Transaction createDepositTransaction(BigDecimal amount, BankAccount accountOwner){
+        return Transaction.builder().
                 moment(Instant.now())
-                .statementType(StatementType.DEPOSIT)
+                .type(TransactionType.DEPOSIT)
                 .amount(amount)
                 .accountSender(null)
                 .message(null)
@@ -64,14 +69,10 @@ public class BankStatement {
                 .build();
     }
 
-    /**
-     * Usando quando faz uma compra via boleto
-     * @return BankStatement setado com [StatementType.BRAZILIAN_BOLETO] e já nega q quantia [amount.negate()]
-     */
-    public static BankStatement createBoletoPaymentStatement (BigDecimal amount, BankAccount accountOwner){
-        return BankStatement.builder().
+    public static Transaction createBoletoPaymentTransaction(BigDecimal amount, BankAccount accountOwner){
+        return Transaction.builder().
                 moment(Instant.now())
-                .statementType(StatementType.BRAZILIAN_BOLETO)
+                .type(TransactionType.BRAZILIAN_BOLETO)
                 .amount(amount.negate())
                 .accountSender(null)
                 .message(null)
@@ -79,14 +80,10 @@ public class BankStatement {
                 .build();
     }
 
-    /**
-     * Usando quando faz uma compra via cartão de débito
-     * @return BankStatement setado com [StatementType.DEBIT_CARD_PAYMENT] e já nega q quantia [amount.negate()]
-     */
-    public static BankStatement createDebitCardPurchaseStatement (BigDecimal amount, BankAccount accountOwner){
-        return BankStatement.builder().
+    public static Transaction createDebitCardTransaction(BigDecimal amount, BankAccount accountOwner){
+        return Transaction.builder().
                 moment(Instant.now())
-                .statementType(StatementType.DEBIT_CARD_PAYMENT)
+                .type(TransactionType.DEBIT_CARD_PAYMENT)
                 .amount(amount.negate())
                 .accountSender(null)
                 .message(null)
@@ -94,14 +91,10 @@ public class BankStatement {
                 .build();
     }
 
-    /**
-     * Usando quando realiza uma compra no cartão de crédito
-     * @return BankStatement setado com [StatementType.CREDIT_CARD_PURCHASE] e já nega q quantia [amount.negate()]
-     */
-    public static BankStatement createCreditPurchaseStatement (BigDecimal amount, BankAccount accountOwner){
-        return BankStatement.builder().
+    public static Transaction createCreditTransaction(BigDecimal amount, BankAccount accountOwner){
+        return Transaction.builder().
                 moment(Instant.now())
-                .statementType(StatementType.CREDIT_CARD_PAYMENT)
+                .type(TransactionType.CREDIT_CARD_PAYMENT)
                 .amount(amount.negate())
                 .accountSender(null)
                 .message(null)
@@ -109,16 +102,10 @@ public class BankStatement {
                 .build();
     }
 
-    /**
-     * Usado quando se paga faturas de cartão de crédito;
-     * Não é setado pro negativo.
-     * Exemplo: Pagou a fatura no valor de xxx necessita ser positivo
-     * @return BankStatement setado com [StatementType.INVOICE_PAYMENT];
-     */
-    public static BankStatement createInvoicePaymentStatement (BigDecimal amount, BankAccount accountOwner){
-        return BankStatement.builder().
+    public static Transaction createInvoicePaymentTransaction(BigDecimal amount, BankAccount accountOwner){
+        return Transaction.builder().
                 moment(Instant.now())
-                .statementType(StatementType.INVOICE_PAYMENT)
+                .type(TransactionType.INVOICE_PAYMENT)
                 .amount(amount)
                 .accountSender(null)
                 .message(null)
@@ -129,23 +116,23 @@ public class BankStatement {
     /**
      * @return nova instância de BankStatement sem ID e com valor de transação negativo.
      */
-    public BankStatement toNegative(){
-        BankStatement source = instantiateStatementFrom(this);
+    public Transaction toNegative(){
+        Transaction source = instantiateTransactionFrom(this);
         source.setAccountSender(this.getAccountOwner());
         source.setAccountOwner(this.getAccountSender());
         return source;
     }
 
-    private static BankStatement instantiateStatementFrom(BankStatement source) {
-        BankStatement statement = new BankStatement();
-        statement.setMoment(source.getMoment());
-        statement.setAmount(source.getAmount());
-        statement.setMessage(source.getMessage());
-        statement.setStatementType(source.getStatementType());
-        statement.setAccountOwner(source.getAccountOwner());
-        statement.setAccountSender(source.getAccountSender());
-        statement.convertAmountToNegative();
-        return statement;
+    private static Transaction instantiateTransactionFrom(Transaction source) {
+        Transaction transaction = new Transaction();
+        transaction.setMoment(source.getMoment());
+        transaction.setAmount(source.getAmount());
+        transaction.setMessage(source.getMessage());
+        transaction.setType(source.getType());
+        transaction.setAccountOwner(source.getAccountOwner());
+        transaction.setAccountSender(source.getAccountSender());
+        transaction.convertAmountToNegative();
+        return transaction;
     }
 
     private void convertAmountToNegative(){
@@ -158,24 +145,12 @@ public class BankStatement {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        BankStatement statement = (BankStatement) o;
-        return Objects.equals(id, statement.id);
+        Transaction transaction = (Transaction) o;
+        return Objects.equals(id, transaction.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "BankStatement{" + "id=" + id + ", moment=" + moment + ", statementType=" + statementType + ", amount=" + amount + "," +
-                " message='" + message + '\'' + '}';
-    }
-
-    @PrePersist
-    void createId() {
-        if (Objects.isNull(this.id))
-            this.id = UUID.randomUUID().toString();
     }
 }
