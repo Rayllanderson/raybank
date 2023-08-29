@@ -1,13 +1,13 @@
 package com.rayllanderson.raybank.utils;
 
-import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.Transaction;
 
 import java.math.BigDecimal;
 
 public class StatementCreator {
 
-    public static BankStatement createTransferStatement(){
-        return BankStatement.createTransferStatement(
+    public static Transaction createTransferStatement(){
+        return Transaction.createTransferTransaction(
                 new BigDecimal(500),
                 BankAccountCreator.createBankAccountSaved(),
                 BankAccountCreator.createAnotherBankAccountSaved(),
@@ -15,8 +15,8 @@ public class StatementCreator {
         );
     }
 
-    public static BankStatement createDepositStatement(){
-        return BankStatement.createDepositStatement(
+    public static Transaction createDepositStatement(){
+        return Transaction.createDepositTransaction(
                 new BigDecimal(500),
                 BankAccountCreator.createBankAccountSaved()
         );

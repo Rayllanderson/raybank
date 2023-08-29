@@ -4,9 +4,9 @@ import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
-import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
-import com.rayllanderson.raybank.models.BankStatement;
-import com.rayllanderson.raybank.models.StatementType;
+import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
+import com.rayllanderson.raybank.models.Transaction;
+import com.rayllanderson.raybank.models.TransactionType;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
 import com.rayllanderson.raybank.utils.BankTransferCreator;
 import org.assertj.core.api.Assertions;
@@ -129,13 +129,13 @@ class BankAccountControllerIT extends BaseBankOperation {
 
     @Test
     void findAllStatements_ReturnListOfStatements_WhenSuccessful() {
-        deposit400(); //gerou 1 statement
+        deposit400(); //gerou 1 transaction
         transfer300(); //gerou outro
         int expectedSize = 2;
-        var expectedStatement = StatementDto.fromStatement(BankStatement.createDepositStatement(new BigDecimal("400"),
+        var expectedStatement = TransactionDto.fromTransaction(Transaction.createDepositTransaction(new BigDecimal("400"),
                 authenticatedUserAccount));
 
-        ResponseEntity<List<StatementDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
+        ResponseEntity<List<TransactionDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
                 new HttpEntity<>(super.getHeaders()), new ParameterizedTypeReference<>() {
         });
 
@@ -145,14 +145,14 @@ class BankAccountControllerIT extends BaseBankOperation {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody()).isNotNull().isNotEmpty();
         Assertions.assertThat(response.getBody()).hasSize(expectedSize);
-        Assertions.assertThat(response.getBody().get(deposit).getStatementType()).isEqualTo(expectedStatement.getStatementType());
-        Assertions.assertThat(response.getBody().get(transfer).getStatementType()).isEqualTo(StatementType.TRANSFER);
+        Assertions.assertThat(response.getBody().get(deposit).getTransactionType()).isEqualTo(expectedStatement.getTransactionType());
+        Assertions.assertThat(response.getBody().get(transfer).getTransactionType()).isEqualTo(TransactionType.TRANSFER);
     }
 
     @Test
     void findAllStatements_ReturnEmptyList_WhenDidntMakeAnyTransaction() {
 
-        ResponseEntity<List<StatementDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
+        ResponseEntity<List<TransactionDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
                 new HttpEntity<>(super.getHeaders()), new ParameterizedTypeReference<>() {
         });
         Assertions.assertThat(response).isNotNull();

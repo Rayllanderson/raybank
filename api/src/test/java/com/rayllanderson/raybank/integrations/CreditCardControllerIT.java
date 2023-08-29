@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.integrations;
 
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
-import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
+import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -43,7 +43,7 @@ class CreditCardControllerIT extends BaseBankOperation{
         buy500WithCreditCard(); //1
         buy500WithCreditCard(); //2
         int expectedSize = 2;
-        ResponseEntity<List<StatementDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
+        ResponseEntity<List<TransactionDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
                 new HttpEntity<>(super.getHeaders()), new ParameterizedTypeReference<>(){
                 });
         Assertions.assertThat(response).isNotNull();
@@ -60,7 +60,7 @@ class CreditCardControllerIT extends BaseBankOperation{
         buy500WithCreditCard(); //1
         //Foram 4 transações! Teria que ser tamanho 4, mas ele precisa retornar 1, pois foi apenas uma transação feita com cartão
         int expectedSize = 1;
-        ResponseEntity<List<StatementDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
+        ResponseEntity<List<TransactionDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
                 new HttpEntity<>(super.getHeaders()), new ParameterizedTypeReference<>(){
                 });
         Assertions.assertThat(response).isNotNull();
@@ -71,7 +71,7 @@ class CreditCardControllerIT extends BaseBankOperation{
 
     @Test
     void findStatements_ReturnEmptyList_WhenUserDidntMakeAnyPurchase(){
-        ResponseEntity<List<StatementDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
+        ResponseEntity<List<TransactionDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
                 new HttpEntity<>(super.getHeaders()), new ParameterizedTypeReference<>(){
         });
         Assertions.assertThat(response).isNotNull();
