@@ -1,9 +1,9 @@
 package com.rayllanderson.raybank.controllers;
 
 
-import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
+import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.services.StatementFinderService;
+import com.rayllanderson.raybank.services.TransactionFinderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,19 +17,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users/authenticated/statements")
 @RestController
-public class StatementController {
+public class TransactionController {
 
-    private final StatementFinderService statementService;
+    private final TransactionFinderService transactionService;
 
     @GetMapping
-    public ResponseEntity<List<StatementDto>> findAllStatements(@AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<List<TransactionDto>> findAllTransactions(@AuthenticationPrincipal User authenticatedUser) {
         Long accountId = authenticatedUser.getBankAccount().getId();
-        return ResponseEntity.ok(statementService.findAllByAccountId(accountId));
+        return ResponseEntity.ok(transactionService.findAllByAccountId(accountId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StatementDto> findStatementById(@PathVariable Long id, @AuthenticationPrincipal User authenticatedUser) {
+    public ResponseEntity<TransactionDto> findTransactionByIdAndUserId(@PathVariable String id, @AuthenticationPrincipal User authenticatedUser) {
         Long accountId = authenticatedUser.getBankAccount().getId();
-        return ResponseEntity.ok(statementService.findByIdAndAccountId(id, accountId));
+        return ResponseEntity.ok(transactionService.findByIdAndAccountId(id, accountId));
     }
 }

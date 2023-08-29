@@ -1,10 +1,10 @@
 package com.rayllanderson.raybank.controllers;
 
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
-import com.rayllanderson.raybank.dtos.responses.bank.StatementDto;
+import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.services.CreditCardService;
-import com.rayllanderson.raybank.services.StatementFinderService;
+import com.rayllanderson.raybank.services.TransactionFinderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +19,7 @@ import java.util.List;
 public class CreditCardController {
 
     private final CreditCardService creditCardService;
-    private final StatementFinderService statementFinderService;
+    private final TransactionFinderService transactionFinderService;
 
     @GetMapping
     public ResponseEntity<CreditCardDto> find(@AuthenticationPrincipal User authenticatedUser){
@@ -28,9 +28,9 @@ public class CreditCardController {
     }
 
     @GetMapping("/statements")
-    public ResponseEntity<List<StatementDto>> findStatements(@AuthenticationPrincipal User authenticatedUser){
+    public ResponseEntity<List<TransactionDto>> findStatements(@AuthenticationPrincipal User authenticatedUser){
         Long accountId = authenticatedUser.getBankAccount().getId();
-        return ResponseEntity.ok(statementFinderService.findAllCreditCardStatements(accountId));
+        return ResponseEntity.ok(transactionFinderService.findAllCreditCardStatements(accountId));
     }
 
     @PostMapping("/pay/invoice")

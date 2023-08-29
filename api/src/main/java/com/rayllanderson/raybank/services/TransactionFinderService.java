@@ -33,14 +33,14 @@ public class TransactionFinderService {
     }
 
     @Transactional(readOnly = true)
-    public List<TransactionDto> findAllAccountStatements(BankAccount account){
+    public List<TransactionDto> findAllAccountTransactions(BankAccount account){
         List<Transaction> accountStatements = transactionRepository.findAllByAccountOwnerIdAndTypeNot(
                 account.getId(), TransactionType.CREDIT_CARD_PAYMENT);
         return accountStatements.stream().map(TransactionDto::fromTransaction).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<TransactionDto> findAllCreditCardStatements(Long accountOwnerId){
+    public List<TransactionDto> findAllCreditCardTransactions(Long accountOwnerId){
         var creditCardStatements = transactionRepository.findAllByAccountOwnerIdAndType(
                 accountOwnerId, TransactionType.CREDIT_CARD_PAYMENT
         );
