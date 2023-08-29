@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface BankStatementRepository extends JpaRepository<Transaction, Long> {
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findAllByAccountOwnerId(Long ownerId);
-    Optional<Transaction> findByIdAndAccountOwnerId(Long id, Long ownerId);
-    List<Transaction> findAllByAccountOwnerIdAndStatementType(Long ownerId, TransactionType type);
-    List<Transaction> findAllByAccountOwnerIdAndStatementTypeNot(Long ownerId, TransactionType type);
+    Optional<Transaction> findByIdAndAccountOwnerId(String id, Long ownerId);
+    List<Transaction> findAllByAccountOwnerIdAndType(Long ownerId, TransactionType type);
+    List<Transaction> findAllByAccountOwnerIdAndTypeNot(Long ownerId, TransactionType type);
 }
