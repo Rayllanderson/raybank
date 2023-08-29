@@ -14,9 +14,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -27,8 +29,7 @@ import java.util.Objects;
 public class BankStatement {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
     @Column(columnDefinition = "TIMESTAMP")
     private Instant moment;
     @Enumerated(EnumType.STRING)
@@ -170,5 +171,11 @@ public class BankStatement {
     public String toString() {
         return "BankStatement{" + "id=" + id + ", moment=" + moment + ", statementType=" + statementType + ", amount=" + amount + "," +
                 " message='" + message + '\'' + '}';
+    }
+
+    @PrePersist
+    void createId() {
+        if (Objects.isNull(this.id))
+            this.id = UUID.randomUUID().toString();
     }
 }

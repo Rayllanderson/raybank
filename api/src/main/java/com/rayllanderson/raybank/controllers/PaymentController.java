@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.controllers;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
-import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.services.BankAccountService;
 import com.rayllanderson.raybank.services.CreditCardService;
@@ -29,11 +28,4 @@ public class PaymentController {
         bankAccountService.pay(transaction);
         return ResponseEntity.noContent().build();
     }
-
-    @PostMapping("/credit-card")
-    public ResponseEntity<?> pay(@RequestBody @Valid PaymentCrediCardDto request) {
-        creditCardService.pay(request);
-        return ResponseEntity.ok().build();
-    }
-
 }
