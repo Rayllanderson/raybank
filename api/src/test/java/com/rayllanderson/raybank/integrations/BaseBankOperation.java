@@ -3,6 +3,8 @@ package com.rayllanderson.raybank.integrations;
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
+import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
+import com.rayllanderson.raybank.dtos.requests.bank.PaymentTypeDto;
 import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
 import com.rayllanderson.raybank.dtos.responses.pix.PixPostResponse;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
@@ -70,8 +72,15 @@ public class BaseBankOperation extends BaseApiTest {
     }
 
     protected void buyWithCreditCard(BigDecimal value){
-        var obj = CreditCardDto.builder().amount(value).account(authenticatedUserAccount).build();
-        super.post("/api/v1/users/authenticated/payment/credit-card", obj, Void.class);
+        var payment = PaymentCrediCardDto.builder()
+                .amount(value)
+                .card(PaymentCrediCardDto.Card.builder()
+                        .number(authenticatedUserAccount.getCreditCard().getCardNumber().toString())
+                        .securityCode(authenticatedUserAccount.getCreditCard().getSecurityCode().toString())
+                        .expiryDate(authenticatedUserAccount.getCreditCard().getExpiryDate()).build())
+                .paymentType(PaymentTypeDto.CREDIT)
+                .build();
+        super.post("/api/v1/external/payments/card", payment, Void.class);
     }
 
     /**

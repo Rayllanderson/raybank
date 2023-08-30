@@ -120,6 +120,7 @@ public class Transaction {
         Transaction source = instantiateTransactionFrom(this);
         source.setAccountSender(this.getAccountOwner());
         source.setAccountOwner(this.getAccountSender());
+        source.id = UUID.randomUUID().toString();
         return source;
     }
 

@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import lombok.AllArgsConstructor;
@@ -33,12 +34,15 @@ public class BankAccount {
     private Long id;
     private Integer accountNumber;
     private BigDecimal balance;
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
     private CreditCard creditCard;
+    @JsonIgnore
     @OneToOne
     private User user;
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(orphanRemoval = true)
     private Set<Transaction> transactions = new HashSet<>();
+    @JsonIgnore
     @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
 

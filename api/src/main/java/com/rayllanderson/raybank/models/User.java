@@ -40,9 +40,9 @@ public class User implements UserDetails {
     @Size(min = 3, max = 100)
     private String password;
     private String authorities;
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
     private BankAccount bankAccount;
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     private Set<Pix> pixKeys = new HashSet<>();
 
     public User(Long id, String name, String username, String password, String authorities) {

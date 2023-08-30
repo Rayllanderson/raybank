@@ -56,7 +56,7 @@ public abstract class BaseApiTest {
     }
 
 
-    <T> ResponseEntity<T> post(String url, Object body, Class<T> responseType) {
+    protected <T> ResponseEntity<T> post(String url, Object body, Class<T> responseType) {
         HttpHeaders headers = getHeaders();
         return rest.exchange(url, HttpMethod.POST, new HttpEntity<>(body, headers), responseType);
     }

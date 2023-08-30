@@ -18,8 +18,8 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StatementDto {
-    private Long id;
+public class TransactionDto {
+    private String id;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String from;
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,8 +32,8 @@ public class StatementDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private IdentificationType identificationType;
 
-    public static StatementDto fromStatement(Transaction transaction) {
-        StatementDto dto = new ModelMapper().map(transaction, StatementDto.class);
+    public static TransactionDto fromTransaction(Transaction transaction) {
+        TransactionDto dto = new ModelMapper().map(transaction, TransactionDto.class);
         BankAccount senderAccount = transaction.getAccountSender();
         String identificationName = null;
         if (senderAccount != null)

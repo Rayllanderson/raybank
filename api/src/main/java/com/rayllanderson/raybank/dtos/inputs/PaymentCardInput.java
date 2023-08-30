@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.dtos.inputs;
 
 import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.external.card.requests.PaymentCardRequest;
+import com.rayllanderson.raybank.external.card.payment.PaymentCardRequest;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;

@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import lombok.AllArgsConstructor;
@@ -37,8 +38,10 @@ public class CreditCard {
     private YearMonth expiryDate;
     private BigDecimal balance;
     private BigDecimal invoice;
+    @JsonIgnore
     @OneToOne
     private BankAccount bankAccount;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.MERGE)
     private List<Transaction> transactions = new ArrayList<>();
 
