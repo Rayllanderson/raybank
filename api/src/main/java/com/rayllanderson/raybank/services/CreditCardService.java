@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.services;
 
-import com.rayllanderson.raybank.dtos.inputs.PaymentCardInput;
+import com.rayllanderson.raybank.services.inputs.PaymentCardInput;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;

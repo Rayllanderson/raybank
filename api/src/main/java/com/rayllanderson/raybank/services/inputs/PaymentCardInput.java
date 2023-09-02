@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.dtos.inputs;
+package com.rayllanderson.raybank.services.inputs;
 
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.external.card.payment.PaymentCardRequest;

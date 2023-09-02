@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.external.card.payment;
 
-import com.rayllanderson.raybank.dtos.inputs.PaymentCardInput;
+import com.rayllanderson.raybank.services.inputs.PaymentCardInput;
 import com.rayllanderson.raybank.services.CreditCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
