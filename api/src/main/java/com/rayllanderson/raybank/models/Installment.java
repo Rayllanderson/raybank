@@ -20,10 +20,11 @@ public class Installment {
     @Id
     private String id;
     private String description;
+    private BigDecimal total;
     private BigDecimal value;
     private LocalDateTime ocurrendOn;
 
-    public static Installment create(String description, BigDecimal value, LocalDateTime ocurrendOn) {
-        return new Installment(UUID.randomUUID().toString(), description, value, ocurrendOn);
+    public static Installment create(String description, BigDecimal total, BigDecimal value, LocalDateTime ocurrendOn) {
+        return new Installment(UUID.randomUUID().toString(), description, total, value, ocurrendOn);
     }
 }

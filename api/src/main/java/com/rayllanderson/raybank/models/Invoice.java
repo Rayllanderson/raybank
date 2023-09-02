@@ -35,9 +35,9 @@ public class Invoice implements Comparable<Invoice> {
     @Transient
     private static final int DAYS_BEFORE_CLOSE = 6;
 
-    protected void processPayment(String description, BigDecimal installmentValue, LocalDateTime date) {
+    protected void processPayment(String description, BigDecimal total, BigDecimal installmentValue, LocalDateTime date) {
         this.total = total.add(installmentValue);
-        final Installment installment = Installment.create(description, installmentValue, date);
+        final Installment installment = Installment.create(description, total, installmentValue, date);
         this.installments.add(installment);
     }
 

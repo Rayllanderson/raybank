@@ -1,8 +1,8 @@
 package com.rayllanderson.raybank.models;
 
-import com.rayllanderson.raybank.utils.InstallmentUtil;
 import lombok.Getter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -20,14 +20,13 @@ import java.util.UUID;
 import static com.rayllanderson.raybank.utils.DateManagerUtil.isAfterOrEquals;
 import static com.rayllanderson.raybank.utils.DateManagerUtil.plusOneMonthKeepingCurrentDayOfMonth;
 import static com.rayllanderson.raybank.utils.DateManagerUtil.plusOneMonthOf;
+import static com.rayllanderson.raybank.utils.InstallmentUtil.calculateInstallmentValue;
+import static com.rayllanderson.raybank.utils.InstallmentUtil.createDescription;
 
 @Getter
-@Entity
 public class InvoiceList {
-    @Id
     private String id;
     private Integer dayOfdueDate;
-    @OneToMany
     private Set<Invoice> invoices;
 
     public InvoiceList() {
@@ -50,15 +49,15 @@ public class InvoiceList {
         final Invoice currentInvoice = getCurrentInvoice();
         checkOcurredDateItsOnRange(currentInvoice, ocurredOn.toLocalDate());
 
-        final var installmentValue = InstallmentUtil.calculateInstallmentValue(total, installments);
-        currentInvoice.processPayment(InstallmentUtil.createDescription(paymentDescription, 1, installments), installmentValue, ocurredOn);
+        final var installmentValue = calculateInstallmentValue(total, installments);
+        currentInvoice.processPayment(createDescription(paymentDescription, 1, installments), total, installmentValue, ocurredOn);
 
         Invoice invoiceCopy = currentInvoice;
 
         for (int i = 1; i < installments; i++) {
             final var nextInvoice = getNextOf(invoiceCopy);
             invoiceCopy = nextInvoice.orElse(Invoice.create(getNextInvoiceDate(invoiceCopy)));
-            invoiceCopy.processPayment(InstallmentUtil.createDescription(paymentDescription, i + 1, installments), installmentValue, ocurredOn);
+            invoiceCopy.processPayment(createDescription(paymentDescription, i + 1, installments), total, installmentValue, ocurredOn);
             this.invoices.add(invoiceCopy);
         }
     }
