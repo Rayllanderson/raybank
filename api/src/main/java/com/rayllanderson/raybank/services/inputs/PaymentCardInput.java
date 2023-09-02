@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 
 @Getter
@@ -16,6 +19,12 @@ public class PaymentCardInput {
     private BigDecimal amount;
 
     private PaymentType paymentType;
+
+    private Integer installments;
+
+    private LocalDateTime ocurredOn;
+
+    private String description;
 
     private Card card;
 

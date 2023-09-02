@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.services;
 
+import com.rayllanderson.raybank.services.inputs.CreateCreditCardInput;
 import com.rayllanderson.raybank.services.inputs.PaymentCardInput;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
@@ -43,6 +44,23 @@ public class CreditCardService {
     }
 
     @Transactional
+    public CreditCard createCreditCard(final CreateCreditCardInput input){
+        final var bankAccount = bankAccountRepository.findById(input.getBankAccountId())
+                .orElseThrow(() -> new BadRequestException("Conta bancária não disponível"));
+
+        var creditCardToBeSaved = CreditCard.builder()
+                .cardNumber(this.generateCreditCardNumber())
+                .bankAccount(bankAccount)
+                .limit(input.getLimit())
+                .balance(input.getLimit())
+                .securityCode(generateSecurityCode())
+                .expiryDate(generateExpiryDate())
+                .dayOfdueDate(input.getDueDay())
+                .build();
+        return creditCardRepository.save(creditCardToBeSaved);
+    }
+
+    @Transactional
     public Transaction pay(final PaymentCardInput payment) {
         final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
 
@@ -56,7 +74,7 @@ public class CreditCardService {
 
         final Transaction transaction;
         if (payment.isCreditPayment())
-            transaction = creditCard.makeCreditPurchase(payment.getAmount());
+            transaction = creditCard.makeCreditPurchase(payment.getAmount(), payment.getOcurredOn(), payment.getInstallments(), payment.getDescription());
         else
             transaction = creditCard.makeDebitPurchase(payment.getAmount());
 
