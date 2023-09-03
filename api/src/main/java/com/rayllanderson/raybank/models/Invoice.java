@@ -40,9 +40,17 @@ public class Invoice implements Comparable<Invoice> {
     private static final int DAYS_BEFORE_CLOSE = 6;
 
     protected void processPayment(String description, BigDecimal total, BigDecimal installmentValue, LocalDateTime date) {
+        if (!isOpen())
+            throw new UnprocessableEntityException("Fatura atual não está aberta");
         this.total = this.total.add(installmentValue);
         final Installment installment = Installment.create(description, total, installmentValue, date);
         this.installments.add(installment);
+    }
+
+    protected static Invoice createFirstInvoice(LocalDate dueDate) {
+        final var invoice = create(dueDate);
+        invoice.status = InvoiceStatus.OPEN;
+        return invoice;
     }
 
     protected static Invoice create(LocalDate dueDate) {
@@ -77,7 +85,7 @@ public class Invoice implements Comparable<Invoice> {
         return getId() != null ? getId().hashCode() : 0;
     }
 
-    public boolean hasValueToPay() {
+    protected boolean hasValueToPay() {
         return this.total.compareTo(BigDecimal.ZERO) > 0;
     }
 
@@ -99,20 +107,51 @@ public class Invoice implements Comparable<Invoice> {
         total = total.subtract(amount);
     }
 
+    public void open() {
+        if (now().isBefore(closingDate) && status.equals(InvoiceStatus.NONE))
+            this.status = InvoiceStatus.OPEN;
+    }
+
+    public void close() {
+        if (isAfterOrEquals(now(), closingDate) && isOpen())
+            this.status = InvoiceStatus.CLOSED;
+    }
+
+    public void overdue() {
+        if (isOverdue() && isClosed())
+            this.status = InvoiceStatus.OVERDUE;
+    }
+
+    protected boolean isOverdue() {
+        return now().isAfter(dueDate) && !isPaid();
+    }
+
     protected boolean isPaid() {
         return this.status.equals(InvoiceStatus.PAID);
     }
 
-    public boolean isAmountGreaterThanTotal(BigDecimal amount) {
-        return amount.compareTo(this.total) > 0;
+    protected boolean isOpen() {
+        return this.status.equals(InvoiceStatus.OPEN);
     }
 
-    public boolean isPartialPayment(BigDecimal amount) {
+    protected boolean isClosed() {
+        return this.status.equals(InvoiceStatus.CLOSED);
+    }
+
+    protected boolean isPartialPayment(BigDecimal amount) {
         return amount.compareTo(this.total) != 0;
     }
 
     protected boolean isPaymentDate() {
-        final var now = LocalDate.now();
+        final var now = now();
         return isAfterOrEquals(now, closingDate) && isBeforeOrEquals(now, dueDate);
+    }
+
+    private static LocalDate now() {
+        return LocalDate.now();
+    }
+
+    private boolean isAmountGreaterThanTotal(BigDecimal amount) {
+        return amount.compareTo(this.total) > 0;
     }
 }

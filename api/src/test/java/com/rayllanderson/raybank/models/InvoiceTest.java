@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.models;
 
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -8,7 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static com.rayllanderson.raybank.models.InvoiceStatus.CLOSED;
 import static com.rayllanderson.raybank.models.InvoiceStatus.NONE;
+import static com.rayllanderson.raybank.models.InvoiceStatus.OPEN;
 import static com.rayllanderson.raybank.models.InvoiceStatus.PAID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -16,9 +19,20 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class InvoiceTest {
 
     @Test
-    void shouldReceiveParcialPaymentWhenIsNotPaymentDate() {
-        Invoice invoice = Invoice.create(parse("2023-05-06"));
+    void shouldProcesstPayment() {
+        final var dueDate = LocalDate.now().plusDays(15);
+        Invoice invoice = create(dueDate, bigDecimalOf(0), OPEN);
+
         invoice.processPayment("amazon", bigDecimalOf(500), bigDecimalOf(50), LocalDateTime.parse("2023-04-16T14:45:00"));
+
+        assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(50));
+        assertThat(invoice.getInstallments()).isNotEmpty().hasSize(1);
+    }
+
+    @Test
+    void shouldReceiveParcialPaymentWhenIsNotPaymentDate() {
+        final var dueDate = LocalDate.now().plusDays(15);
+        Invoice invoice = create(dueDate, bigDecimalOf(50), OPEN);
 
         invoice.receivePayment(bigDecimalOf(40));
 
@@ -29,7 +43,7 @@ class InvoiceTest {
     @Test
     void shouldReceivePaymentWhenIsPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = new Invoice("id", dueDate, dueDate.minusDays(6), bigDecimalOf(50), NONE, new ArrayList<>());
+        Invoice invoice = create(dueDate, bigDecimalOf(50), NONE);
 
         invoice.receivePayment(bigDecimalOf(50));
 
@@ -40,7 +54,7 @@ class InvoiceTest {
     @Test
     void shouldNotReceiveParcialPaymentWhenIsPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = new Invoice("id", dueDate, dueDate.minusDays(6), bigDecimalOf(50), NONE, new ArrayList<>());
+        Invoice invoice = create(dueDate, bigDecimalOf(50), NONE);
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
                 .isThrownBy(() -> invoice.receivePayment(bigDecimalOf(40)))
@@ -53,7 +67,7 @@ class InvoiceTest {
     @Test
     void shouldThrowExceptionWhenInvoiceIsPaid() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = new Invoice("id", dueDate, dueDate.minusDays(6), bigDecimalOf(10), PAID, new ArrayList<>());
+        Invoice invoice = create(dueDate, bigDecimalOf(10), PAID);
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
                 .isThrownBy(() -> invoice.receivePayment(bigDecimalOf(40)))
@@ -65,13 +79,89 @@ class InvoiceTest {
     @Test
     void shouldThrowExceptionWhenAmmountIsGreaterThanInvoice() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = new Invoice("id", dueDate, dueDate.minusDays(6), bigDecimalOf(10), NONE, new ArrayList<>());
+        Invoice invoice = create(dueDate, bigDecimalOf(10), NONE);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> invoice.receivePayment(bigDecimalOf(40)))
                 .withMessage("O valor recebido é superior ao da fatura.");
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(10));
+    }
+
+    @Test
+    void shouldOpenInvoiceWhenNowIsBeforeClosingDate() {
+        final var dueDate = LocalDate.now().plusDays(30);
+        Invoice invoice = create(dueDate, BigDecimal.ZERO, NONE);
+
+        invoice.open();
+
+        assertThat(invoice.isOpen()).isTrue();
+    }
+
+    @Test
+    void shouldNotOpenInvoiceWhenStatusIsNotNONE() {
+        final var dueDate = LocalDate.now().plusDays(30);
+        Invoice invoice = create(dueDate, BigDecimal.ZERO, CLOSED);
+
+        invoice.open();
+
+        assertThat(invoice.isOpen()).isFalse();
+    }
+
+    @Test
+    void shouldCloseInvoiceWhenNowIsAfterOrEqualsClosingDate() {
+        final var dueDate = LocalDate.now().plusDays(5);
+        Invoice invoice = create(dueDate, BigDecimal.TEN, OPEN);
+
+        invoice.close();
+
+        assertThat(invoice.isClosed()).isTrue();
+    }
+
+    @Test
+    void shouldNotCloseInvoiceWhenIsNotOpen() {
+        final var dueDate = LocalDate.now().plusDays(5);
+        Invoice invoice = create(dueDate, BigDecimal.TEN, NONE);
+
+        invoice.close();
+
+        assertThat(invoice.isClosed()).isFalse();
+    }
+
+    @Test
+    void shouldOverdueInvoiceWhenNowIsAfterDueDate() {
+        final var dueDate = LocalDate.now().minusDays(1);
+        Invoice invoice = create(dueDate, BigDecimal.TEN, CLOSED);
+
+        invoice.overdue();
+
+        assertThat(invoice.isOverdue()).isTrue();
+    }
+
+    @Test
+    void shouldNotOverdueInvoiceWhenIsPaid() {
+        final var dueDate = LocalDate.now();
+        Invoice invoice = create(dueDate, BigDecimal.TEN, PAID);
+
+        invoice.overdue();
+
+        assertThat(invoice.isOverdue()).isFalse();
+        assertThat(invoice.isPaid()).isTrue();
+    }
+
+    @Test
+    void shouldNotOverdueInvoiceWhenIsNotClosed() {
+        final var dueDate = LocalDate.now();
+        Invoice invoice = create(dueDate, BigDecimal.TEN, NONE);
+
+        invoice.overdue();
+
+        assertThat(invoice.isOverdue()).isFalse();
+    }
+
+    @NotNull
+    private static Invoice create(LocalDate dueDate, BigDecimal total, InvoiceStatus status) {
+        return new Invoice("id", dueDate, dueDate.minusDays(6), total, status, new ArrayList<>());
     }
 
     private static BigDecimal bigDecimalOf(long o) {

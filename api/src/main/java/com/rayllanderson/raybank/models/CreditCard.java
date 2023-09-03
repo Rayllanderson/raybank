@@ -75,7 +75,7 @@ public class CreditCard {
                 .dayOfDueDate(dueDate)
                 .invoices(new HashSet<>())
                 .build();
-        c.invoices.add(Invoice.create(plusOneMonthOf(dueDate)));
+        c.invoices.add(Invoice.createFirstInvoice(plusOneMonthOf(dueDate)));
         return c;
     }
 
