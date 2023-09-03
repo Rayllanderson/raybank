@@ -2,12 +2,12 @@ package com.rayllanderson.raybank.services.inputs;
 
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.external.card.payment.PaymentCardRequest;
+import com.rayllanderson.raybank.models.inputs.CreditCardPayment;
+import com.rayllanderson.raybank.models.inputs.DebitCardPayment;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -51,7 +51,7 @@ public class PaymentCardInput {
     public Integer getCardSecurityCode() {
         try {
             return Integer.valueOf(this.card.securityCode);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new BadRequestException(String.format("Código de Segurança [ %s ] inválido", this.card.securityCode));
         }
     }
@@ -60,7 +60,15 @@ public class PaymentCardInput {
         return this.card.getExpiryDate();
     }
 
-    public static PaymentCardInput fromRequest(PaymentCardRequest request){
+    public static PaymentCardInput fromRequest(PaymentCardRequest request) {
         return new ModelMapper().map(request, PaymentCardInput.class);
+    }
+
+    public CreditCardPayment toCreditCardPayment() {
+        return new CreditCardPayment(this.amount, this.getOcurredOn(), this.installments, this.description);
+    }
+
+    public DebitCardPayment toDebitCardPayment() {
+        return new DebitCardPayment(this.amount, this.getOcurredOn(), this.description);
     }
 }

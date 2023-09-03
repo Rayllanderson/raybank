@@ -10,5 +10,5 @@ import java.math.BigDecimal;
 public class CreateCreditCardInput {
     private final Long bankAccountId;
     private final BigDecimal limit;
-    private final Integer dueDay;
+    private final DueDays dueDay;
 }
