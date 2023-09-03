@@ -25,24 +25,6 @@ public class CreditCardService {
     private final CreditCardRepository creditCardRepository;
     private final BankAccountRepository bankAccountRepository;
 
-    /**
-     * Cria e salva um novo cartão de crédito.
-     *
-     * @param savedBankAccount conta do banco a receber novo cartão de crédito.
-     * Esta, por sua vez, necessita estar salvo no banco dados
-     */
-    @Transactional
-    public CreditCard createCreditCard(BankAccount savedBankAccount){
-        var creditCardToBeSaved = CreditCard.builder()
-                .number(this.generateCreditCardNumber())
-                .bankAccount(savedBankAccount)
-                .balance(new BigDecimal(5000))
-                .securityCode(generateSecurityCode())
-                .expiryDate(generateExpiryDate())
-                .build();
-        return creditCardRepository.save(creditCardToBeSaved);
-    }
-
     @Transactional
     public CreditCard createCreditCard(final CreateCreditCardInput input){
         if (creditCardRepository.existsByBankAccountId(input.getBankAccountId()))
