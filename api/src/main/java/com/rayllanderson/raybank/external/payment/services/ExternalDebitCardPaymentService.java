@@ -24,14 +24,14 @@ public class ExternalDebitCardPaymentService implements ExternalPaymentMethod {
     @Transactional
     public ExternalPaymentResponse pay(ExternalPaymentRequest request) {
         var externalTransaction = request.toModel();
-        var debitCard = cardRepository.findByCardNumber(CardUtil.getCardNumber(request)).orElseThrow(() -> {
+        var debitCard = cardRepository.findByNumber(CardUtil.getCardNumber(request)).orElseThrow(() -> {
             log.error("Pagamento não efetuado. Cartão de débito {} não encontrado.", request.getNumberIdentifier());
             throw new RaybankExternalException.DebitCardNotFound("Debit card=" + request.getNumberIdentifier() + " not found", externalTransaction);
         });
 
         var total = request.getValue();
         try {
-            debitCard.makeDebitPurchase(total);
+//            debitCard.pay(total);
             cardRepository.save(debitCard);
             log.info("Pagamento efetuado com sucesso no cartão de débito={}", externalTransaction);
             externalTransactionRepository.save(externalTransaction);

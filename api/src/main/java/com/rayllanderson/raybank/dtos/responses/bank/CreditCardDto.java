@@ -15,14 +15,14 @@ import java.time.YearMonth;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreditCardDto {
-    private Long id;
-    private Long cardNumber;
+    private String id;
+    private Long number;
     private Integer securityCode;
     private YearMonth expiryDate;
     private BigDecimal balance;
     private BigDecimal invoice;
 
-    public static CreditCardDto fromCreditCard(CreditCard creditCard){
-        return new ModelMapper().map(creditCard, CreditCardDto.class);
+    public static CreditCardDto fromCreditCard(CreditCard c){
+        return new CreditCardDto(c.getId(), c.getNumber(), c.getSecurityCode(), c.getExpiryDate(), c.getBalance(), c.getCurrentInvoice().getTotal());
     }
 }

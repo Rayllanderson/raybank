@@ -57,7 +57,7 @@ class UserServiceTest {
         BDDMockito.when(bankAccountService.createAccountBank(ArgumentMatchers.any(User.class)))
                 .thenReturn(BankAccountCreator.createBankAccountSaved());
         //criando cartão de crédito
-        BDDMockito.when(creditCardService.createCreditCard(ArgumentMatchers.any(BankAccount.class)))
+        BDDMockito.when(creditCardService.createCreditCard(ArgumentMatchers.any()))
                 .thenReturn(CreditCardCreator.createCreditCardSaved());
 
         BDDMockito.when(encoder.encode(ArgumentMatchers.anyString())).thenReturn("$2a$10$vjDC.rpWSRb7eDwXuGtGaOhv0Bc.S598scA/tlU0Vo1ZYY3NV4lea");

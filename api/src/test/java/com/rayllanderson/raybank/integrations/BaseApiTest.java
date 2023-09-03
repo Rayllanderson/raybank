@@ -5,7 +5,10 @@ import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.security.jwt.JwtUtil;
+import com.rayllanderson.raybank.services.CreditCardService;
 import com.rayllanderson.raybank.services.UserService;
+import com.rayllanderson.raybank.services.inputs.CreateCreditCardInput;
+import com.rayllanderson.raybank.services.inputs.DueDays;
 import com.rayllanderson.raybank.utils.UserCreator;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +22,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.math.BigDecimal;
+
 @Log4j2
 @SpringBootTest(classes = RaybankApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseApiTest {
@@ -28,6 +33,8 @@ public abstract class BaseApiTest {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private CreditCardService creditCardService;
 
     @Autowired
     @Qualifier("userDetailsService")
@@ -51,6 +58,7 @@ public abstract class BaseApiTest {
         User user = (User) userDetailsService.loadUserByUsername(UserCreator.createUserToLogIn().getUsername());
         User secondUser =  (User) userDetailsService.loadUserByUsername(UserCreator.createAnotherUserToLogIn().getUsername());
         authenticatedUserAccount = user.getBankAccount();
+        authenticatedUserAccount.setCreditCard(creditCardService.createCreditCard(new CreateCreditCardInput(authenticatedUserAccount.getId(), BigDecimal.valueOf(5000), DueDays._6)));
         secondUserAccount = secondUser.getBankAccount();
         jwtToken = JwtUtil.createToken(user);
     }

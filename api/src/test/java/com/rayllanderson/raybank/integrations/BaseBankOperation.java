@@ -7,11 +7,15 @@ import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
 import com.rayllanderson.raybank.dtos.requests.bank.PaymentTypeDto;
 import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
 import com.rayllanderson.raybank.dtos.responses.pix.PixPostResponse;
+import com.rayllanderson.raybank.external.card.payment.PaymentCardRequest;
+import com.rayllanderson.raybank.external.card.payment.PaymentTypeRequest;
+import com.rayllanderson.raybank.services.inputs.PaymentType;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
 import com.rayllanderson.raybank.utils.BankTransferCreator;
 import com.rayllanderson.raybank.utils.PixCreator;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class BaseBankOperation extends BaseApiTest {
 
@@ -72,13 +76,16 @@ public class BaseBankOperation extends BaseApiTest {
     }
 
     protected void buyWithCreditCard(BigDecimal value){
-        var payment = PaymentCrediCardDto.builder()
+        var payment = PaymentCardRequest.builder()
                 .amount(value)
-                .card(PaymentCrediCardDto.Card.builder()
-                        .number(authenticatedUserAccount.getCreditCard().getCardNumber().toString())
+                .card(PaymentCardRequest.Card.builder()
+                        .number(authenticatedUserAccount.getCreditCard().getNumber().toString())
                         .securityCode(authenticatedUserAccount.getCreditCard().getSecurityCode().toString())
                         .expiryDate(authenticatedUserAccount.getCreditCard().getExpiryDate()).build())
-                .paymentType(PaymentTypeDto.CREDIT)
+                .paymentType(PaymentTypeRequest.CREDIT)
+                .installments(3)
+                .ocurredOn(LocalDateTime.now())
+                .description("Amazon")
                 .build();
         super.post("/api/v1/external/payments/card", payment, Void.class);
     }
@@ -90,9 +97,7 @@ public class BaseBankOperation extends BaseApiTest {
         buyWithCreditCard(new BigDecimal("500.00"));
     }
 
-    /**
-     * Key: rayllanderson@gmail.com
-     */
+
     protected PixPostResponse registerAPix(){
         PixPostDto pixToBeSaved = PixCreator.createPixPixPostDto();
         return post("/api/v1/users/authenticated/pix", pixToBeSaved, PixPostResponse.class).getBody();

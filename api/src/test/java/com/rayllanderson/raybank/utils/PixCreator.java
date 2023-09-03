@@ -7,13 +7,13 @@ public class PixCreator {
 
     public static Pix createPixToBeSavedWithoutUser (){
         return Pix.builder()
-                .key("rayllanderson@gmail.com")
+                .key("any@gmail.com")
                 .build();
     }
 
     public static PixPostDto createPixPixPostDto (){
         return PixPostDto.builder()
-                .key("rayllanderson@gmail.com")
+                .key("any@gmail.com")
                 .build();
     }
 

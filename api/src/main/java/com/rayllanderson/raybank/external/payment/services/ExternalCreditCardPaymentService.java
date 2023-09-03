@@ -25,13 +25,13 @@ public class ExternalCreditCardPaymentService implements ExternalPaymentMethod {
     public ExternalPaymentResponse pay(ExternalPaymentRequest request) {
         var externalTransaction = request.toModel();
 
-        var creditCard = creditCardRepository.findByCardNumber(CardUtil.getCardNumber(request)).orElseThrow(() -> {
+        var creditCard = creditCardRepository.findByNumber(CardUtil.getCardNumber(request)).orElseThrow(() -> {
             log.error("Pagamento não efetuado. Cartão de crédito {} não encontrado.", request.getNumberIdentifier());
             throw new RaybankExternalException.CreditCardNotFound("Credit Card=" + request.getNumberIdentifier() + " not found", externalTransaction);
         });
 
         try {
-            creditCard.makeCreditPurchase(request.getValue());
+//            creditCard.pay(request.getValue());
             creditCardRepository.save(creditCard);
             externalTransactionRepository.save(externalTransaction);
             log.info("Pagamento efetuado com sucesso={}", externalTransaction);

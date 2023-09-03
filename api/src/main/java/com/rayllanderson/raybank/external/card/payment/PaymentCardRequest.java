@@ -7,9 +7,11 @@ import lombok.Setter;
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 
 @Getter
@@ -23,6 +25,16 @@ public class PaymentCardRequest {
 
     @NotNull
     private PaymentTypeRequest paymentType;
+
+    @NotNull
+    @Min(1)
+    private Integer installments;
+
+    @NotNull
+    private LocalDateTime ocurredOn;
+
+    @NotNull
+    private String description;
 
     @Valid
     @NotNull
