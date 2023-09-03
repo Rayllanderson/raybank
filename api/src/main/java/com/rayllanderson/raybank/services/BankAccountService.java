@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
-    private final CreditCardService creditCardService;
     private final TransactionRepository transactionRepository;
     private final UserFinderService userFinderService;
 
@@ -33,7 +32,6 @@ public class BankAccountService {
      * Cria e salva uma nova conta bancária junta de um cartão de crédito.
      *
      * @param savedUser usuário a receber nova conta. Este, por sua vez, necessita estar salvo no banco dados
-     * @return BankAccount salva com cartão de crédito
      */
     @Transactional
     public BankAccount createAccountBank(User savedUser) {
@@ -43,7 +41,6 @@ public class BankAccountService {
                 .balance(BigDecimal.ZERO)
                 .user(savedUser).build();
         bankAccountToBeSaved = bankAccountRepository.save(bankAccountToBeSaved);
-        bankAccountToBeSaved.addCreditCard(creditCardService.createCreditCard(bankAccountToBeSaved));
         return bankAccountRepository.save(bankAccountToBeSaved);
     }
 
