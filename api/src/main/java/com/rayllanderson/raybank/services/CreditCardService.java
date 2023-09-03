@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.services;
 
+import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.services.inputs.CreateCreditCardInput;
 import com.rayllanderson.raybank.services.inputs.PaymentCardInput;
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
@@ -33,10 +34,9 @@ public class CreditCardService {
     @Transactional
     public CreditCard createCreditCard(BankAccount savedBankAccount){
         var creditCardToBeSaved = CreditCard.builder()
-                .cardNumber(this.generateCreditCardNumber())
+                .number(this.generateCreditCardNumber())
                 .bankAccount(savedBankAccount)
                 .balance(new BigDecimal(5000))
-                .invoice(BigDecimal.ZERO)
                 .securityCode(generateSecurityCode())
                 .expiryDate(generateExpiryDate())
                 .build();
@@ -45,18 +45,18 @@ public class CreditCardService {
 
     @Transactional
     public CreditCard createCreditCard(final CreateCreditCardInput input){
+        if (creditCardRepository.existsByBankAccountId(input.getBankAccountId()))
+            throw new UnprocessableEntityException("Já existe um cartão para o usuário");
+
         final var bankAccount = bankAccountRepository.findById(input.getBankAccountId())
                 .orElseThrow(() -> new BadRequestException("Conta bancária não disponível"));
 
-        var creditCardToBeSaved = CreditCard.builder()
-                .cardNumber(this.generateCreditCardNumber())
-                .bankAccount(bankAccount)
-                .limit(input.getLimit())
-                .balance(input.getLimit())
-                .securityCode(generateSecurityCode())
-                .expiryDate(generateExpiryDate())
-                .dayOfdueDate(input.getDueDay())
-                .build();
+        var creditCardToBeSaved = CreditCard.create(this.generateCreditCardNumber(),
+                input.getLimit(),
+                generateSecurityCode(),
+                generateExpiryDate(),
+                input.getDueDay().getDay(),
+                bankAccount);
         return creditCardRepository.save(creditCardToBeSaved);
     }
 
@@ -64,7 +64,7 @@ public class CreditCardService {
     public Transaction pay(final PaymentCardInput payment) {
         final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
 
-        final CreditCard creditCard = creditCardRepository.findByCardNumber(payment.getCardNumber())
+        final CreditCard creditCard = creditCardRepository.findByNumber(payment.getCardNumber())
                 .orElseThrow(() -> badRequestException);
 
         final boolean isValidCvvAndExpiryDate = creditCard.isValidSecurityCode(payment.getCardSecurityCode()) && creditCard.isValidExpiryDate(payment.getCardExpiryDate());
@@ -74,9 +74,9 @@ public class CreditCardService {
 
         final Transaction transaction;
         if (payment.isCreditPayment())
-            transaction = creditCard.makeCreditPurchase(payment.getAmount(), payment.getOcurredOn(), payment.getInstallments(), payment.getDescription());
+            transaction = creditCard.pay(payment.toCreditCardPayment());
         else
-            transaction = creditCard.makeDebitPurchase(payment.getAmount());
+            transaction = creditCard.pay(payment.toDebitCardPayment());
 
         creditCardRepository.save(creditCard);
         return transaction;
@@ -116,8 +116,7 @@ public class CreditCardService {
         final int NUMBER_OF_DIGITS = 16;
         do {
             generatedNumber = NumberUtil.generateRandom(NUMBER_OF_DIGITS);
-            isCardNumberInvalid =
-                    creditCardRepository.existsByCardNumber(generatedNumber) && (Long.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
+            isCardNumberInvalid = creditCardRepository.existsByNumber(generatedNumber) && (Long.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
         } while (isCardNumberInvalid);
         return generatedNumber;
     }
