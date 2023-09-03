@@ -1,27 +1,29 @@
 package com.rayllanderson.raybank.models;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-class InvoiceListTest {
+
+class CreditCardTest {
 
     @Test
     void shouldProcessInvoices() {
-        final var invoiceList = InvoiceList.create(1);
+        final var creditCard = CreditCard.create(1L, BigDecimal.valueOf(5000), 1, YearMonth.now().plusYears(2), 1, null);
 
-        invoiceList.process(BigDecimal.valueOf(150), 3, "alibaba", LocalDateTime.parse("2023-09-01T18:40:00"));
-        invoiceList.process(BigDecimal.valueOf(100), 2, "amazon", LocalDateTime.parse("2023-09-01T20:41:37"));
+        creditCard.processInvoice(BigDecimal.valueOf(150), 3, "alibaba", LocalDateTime.parse("2023-09-01T18:40:00"));
+        creditCard.processInvoice(BigDecimal.valueOf(100), 2, "amazon", LocalDateTime.parse("2023-09-01T20:41:37"));
 
-        assertThat(invoiceList.getInvoices()).isNotEmpty().hasSize(3);
-        final var invoices = new ArrayList<>(invoiceList.getInvoices());
+        assertThat(creditCard.getInvoices()).isNotEmpty().hasSize(3);
+        final var invoices = new ArrayList<>(creditCard.getInvoices());
         Collections.sort(invoices);
         final var invoice1 = invoices.get(0);
         assertThat(invoice1.getClosingDate()).isEqualTo(LocalDate.parse("2023-09-26"));
@@ -47,10 +49,10 @@ class InvoiceListTest {
 
     @Test
     void shouldThrowExceptionWhenInvoiceDateIsNotOnRange() {
-        final var invoiceList = InvoiceList.create(1);
+        final var creditCard = CreditCard.create(1L, BigDecimal.valueOf(5000), 1, YearMonth.now().plusYears(2), 1, null);
 
-        Assertions.assertThatIllegalArgumentException()
-                .isThrownBy(() -> invoiceList.process(
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> creditCard.processInvoice(
                         BigDecimal.valueOf(100),
                         2,
                         "alibaba",
@@ -60,10 +62,10 @@ class InvoiceListTest {
 
     @Test
     void shouldThrowExceptionWhenOcurrenceDateIsFuture() {
-        final var invoiceList = InvoiceList.create(1);
+        final var creditCard = CreditCard.create(1L, BigDecimal.valueOf(5000), 1, YearMonth.now().plusYears(2), 1, null);
 
-        Assertions.assertThatIllegalArgumentException()
-                .isThrownBy(() -> invoiceList.process(
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> creditCard.processInvoice(
                         BigDecimal.valueOf(100),
                         2,
                         "alibaba",
