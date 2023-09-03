@@ -72,4 +72,19 @@ public class Invoice implements Comparable<Invoice> {
     public int hashCode() {
         return getId() != null ? getId().hashCode() : 0;
     }
+
+    public boolean hasValueToPay() {
+        return this.total.compareTo(BigDecimal.ZERO) > 0;
+    }
+
+    protected void receivePayment(BigDecimal amount) {
+        if (isAmountGreaterThanTotal(amount)) {
+            throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
+        }
+        total = total.subtract(amount);
+    }
+
+    public boolean isAmountGreaterThanTotal(BigDecimal amount) {
+        return amount.compareTo(this.total) > 0;
+    }
 }

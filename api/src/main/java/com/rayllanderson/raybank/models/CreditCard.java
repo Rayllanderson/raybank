@@ -3,6 +3,8 @@ package com.rayllanderson.raybank.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.models.inputs.CreditCardPayment;
+import com.rayllanderson.raybank.models.inputs.DebitCardPayment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -52,7 +54,6 @@ public class CreditCard {
     private BigDecimal limit;
     private BigDecimal balance;
     private Integer dayOfDueDate;
-    private BigDecimal invoice;
     @JsonIgnore
     @OneToOne
     private BankAccount bankAccount;
@@ -81,10 +82,8 @@ public class CreditCard {
     public void payTheInvoice(BigDecimal amount) throws IllegalArgumentException, BadRequestException {
         if (this.hasInvoice()) {
             if (this.bankAccount.hasAvailableBalance(amount)) {
-                if (isAmountGreaterThanInvoice(amount)) {
-                    throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
-                }
-                invoice = invoice.subtract(amount);
+                final var currentInvoice = getCurrentInvoice();
+                currentInvoice.receivePayment(amount);
                 balance = balance.add(amount);
                 bankAccount.pay(amount);
                 createInvoiceTransaction(amount);
@@ -96,22 +95,24 @@ public class CreditCard {
         }
     }
 
-    public Transaction makeCreditPurchase(BigDecimal amount) throws UnprocessableEntityException {
+    public Transaction pay(final CreditCardPayment payment) throws UnprocessableEntityException {
         if (this.hasLimit()) {
-            if (isAmountGreaterThanBalance(amount)) {
+            if (isAmountGreaterThanBalance(payment.getTotal())) {
                 throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
             }
-            invoice = invoice.add(amount);
-            balance = balance.subtract(amount);
-            return this.createPurchaseTransaction(amount);
+
+            processInvoice(payment.getTotal(), payment.getInstallments(), payment.getDescription(), payment.getOcurredOn());
+
+            balance = balance.subtract(payment.getTotal());
+            return this.createPurchaseTransaction(payment.getTotal());
         } else
             throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
     }
 
-    public Transaction makeDebitPurchase(BigDecimal amount) throws UnprocessableEntityException {
+    public Transaction pay(final DebitCardPayment payment) throws UnprocessableEntityException {
         try {
-            this.bankAccount.pay(amount);
-            return this.createDebitTransaction(amount);
+            this.bankAccount.pay(payment.getTotal());
+            return this.createDebitTransaction(payment.getTotal());
         } catch (UnprocessableEntityException e) {
             throw new UnprocessableEntityException("Saldo em conta insuficiente para efetuar compra no débito");
         }
@@ -135,7 +136,7 @@ public class CreditCard {
     }
 
     public void payInvoiceAndRefundRemaining(BigDecimal amount) {
-        BigDecimal refund = amount.subtract(invoice);
+        BigDecimal refund = amount.subtract(getCurrentInvoice().getTotal());
         this.payTheInvoice(amount.subtract(refund));
     }
 
@@ -151,19 +152,15 @@ public class CreditCard {
         return amount.compareTo(balance) > 0;
     }
 
-    public boolean isAmountGreaterThanInvoice(BigDecimal amount) {
-        return amount.compareTo(invoice) > 0;
-    }
-
     public boolean hasLimit() {
         return !(balance.equals(BigDecimal.ZERO) || balance.equals(new BigDecimal("0.00")));
     }
 
     public boolean hasInvoice() {
-        return !(invoice.equals(BigDecimal.ZERO) || invoice.equals(new BigDecimal("0.00")));
+        return !getCurrentInvoice().hasValueToPay();
     }
 
-    protected void process(BigDecimal total, int installments, String paymentDescription, LocalDateTime ocurredOn) {
+    protected void processInvoice(BigDecimal total, int installments, String paymentDescription, LocalDateTime ocurredOn) {
         final Invoice currentInvoice = getCurrentInvoice();
         checkOcurredDateItsOnRange(currentInvoice, ocurredOn.toLocalDate());
 
