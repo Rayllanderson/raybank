@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class CreditCardPayment extends CardPayment {
-    final int installments;
+    private final int installments;
 
     public CreditCardPayment(BigDecimal total, LocalDateTime ocurredOn, int installments, String description) {
         super(total, ocurredOn, description);
