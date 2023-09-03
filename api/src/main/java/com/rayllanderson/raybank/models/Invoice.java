@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.models;
 
-import com.rayllanderson.raybank.utils.DateManagerUtil;
+import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +17,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.rayllanderson.raybank.utils.DateManagerUtil.getNextWorkingDayOf;
+import static com.rayllanderson.raybank.utils.DateManagerUtil.isAfterOrEquals;
+import static com.rayllanderson.raybank.utils.DateManagerUtil.isBeforeOrEquals;
 
 @Getter
 @Entity
@@ -42,7 +46,7 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     protected static Invoice create(LocalDate dueDate) {
-        final LocalDate nextWorkingDay = DateManagerUtil.getNextWorkingDayOf(dueDate);
+        final LocalDate nextWorkingDay = getNextWorkingDayOf(dueDate);
         return new Invoice(UUID.randomUUID().toString(),
                 nextWorkingDay,
                 nextWorkingDay.minusDays(DAYS_BEFORE_CLOSE),
@@ -78,13 +82,37 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     protected void receivePayment(BigDecimal amount) {
+        if (isPaid())
+            throw new UnprocessableEntityException("Não é possível receber pagamento para fatura já paga.");
+
         if (isAmountGreaterThanTotal(amount)) {
             throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
         }
+
+        if (isPaymentDate()) {
+            if (isPartialPayment(amount)) {
+                throw new UnprocessableEntityException("Não é possível receber pagamento parcial para fatura fechada.");
+            }
+            this.status = InvoiceStatus.PAID;
+        }
+
         total = total.subtract(amount);
+    }
+
+    protected boolean isPaid() {
+        return this.status.equals(InvoiceStatus.PAID);
     }
 
     public boolean isAmountGreaterThanTotal(BigDecimal amount) {
         return amount.compareTo(this.total) > 0;
+    }
+
+    public boolean isPartialPayment(BigDecimal amount) {
+        return amount.compareTo(this.total) != 0;
+    }
+
+    protected boolean isPaymentDate() {
+        final var now = LocalDate.now();
+        return isAfterOrEquals(now, closingDate) && isBeforeOrEquals(now, dueDate);
     }
 }

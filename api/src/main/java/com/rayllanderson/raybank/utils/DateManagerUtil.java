@@ -42,4 +42,8 @@ public class DateManagerUtil {
     public static boolean isAfterOrEquals(LocalDate compare, LocalDate to) {
         return compare.isAfter(to) || compare.isEqual(to);
     }
+
+    public static boolean isBeforeOrEquals(LocalDate compare, LocalDate to) {
+        return compare.isBefore(to) || compare.isEqual(to);
+    }
 }
