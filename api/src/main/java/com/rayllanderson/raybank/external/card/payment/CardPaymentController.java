@@ -2,8 +2,8 @@ package com.rayllanderson.raybank.external.card.payment;
 
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
-import com.rayllanderson.raybank.services.CreditCardService;
-import com.rayllanderson.raybank.services.inputs.PaymentCardInput;
+import com.rayllanderson.raybank.services.creditcard.CreditCardService;
+import com.rayllanderson.raybank.services.creditcard.inputs.PaymentCardInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

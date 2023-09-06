@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.controllers;
 import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.services.BankAccountService;
-import com.rayllanderson.raybank.services.CreditCardService;
+import com.rayllanderson.raybank.services.creditcard.CreditCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
