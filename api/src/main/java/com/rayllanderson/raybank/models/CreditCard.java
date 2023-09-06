@@ -75,7 +75,7 @@ public class CreditCard {
                 .dayOfDueDate(dueDate)
                 .invoices(new HashSet<>())
                 .build();
-        c.invoices.add(Invoice.createFirstInvoice(plusOneMonthOf(dueDate)));
+        c.invoices.add(Invoice.createOpenInvoice(plusOneMonthOf(dueDate)));
         return c;
     }
 
@@ -167,6 +167,8 @@ public class CreditCard {
         final var installmentValue = calculateInstallmentValue(total, installments);
         currentInvoice.processPayment(createDescription(paymentDescription, 1, installments), total, installmentValue, ocurredOn);
 
+        this.invoices.add(currentInvoice);
+
         Invoice invoiceCopy = currentInvoice;
 
         for (int i = 1; i < installments; i++) {
@@ -179,7 +181,7 @@ public class CreditCard {
 
     public Invoice getCurrentInvoice() {
         return getInvoiceBy(LocalDate.now())
-                .orElseThrow(() -> new IllegalStateException("No currency invoice was found"));
+                .orElse(Invoice.createOpenInvoice(plusOneMonthOf(dayOfDueDate)));
     }
 
     private static void checkOcurredDateItsOnRange(Invoice currentInvoice, LocalDate ocurredOn) {

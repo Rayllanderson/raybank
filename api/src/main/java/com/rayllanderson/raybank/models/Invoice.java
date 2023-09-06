@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -32,6 +34,7 @@ public class Invoice implements Comparable<Invoice> {
     private LocalDate dueDate;
     private LocalDate closingDate;
     private BigDecimal total;
+    @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
     @OneToMany(cascade = CascadeType.MERGE)
     private List<Installment> installments = new ArrayList<>();
@@ -51,7 +54,7 @@ public class Invoice implements Comparable<Invoice> {
         return isOpen() || status.equals(InvoiceStatus.NONE);
     }
 
-    protected static Invoice createFirstInvoice(LocalDate dueDate) {
+    protected static Invoice createOpenInvoice(LocalDate dueDate) {
         final var invoice = create(dueDate);
         invoice.status = InvoiceStatus.OPEN;
         return invoice;
@@ -135,11 +138,11 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     protected boolean isOpen() {
-        return this.status.equals(InvoiceStatus.OPEN);
+        return this.status.equals(InvoiceStatus.OPEN) || now().isBefore(closingDate);
     }
 
     protected boolean isClosed() {
-        return this.status.equals(InvoiceStatus.CLOSED);
+        return this.status.equals(InvoiceStatus.CLOSED) || isAfterOrEquals(now(), closingDate);
     }
 
     protected boolean isPartialPayment(BigDecimal amount) {
