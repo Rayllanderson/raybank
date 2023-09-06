@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.jobs.invoice;
 
 import com.rayllanderson.raybank.jobs.ScheduleUtil.Cron;
 import com.rayllanderson.raybank.services.creditcard.CloseInvoiceService;
+import com.rayllanderson.raybank.services.creditcard.OverdueInvoiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.core.LockAssert;
@@ -17,20 +18,20 @@ import java.time.LocalDateTime;
 @Component
 @RequiredArgsConstructor
 @EnableSchedulerLock(defaultLockAtMostFor = "30S")
-public class CloseInvoiceSchedulerTask {
+public class OverdueInvoiceSchedulerTask {
 
-    private final CloseInvoiceService closeInvoiceService;
+    private final OverdueInvoiceService overdueInvoiceService;
 
     @Async
     @Scheduled(cron = Cron.EVERY_MINUTE)
-    @SchedulerLock(name = "CloseInvoice_ScheduleTask", lockAtLeastFor = "29S", lockAtMostFor = "30S")
+    @SchedulerLock(name = "OverdueInvoice_ScheduleTask", lockAtLeastFor = "29S", lockAtMostFor = "30S")
     public void process() {
         LockAssert.assertLocked();
 
-        log.info("fetching all invoices to close, {}", LocalDateTime.now());
+        log.info("fetching all invoices to overdue, {}", LocalDateTime.now());
 
-        closeInvoiceService.execute();
+        overdueInvoiceService.execute();
 
-        log.info("completed close scheduler task -> {}", LocalDateTime.now());
+        log.info("completed overdue scheduler task -> {}", LocalDateTime.now());
     }
 }

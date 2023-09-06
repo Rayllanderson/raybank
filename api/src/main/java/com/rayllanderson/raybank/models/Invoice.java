@@ -125,7 +125,7 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     public void overdue() {
-        if (isOverdue() && isClosed())
+        if (isOverdue() && isClosed() && hasValueToPay())
             this.status = InvoiceStatus.OVERDUE;
     }
 
