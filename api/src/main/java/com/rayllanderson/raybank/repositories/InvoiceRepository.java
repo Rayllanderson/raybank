@@ -8,6 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, String> {
-    List<Invoice> findAllByClosingDateAndStatus(LocalDate closingDate, InvoiceStatus status);
+    List<Invoice> findAllByClosingDateLessThanEqualAndStatus(LocalDate closingDate, InvoiceStatus status);
     List<Invoice> findAllByDueDateAndStatus(LocalDate dueDate, InvoiceStatus status);
 }
