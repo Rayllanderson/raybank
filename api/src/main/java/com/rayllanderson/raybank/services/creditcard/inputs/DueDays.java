@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.services.inputs;
+package com.rayllanderson.raybank.services.creditcard.inputs;
 
 import lombok.Getter;
 
