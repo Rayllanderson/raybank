@@ -220,4 +220,8 @@ public class CreditCard {
     public Set<Invoice> getInvoices() {
         return Collections.unmodifiableSet(invoices);
     }
+
+    public boolean isExpired() {
+        return YearMonth.now().isAfter(this.expiryDate);
+    }
 }

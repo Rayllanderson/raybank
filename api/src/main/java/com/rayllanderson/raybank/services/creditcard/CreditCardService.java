@@ -52,6 +52,10 @@ public class CreditCardService {
             throw badRequestException;
         }
 
+        if (creditCard.isExpired()) {
+            throw UnprocessableEntityException.with("Cartão está expirado");
+        }
+
         final Transaction transaction;
         if (payment.isCreditPayment())
             transaction = creditCard.pay(payment.toCreditCardPayment());
