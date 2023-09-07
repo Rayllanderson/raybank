@@ -101,6 +101,9 @@ public class CreditCard {
                 throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
             }
 
+            if (this.isExpired())
+                throw UnprocessableEntityException.with("Cartão está expirado");
+
             processInvoice(payment.getTotal(), payment.getInstallments(), payment.getDescription(), payment.getOcurredOn());
 
             balance = balance.subtract(payment.getTotal());
@@ -110,6 +113,8 @@ public class CreditCard {
     }
 
     public Transaction pay(final DebitCardPayment payment) throws UnprocessableEntityException {
+        if (this.isExpired())
+            throw UnprocessableEntityException.with("Cartão está expirado");
         try {
             this.bankAccount.pay(payment.getTotal());
             return this.createDebitTransaction(payment.getTotal());
