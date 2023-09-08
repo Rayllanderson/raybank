@@ -26,7 +26,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final BankAccountService bankAccountService;
     private final UserFinderService userFinderService;
-    private final PasswordEncoder encoder;
 
     public List<UserResponseDto> findAll(){
         return userRepository.findAll().stream().map(user -> {
