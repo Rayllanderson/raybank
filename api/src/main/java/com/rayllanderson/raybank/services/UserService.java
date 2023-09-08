@@ -45,7 +45,7 @@ public class UserService {
         User userToBeSaved =  userDto.toUser();
         userToBeSaved = userRepository.save(userToBeSaved);
         userToBeSaved.setBankAccount(bankAccountService.createAccountBank(userToBeSaved));
-        userToBeSaved.setPassword(encoder.encode(userDto.getPassword()));
+//        userToBeSaved.setPassword(encoder.encode(userDto.getPassword()));
         userToBeSaved.setAuthorities("ROLE_USER");
         userToBeSaved = userRepository.save(userToBeSaved);
         return UserPostResponseDto.fromUser(userToBeSaved);
@@ -86,7 +86,7 @@ public class UserService {
         }
         User userFromDataBase = userFinderService.findById(user.getId());
         UserUpdater.updatePassword(user, userFromDataBase);
-        userFromDataBase.setPassword(encoder.encode(userFromDataBase.getPassword()));
+//        userFromDataBase.setPassword(encoder.encode(userFromDataBase.getPassword()));
         this.userRepository.save(userFromDataBase);
     }
 

@@ -1,4 +1,4 @@
-insert into users(id, username, password, authorities, name) values ( '50', 'kaguya', '$2a$10$uReUukGDU8G5c1./Ax7/V.gGswlkgYIbYXRgOxWP0.ZPhse3A6A62', 'ROLE_USER', 'Kaguya Shinomiya' );
+insert into users(id, username, authorities, name) values ( '50', 'kaguya', 'ROLE_USER', 'Kaguya Shinomiya' );
 
 insert into bank_account(id, account_number, balance, user_id) values ( 20, 222222222, 5000, '50' );
 

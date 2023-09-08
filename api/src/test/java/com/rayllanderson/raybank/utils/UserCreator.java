@@ -14,7 +14,6 @@ public class UserCreator {
         User user = new User();
         user.setName("João");
         user.setUsername("joao");
-        user.setPassword("123");
         return user;
     }
 
@@ -24,7 +23,6 @@ public class UserCreator {
     public static User createUserToBeSavedWithCollectionsNonNull() {
         User user = new User();
         user.setUsername("ray");
-        user.setPassword("123");
         user.setName("Ray");
         return user;
     }
@@ -35,7 +33,6 @@ public class UserCreator {
     public static User createAnotherUserToBeSavedWithCollectionsNonNull() {
         User user = new User();
         user.setUsername("teste");
-        user.setPassword("123");
         user.setName("Whatever there");
         return user;
     }
@@ -44,7 +41,6 @@ public class UserCreator {
         User user = new User();
         user.setId("50");
         user.setUsername("teste");
-        user.setPassword("123");
         user.setName("Whatever there");
         user.setBankAccount(BankAccountCreator.createBankAccountSaved());
         return user;
@@ -53,7 +49,6 @@ public class UserCreator {
     public static User createAnotherUserSavedWithAccount() {
         User user = new User();
         user.setUsername("joao2");
-        user.setPassword("123");
         user.setName("Whatever there2");
         user.setBankAccount(BankAccountCreator.createAnotherBankAccountSaved());
         return user;
@@ -86,11 +81,11 @@ public class UserCreator {
      * @return id(1L).username("joao").password("123").name("João")
      */
     public static User createUserWithId(){
-        return User.builder().id("1").username("joao").password("123").name("João").build();
+        return User.builder().id("1").username("joao").name("João").build();
     }
 
     public static User createUserAnotherWithId(){
-        return User.builder().id("2").username("ray").password("123").name("Ray").build();
+        return User.builder().id("2").username("ray").name("Ray").build();
     }
 
     /**
