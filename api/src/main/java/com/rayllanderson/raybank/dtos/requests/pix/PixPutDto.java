@@ -7,9 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class PixPutDto {
     @NotEmpty
     @Size(min = 5, max = 99)
     private String key;
-    private Long ownerId;
+    private String ownerId;
 
     public static Pix toPix(PixPutDto dto){
         return new ModelMapper().map(dto, Pix.class);

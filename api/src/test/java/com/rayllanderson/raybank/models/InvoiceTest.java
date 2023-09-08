@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.models;
 
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -159,7 +158,6 @@ class InvoiceTest {
         assertThat(invoice.isOverdue()).isFalse();
     }
 
-    @NotNull
     private static Invoice create(LocalDate dueDate, BigDecimal total, InvoiceStatus status) {
         return new Invoice("id", dueDate, dueDate.minusDays(6), total, status, new ArrayList<>());
     }

@@ -14,7 +14,7 @@ public class UserFinderService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public User findById(Long id) throws BadRequestException {
+    public User findById(String id) throws BadRequestException {
         return userRepository.findById(id).orElseThrow(() -> new BadRequestException("Usuário não encontrado."));
     }
 

@@ -17,15 +17,11 @@ import java.time.YearMonth;
 public class PaymentCardInput {
 
     private BigDecimal amount;
-
     private PaymentType paymentType;
-
     private Integer installments;
-
     private LocalDateTime ocurredOn;
-
     private String description;
-
+    private String userId; //estabelecimento
     private Card card;
 
     @Getter

@@ -42,7 +42,7 @@ public class UserCreator {
 
     public static User createUserSavedWithAccount() {
         User user = new User();
-        user.setId(50L);
+        user.setId("50");
         user.setUsername("teste");
         user.setPassword("123");
         user.setName("Whatever there");
@@ -86,11 +86,11 @@ public class UserCreator {
      * @return id(1L).username("joao").password("123").name("João")
      */
     public static User createUserWithId(){
-        return User.builder().id(1L).username("joao").password("123").name("João").build();
+        return User.builder().id("1").username("joao").password("123").name("João").build();
     }
 
     public static User createUserAnotherWithId(){
-        return User.builder().id(2L).username("ray").password("123").name("Ray").build();
+        return User.builder().id("2").username("ray").password("123").name("Ray").build();
     }
 
     /**
@@ -104,7 +104,7 @@ public class UserCreator {
      * @return UserPutDto with id 1
      */
     public static UserPutDto createUserPutDto(){
-        return UserPutDto.builder().id(1L).username("joao").name("João").build();
+        return UserPutDto.builder().id("1").username("joao").name("João").build();
     }
 
 }

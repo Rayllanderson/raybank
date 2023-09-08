@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  keycloak:
+    container_name: category_keycloak
+    image: quay.io/keycloak/keycloak:20.0.3
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realm-export.json
+      - -Dkeycloak.profile.feature.upload_scripts=enabled
+    ports:
+      - "8443:8080"
+    command:
+      - start-dev # uma versão mais leve customizada para ambiente de desenvolvimento e testes pensada para rodar na máquina do desenvolvedor
+      - -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json
+    volumes:
+      - ./infra-files/keycloak:/opt/jboss/keycloak/imports

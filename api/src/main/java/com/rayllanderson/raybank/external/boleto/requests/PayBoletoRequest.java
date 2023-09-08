@@ -10,13 +10,13 @@ import jakarta.validation.constraints.NotBlank;
 public class PayBoletoRequest {
     @NotBlank
     private final String code;
-    private Long ownerId;
+    private String ownerId;
 
     public PayBoletoRequest(String code) {
         this.code = code;
     }
 
-    public void setOwnerId(Long ownerId) {
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 }

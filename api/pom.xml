@@ -120,6 +120,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- OAuth2-->
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-client</artifactId>
+            <version>22.0.1</version>
+        </dependency>
     </dependencies>
 
     <!-- how to run:

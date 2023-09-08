@@ -21,7 +21,7 @@ public class CloseInvoiceService {
 
         invoicesToClose.forEach(Invoice::close);
 
-        invoiceRepository.saveAll(invoicesToClose);
+        invoiceRepository.saveAllAndFlush(invoicesToClose);
     }
 
 }

@@ -10,8 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -31,8 +29,7 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
     @Size(min = 1, max = 100)
     private String name;
     @Size(min = 3, max = 100)
@@ -45,7 +42,7 @@ public class User implements UserDetails {
     @OneToMany(orphanRemoval = true)
     private Set<Pix> pixKeys = new HashSet<>();
 
-    public User(Long id, String name, String username, String password, String authorities) {
+    public User(String id, String name, String username, String password, String authorities) {
         this.id = id;
         this.name = name;
         this.username = username;

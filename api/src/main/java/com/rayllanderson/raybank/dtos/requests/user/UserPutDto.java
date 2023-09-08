@@ -12,7 +12,7 @@ import org.modelmapper.ModelMapper;
 @SuperBuilder
 @NoArgsConstructor
 public class UserPutDto extends UserDtoModel{
-    private Long id;
+    private String id;
 
     @Override
     public User toUser() {

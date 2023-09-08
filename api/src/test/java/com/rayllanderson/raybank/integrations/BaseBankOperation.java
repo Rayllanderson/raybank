@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class BaseBankOperation extends BaseApiTest {
 
      void deposit(BigDecimal toDeposit){
-        Long userId = authenticatedUserAccount.getUser().getId();
+        var userId = authenticatedUserAccount.getUser().getId();
         BankDepositDto deposit = BankDepositCreator.createBankDepositDto(userId, toDeposit);
         post("/api/v1/users/authenticated/bank-account/deposit", deposit, Void.class);
     }

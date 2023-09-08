@@ -56,7 +56,7 @@ public class BankAccountService {
      */
     @Transactional
     public void transfer(BankTransferDto transferDto) throws BadRequestException{
-        Long senderId = transferDto.getSenderId();
+        var senderId = transferDto.getSenderId();
         if(senderId == null) throw new BadRequestException("Sender must be set before send");
         BankAccount senderAccount = bankAccountRepository.findAccountWithTransactionsAndContactsByUserId(senderId);
         BigDecimal amountToBeTransferred = transferDto.getAmount();
@@ -88,7 +88,7 @@ public class BankAccountService {
 
     @Transactional
     public void pay(BankPaymentDto paymentDto){
-        Long ownerId = paymentDto.getOwnerId();
+        var ownerId = paymentDto.getOwnerId();
         if(ownerId == null) throw new BadRequestException("Owner must be set before send");
         BankAccount bankAccount = bankAccountRepository.findAccountWithTransactionsByUserId(ownerId);
         var amountToBePaid = paymentDto.getAmount();
@@ -105,7 +105,7 @@ public class BankAccountService {
      */
     @Transactional
     public void deposit(BankDepositDto depositDto) throws BadRequestException{
-        Long ownerId = depositDto.getOwnerId();
+        var ownerId = depositDto.getOwnerId();
         if(ownerId == null) throw new BadRequestException("Owner must be set before send");
         var ownerAccount = bankAccountRepository.findAccountWithTransactionsByUserId(ownerId);
         var amountToBeDeposited = depositDto.getAmount();
@@ -122,13 +122,13 @@ public class BankAccountService {
 
 
     @Transactional(readOnly = true)
-    public List<ContactResponseDto> findAllContactsUserId(Long userId){
+    public List<ContactResponseDto> findAllContactsUserId(String userId){
         var account = bankAccountRepository.findAccountWithContactsByUserId(userId);
         return account.getContacts().stream().map(ContactResponseDto::fromBankAccount).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public ContactResponseDto findContactById(Long id, Long userId){
+    public ContactResponseDto findContactById(Long id, String userId){
         var accounts = this.findAllContactsUserId(userId);
         return accounts.stream().filter(contact -> contact.getId().equals(id)).findFirst()
                 .orElseThrow(() -> new BadRequestException("Contato não encontrado"));

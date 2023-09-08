@@ -9,12 +9,12 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
     boolean existsByAccountNumber(Integer accountNumber);
 
     @EntityGraph(attributePaths = {"transactions"})
-    BankAccount findAccountWithTransactionsByUserId(Long accountId);
+    BankAccount findAccountWithTransactionsByUserId(String userId);
 
     @EntityGraph(attributePaths = {"contacts"})
-    BankAccount findAccountWithContactsByUserId(Long accountId);
+    BankAccount findAccountWithContactsByUserId(String userId);
 
     @EntityGraph(attributePaths = {"transactions", "contacts"})
-    BankAccount findAccountWithTransactionsAndContactsByUserId(Long accountId);
+    BankAccount findAccountWithTransactionsAndContactsByUserId(String userId);
 
 }

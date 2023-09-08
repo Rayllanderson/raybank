@@ -44,7 +44,7 @@ class BankAccountControllerIT extends BaseBankOperation {
 
     @Test
     void deposit_Returns204_WhenSuccessful() {
-        Long userId = super.authenticatedUserAccount.getUser().getId();
+        var userId = super.authenticatedUserAccount.getUser().getId();
         BankDepositDto deposit = BankDepositCreator.createBankDepositDto(userId);
 
         BigDecimal expectedBalance = deposit.getAmount();
@@ -60,7 +60,7 @@ class BankAccountControllerIT extends BaseBankOperation {
 
     @Test
     void deposit_Returns400_WhenDepositZero() {
-        Long userId = super.authenticatedUserAccount.getUser().getId();
+        var userId = super.authenticatedUserAccount.getUser().getId();
         BankDepositDto deposit = BankDepositCreator.createAnInvalidBankDepositDto(userId);
 
         ResponseEntity<Void> response = super.post(API_URL + "/deposit", deposit, Void.class);

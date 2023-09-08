@@ -48,11 +48,11 @@ class UserServiceTest {
         //save
         BDDMockito.when(userRepository.save(ArgumentMatchers.any(User.class))).thenReturn(UserCreator.createUserWithId());
         //user finder - find
-        BDDMockito.when(userFinderService.findById(ArgumentMatchers.anyLong())).thenReturn(UserCreator.createUserWithId());
+        BDDMockito.when(userFinderService.findById(ArgumentMatchers.anyString())).thenReturn(UserCreator.createUserWithId());
         //find
-        BDDMockito.when(userRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(UserCreator.createUserWithId()));
+        BDDMockito.when(userRepository.findById(ArgumentMatchers.anyString())).thenReturn(Optional.of(UserCreator.createUserWithId()));
         //delete
-        BDDMockito.doNothing().when(userRepository).deleteById(ArgumentMatchers.anyLong());
+        BDDMockito.doNothing().when(userRepository).deleteById(ArgumentMatchers.anyString());
         //criando conta bancária
         BDDMockito.when(bankAccountService.createAccountBank(ArgumentMatchers.any(User.class)))
                 .thenReturn(BankAccountCreator.createBankAccountSaved());
@@ -66,7 +66,7 @@ class UserServiceTest {
     @Test
     void register_saveUser_whenSuccess() {
         UserPostDto userToBeSaved = UserCreator.createUserPostToBeSaved();
-        Long expectedId = UserCreator.createUserWithId().getId();
+        var expectedId = UserCreator.createUserWithId().getId();
 
         UserPostResponseDto savedUser = userService.register(userToBeSaved);
 
@@ -83,7 +83,7 @@ class UserServiceTest {
 
     @Test
     void deleteById_DeleteUser_WhenSuccessful() {
-        Assertions.assertThatCode(() -> userService.deleteById(1L)).doesNotThrowAnyException();
+        Assertions.assertThatCode(() -> userService.deleteById("1")).doesNotThrowAnyException();
     }
 
     @Test

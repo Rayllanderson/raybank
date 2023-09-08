@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
     Optional<User>findByUsername(String username);
     boolean existsByUsername(String username);
     boolean existsByPixKeysKeyOrBankAccountAccountNumber(String pixKey, Integer accountNumber);
@@ -15,5 +15,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("from users as u where u.id = ?1 ")
     @EntityGraph(attributePaths = "pixKeys")
-    Optional<User> findByIdWithPix(Long id);
+    Optional<User> findByIdWithPix(String id);
 }

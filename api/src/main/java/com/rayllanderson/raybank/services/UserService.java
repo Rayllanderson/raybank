@@ -52,7 +52,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteById(Long id) throws BadRequestException {
+    public void deleteById(String id) throws BadRequestException {
         userFinderService.findById(id);
         userRepository.deleteById(id);
     }

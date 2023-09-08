@@ -60,7 +60,7 @@ class PixRepositoryTest {
         pixRepository.save(pixToBeSaved);
 
         String key = pixToBeSaved.getKey();
-        Long ownerId =  userToBeSaved.getId();
+        var ownerId =  userToBeSaved.getId();
         Assertions.assertThat(pixRepository.existsByKeyAndOwnerId(key, ownerId)).isTrue();
     }
 
@@ -73,8 +73,8 @@ class PixRepositoryTest {
         pixRepository.save(pixToBeSaved);
 
         String key = pixToBeSaved.getKey();
-        Long ownerId =  userToBeSaved.getId();
-        Long notTheOwnerId = userWithoutPix.getId();
+        var ownerId =  userToBeSaved.getId();
+        var notTheOwnerId = userWithoutPix.getId();
         Assertions.assertThat(pixRepository.existsByKeyAndOwnerId(key, ownerId)).isTrue();
         Assertions.assertThat(pixRepository.existsByKeyAndOwnerId(key, notTheOwnerId)).isFalse();
     }
@@ -84,7 +84,7 @@ class PixRepositoryTest {
         User userToBeSaved = userRepository.save(UserCreator.createUserToBeSavedWithCollectionsNonNull());
 
         String key = "any key here or anything else. it doesn't exists anyway";
-        Long ownerId =  userToBeSaved.getId();
+        var ownerId =  userToBeSaved.getId();
         Assertions.assertThat(pixRepository.existsByKeyAndOwnerId(key, ownerId)).isFalse();
     }
 
@@ -96,7 +96,7 @@ class PixRepositoryTest {
         pixRepository.save(pixToBeSaved);
 
         String key = pixToBeSaved.getKey();
-        Long ownerId =  userToBeSaved.getId();
+        var ownerId =  userToBeSaved.getId();
         //garantindo que existe antes de deletar
         Assertions.assertThat(pixRepository.existsByKeyAndOwnerId(key, ownerId)).isTrue();
 
@@ -115,7 +115,7 @@ class PixRepositoryTest {
         pixRepository.save(pixToBeSaved);
 
         String key = pixToBeSaved.getKey();
-        Long notTheOwnerId = notTheOwner.getId();
+        var notTheOwnerId = notTheOwner.getId();
 
         // tentando deletar uma chave que não é dele
         pixRepository.deleteByIdAndOwnerId(pixToBeSaved.getId(), notTheOwnerId);
