@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.utils;
 
-import de.jollyday.HolidayCalendar;
-import de.jollyday.HolidayManager;
+import de.focus_shift.HolidayCalendar;
+import de.focus_shift.HolidayManager;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +9,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 
-import static de.jollyday.ManagerParameters.create;
+import static de.focus_shift.ManagerParameters.create;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DateManagerUtil {
