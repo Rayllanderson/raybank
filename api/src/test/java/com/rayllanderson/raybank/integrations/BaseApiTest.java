@@ -35,10 +35,6 @@ public abstract class BaseApiTest {
     @Autowired
     private CreditCardService creditCardService;
 
-    @Autowired
-    @Qualifier("userDetailsService")
-    protected UserDetailsService userDetailsService;
-
     protected String jwtToken = "";
     protected BankAccount authenticatedUserAccount;
     protected BankAccount secondUserAccount;
@@ -52,14 +48,15 @@ public abstract class BaseApiTest {
     @BeforeEach
     public void setupTest() {
         log.info("Ta passando aqui 2x??");
-        userService.register(UserCreator.createUserToLogIn()); //registrando o usuário
-        userService.register(UserCreator.createAnotherUserToLogIn()); //registrando usuário 2
-        User user = (User) userDetailsService.loadUserByUsername(UserCreator.createUserToLogIn().getUsername());
-        User secondUser =  (User) userDetailsService.loadUserByUsername(UserCreator.createAnotherUserToLogIn().getUsername());
+//        userService.register(UserCreator.createUserToLogIn()); //registrando o usuário
+//        userService.register(UserCreator.createAnotherUserToLogIn()); //registrando usuário 2
+//        User user = (User) userDetailsService.loadUserByUsername(UserCreator.createUserToLogIn().getUsername());
+//        User secondUser =  (User) userDetailsService.loadUserByUsername(UserCreator.createAnotherUserToLogIn().getUsername());
+        User user = null;
+        User secondUser = null;
         authenticatedUserAccount = user.getBankAccount();
         authenticatedUserAccount.setCreditCard(creditCardService.createCreditCard(new CreateCreditCardInput(authenticatedUserAccount.getId(), BigDecimal.valueOf(5000), DueDays._6)));
         secondUserAccount = secondUser.getBankAccount();
-//        jwtToken = JwtUtil.createToken(user);
     }
 
 

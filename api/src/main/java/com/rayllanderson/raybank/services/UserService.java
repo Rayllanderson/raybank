@@ -12,7 +12,6 @@ import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.utils.StringUtil;
 import com.rayllanderson.raybank.utils.UserUpdater;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,18 +35,6 @@ public class UserService {
             userDto.setBankAccountDto(bankDto);
             return userDto;
         }).collect(Collectors.toList());
-    }
-
-    @Transactional
-    public UserPostResponseDto register (UserPostDto userDto){
-        this.assertThatUsernameNotExists(userDto.getUsername());
-        User userToBeSaved =  userDto.toUser();
-        userToBeSaved = userRepository.save(userToBeSaved);
-        userToBeSaved.setBankAccount(bankAccountService.createAccountBank(userToBeSaved));
-//        userToBeSaved.setPassword(encoder.encode(userDto.getPassword()));
-        userToBeSaved.setAuthorities("ROLE_USER");
-        userToBeSaved = userRepository.save(userToBeSaved);
-        return UserPostResponseDto.fromUser(userToBeSaved);
     }
 
     @Transactional

@@ -68,7 +68,7 @@ class UserServiceTest {
         UserPostDto userToBeSaved = UserCreator.createUserPostToBeSaved();
         var expectedId = UserCreator.createUserWithId().getId();
 
-        UserPostResponseDto savedUser = userService.register(userToBeSaved);
+        UserPostResponseDto savedUser = null;
 
         Assertions.assertThat(savedUser).isNotNull();
         Assertions.assertThat(savedUser.getId()).isNotNull();

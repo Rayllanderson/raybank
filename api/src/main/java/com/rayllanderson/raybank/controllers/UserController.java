@@ -26,11 +26,6 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @PostMapping
-    public ResponseEntity<UserPostResponseDto> register(@RequestBody @Valid UserPostDto userDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(userDto));
-    }
-
     @GetMapping("/authenticated")
     public ResponseEntity<UserResponseDto> findAuthenticated(@AuthenticationPrincipal User authenticatedUser){
         return ResponseEntity.ok(UserResponseDto.fromUser(authenticatedUser));
