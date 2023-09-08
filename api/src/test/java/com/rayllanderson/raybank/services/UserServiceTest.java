@@ -82,11 +82,6 @@ class UserServiceTest {
     }
 
     @Test
-    void deleteById_DeleteUser_WhenSuccessful() {
-        Assertions.assertThatCode(() -> userService.deleteById("1")).doesNotThrowAnyException();
-    }
-
-    @Test
     void updateNameUsernameOrEmail_UpdateData_WhenSuccessful() {
         Assertions.assertThatCode(() -> userService.updateNameOrUsername(UserCreator.createUserPutDto()))
                 .doesNotThrowAnyException();

@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BankAccountService bankAccountService;
     private final UserFinderService userFinderService;
 
     public List<UserResponseDto> findAll(){
@@ -35,12 +34,6 @@ public class UserService {
             userDto.setBankAccountDto(bankDto);
             return userDto;
         }).collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void deleteById(String id) throws BadRequestException {
-        userFinderService.findById(id);
-        userRepository.deleteById(id);
     }
 
     /**
