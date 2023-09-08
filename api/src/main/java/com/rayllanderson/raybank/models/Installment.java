@@ -1,12 +1,13 @@
 package com.rayllanderson.raybank.models;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,12 +16,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "installment")
+@Table(name = "installments")
 public class Installment {
     @Id
     private String id;
     private String description;
     private BigDecimal total;
+    @Column(name = "_value")
     private BigDecimal value;
     private LocalDateTime ocurrendOn;
 

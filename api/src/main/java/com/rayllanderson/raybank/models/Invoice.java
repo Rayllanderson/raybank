@@ -4,15 +4,14 @@ import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -71,7 +70,7 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     @Override
-    public int compareTo(@NotNull Invoice o) {
+    public int compareTo(Invoice o) {
         if (this.dueDate.isBefore(o.getDueDate())) return -1;
         if (this.dueDate.isAfter(o.dueDate)) return 1;
         else return 0;

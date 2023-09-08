@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.external.boleto.requests;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @Getter
 @ToString

@@ -1,11 +1,11 @@
 package com.rayllanderson.raybank.external.token;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotEmpty;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotEmpty;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.Base64;
