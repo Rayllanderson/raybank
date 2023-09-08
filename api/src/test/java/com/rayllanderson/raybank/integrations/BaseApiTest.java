@@ -4,7 +4,6 @@ import com.rayllanderson.raybank.RaybankApplication;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.security.jwt.JwtUtil;
 import com.rayllanderson.raybank.services.creditcard.CreditCardService;
 import com.rayllanderson.raybank.services.UserService;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
