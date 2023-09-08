@@ -5,21 +5,18 @@ import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.services.creditcard.CreditCardService;
-import com.rayllanderson.raybank.services.UserService;
+import com.rayllanderson.raybank.services.FindAllUsersService;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
 import com.rayllanderson.raybank.services.creditcard.inputs.DueDays;
-import com.rayllanderson.raybank.utils.UserCreator;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.math.BigDecimal;
 
@@ -31,7 +28,7 @@ public abstract class BaseApiTest {
     protected TestRestTemplate rest;
 
     @Autowired
-    private UserService userService;
+    private FindAllUsersService userService;
     @Autowired
     private CreditCardService creditCardService;
 
