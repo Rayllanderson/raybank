@@ -80,16 +80,4 @@ class UserServiceTest {
         User userFound = userFinderService.findById(UserCreator.createUserWithId().getId());
         Assertions.assertThat(userFound).isNotNull();
     }
-
-    @Test
-    void updateNameUsernameOrEmail_UpdateData_WhenSuccessful() {
-        Assertions.assertThatCode(() -> userService.updateNameOrUsername(UserCreator.createUserPutDto()))
-                .doesNotThrowAnyException();
-    }
-
-    @Test
-    void updatePassword_UpdatePassword_WhenSuccessful() {
-        Assertions.assertThatCode(() -> userService.updatePassword(UserCreator.createUserPutDto()))
-                .doesNotThrowAnyException();
-    }
 }

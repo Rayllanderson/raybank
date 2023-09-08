@@ -35,49 +35,4 @@ public class UserService {
             return userDto;
         }).collect(Collectors.toList());
     }
-
-    /**
-     * Use this method if you want to update username, email or name
-     *
-     * Need to set id before send
-     *
-     * @param userDto user from the body;
-     *
-     * @throws BadRequestException - if user update username and username has already taken.
-     */
-    @Transactional
-    public void updateNameOrUsername(UserPutDto userDto) throws BadRequestException {
-        User userFromDataBase = userFinderService.findById(userDto.getId());
-        boolean hasUpdatedUsername = StringUtil.notMatches(userDto.getUsername(), userFromDataBase.getUsername());
-        if (hasUpdatedUsername){
-            this.assertThatUsernameNotExists(userDto.getUsername());
-        }
-        UserUpdater.updateNameOrUsername(userDto, userFromDataBase);
-    }
-
-    /**
-     * Use this method if you want to update ONLY password.
-     */
-    @Transactional
-    public void updatePassword(UserPutDto user) {
-        if(StringUtil.isEmpty(user.getPassword())){
-            throw new IllegalArgumentException("Senha está vazia");
-        }
-        User userFromDataBase = userFinderService.findById(user.getId());
-        UserUpdater.updatePassword(user, userFromDataBase);
-//        userFromDataBase.setPassword(encoder.encode(userFromDataBase.getPassword()));
-        this.userRepository.save(userFromDataBase);
-    }
-
-    /**
-     * Verifica no banco de dados se o username passado já está registrado no banco de dados
-     * @param username username a ser verificado
-     * @throws BadRequestException se o username já estiver cadastrado
-     */
-    public void assertThatUsernameNotExists(String username) throws BadRequestException{
-        boolean usernameExists = userRepository.existsByUsername(username);
-        if (usernameExists) {
-            throw new BadRequestException("Username já está em uso. Tente outro.");
-        }
-    }
 }
