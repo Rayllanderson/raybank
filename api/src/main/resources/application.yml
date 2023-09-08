@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: local
+  jpa:
+    open-in-view: 'false'
+raybank:
+  boleto:
+    postBackUrl: ${RAYBANK_BOLETO_POSTBACK_URL:http://localhost:8080/api/}
