@@ -32,6 +32,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 public class WebSecurityConfig {
 
     private final Environment env;
+    private static final String ROLE_USER = "USER";
 
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
@@ -43,11 +44,11 @@ public class WebSecurityConfig {
                 .rememberMe(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .requestCache(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> {
-                    authorize
-                            .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/external/payments/card")).authenticated()
-                            .anyRequest().permitAll();
-                })
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(antMatcher(HttpMethod.POST, "api/v1/users/register")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/external/payments/card")).hasRole(ROLE_USER)
+                        .requestMatchers(antMatcher("/api/v1/users/authenticated/*")).hasRole(ROLE_USER)
+                        .anyRequest().authenticated())
                 .headers(headers -> {
                     if (Arrays.asList(env.getActiveProfiles()).contains("local"))
                         headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable);
