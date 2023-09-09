@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.services.register;
 
-import com.rayllanderson.raybank.constants.Roles;
+import com.rayllanderson.raybank.constants.Groups;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.UserRepository;
@@ -45,7 +45,7 @@ public class RegisterUserService {
     private void saveOnDatabase(final RegisterUserInput userInput, final String userId) {
         User userToBeSaved = userInput.toModel();
         userToBeSaved.setId(userId);
-        userToBeSaved.setAuthorities(Roles.ROLE_USER.name());
+        userToBeSaved.setAuthorities(Groups.USER.name());
 
         userToBeSaved = userRepository.save(userToBeSaved);
 
@@ -62,7 +62,7 @@ public class RegisterUserService {
         keycloakUser.setCredentials(List.of(credentialRepresentation));
         keycloakUser.setEnabled(true);
         keycloakUser.setEmailVerified(false);
-        keycloakUser.setRealmRoles(List.of(Roles.ROLE_USER.name()));
+        keycloakUser.setGroups(List.of(Groups.USER.name()));
 
         return keycloakProvider.getRealmInstance().users().create(keycloakUser);
     }
