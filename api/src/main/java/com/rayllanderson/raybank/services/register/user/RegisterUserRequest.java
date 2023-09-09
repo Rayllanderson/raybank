@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.services.register;
+package com.rayllanderson.raybank.services.register.user;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

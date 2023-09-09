@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.services.register;
+package com.rayllanderson.raybank.services.register.user;
 
 import com.rayllanderson.raybank.constants.Groups;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
@@ -6,6 +6,7 @@ import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.KeycloakProvider;
 import com.rayllanderson.raybank.services.BankAccountService;
+import com.rayllanderson.raybank.services.register.FailedToRegisterException;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
