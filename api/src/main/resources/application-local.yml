@@ -23,12 +23,11 @@ spring:
 
   h2:
     console:
-      path: /h2-console
       enabled: 'true'
 
 keycloak:
   realm: raybank
+  server-url: http://localhost:8443
   credentials:
     client-secret: FNWh2lMeyqJgzDmpqnIvkIcReFepEiMP
     client-id: raybank-backend-create-user
-  server-url: http://localhost:8443/

@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.dtos.requests.bank.CreateCreditCardRequest;
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
 import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
 import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.services.creditcard.CreditCardService;
 import com.rayllanderson.raybank.services.TransactionFinderService;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
@@ -23,12 +24,14 @@ import java.util.Map;
 public class CreditCardController {
 
     private final CreditCardService creditCardService;
+    private final UserRepository userRepository;
     private final TransactionFinderService transactionFinderService;
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid CreateCreditCardRequest request,
                                            @AuthenticationPrincipal User authenticatedUser) {
-        final CreateCreditCardInput input = new CreateCreditCardInput(authenticatedUser.getBankAccount().getId(),
+        final var user = userRepository.findById("50").get(); //todo:: somente para teste
+        final CreateCreditCardInput input = new CreateCreditCardInput(user.getBankAccount().getId(),
                 request.getLimit(),
                 DueDays.of(request.getDueDay()));
 
