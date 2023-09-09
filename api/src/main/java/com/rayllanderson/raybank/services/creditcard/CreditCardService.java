@@ -37,7 +37,12 @@ public class CreditCardService {
                 generateExpiryDate(),
                 input.getDueDay().getDay(),
                 bankAccount);
-        return creditCardRepository.save(creditCardToBeSaved);
+        creditCardToBeSaved = creditCardRepository.save(creditCardToBeSaved);
+
+        bankAccount.setCreditCard(creditCardToBeSaved);
+        bankAccountRepository.flush();
+
+        return creditCardToBeSaved;
     }
 
     @Transactional
