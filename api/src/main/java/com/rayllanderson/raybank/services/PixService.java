@@ -62,20 +62,26 @@ public class PixService {
     }
 
     @Transactional
-    public List<PixResponseDto> findAllFromUser(User user){
-        return pixRepository.findAllByOwnerId(user.getId()).stream().map(PixResponseDto::fromPix).collect(Collectors.toList());
+    public List<PixResponseDto> findAllFromUserId(String userId){
+        return pixRepository.findAllByOwnerId(userId).stream().map(PixResponseDto::fromPix).collect(Collectors.toList());
     }
 
     @Transactional
-    public Pix findById(Long id, User authenticatedUser){
-        return pixRepository.findByIdAndOwnerId(id, authenticatedUser.getId()).orElseThrow(() -> new BadRequestException("Pix não " +
+    public Pix findById(Long id, String userId){
+        return pixRepository.findByIdAndOwnerId(id, userId).orElseThrow(() -> new BadRequestException("Pix não " +
                 "existe na sua conta"));
     }
 
     @Transactional
-    public void deleteById(Long id, User owner) throws BadRequestException {
-        User user = userRepository.findByIdWithPix(owner.getId()).orElseThrow(() -> new BadRequestException("User not found"));
-        Pix pixToBeDeleted = this.findById(id, owner);
+    public Pix findByIdAndUserId(Long id, String userId){
+        return pixRepository.findByIdAndOwnerId(id, userId).orElseThrow(() -> new BadRequestException("Pix não " +
+                "existe na sua conta"));
+    }
+
+    @Transactional
+    public void deleteById(Long id, String userId) throws BadRequestException {
+        User user = userRepository.findByIdWithPix(userId).orElseThrow(() -> new BadRequestException("User not found"));
+        Pix pixToBeDeleted = this.findById(id, userId);
         user.getPixKeys().removeIf(pix -> pix.equals(pixToBeDeleted));
         pixRepository.deleteById(id);
     }

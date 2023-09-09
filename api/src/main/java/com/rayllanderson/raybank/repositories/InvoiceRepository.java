@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     List<Invoice> findAllByClosingDateLessThanEqualAndStatus(LocalDate closingDate, InvoiceStatus status);
-    List<Invoice> findAllByDueDateLessThanEqualAndStatusAndTotalNotLike(LocalDate dueDate, InvoiceStatus status, BigDecimal total);
+    List<Invoice> findAllByDueDateLessThanEqualAndStatusAndTotalIsNot(LocalDate dueDate, InvoiceStatus status, BigDecimal total);
 }

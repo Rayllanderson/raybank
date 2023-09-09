@@ -1,6 +1,29 @@
 version: '3.7'
 
 services:
+  postgres:
+    image: 'postgres:alpine'
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - C:/docker/volumes/raybank/postgres:/var/lib/postgresql/data
+    networks:
+      - raybank-network
+
+  teste-pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "root@root.com"
+      PGADMIN_DEFAULT_PASSWORD: "12345"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - raybank-network
+
   keycloak:
     container_name: category_keycloak
     image: quay.io/keycloak/keycloak:20.0.3
@@ -15,4 +38,10 @@ services:
       - start-dev # uma versão mais leve customizada para ambiente de desenvolvimento e testes pensada para rodar na máquina do desenvolvedor
       - -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json
     volumes:
-      - ./infra-files/keycloak:/opt/jboss/keycloak/imports
+      - C:/docker/volumes/raybank/keycloak:/opt/jboss/keycloak/imports
+    networks:
+      - raybank-network
+
+networks:
+  raybank-network:
+    driver: bridge

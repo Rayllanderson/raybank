@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.models;
 
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import jakarta.persistence.FetchType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,7 @@ public class Invoice implements Comparable<Invoice> {
     private BigDecimal total;
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<Installment> installments = new ArrayList<>();
 
     @Transient

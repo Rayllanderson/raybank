@@ -23,6 +23,7 @@ public class CreditCardDto {
     private BigDecimal invoice;
 
     public static CreditCardDto fromCreditCard(CreditCard c){
+        if (c == null) return null;
         return new CreditCardDto(c.getId(), c.getNumber(), c.getSecurityCode(), c.getExpiryDate(), c.getBalance(), c.getCurrentInvoice().getTotal());
     }
 }

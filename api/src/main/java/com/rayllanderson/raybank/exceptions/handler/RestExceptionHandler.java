@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.exceptions.handler;
 
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestControllerAdvice
 public class RestExceptionHandler {
 
@@ -80,11 +84,23 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardError> handleExceptionInternal(Exception ex) {
+        log.error("error", ex);
         String title = ex.getCause() != null ? ex.getCause().getMessage() : "erro";
         int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
         StandardError standardError = StandardError.builder().timestamp(LocalDateTime.now())
                 .title(title)
                 .message("Erro Interno")
+                .status(status)
+                .build();
+        return ResponseEntity.status(status).body(standardError);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<StandardError> handleResponseStatusException(ResponseStatusException ex) {
+        int status = ex.getStatusCode().value();
+        StandardError standardError = StandardError.builder().timestamp(LocalDateTime.now())
+                .title(ex.getStatusCode().toString())
+                .message(ex.getMessage())
                 .status(status)
                 .build();
         return ResponseEntity.status(status).body(standardError);

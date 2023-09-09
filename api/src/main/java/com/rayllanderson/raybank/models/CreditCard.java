@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.models.inputs.CreditCardPayment;
 import com.rayllanderson.raybank.models.inputs.DebitCardPayment;
+import jakarta.persistence.FetchType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -57,7 +58,7 @@ public class CreditCard {
     @JsonIgnore
     @OneToOne
     private BankAccount bankAccount;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private Set<Invoice> invoices;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.MERGE)
