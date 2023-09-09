@@ -3,18 +3,25 @@ package com.rayllanderson.raybank.controllers;
 import com.rayllanderson.raybank.dtos.requests.bank.CreateCreditCardRequest;
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
 import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
-import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.UserRepository;
-import com.rayllanderson.raybank.services.creditcard.CreditCardService;
+import com.rayllanderson.raybank.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.services.TransactionFinderService;
+import com.rayllanderson.raybank.services.creditcard.CreditCardService;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
 import com.rayllanderson.raybank.services.creditcard.inputs.DueDays;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +36,11 @@ public class CreditCardController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid CreateCreditCardRequest request,
-                                           @AuthenticationPrincipal User authenticatedUser) {
-        final var user = userRepository.findById("50").get(); //todo:: somente para teste
+                                    @AuthenticationPrincipal Jwt jwt) {
+
+        var user = userRepository.findById(JwtUtils.getUserIdFrom(jwt))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+
         final CreateCreditCardInput input = new CreateCreditCardInput(user.getBankAccount().getId(),
                 request.getLimit(),
                 DueDays.of(request.getDueDay()));
@@ -41,20 +51,25 @@ public class CreditCardController {
     }
 
     @GetMapping
-    public ResponseEntity<CreditCardDto> find(@AuthenticationPrincipal User authenticatedUser){
+    public ResponseEntity<CreditCardDto> find(@AuthenticationPrincipal Jwt jwt){
+        var authenticatedUser = userRepository.findById(JwtUtils.getUserIdFrom(jwt))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
         Long accountId = authenticatedUser.getBankAccount().getId();
         return ResponseEntity.ok(CreditCardDto.fromCreditCard(creditCardService.findByAccountId(accountId)));
     }
 
     @GetMapping("/statements")
-    public ResponseEntity<List<TransactionDto>> findStatements(@AuthenticationPrincipal User authenticatedUser){
-        Long accountId = authenticatedUser.getBankAccount().getId();
-        return ResponseEntity.ok(transactionFinderService.findAllCreditCardTransactions(accountId));
+    public ResponseEntity<List<TransactionDto>> findStatements(@AuthenticationPrincipal Jwt jwt){
+        var authenticatedUser = userRepository.findById(JwtUtils.getUserIdFrom(jwt))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        return ResponseEntity.ok(transactionFinderService.findAllCreditCardTransactions(authenticatedUser.getBankAccount().getId()));
     }
 
     @PostMapping("/pay/invoice")
     public ResponseEntity<Void> payInvoice(@RequestBody @Valid com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto dto,
-                                           @AuthenticationPrincipal User authenticatedUser){
+                                           @AuthenticationPrincipal Jwt jwt){
+        var authenticatedUser = userRepository.findById(JwtUtils.getUserIdFrom(jwt))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
         dto.setAccount(authenticatedUser.getBankAccount());
         creditCardService.payInvoice(dto);
         return ResponseEntity.noContent().build();
