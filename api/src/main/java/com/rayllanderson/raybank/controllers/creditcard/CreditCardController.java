@@ -1,22 +1,27 @@
 package com.rayllanderson.raybank.controllers.creditcard;
 
 import com.rayllanderson.raybank.controllers.creditcard.requests.CreateCreditCardRequest;
+import com.rayllanderson.raybank.controllers.creditcard.requests.PayInvoiceInternalRequest;
 import com.rayllanderson.raybank.controllers.creditcard.responses.CreditCardDetailsResponse;
 import com.rayllanderson.raybank.controllers.creditcard.responses.CreditCardSensitiveDataResponse;
+import com.rayllanderson.raybank.controllers.creditcard.responses.PayInvoiceInternalResponse;
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
 import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
 import com.rayllanderson.raybank.models.CreditCard;
+import com.rayllanderson.raybank.models.transaction.Transaction;
 import com.rayllanderson.raybank.services.TransactionFinderService;
 import com.rayllanderson.raybank.services.creditcard.CreditCardFinderService;
 import com.rayllanderson.raybank.services.creditcard.CreditCardService;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
 import com.rayllanderson.raybank.services.creditcard.inputs.DueDays;
+import com.rayllanderson.raybank.services.creditcard.inputs.PayInvoiceInput;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,13 +80,22 @@ public class CreditCardController {
         return ResponseEntity.ok(transactionFinderService.findAllCreditCardTransactionsByUserId(getUserIdFrom(jwt)));
     }
 
-//    @PostMapping("/invoice")
-//    public ResponseEntity<Void> payInvoice(@RequestBody @Valid com.rayllanderson.raybank.controllers.v2.creditcard.CreditCardDto dto,
-//                                           @AuthenticationPrincipal Jwt jwt){
-//        var authenticatedUser = userRepository.findById(getUserIdFrom(jwt))
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-//        dto.setAccount(authenticatedUser.getBankAccount());
-//        creditCardService.payInvoice(dto);
-//        return ResponseEntity.noContent().build();
-//    }
+    @PostMapping("/invoices/current")
+    public ResponseEntity<PayInvoiceInternalResponse> payInvoice(@RequestBody @Valid PayInvoiceInternalRequest request,
+                                                                 @AuthenticationPrincipal Jwt jwt) {
+
+        Transaction transaction = creditCardService.payCurrentInvoice(new PayInvoiceInput(request.getAmount(), getUserIdFrom(jwt), null));
+
+        return ResponseEntity.ok().body(PayInvoiceInternalResponse.fromTransaction(transaction));
+    }
+
+    @PostMapping("/invoices/{invoiceId}")
+    public ResponseEntity<PayInvoiceInternalResponse> payInvoiceById(@RequestBody @Valid PayInvoiceInternalRequest request,
+                                                                     @PathVariable final String invoiceId,
+                                                                     @AuthenticationPrincipal Jwt jwt) {
+
+        Transaction transaction = creditCardService.payInvoiceById(new PayInvoiceInput(request.getAmount(), getUserIdFrom(jwt), invoiceId));
+
+        return ResponseEntity.ok().body(PayInvoiceInternalResponse.fromTransaction(transaction));
+    }
 }

@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.models.inputs.CreditCardPayment;
 import com.rayllanderson.raybank.models.inputs.DebitCardPayment;
@@ -19,6 +20,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -81,20 +83,37 @@ public class CreditCard {
         return c;
     }
 
-    public void payTheInvoice(BigDecimal amount) throws IllegalArgumentException, BadRequestException {
-        if (this.hasInvoice()) {
-            if (this.bankAccount.hasAvailableBalance(amount)) {
-                final var currentInvoice = getCurrentInvoice();
-                currentInvoice.receivePayment(amount);
-                balance = balance.add(amount);
-                bankAccount.pay(amount);
-                createInvoiceTransaction(amount);
-            } else {
-                throw new BadRequestException("Sua conta não possui saldo suficiente para pagar a fatura.");
-            }
-        } else {
-            throw new BadRequestException("Ops, parece que seu cartão não possui nenhuma fatura.");
+    public Transaction payCurrentInvoice(final BigDecimal amount) {
+        final var currentInvoice = getCurrentInvoiceToPay();
+
+        return payInvoice(currentInvoice, amount);
+    }
+
+    public Transaction payInvoiceById(final String invoiceId, final BigDecimal amount) {
+        final Invoice invoice = getInvoiceById(invoiceId).orElseThrow(() -> new NotFoundException("Fatura não encontrada"));
+
+        return payInvoice(invoice, amount);
+    }
+
+    public Transaction payInvoice(Invoice invoice, BigDecimal amount) {
+        if (!invoice.hasValueToPay()) {
+            throw new UnprocessableEntityException("Fatura não possui nenhum valor em aberto");
         }
+
+        if (!this.bankAccount.hasAvailableBalance(amount)) {
+            throw new BadRequestException("Sua conta não possui saldo suficiente para pagar a fatura.");
+        }
+
+        invoice.receivePayment(amount);
+
+        balance = balance.add(amount);
+        bankAccount.pay(amount);
+
+        return createInvoiceTransaction(amount);
+    }
+
+    private Optional<Invoice> getInvoiceById(final String invoiceId) {
+        return this.invoices.stream().filter(invoice -> invoice.getId().equals(invoiceId)).findFirst();
     }
 
     public Transaction pay(final CreditCardPayment payment) throws UnprocessableEntityException {
@@ -125,9 +144,10 @@ public class CreditCard {
         }
     }
 
-    private void createInvoiceTransaction(BigDecimal amount) {
+    private Transaction createInvoiceTransaction(BigDecimal amount) {
         var transaction = Transaction.createInvoicePaymentTransaction(amount, bankAccount);
         this.getTransactions().add(transaction);
+        return transaction;
     }
 
     private Transaction createDebitTransaction(BigDecimal amount, String message) {
@@ -140,11 +160,6 @@ public class CreditCard {
         var transaction = Transaction.createCreditTransaction(amount, bankAccount, message);
         this.getTransactions().add(transaction);
         return transaction;
-    }
-
-    public void payInvoiceAndRefundRemaining(BigDecimal amount) {
-        BigDecimal refund = amount.subtract(getCurrentInvoice().getTotal());
-        this.payTheInvoice(amount.subtract(refund));
     }
 
     public boolean isValidSecurityCode(final Integer securityCode) {
@@ -163,12 +178,8 @@ public class CreditCard {
         return !(balance.equals(BigDecimal.ZERO) || balance.equals(new BigDecimal("0.00")));
     }
 
-    public boolean hasInvoice() {
-        return !getCurrentInvoice().hasValueToPay();
-    }
-
     protected void processInvoice(BigDecimal total, int installments, String paymentDescription, LocalDateTime ocurredOn) {
-        final Invoice currentInvoice = getCurrentInvoice();
+        final Invoice currentInvoice = getCurrentOpenInvoice();
         checkOcurredDateItsOnRange(currentInvoice, ocurredOn.toLocalDate());
 
         final var installmentValue = calculateInstallmentValue(total, installments);
@@ -186,9 +197,20 @@ public class CreditCard {
         }
     }
 
-    public Invoice getCurrentInvoice() {
-        return getInvoiceBy(LocalDate.now())
+    public Invoice getCurrentOpenInvoice() {
+        return getInvoiceBeforeClosingDateBy(LocalDate.now())
                 .orElse(Invoice.createOpenInvoice(plusOneMonthOf(dayOfDueDate)));
+    }
+
+    public Invoice getCurrentClosedInvoice() {
+        return getInvoiceBeforeOrEqualsDueDateBy(LocalDate.now()).orElse(null);
+    }
+
+    private Invoice getCurrentInvoiceToPay() {
+        var currentClosed = getCurrentClosedInvoice();
+        if (currentClosed != null && !currentClosed.isPaid())
+            return currentClosed;
+        return getCurrentOpenInvoice();
     }
 
     private static void checkOcurredDateItsOnRange(Invoice currentInvoice, LocalDate ocurredOn) {
@@ -208,17 +230,30 @@ public class CreditCard {
         return plusOneMonthKeepingCurrentDayOfMonth(LocalDate.of(year, month, dayOfDueDate));
     }
 
-    private Optional<Invoice> getInvoiceBy(final LocalDate date) {
+    private Optional<Invoice> getInvoiceBeforeClosingDateBy(final LocalDate date) {
         if (date == null) throw new NullPointerException("'date' must not be null");
-        final var sortedInvoices = new ArrayList<>(invoices);
-        Collections.sort(sortedInvoices);
+        final ArrayList<Invoice> sortedInvoices = getSortedInvoices();
         return sortedInvoices.stream()
                 .filter(invoice -> date.isBefore(invoice.getClosingDate()))
                 .findFirst();
     }
 
+    private Optional<Invoice> getInvoiceBeforeOrEqualsDueDateBy(final LocalDate date) {
+        if (date == null) throw new NullPointerException("'date' must not be null");
+        final ArrayList<Invoice> sortedInvoices = getSortedInvoices();
+        return sortedInvoices.stream()
+                .filter(invoice -> date.isBefore(invoice.getDueDate()) || date.isEqual(invoice.getDueDate()))
+                .findFirst();
+    }
+
+    private ArrayList<Invoice> getSortedInvoices() {
+        final var sortedInvoices = new ArrayList<>(invoices);
+        Collections.sort(sortedInvoices);
+        return sortedInvoices;
+    }
+
     private Optional<Invoice> getNextOf(final Invoice invoice) {
-        return getInvoiceBy(invoice.getDueDate().plusDays(1));
+        return getInvoiceBeforeClosingDateBy(invoice.getDueDate().plusDays(1));
     }
 
     /**

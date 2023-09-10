@@ -43,14 +43,14 @@ public class Invoice implements Comparable<Invoice> {
     private static final int DAYS_BEFORE_CLOSE = 6;
 
     protected void processPayment(String description, BigDecimal total, BigDecimal installmentValue, LocalDateTime date) {
-        if (!canReceivePayment())
+        if (!canProcessPayment())
             throw new UnprocessableEntityException("Fatura atual não está aberta");
         this.total = this.total.add(installmentValue);
         final Installment installment = Installment.create(description, total, installmentValue, date);
         this.installments.add(installment);
     }
 
-    private boolean canReceivePayment() {
+    private boolean canProcessPayment() {
         return isOpen() || status.equals(InvoiceStatus.NONE);
     }
 
@@ -96,22 +96,31 @@ public class Invoice implements Comparable<Invoice> {
         return this.total.compareTo(BigDecimal.ZERO) > 0;
     }
 
-    protected void receivePayment(BigDecimal amount) {
+    protected void receivePayment(final BigDecimal amount) {
+        if (!canReceivePayment())
+            throw new UnprocessableEntityException("Não é possível receber pagamento para essa fatura.");
+
         if (isPaid())
             throw new UnprocessableEntityException("Não é possível receber pagamento para fatura já paga.");
 
+        var toPay = amount;
         if (isAmountGreaterThanTotal(amount)) {
-            throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
+            final BigDecimal refund = amount.subtract(getTotal());
+            toPay = amount.subtract(refund);
         }
 
         if (isPaymentDate()) {
-            if (isPartialPayment(amount)) {
-                throw new UnprocessableEntityException("Não é possível receber pagamento parcial para fatura fechada.");
+            if (isPartialPayment(toPay)) {
+                throw new UnprocessableEntityException("Não é possível receber pagamento parcial para fatura fechada. Total da fatura: " + this.total);
             }
             this.status = InvoiceStatus.PAID;
         }
 
-        total = total.subtract(amount);
+        total = total.subtract(toPay);
+    }
+
+    protected boolean canReceivePayment() {
+        return isOpen() || isOverdue() || isClosed();
     }
 
     public void open() {

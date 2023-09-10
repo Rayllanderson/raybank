@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.services.creditcard;
 
-import com.rayllanderson.raybank.controllers.creditcard.CreditCardDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
@@ -10,6 +9,7 @@ import com.rayllanderson.raybank.models.transaction.Transaction;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
+import com.rayllanderson.raybank.services.creditcard.inputs.PayInvoiceInput;
 import com.rayllanderson.raybank.services.creditcard.inputs.PaymentCardInput;
 import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.RequiredArgsConstructor;
@@ -82,32 +82,30 @@ public class CreditCardService {
         return transaction;
     }
 
-    /**
-     * Realiza o pagamento da fatura.
-     * Verifica se existe fatura;
-     * Verifica se o valor da compra é maior que o valor da fatura.
-     * Case o valor seja maior, é realizado um reembolso da diferença do valor (valor do pagamento - fatura)
-     * então é realizado o pagamento da fatura e o saldo bancário com o reembolso é atualizado
-     * @param dto setar conta bancária antes de ser enviado.
-     * @throws BadRequestException caso o cartão não tenha faturas
-     */
     @Transactional
-    public void payInvoice(CreditCardDto dto) {
-        if(dto.getAccount() == null)  throw new BadRequestException("Account must be set before send");
-        CreditCard creditCard = findByAccountId(dto.getAccount().getId());
-        try {
-            creditCard.payTheInvoice(dto.getAmount());
-        } catch (IllegalArgumentException e){
-            creditCard.payInvoiceAndRefundRemaining(dto.getAmount());
-        }finally {
-            bankAccountRepository.save(creditCard.getBankAccount());
-            creditCardRepository.save(creditCard);
-        }
+    public Transaction payCurrentInvoice(final PayInvoiceInput input) {
+        final var creditCard = this.creditCardRepository.findByBankAccountUserId(input.getUserId())
+                .orElseThrow(() -> new NotFoundException("cartão não encontrado"));
+
+        final var transaction = creditCard.payCurrentInvoice(input.getAmount());
+
+        bankAccountRepository.save(creditCard.getBankAccount());
+        creditCardRepository.save(creditCard);
+
+        return transaction;
     }
 
-    @Transactional(readOnly = true)
-    public CreditCard findByAccountId(Long accountId){
-        return creditCardRepository.findByBankAccountId(accountId).orElseThrow(()-> new BadRequestException("Este cartão de crédito não existe"));
+    @Transactional
+    public Transaction payInvoiceById(final PayInvoiceInput input) {
+        final var creditCard = this.creditCardRepository.findByBankAccountUserId(input.getUserId())
+                .orElseThrow(() -> new NotFoundException("cartão não encontrado"));
+
+        final var transaction = creditCard.payInvoiceById(input.getInvoiceId(), input.getAmount());
+
+        bankAccountRepository.save(creditCard.getBankAccount());
+        creditCardRepository.save(creditCard);
+
+        return transaction;
     }
 
     private long generateCreditCardNumber() {

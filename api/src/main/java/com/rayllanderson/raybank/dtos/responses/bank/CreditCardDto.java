@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
-import java.time.YearMonth;
 
 @Data
 @Builder
@@ -22,6 +20,6 @@ public class CreditCardDto {
 
     public static CreditCardDto fromCreditCard(CreditCard c){
         if (c == null) return null;
-        return new CreditCardDto(c.getId(), c.getLimit(), c.getBalance(), c.getCurrentInvoice().getTotal());
+        return new CreditCardDto(c.getId(), c.getLimit(), c.getBalance(), c.getCurrentOpenInvoice().getTotal());
     }
 }
