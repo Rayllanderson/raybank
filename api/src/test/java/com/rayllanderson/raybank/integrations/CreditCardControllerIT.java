@@ -89,7 +89,7 @@ class CreditCardControllerIT extends BaseBankOperation{
         var expectedNewInvoice= invoiceTotal.subtract(amountToPay);
 
         var obj =
-                com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto
+                com.rayllanderson.raybank.controllers.creditcard.CreditCardDto
                         .builder().amount(amountToPay)
                         .account(authenticatedUserAccount)
                         .build();
@@ -107,7 +107,7 @@ class CreditCardControllerIT extends BaseBankOperation{
         var amountToPay= new BigDecimal("300.00");
 
         var obj =
-                com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto
+                com.rayllanderson.raybank.controllers.creditcard.CreditCardDto
                         .builder().amount(amountToPay)
                         .account(authenticatedUserAccount)
                         .build();
@@ -123,7 +123,7 @@ class CreditCardControllerIT extends BaseBankOperation{
         var amountToPay= new BigDecimal("300.00");
 
         var obj =
-                com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto
+                com.rayllanderson.raybank.controllers.creditcard.CreditCardDto
                         .builder().amount(amountToPay)
                         .account(authenticatedUserAccount)
                         .build();

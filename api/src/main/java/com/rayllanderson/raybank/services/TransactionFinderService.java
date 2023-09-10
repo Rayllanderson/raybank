@@ -40,12 +40,12 @@ public class TransactionFinderService {
     }
 
     @Transactional(readOnly = true)
-    public List<TransactionDto> findAllCreditCardTransactions(Long accountOwnerId){
-        var creditCardStatements = transactionRepository.findAllByAccountOwnerIdAndType(
-                accountOwnerId, TransactionType.CREDIT_CARD_PAYMENT
+    public List<TransactionDto> findAllCreditCardTransactionsByUserId(String userId){
+        var creditCardStatements = transactionRepository.findAllByAccountOwnerUserIdAndType(
+                userId, TransactionType.CREDIT_CARD_PAYMENT
         );
-        creditCardStatements.addAll(transactionRepository.findAllByAccountOwnerIdAndType(
-                accountOwnerId, TransactionType.INVOICE_PAYMENT));
+        creditCardStatements.addAll(transactionRepository.findAllByAccountOwnerUserIdAndType(
+                userId, TransactionType.INVOICE_PAYMENT));
         return creditCardStatements.stream().map(TransactionDto::fromTransaction).collect(Collectors.toList());
     }
 }

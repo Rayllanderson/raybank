@@ -16,14 +16,12 @@ import java.time.YearMonth;
 @AllArgsConstructor
 public class CreditCardDto {
     private String id;
-    private Long number;
-    private Integer securityCode;
-    private YearMonth expiryDate;
+    private BigDecimal limit;
     private BigDecimal balance;
     private BigDecimal invoice;
 
     public static CreditCardDto fromCreditCard(CreditCard c){
         if (c == null) return null;
-        return new CreditCardDto(c.getId(), c.getNumber(), c.getSecurityCode(), c.getExpiryDate(), c.getBalance(), c.getCurrentInvoice().getTotal());
+        return new CreditCardDto(c.getId(), c.getLimit(), c.getBalance(), c.getCurrentInvoice().getTotal());
     }
 }

@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.integrations;
 
 import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
-import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
+import com.rayllanderson.raybank.controllers.creditcard.CreditCardDto;
 import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
 import com.rayllanderson.raybank.dtos.responses.pix.PixPostResponse;
 import com.rayllanderson.raybank.external.card.payment.PaymentCardRequest;

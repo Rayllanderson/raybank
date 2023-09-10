@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.dtos.requests.bank;
+package com.rayllanderson.raybank.controllers.creditcard;
 
 import com.rayllanderson.raybank.models.BankAccount;
 import lombok.AllArgsConstructor;

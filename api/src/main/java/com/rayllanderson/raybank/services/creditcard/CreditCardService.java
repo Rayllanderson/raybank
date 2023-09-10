@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.services.creditcard;
 
-import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
+import com.rayllanderson.raybank.controllers.creditcard.CreditCardDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
@@ -28,11 +28,11 @@ public class CreditCardService {
 
     @Transactional
     public CreditCard createCreditCard(final CreateCreditCardInput input){
-        if (creditCardRepository.existsByBankAccountId(input.getBankAccountId()))
-            throw new UnprocessableEntityException("Já existe um cartão para o usuário");
-
-        final var bankAccount = bankAccountRepository.findById(input.getBankAccountId())
+        final var bankAccount = bankAccountRepository.findByUserId(input.getUserId())
                 .orElseThrow(() -> new BadRequestException("Conta bancária não disponível"));
+
+        if (creditCardRepository.existsByBankAccountId(bankAccount.getId()))
+            throw new UnprocessableEntityException("Já existe um cartão para o usuário");
 
         var creditCardToBeSaved = CreditCard.create(this.generateCreditCardNumber(),
                 input.getLimit(),
