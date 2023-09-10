@@ -1,5 +1,9 @@
-package com.rayllanderson.raybank.models;
+package com.rayllanderson.raybank.models.transaction;
 
+import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.models.TransactionType;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +15,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.experimental.SuperBuilder;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
@@ -21,6 +27,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Transaction {
 
     @Id
@@ -69,6 +76,18 @@ public class Transaction {
                 .build();
     }
 
+    public static Transaction receivingCardPayment(BankAccount accountOwner, Transaction originalTransaction){
+        final var transaction = Transaction.builder()
+                .moment(Instant.now())
+                .type(TransactionType.CARD_RECEIVE_PAYMENT)
+                .amount(originalTransaction.getAmount().abs())
+                .accountSender(null)
+                .message(originalTransaction.message)
+                .accountOwner(accountOwner)
+                .build();
+        return CardReceivementTransaction.fromTransaction(transaction, originalTransaction);
+    }
+
     public static Transaction createBoletoPaymentTransaction(BigDecimal amount, BankAccount accountOwner){
         return Transaction.builder().
                 moment(Instant.now())
@@ -80,24 +99,24 @@ public class Transaction {
                 .build();
     }
 
-    public static Transaction createDebitCardTransaction(BigDecimal amount, BankAccount accountOwner){
+    public static Transaction createDebitCardTransaction(BigDecimal amount, BankAccount accountOwner, String message){
         return Transaction.builder().
                 moment(Instant.now())
                 .type(TransactionType.DEBIT_CARD_PAYMENT)
                 .amount(amount.negate())
                 .accountSender(null)
-                .message(null)
+                .message(message)
                 .accountOwner(accountOwner)
                 .build();
     }
 
-    public static Transaction createCreditTransaction(BigDecimal amount, BankAccount accountOwner){
+    public static Transaction createCreditTransaction(BigDecimal amount, BankAccount accountOwner, String message){
         return Transaction.builder().
                 moment(Instant.now())
                 .type(TransactionType.CREDIT_CARD_PAYMENT)
                 .amount(amount.negate())
                 .accountSender(null)
-                .message(null)
+                .message(message)
                 .accountOwner(accountOwner)
                 .build();
     }

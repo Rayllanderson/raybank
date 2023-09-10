@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.repositories;
 
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.Transaction;
+import com.rayllanderson.raybank.models.transaction.Transaction;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.models.TransactionType;
 import com.rayllanderson.raybank.utils.BankAccountCreator;

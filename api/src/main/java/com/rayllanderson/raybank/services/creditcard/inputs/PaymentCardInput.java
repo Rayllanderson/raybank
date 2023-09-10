@@ -21,7 +21,7 @@ public class PaymentCardInput {
     private Integer installments;
     private LocalDateTime ocurredOn;
     private String description;
-    private String userId; //estabelecimento
+    private String establishmentId;
     private Card card;
 
     @Getter

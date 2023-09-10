@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.repositories;
 
-import com.rayllanderson.raybank.models.Transaction;
+import com.rayllanderson.raybank.models.transaction.Transaction;
 import com.rayllanderson.raybank.models.TransactionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 

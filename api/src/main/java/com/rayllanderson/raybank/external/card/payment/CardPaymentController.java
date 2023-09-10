@@ -32,8 +32,10 @@ public class CardPaymentController {
     private final CreditCardRepository creditCardRepository;
 
     @PostMapping("/card")
-    public ResponseEntity<CardPaymentResponse> pay(@Valid @RequestBody PaymentCardRequest request) {
+    public ResponseEntity<CardPaymentResponse> pay(@Valid @RequestBody PaymentCardRequest request,
+                                                   @AuthenticationPrincipal Jwt jwt) {
         final var input = PaymentCardInput.fromRequest(request);
+        input.setEstablishmentId(JwtUtils.getUserIdFrom(jwt));
 
         final var transaction = creditCardService.pay(input);
 

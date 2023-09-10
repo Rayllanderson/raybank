@@ -3,6 +3,8 @@ package com.rayllanderson.raybank.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
+import com.rayllanderson.raybank.models.transaction.Transaction;
+import jakarta.persistence.CascadeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +42,7 @@ public class BankAccount {
     @OneToOne
     private User user;
     @JsonIgnore
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.MERGE)
     private Set<Transaction> transactions = new HashSet<>();
     @JsonIgnore
     @ManyToMany
@@ -50,6 +52,11 @@ public class BankAccount {
         this.id = id;
         this.accountNumber = accountNumber;
         this.balance = balance;
+    }
+
+    public void receiveCardPayment(Transaction originalTransaction) {
+        this.deposit(originalTransaction.getAmount().abs());
+        this.transactions.add(Transaction.receivingCardPayment(this, originalTransaction));
     }
 
     /**
@@ -119,11 +126,11 @@ public class BankAccount {
         return Objects.hash(id);
     }
 
-    public void addCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
-    }
-
     public void attacthUser(User user) {
         this.user = user;
+    }
+
+    public boolean sameCard(final CreditCard creditCard) {
+        return this.getCreditCard().getId().equals(creditCard.getId());
     }
 }

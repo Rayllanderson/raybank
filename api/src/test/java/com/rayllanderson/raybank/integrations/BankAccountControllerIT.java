@@ -5,7 +5,7 @@ import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
 import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
-import com.rayllanderson.raybank.models.Transaction;
+import com.rayllanderson.raybank.models.transaction.Transaction;
 import com.rayllanderson.raybank.models.TransactionType;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
 import com.rayllanderson.raybank.utils.BankTransferCreator;

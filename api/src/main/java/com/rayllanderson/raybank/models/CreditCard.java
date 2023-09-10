@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.models.inputs.CreditCardPayment;
 import com.rayllanderson.raybank.models.inputs.DebitCardPayment;
+import com.rayllanderson.raybank.models.transaction.Transaction;
 import jakarta.persistence.FetchType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -108,7 +109,7 @@ public class CreditCard {
             processInvoice(payment.getTotal(), payment.getInstallments(), payment.getDescription(), payment.getOcurredOn());
 
             balance = balance.subtract(payment.getTotal());
-            return this.createPurchaseTransaction(payment.getTotal());
+            return this.createPurchaseTransaction(payment.getTotal(), payment.getDescription());
         } else
             throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
     }
@@ -118,7 +119,7 @@ public class CreditCard {
             throw UnprocessableEntityException.with("Cartão está expirado");
         try {
             this.bankAccount.pay(payment.getTotal());
-            return this.createDebitTransaction(payment.getTotal());
+            return this.createDebitTransaction(payment.getTotal(), payment.getDescription());
         } catch (UnprocessableEntityException e) {
             throw new UnprocessableEntityException("Saldo em conta insuficiente para efetuar compra no débito");
         }
@@ -129,14 +130,14 @@ public class CreditCard {
         this.getTransactions().add(transaction);
     }
 
-    private Transaction createDebitTransaction(BigDecimal amount) {
-        var transaction = Transaction.createDebitCardTransaction(amount, bankAccount);
+    private Transaction createDebitTransaction(BigDecimal amount, String message) {
+        var transaction = Transaction.createDebitCardTransaction(amount, bankAccount, message);
         this.getTransactions().add(transaction);
         return transaction;
     }
 
-    private Transaction createPurchaseTransaction(BigDecimal amount) {
-        var transaction = Transaction.createCreditTransaction(amount, bankAccount);
+    private Transaction createPurchaseTransaction(BigDecimal amount, String message) {
+        var transaction = Transaction.createCreditTransaction(amount, bankAccount, message);
         this.getTransactions().add(transaction);
         return transaction;
     }

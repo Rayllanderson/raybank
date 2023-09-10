@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.dtos.responses.bank;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rayllanderson.raybank.dtos.responses.bank.enums.IdentificationType;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.Transaction;
+import com.rayllanderson.raybank.models.transaction.Transaction;
 import com.rayllanderson.raybank.models.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +35,7 @@ public class TransactionDto {
     public static TransactionDto fromTransaction(Transaction transaction) {
         TransactionDto dto = new ModelMapper().map(transaction, TransactionDto.class);
         BankAccount senderAccount = transaction.getAccountSender();
+        dto.setTransactionType(transaction.getType());
         String identificationName = null;
         if (senderAccount != null)
             identificationName = senderAccount.getUser().getName();

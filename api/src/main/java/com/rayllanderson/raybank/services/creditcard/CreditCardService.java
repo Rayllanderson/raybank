@@ -2,9 +2,11 @@ package com.rayllanderson.raybank.services.creditcard;
 
 import com.rayllanderson.raybank.dtos.requests.bank.CreditCardDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.CreditCard;
-import com.rayllanderson.raybank.models.Transaction;
+import com.rayllanderson.raybank.models.transaction.Transaction;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.YearMonth;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -57,13 +60,25 @@ public class CreditCardService {
             throw badRequestException;
         }
 
+        final BankAccount establishmentAccount = Optional.of(bankAccountRepository.findAccountWithTransactionsByUserId(payment.getEstablishmentId()))
+                .orElseThrow(() -> new NotFoundException("Estabelecimento não pode receber pagamentos"));
+
+        if (establishmentAccount.sameCard(creditCard)) {
+            throw new UnprocessableEntityException("Estabelecimento não pode receber pagamentos desse cartão");
+        }
+
         final Transaction transaction;
-        if (payment.isCreditPayment())
+        if (payment.isCreditPayment()) {
             transaction = creditCard.pay(payment.toCreditCardPayment());
-        else
+        } else {
             transaction = creditCard.pay(payment.toDebitCardPayment());
+        }
+
+        establishmentAccount.receiveCardPayment(transaction);
 
         creditCardRepository.save(creditCard);
+        bankAccountRepository.save(establishmentAccount);
+
         return transaction;
     }
 
