@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.services.register.user;
+package com.rayllanderson.raybank.services.register;
 
 import com.rayllanderson.raybank.models.User;
 import lombok.Getter;
@@ -11,8 +11,14 @@ public class RegisterUserInput {
     private String name;
     private String username;
     private String password;
+    private RegisterType registerType;
 
     public User toModel() {
         return new ModelMapper().map(this, User.class);
     }
+
+    public enum RegisterType {
+        USER, ESTABLISMENT
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.services.register.user;
+package com.rayllanderson.raybank.services.register;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

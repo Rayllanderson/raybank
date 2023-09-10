@@ -1,12 +1,12 @@
-package com.rayllanderson.raybank.services.register.user;
+package com.rayllanderson.raybank.services.register;
 
 import com.rayllanderson.raybank.constants.Groups;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.models.UserType;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.KeycloakProvider;
 import com.rayllanderson.raybank.services.BankAccountService;
-import com.rayllanderson.raybank.services.register.FailedToRegisterException;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.rayllanderson.raybank.services.register.RegisterUtils.getGroupsByRegisterType;
+import static com.rayllanderson.raybank.services.register.RegisterUtils.getIdFromHeader;
 
 @Slf4j
 @Service
@@ -47,6 +50,7 @@ public class RegisterUserService {
         User userToBeSaved = userInput.toModel();
         userToBeSaved.setId(userId);
         userToBeSaved.setAuthorities(Groups.USER.name());
+        userToBeSaved.setType(UserType.valueOf(userInput.getRegisterType().name()));
 
         userToBeSaved = userRepository.save(userToBeSaved);
 
@@ -63,7 +67,8 @@ public class RegisterUserService {
         keycloakUser.setCredentials(List.of(credentialRepresentation));
         keycloakUser.setEnabled(true);
         keycloakUser.setEmailVerified(false);
-        keycloakUser.setGroups(List.of(Groups.USER.name()));
+        final var groups = getGroupsByRegisterType(user.getRegisterType());
+        keycloakUser.setGroups(groups);
 
         return keycloakProvider.getRealmInstance().users().create(keycloakUser);
     }
@@ -83,10 +88,6 @@ public class RegisterUserService {
         if (usernameExists) {
             throw new BadRequestException("Username já está em uso. Tente outro.");
         }
-    }
-
-    private static String getIdFromHeader(final Response response) {
-        return response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
     }
 
     private static CredentialRepresentation createPasswordCredentials(final String password) {

@@ -1,6 +1,8 @@
 package com.rayllanderson.raybank.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -29,6 +31,8 @@ public class User {
     @Size(min = 3, max = 100)
     private String username;
     private String authorities;
+    @Enumerated(EnumType.STRING)
+    private UserType type;
     @OneToOne(orphanRemoval = true)
     private BankAccount bankAccount;
     @OneToMany(orphanRemoval = true)

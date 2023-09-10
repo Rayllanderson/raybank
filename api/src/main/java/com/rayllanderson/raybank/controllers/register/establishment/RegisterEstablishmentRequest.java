@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.controllers.register;
+package com.rayllanderson.raybank.controllers.register.establishment;
 
 import com.rayllanderson.raybank.services.register.RegisterUserInput;
 import lombok.Getter;
@@ -7,14 +7,14 @@ import org.modelmapper.ModelMapper;
 
 @Getter
 @Setter
-public class RegisterUserRequest {
+public class RegisterEstablishmentRequest {
     private String name;
     private String username;
     private String password;
 
     public RegisterUserInput toInput() {
         final var input = new ModelMapper().map(this, RegisterUserInput.class);
-        input.setRegisterType(RegisterUserInput.RegisterType.USER);
+        input.setRegisterType(RegisterUserInput.RegisterType.ESTABLISMENT);
         return input;
     }
 }
