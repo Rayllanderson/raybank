@@ -34,7 +34,7 @@ public class BankStatementDto {
 
     public static BankStatementDto fromBankStatement(BankStatement bankStatement) {
         BankStatementDto dto = new ModelMapper().map(bankStatement, BankStatementDto.class);
-        BankAccount senderAccount = bankStatement.getAccountSender();
+        BankAccount senderAccount = null; //todo::
         dto.setBankStatementType(bankStatement.getType());
         String identificationName = null;
         if (senderAccount != null)

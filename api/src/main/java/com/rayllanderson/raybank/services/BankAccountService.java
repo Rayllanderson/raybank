@@ -9,6 +9,7 @@ import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.statements.BankStatement;
 import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.models.statements.TransferStatement;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
 import com.rayllanderson.raybank.repositories.BankStatementRepository;
 import com.rayllanderson.raybank.utils.NumberUtil;
@@ -67,9 +68,10 @@ public class BankAccountService {
             senderAccount.transferTo(recipientAccount, amountToBeTransferred);
 
             //criando e salvando extratos
-            BankStatement recipientBankStatement = bankStatementRepository.save(BankStatement.createTransferBankStatement(amountToBeTransferred,
-                    senderAccount, recipientAccount, transferDto.getMessage()));
-            BankStatement senderBankStatement = bankStatementRepository.save(recipientBankStatement.toNegative());
+            TransferStatement recipientBankStatement = BankStatement.createTransferBankStatement(amountToBeTransferred,
+                    senderAccount, recipientAccount, transferDto.getMessage());
+            TransferStatement senderBankStatement = recipientBankStatement.invert();
+            bankStatementRepository.saveAll(List.of(recipientBankStatement, senderBankStatement));
 
             //adicionando extratos nas contas
             recipientAccount.getBankStatements().add(recipientBankStatement);
