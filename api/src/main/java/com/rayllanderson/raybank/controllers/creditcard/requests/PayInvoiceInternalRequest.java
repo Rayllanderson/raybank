@@ -11,6 +11,6 @@ import java.math.BigDecimal;
 @Getter
 public class PayInvoiceInternalRequest {
     @NotNull
-    @DecimalMin(value = "0.0", inclusive = false)
+    @DecimalMin(value = "0.01")
     private BigDecimal amount;
 }

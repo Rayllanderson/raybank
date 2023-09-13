@@ -20,7 +20,7 @@ import java.time.YearMonth;
 public class PaymentCardRequest {
 
     @NotNull
-    @DecimalMin(value = "0.0", inclusive = false)
+    @DecimalMin(value = "0.01")
     private BigDecimal amount;
 
     @NotNull
