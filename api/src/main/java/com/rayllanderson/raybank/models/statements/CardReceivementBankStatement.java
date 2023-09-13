@@ -1,5 +1,7 @@
-package com.rayllanderson.raybank.models;
+package com.rayllanderson.raybank.models.statements;
 
+import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.models.BankStatementType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -13,9 +15,9 @@ import java.time.Instant;
 @NoArgsConstructor
 @Setter
 @Entity
-public class CardReceivementBankStatement extends com.rayllanderson.raybank.models.BankStatement {
+public class CardReceivementBankStatement extends BankStatement {
     @OneToOne
-    private com.rayllanderson.raybank.models.BankStatement originalBankStatement;
+    private BankStatement originalBankStatement;
 
     public CardReceivementBankStatement(Instant moment, BankStatementType type, BigDecimal amount, String message, BankAccount accountSender, BankAccount accountOwner, BankStatement originalBankStatement) {
         super(null, moment, type, amount, message, accountSender, accountOwner);

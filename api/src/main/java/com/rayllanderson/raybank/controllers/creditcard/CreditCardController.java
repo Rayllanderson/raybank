@@ -8,7 +8,7 @@ import com.rayllanderson.raybank.controllers.creditcard.responses.PayInvoiceInte
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankStatementDto;
 import com.rayllanderson.raybank.models.CreditCard;
-import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.statements.BankStatement;
 import com.rayllanderson.raybank.services.BankStatementFinderService;
 import com.rayllanderson.raybank.services.creditcard.CreditCardFinderService;
 import com.rayllanderson.raybank.services.creditcard.CreditCardService;

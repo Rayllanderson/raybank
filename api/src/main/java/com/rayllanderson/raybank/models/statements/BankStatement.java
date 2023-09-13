@@ -1,5 +1,7 @@
-package com.rayllanderson.raybank.models;
+package com.rayllanderson.raybank.models.statements;
 
+import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.models.BankStatementType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

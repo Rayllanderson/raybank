@@ -4,7 +4,7 @@ package com.rayllanderson.raybank.services;
 import com.rayllanderson.raybank.dtos.responses.bank.BankStatementDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.statements.BankStatement;
 import com.rayllanderson.raybank.models.BankStatementType;
 import com.rayllanderson.raybank.repositories.BankStatementRepository;
 import lombok.RequiredArgsConstructor;

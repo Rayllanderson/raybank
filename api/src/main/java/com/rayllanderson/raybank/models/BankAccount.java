@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
-import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.statements.BankStatement;
 import jakarta.persistence.CascadeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

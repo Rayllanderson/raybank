@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.dtos.responses.bank;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rayllanderson.raybank.dtos.responses.bank.enums.IdentificationType;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.statements.BankStatement;
 import com.rayllanderson.raybank.models.BankStatementType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

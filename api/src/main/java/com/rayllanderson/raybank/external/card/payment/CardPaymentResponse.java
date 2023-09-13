@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.external.card.payment;
 
-import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.statements.BankStatement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

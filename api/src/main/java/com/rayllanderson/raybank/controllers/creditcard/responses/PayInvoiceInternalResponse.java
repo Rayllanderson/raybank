@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.controllers.creditcard.responses;
 
-import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.statements.BankStatement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
