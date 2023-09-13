@@ -1,8 +1,5 @@
-package com.rayllanderson.raybank.models.transaction;
+package com.rayllanderson.raybank.models;
 
-import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.BankStatement;
-import com.rayllanderson.raybank.models.BankStatementType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;

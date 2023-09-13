@@ -81,7 +81,7 @@ public class BankStatement {
                 .message(originalBankStatement.message)
                 .accountOwner(accountOwner)
                 .build();
-        return com.rayllanderson.raybank.models.transaction.CardReceivementBankStatement.fromBankStatement(bankStatement, originalBankStatement);
+        return CardReceivementBankStatement.fromBankStatement(bankStatement, originalBankStatement);
     }
 
     public static BankStatement createBoletoPaymentBankStatement(BigDecimal amount, BankAccount accountOwner){
