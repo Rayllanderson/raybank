@@ -109,9 +109,9 @@ public class Invoice implements Comparable<Invoice> {
             toPay = amount.subtract(refund);
         }
 
-        if (isPaymentDate()) {
+        if (isPaymentDate() || isOverdue()) {
             if (isPartialPayment(toPay)) {
-                throw new UnprocessableEntityException("Não é possível receber pagamento parcial para fatura fechada. Total da fatura: " + this.total);
+                throw new UnprocessableEntityException("Não é possível receber pagamento parcial para fatura fechada ou vencida. Total da fatura: " + this.total);
             }
             this.status = InvoiceStatus.PAID;
         }
