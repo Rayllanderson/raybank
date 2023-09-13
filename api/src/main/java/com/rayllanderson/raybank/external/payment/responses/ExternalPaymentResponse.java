@@ -20,9 +20,9 @@ public class ExternalPaymentResponse {
     private final ExternalPaymentTypeDto paymentMethod;
     private final LocalDateTime timestamp;
 
-    public static ExternalPaymentResponse fromModel(ExternalTransaction externalTransaction) {
-        var paymentType = ExternalPaymentTypeDto.fromString(externalTransaction.getPaymentType().toString());
-        return new ExternalPaymentResponse(externalTransaction.getId(), externalTransaction.getNumberIdentifier(), externalTransaction.getValue(),
-                paymentType, externalTransaction.getTimestamp());
+    public static ExternalPaymentResponse fromModel(ExternalTransaction ExternalTransaction) {
+        var paymentType = ExternalPaymentTypeDto.fromString(ExternalTransaction.getPaymentType().toString());
+        return new ExternalPaymentResponse(ExternalTransaction.getId(), ExternalTransaction.getNumberIdentifier(), ExternalTransaction.getValue(),
+                paymentType, ExternalTransaction.getTimestamp());
     }
 }

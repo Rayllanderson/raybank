@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.external.payment.requests;
 
 import com.rayllanderson.raybank.external.payment.models.ExternalTransaction;
-import com.rayllanderson.raybank.external.validator.AccountExists;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -17,7 +16,6 @@ import java.math.BigDecimal;
 public class ExternalPaymentRequest {
 
     @NotEmpty
-    @AccountExists
     private final String token;
 
     @NotNull

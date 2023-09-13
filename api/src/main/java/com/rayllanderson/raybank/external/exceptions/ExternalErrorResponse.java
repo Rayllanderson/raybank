@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class ExternalErrorResponse {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String transactionId;
+    private String bankStatementId;
     private final String title;
     private final Integer status;
     private final String rayBankCode;
@@ -25,12 +25,12 @@ public class ExternalErrorResponse {
     }
 
     public ExternalErrorResponse(String title, Integer status, String rayBankCode, String codeDescription, String message,
-                                 String transactionId) {
+                                 String bankStatementId) {
         this.title = title;
         this.status = status;
         this.rayBankCode = rayBankCode;
         this.message = message;
-        this.transactionId = transactionId;
+        this.bankStatementId = bankStatementId;
     }
 
     public static ExternalErrorResponse fromExternalException(RaybankExternalException e) {
@@ -39,10 +39,10 @@ public class ExternalErrorResponse {
         var rayBankCode = e.getRayBankCode();
         var errorDescription = e.getDescription();
         var message = e.getMessage();
-        var possibleTransaction = e.getTransaction();
-        if (possibleTransaction.isPresent()) {
-            var transactionId = possibleTransaction.get().getId();
-            return new ExternalErrorResponse(title, statusCode, rayBankCode, errorDescription, message, transactionId);
+        var possibleBankStatement = e.getBankStatement();
+        if (possibleBankStatement.isPresent()) {
+            var bankStatementId = possibleBankStatement.get().getId();
+            return new ExternalErrorResponse(title, statusCode, rayBankCode, errorDescription, message, bankStatementId);
         }
         return new ExternalErrorResponse(title, statusCode, rayBankCode, errorDescription, message);
     }

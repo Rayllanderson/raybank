@@ -23,15 +23,15 @@ public class ExternalTransactionDetailsResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final String message;
 
-    public static ExternalTransactionDetailsResponse fromModel(ExternalTransaction transaction) {
-        log.info("Convertendo transação externa {} para {}", transaction.getId(), ExternalTransactionDetailsResponse.class.getSimpleName());
+    public static ExternalTransactionDetailsResponse fromModel(ExternalTransaction bankStatement) {
+        log.info("Convertendo transação externa {} para {}", bankStatement.getId(), ExternalTransactionDetailsResponse.class.getSimpleName());
         var response = new ExternalTransactionDetailsResponse(
-                transaction.getId(),
-                transaction.getPaymentType().toString(),
-                transaction.getValue(),
-                transaction.getTimestamp(),
-                transaction.getSituation().getStatus().toString(),
-                transaction.getSituation().getMessage()
+                bankStatement.getId(),
+                bankStatement.getPaymentType().toString(),
+                bankStatement.getValue(),
+                bankStatement.getTimestamp(),
+                bankStatement.getSituation().getStatus().toString(),
+                bankStatement.getSituation().getMessage()
         );
         log.info("Transação externa convertida {}", response);
         return response;

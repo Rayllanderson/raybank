@@ -33,9 +33,9 @@ public class CardPaymentController {
         final var input = PaymentCardInput.fromRequest(request);
         input.setEstablishmentId(JwtUtils.getUserIdFrom(jwt));
 
-        final var transaction = creditCardService.pay(input);
+        final var bankStatement = creditCardService.pay(input);
 
-        return ResponseEntity.ok().body(CardPaymentResponse.fromTransaction(transaction));
+        return ResponseEntity.ok().body(CardPaymentResponse.fromBankStatement(bankStatement));
     }
 
     @GetMapping("/teste")

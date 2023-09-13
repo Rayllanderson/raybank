@@ -19,7 +19,7 @@ public enum RaybankExternalTypeError {
     TOKEN_UNREGISTERED("The token is not registered. Please, register before proceed", "TUN401", UNAUTHORIZED),
     TOKEN_INVALID("The token is not valid.", "TNV401", UNAUTHORIZED),
     BOLETO_NOT_FOUND("Boleto was not found", "BNF404", NOT_FOUND),
-    TRANSACTION_NOT_FOUND("Transaction not found", "TNF404", NOT_FOUND);
+    bankStatement_NOT_FOUND("BankStatement not found", "TNF404", NOT_FOUND);
 
     private final String description;
     private final String rayBankCode;

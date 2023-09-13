@@ -13,24 +13,24 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FindExternalTransactionService {
 
-    private final ExternalTransactionRepository transactionRepository;
+    private final ExternalTransactionRepository bankStatementRepository;
 
     public ExternalTransactionDetailsResponse findById(String id, String token) {
         log.info("Buscando Transação externa {} com token {}", id, token);
 
-        var transaction = transactionRepository.findById(id).orElseThrow(() -> {
+        var bankStatement = bankStatementRepository.findById(id).orElseThrow(() -> {
             log.error("Transação externa id={} não encontrada", id);
-            throw new RaybankExternalException.TransactionNotFound("Transaction " + id + " not found");
+            throw new RaybankExternalException.BankStatementNotFound("BankStatement " + id + " not found");
         });
 
-        log.info("Transação externa encontrada={}", transaction);
+        log.info("Transação externa encontrada={}", bankStatement);
 
-        var invalidToken = !transaction.isValidToken(token);
+        var invalidToken = !bankStatement.isValidToken(token);
         if (invalidToken) {
             log.error("Erro com transação externa {}. Token não corresponde", id);
-            throw new RaybankExternalException.TokenInvalid("The token " + token  +" is not valid for the transaction");
+            throw new RaybankExternalException.TokenInvalid("The token " + token  +" is not valid for the bankStatement");
         }
 
-        return ExternalTransactionDetailsResponse.fromModel(transaction);
+        return ExternalTransactionDetailsResponse.fromModel(bankStatement);
     }
 }

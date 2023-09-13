@@ -18,28 +18,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExternalCreditCardPaymentService implements ExternalPaymentMethod {
 
     private final CreditCardRepository creditCardRepository;
-    private final ExternalTransactionRepository externalTransactionRepository;
+    private final ExternalTransactionRepository ExternalTransactionRepository;
 
     @Override
     @Transactional
     public ExternalPaymentResponse pay(ExternalPaymentRequest request) {
-        var externalTransaction = request.toModel();
+        var ExternalTransaction = request.toModel();
 
         var creditCard = creditCardRepository.findByNumber(CardUtil.getCardNumber(request)).orElseThrow(() -> {
             log.error("Pagamento não efetuado. Cartão de crédito {} não encontrado.", request.getNumberIdentifier());
-            throw new RaybankExternalException.CreditCardNotFound("Credit Card=" + request.getNumberIdentifier() + " not found", externalTransaction);
+            throw new RaybankExternalException.CreditCardNotFound("Credit Card=" + request.getNumberIdentifier() + " not found", ExternalTransaction);
         });
 
         try {
 //            creditCard.pay(request.getValue());
             creditCardRepository.save(creditCard);
-            externalTransactionRepository.save(externalTransaction);
-            log.info("Pagamento efetuado com sucesso={}", externalTransaction);
-            return ExternalPaymentResponse.fromModel(externalTransaction);
+            ExternalTransactionRepository.save(ExternalTransaction);
+            log.info("Pagamento efetuado com sucesso={}", ExternalTransaction);
+            return ExternalPaymentResponse.fromModel(ExternalTransaction);
         } catch (UnprocessableEntityException e) {
             log.error("Pagamento não efetuado. Cartão de crédito {} não possui limite suficiente.", request.getNumberIdentifier());
             throw new RaybankExternalException.InsufficientCreditCardLimit("Card=" + request.getNumberIdentifier() + " has no " +
-                    "available limit", externalTransaction);
+                    "available limit", ExternalTransaction);
         }
     }
 }

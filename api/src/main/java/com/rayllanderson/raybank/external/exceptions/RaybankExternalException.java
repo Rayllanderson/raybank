@@ -16,13 +16,13 @@ import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeE
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.TOKEN_ALREADY_REGISTERED;
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.TOKEN_INVALID;
 import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.TOKEN_UNREGISTERED;
-import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.TRANSACTION_NOT_FOUND;
+import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeError.bankStatement_NOT_FOUND;
 
 @ToString
 public class RaybankExternalException extends RuntimeException {
     private final RaybankExternalTypeError reason;
     private String message;
-    private ExternalTransaction transaction;
+    private ExternalTransaction bankStatement;
 
     public RaybankExternalException(RaybankExternalTypeError reason) {
         super(reason.getDescription());
@@ -35,17 +35,17 @@ public class RaybankExternalException extends RuntimeException {
         this.message = message;
     }
 
-    public RaybankExternalException(RaybankExternalTypeError reason, String message, ExternalTransaction transaction) {
+    public RaybankExternalException(RaybankExternalTypeError reason, String message, ExternalTransaction bankStatement) {
         super(reason.getDescription());
         this.reason = reason;
         this.message = message;
-        this.transaction = transaction;
+        this.bankStatement = bankStatement;
     }
 
-    public RaybankExternalException(RaybankExternalTypeError reason, ExternalTransaction transaction) {
+    public RaybankExternalException(RaybankExternalTypeError reason, ExternalTransaction bankStatement) {
         super(reason.getDescription());
         this.reason = reason;
-        this.transaction = transaction;
+        this.bankStatement = bankStatement;
     }
 
     public HttpStatus getStatus() {
@@ -64,31 +64,31 @@ public class RaybankExternalException extends RuntimeException {
         return reason.name();
     }
 
-    public Optional<ExternalTransaction> getTransaction() {
-        return Optional.ofNullable(transaction);
+    public Optional<ExternalTransaction> getBankStatement() {
+        return Optional.ofNullable(bankStatement);
     }
 
     public static class InsufficientCreditCardLimit extends RaybankExternalException {
-        public InsufficientCreditCardLimit(String message, ExternalTransaction transaction) {
-            super(INSUFFICIENT_CREDIT_CARD_LIMIT, message, transaction);
+        public InsufficientCreditCardLimit(String message, ExternalTransaction bankStatement) {
+            super(INSUFFICIENT_CREDIT_CARD_LIMIT, message, bankStatement);
         }
     }
 
     public static class CreditCardNotFound extends RaybankExternalException {
-        public CreditCardNotFound(String message, ExternalTransaction transaction) {
-            super(CREDIT_CARD_NOT_FOUND, message, transaction);
+        public CreditCardNotFound(String message, ExternalTransaction bankStatement) {
+            super(CREDIT_CARD_NOT_FOUND, message, bankStatement);
         }
     }
 
     public static class DebitCardNotFound extends RaybankExternalException {
-        public DebitCardNotFound(String message, ExternalTransaction transaction) {
-            super(DEBIT_CARD_NOT_FOUND, message, transaction);
+        public DebitCardNotFound(String message, ExternalTransaction bankStatement) {
+            super(DEBIT_CARD_NOT_FOUND, message, bankStatement);
         }
     }
 
     public static class CardBadlyFormatted extends RaybankExternalException {
-        public CardBadlyFormatted(String message, ExternalTransaction transaction) {
-            super(CARD_BADLY_FORMATTED, message, transaction);
+        public CardBadlyFormatted(String message, ExternalTransaction bankStatement) {
+            super(CARD_BADLY_FORMATTED, message, bankStatement);
         }
     }
 
@@ -101,8 +101,8 @@ public class RaybankExternalException extends RuntimeException {
             super(INSUFFICIENT_ACCOUNT_BALANCE);
         }
 
-        public InsufficientAccountBalance(ExternalTransaction transaction) {
-            super(INSUFFICIENT_ACCOUNT_BALANCE, transaction);
+        public InsufficientAccountBalance(ExternalTransaction bankStatement) {
+            super(INSUFFICIENT_ACCOUNT_BALANCE, bankStatement);
         }
     }
 
@@ -133,9 +133,9 @@ public class RaybankExternalException extends RuntimeException {
         }
     }
 
-    public static class TransactionNotFound extends RaybankExternalException {
-        public TransactionNotFound(String s) {
-            super(TRANSACTION_NOT_FOUND, s);
+    public static class BankStatementNotFound extends RaybankExternalException {
+        public BankStatementNotFound(String s) {
+            super(bankStatement_NOT_FOUND, s);
         }
     }
 

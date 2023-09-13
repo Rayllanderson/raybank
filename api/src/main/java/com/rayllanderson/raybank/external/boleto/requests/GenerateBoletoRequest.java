@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.external.boleto.requests;
 
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
-import com.rayllanderson.raybank.external.validator.AccountExists;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -23,7 +22,6 @@ public class GenerateBoletoRequest {
     private final GenerateBoletoHolderRequest holder;
 
     @NotBlank
-    @AccountExists
     private final String requesterAccountId;
 
     public GenerateBoletoRequest(BigDecimal value, String requesterAccountId, GenerateBoletoHolderRequest holder) {
