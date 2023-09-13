@@ -1,9 +1,9 @@
 package com.rayllanderson.raybank.repositories;
 
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.transaction.Transaction;
+import com.rayllanderson.raybank.models.BankStatement;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.models.TransactionType;
+import com.rayllanderson.raybank.models.BankStatementType;
 import com.rayllanderson.raybank.utils.BankAccountCreator;
 import com.rayllanderson.raybank.utils.UserCreator;
 import org.assertj.core.api.Assertions;
@@ -15,10 +15,10 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 @DataJpaTest
-class TransactionRepositoryTest {
+class BankStatementRepositoryTest {
 
     @Autowired
-    private TransactionRepository statementRepository;
+    private BankStatementRepository statementRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -30,23 +30,23 @@ class TransactionRepositoryTest {
         BankAccount account = user.getBankAccount();
         Assertions.assertThat(user.getId()).isNotNull();
 
-        Transaction transaction = statementRepository.save(Transaction.createDepositTransaction(
+        BankStatement bankStatement = statementRepository.save(BankStatement.createDepositBankStatement(
                 new BigDecimal(150), account
         ));
-        Transaction secondStatement = statementRepository.save(Transaction.createBoletoPaymentTransaction(
+        BankStatement secondStatement = statementRepository.save(BankStatement.createBoletoPaymentBankStatement(
                 new BigDecimal(300), account
         ));
 
-        account.getTransactions().addAll(Arrays.asList(transaction, secondStatement));
+        account.getBankStatements().addAll(Arrays.asList(bankStatement, secondStatement));
         bankAccountRepository.save(account);
 
         Assertions.assertThat(statementRepository.findAllByAccountOwnerId(account.getId()).size()).isEqualTo(2);
 
         Assertions.assertThat(statementRepository.findAllByAccountOwnerIdAndType(
-                account.getId(), TransactionType.DEPOSIT).size()).isEqualTo(1);
+                account.getId(), BankStatementType.DEPOSIT).size()).isEqualTo(1);
 
         Assertions.assertThat(statementRepository.findAllByAccountOwnerIdAndType(
-                account.getId(), TransactionType.BRAZILIAN_BOLETO).size()).isEqualTo(1);
+                account.getId(), BankStatementType.BRAZILIAN_BOLETO).size()).isEqualTo(1);
     }
 
     @Test
@@ -55,20 +55,20 @@ class TransactionRepositoryTest {
         BankAccount account = user.getBankAccount();
         Assertions.assertThat(user.getId()).isNotNull();
 
-        Transaction transaction = statementRepository.save(Transaction.createDepositTransaction(
+        BankStatement bankStatement = statementRepository.save(BankStatement.createDepositBankStatement(
                 new BigDecimal(150), account
         ));
 
-        account.getTransactions().add(transaction);
+        account.getBankStatements().add(bankStatement);
         bankAccountRepository.save(account);
 
         Assertions.assertThat(statementRepository.findAllByAccountOwnerId(account.getId()).size()).isEqualTo(1);
 
         Assertions.assertThat(statementRepository.findAllByAccountOwnerIdAndTypeNot(
-                account.getId(), TransactionType.DEPOSIT).size()).isEqualTo(0);
+                account.getId(), BankStatementType.DEPOSIT).size()).isEqualTo(0);
 
         Assertions.assertThat(statementRepository.findAllByAccountOwnerIdAndTypeNot(
-                account.getId(), TransactionType.TRANSFER).size()).isEqualTo(1);
+                account.getId(), BankStatementType.TRANSFER).size()).isEqualTo(1);
 
     }
 

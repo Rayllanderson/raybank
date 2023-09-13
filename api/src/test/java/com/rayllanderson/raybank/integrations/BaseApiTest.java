@@ -52,7 +52,7 @@ public abstract class BaseApiTest {
         User user = null;
         User secondUser = null;
         authenticatedUserAccount = user.getBankAccount();
-        authenticatedUserAccount.setCreditCard(creditCardService.createCreditCard(new CreateCreditCardInput(authenticatedUserAccount.getId(), BigDecimal.valueOf(5000), DueDays._6)));
+//        authenticatedUserAccount.setCreditCard(creditCardService.createCreditCard(new CreateCreditCardInput(authenticatedUserAccount.getId(), BigDecimal.valueOf(5000), DueDays._6)));
         secondUserAccount = secondUser.getBankAccount();
     }
 

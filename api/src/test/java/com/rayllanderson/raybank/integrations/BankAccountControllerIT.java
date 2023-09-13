@@ -4,9 +4,9 @@ import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
-import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
-import com.rayllanderson.raybank.models.transaction.Transaction;
-import com.rayllanderson.raybank.models.TransactionType;
+import com.rayllanderson.raybank.dtos.responses.bank.BankStatementDto;
+import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.BankStatementType;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
 import com.rayllanderson.raybank.utils.BankTransferCreator;
 import org.assertj.core.api.Assertions;
@@ -74,9 +74,9 @@ class BankAccountControllerIT extends BaseBankOperation {
 
         BigDecimal toTransfer = BigDecimal.valueOf(300.00);
 
-        BankTransferDto transaction = BankTransferCreator.createBankTransferDto(toTransfer,
+        BankTransferDto bankStatement = BankTransferCreator.createBankTransferDto(toTransfer,
                 secondUserAccount.getAccountNumber().toString());
-        ResponseEntity<Void> response = super.post(API_URL + "/transfer", transaction, Void.class);
+        ResponseEntity<Void> response = super.post(API_URL + "/transfer", bankStatement, Void.class);
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
@@ -95,8 +95,8 @@ class BankAccountControllerIT extends BaseBankOperation {
 
         BigDecimal toTransfer = BigDecimal.valueOf(300.00);
 
-        BankTransferDto transaction = BankTransferCreator.createBankTransferDto(toTransfer, "hey, I'm not exist!");
-        ResponseEntity<Void> response = super.post(API_URL + "/transfer", transaction, Void.class);
+        BankTransferDto bankStatement = BankTransferCreator.createBankTransferDto(toTransfer, "hey, I'm not exist!");
+        ResponseEntity<Void> response = super.post(API_URL + "/transfer", bankStatement, Void.class);
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -110,8 +110,8 @@ class BankAccountControllerIT extends BaseBankOperation {
 
     @Test
     void transfer_Returns400_WhenUserHasNoMoney() {
-        BankTransferDto transaction = BankTransferCreator.createBankTransferDto();
-        ResponseEntity<Void> response = super.post(API_URL + "/transfer", transaction, Void.class);
+        BankTransferDto bankStatement = BankTransferCreator.createBankTransferDto();
+        ResponseEntity<Void> response = super.post(API_URL + "/transfer", bankStatement, Void.class);
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -120,8 +120,8 @@ class BankAccountControllerIT extends BaseBankOperation {
     @Test
     void transfer_Returns400_WhenUserTransferZero() {
         String receiverAccount = secondUserAccount.getAccountNumber().toString();
-        BankTransferDto transaction = BankTransferCreator.createBankTransferDto(BigDecimal.ZERO, receiverAccount);
-        ResponseEntity<Void> response = super.post(API_URL + "/transfer", transaction, Void.class);
+        BankTransferDto bankStatement = BankTransferCreator.createBankTransferDto(BigDecimal.ZERO, receiverAccount);
+        ResponseEntity<Void> response = super.post(API_URL + "/transfer", bankStatement, Void.class);
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -129,13 +129,13 @@ class BankAccountControllerIT extends BaseBankOperation {
 
     @Test
     void findAllStatements_ReturnListOfStatements_WhenSuccessful() {
-        deposit400(); //gerou 1 transaction
+        deposit400(); //gerou 1 bankStatement
         transfer300(); //gerou outro
         int expectedSize = 2;
-        var expectedStatement = TransactionDto.fromTransaction(Transaction.createDepositTransaction(new BigDecimal("400"),
+        var expectedStatement = BankStatementDto.fromBankStatement(BankStatement.createDepositBankStatement(new BigDecimal("400"),
                 authenticatedUserAccount));
 
-        ResponseEntity<List<TransactionDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
+        ResponseEntity<List<BankStatementDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
                 new HttpEntity<>(super.getHeaders()), new ParameterizedTypeReference<>() {
         });
 
@@ -145,14 +145,14 @@ class BankAccountControllerIT extends BaseBankOperation {
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody()).isNotNull().isNotEmpty();
         Assertions.assertThat(response.getBody()).hasSize(expectedSize);
-        Assertions.assertThat(response.getBody().get(deposit).getTransactionType()).isEqualTo(expectedStatement.getTransactionType());
-        Assertions.assertThat(response.getBody().get(transfer).getTransactionType()).isEqualTo(TransactionType.TRANSFER);
+        Assertions.assertThat(response.getBody().get(deposit).getBankStatementType()).isEqualTo(expectedStatement.getBankStatementType());
+        Assertions.assertThat(response.getBody().get(transfer).getBankStatementType()).isEqualTo(BankStatementType.TRANSFER);
     }
 
     @Test
-    void findAllStatements_ReturnEmptyList_WhenDidntMakeAnyTransaction() {
+    void findAllStatements_ReturnEmptyList_WhenDidntMakeAnyBankStatement() {
 
-        ResponseEntity<List<TransactionDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
+        ResponseEntity<List<BankStatementDto>> response = rest.exchange(API_URL + "/statements", HttpMethod.GET,
                 new HttpEntity<>(super.getHeaders()), new ParameterizedTypeReference<>() {
         });
         Assertions.assertThat(response).isNotNull();

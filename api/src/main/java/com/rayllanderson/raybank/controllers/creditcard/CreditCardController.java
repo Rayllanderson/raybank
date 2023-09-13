@@ -6,10 +6,10 @@ import com.rayllanderson.raybank.controllers.creditcard.responses.CreditCardDeta
 import com.rayllanderson.raybank.controllers.creditcard.responses.CreditCardSensitiveDataResponse;
 import com.rayllanderson.raybank.controllers.creditcard.responses.PayInvoiceInternalResponse;
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
-import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
+import com.rayllanderson.raybank.dtos.responses.bank.BankStatementDto;
 import com.rayllanderson.raybank.models.CreditCard;
-import com.rayllanderson.raybank.models.transaction.Transaction;
-import com.rayllanderson.raybank.services.TransactionFinderService;
+import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.services.BankStatementFinderService;
 import com.rayllanderson.raybank.services.creditcard.CreditCardFinderService;
 import com.rayllanderson.raybank.services.creditcard.CreditCardService;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
@@ -39,7 +39,7 @@ public class CreditCardController {
 
     private final CreditCardService creditCardService;
     private final CreditCardFinderService creditCardFinderService;
-    private final TransactionFinderService transactionFinderService;
+    private final BankStatementFinderService bankStatementFinderService;
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid CreateCreditCardRequest request,
@@ -76,17 +76,17 @@ public class CreditCardController {
     }
 
     @GetMapping("/statements")
-    public ResponseEntity<List<TransactionDto>> findStatements(@AuthenticationPrincipal Jwt jwt){
-        return ResponseEntity.ok(transactionFinderService.findAllCreditCardTransactionsByUserId(getUserIdFrom(jwt)));
+    public ResponseEntity<List<BankStatementDto>> findStatements(@AuthenticationPrincipal Jwt jwt){
+        return ResponseEntity.ok(bankStatementFinderService.findAllCreditCardBankStatementsByUserId(getUserIdFrom(jwt)));
     }
 
     @PostMapping("/invoices/current")
     public ResponseEntity<PayInvoiceInternalResponse> payInvoice(@RequestBody @Valid PayInvoiceInternalRequest request,
                                                                  @AuthenticationPrincipal Jwt jwt) {
 
-        Transaction transaction = creditCardService.payCurrentInvoice(new PayInvoiceInput(request.getAmount(), getUserIdFrom(jwt), null));
+        BankStatement bankStatement = creditCardService.payCurrentInvoice(new PayInvoiceInput(request.getAmount(), getUserIdFrom(jwt), null));
 
-        return ResponseEntity.ok().body(PayInvoiceInternalResponse.fromTransaction(transaction));
+        return ResponseEntity.ok().body(PayInvoiceInternalResponse.fromBankStatement(bankStatement));
     }
 
     @PostMapping("/invoices/{invoiceId}")
@@ -94,8 +94,8 @@ public class CreditCardController {
                                                                      @PathVariable final String invoiceId,
                                                                      @AuthenticationPrincipal Jwt jwt) {
 
-        Transaction transaction = creditCardService.payInvoiceById(new PayInvoiceInput(request.getAmount(), getUserIdFrom(jwt), invoiceId));
+        BankStatement bankStatement = creditCardService.payInvoiceById(new PayInvoiceInput(request.getAmount(), getUserIdFrom(jwt), invoiceId));
 
-        return ResponseEntity.ok().body(PayInvoiceInternalResponse.fromTransaction(transaction));
+        return ResponseEntity.ok().body(PayInvoiceInternalResponse.fromBankStatement(bankStatement));
     }
 }

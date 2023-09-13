@@ -23,9 +23,9 @@ public class PaymentController {
     private final CreditCardService creditCardService;
 
     @PostMapping("/boleto")
-    public ResponseEntity<Void> pay(@RequestBody @Valid BankPaymentDto transaction, @AuthenticationPrincipal Jwt jwt) {
-        transaction.setOwnerId(JwtUtils.getUserIdFrom(jwt));
-        bankAccountService.pay(transaction);
+    public ResponseEntity<Void> pay(@RequestBody @Valid BankPaymentDto bankStatement, @AuthenticationPrincipal Jwt jwt) {
+        bankStatement.setOwnerId(JwtUtils.getUserIdFrom(jwt));
+        bankAccountService.pay(bankStatement);
         return ResponseEntity.noContent().build();
     }
 }

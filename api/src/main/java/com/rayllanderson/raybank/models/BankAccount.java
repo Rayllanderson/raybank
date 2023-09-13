@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
-import com.rayllanderson.raybank.models.transaction.Transaction;
+import com.rayllanderson.raybank.models.BankStatement;
 import jakarta.persistence.CascadeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,7 +43,7 @@ public class BankAccount {
     private User user;
     @JsonIgnore
     @OneToMany(orphanRemoval = true, cascade = CascadeType.MERGE)
-    private Set<Transaction> transactions = new HashSet<>();
+    private Set<BankStatement> bankStatements = new HashSet<>();
     @JsonIgnore
     @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
@@ -54,9 +54,9 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public void receiveCardPayment(Transaction originalTransaction) {
-        this.deposit(originalTransaction.getAmount().abs());
-        this.transactions.add(Transaction.receivingCardPayment(this, originalTransaction));
+    public void receiveCardPayment(BankStatement originalBankStatement) {
+        this.deposit(originalBankStatement.getAmount().abs());
+        this.bankStatements.add(BankStatement.receivingCardPayment(this, originalBankStatement));
     }
 
     /**

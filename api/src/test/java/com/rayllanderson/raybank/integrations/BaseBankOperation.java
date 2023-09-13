@@ -39,8 +39,8 @@ public class BaseBankOperation extends BaseApiTest {
     }
 
     protected void transfer(BigDecimal toTransfer){
-        BankTransferDto transaction = BankTransferCreator.createBankTransferDto(toTransfer, secondUserAccount.getAccountNumber().toString());
-        post("/api/v1/users/authenticated/bank-account/transfer", transaction, Void.class);
+        BankTransferDto bankStatement = BankTransferCreator.createBankTransferDto(toTransfer, secondUserAccount.getAccountNumber().toString());
+        post("/api/v1/users/authenticated/bank-account/transfer", bankStatement, Void.class);
     }
 
     /**

@@ -24,9 +24,6 @@ import java.util.Optional;
 @ExtendWith(SpringExtension.class)
 class UserServiceTest {
 
-    @InjectMocks
-    private UserService userService;
-
 
     @Mock
     private UserFinderService userFinderService;

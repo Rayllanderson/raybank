@@ -3,8 +3,8 @@ package com.rayllanderson.raybank.dtos.responses.bank;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rayllanderson.raybank.dtos.responses.bank.enums.IdentificationType;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.transaction.Transaction;
-import com.rayllanderson.raybank.models.TransactionType;
+import com.rayllanderson.raybank.models.BankStatement;
+import com.rayllanderson.raybank.models.BankStatementType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionDto {
+public class BankStatementDto {
     private String id;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String from;
@@ -27,20 +27,20 @@ public class TransactionDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
     private Instant moment;
-    private TransactionType transactionType;
+    private BankStatementType bankStatementType;
     private BigDecimal amount;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private IdentificationType identificationType;
 
-    public static TransactionDto fromTransaction(Transaction transaction) {
-        TransactionDto dto = new ModelMapper().map(transaction, TransactionDto.class);
-        BankAccount senderAccount = transaction.getAccountSender();
-        dto.setTransactionType(transaction.getType());
+    public static BankStatementDto fromBankStatement(BankStatement bankStatement) {
+        BankStatementDto dto = new ModelMapper().map(bankStatement, BankStatementDto.class);
+        BankAccount senderAccount = bankStatement.getAccountSender();
+        dto.setBankStatementType(bankStatement.getType());
         String identificationName = null;
         if (senderAccount != null)
             identificationName = senderAccount.getUser().getName();
-        boolean isAmountPositive = transaction.getAmount().compareTo(BigDecimal.ZERO) > 0;
-        boolean isTransfer = transaction.getType().equals(TransactionType.TRANSFER);
+        boolean isAmountPositive = bankStatement.getAmount().compareTo(BigDecimal.ZERO) > 0;
+        boolean isTransfer = bankStatement.getType().equals(BankStatementType.TRANSFER);
         if (isTransfer) {
             if(isAmountPositive) {
                 dto.setIdentificationType(IdentificationType.RECEIVER);

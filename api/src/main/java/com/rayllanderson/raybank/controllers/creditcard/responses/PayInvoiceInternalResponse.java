@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.controllers.creditcard.responses;
 
-import com.rayllanderson.raybank.models.transaction.Transaction;
+import com.rayllanderson.raybank.models.BankStatement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +17,8 @@ public class PayInvoiceInternalResponse {
     private final String type;
     private final BigDecimal amount;
 
-    public static PayInvoiceInternalResponse fromTransaction(final Transaction transaction) {
-        final var amount = transaction.getAmount().abs();
-        return new PayInvoiceInternalResponse(transaction.getId(), transaction.getMoment(), transaction.getType().name(), amount);
+    public static PayInvoiceInternalResponse fromBankStatement(final BankStatement bankStatement) {
+        final var amount = bankStatement.getAmount().abs();
+        return new PayInvoiceInternalResponse(bankStatement.getId(), bankStatement.getMoment(), bankStatement.getType().name(), amount);
     }
 }

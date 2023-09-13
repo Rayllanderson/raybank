@@ -6,7 +6,7 @@ import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.models.inputs.CreditCardPayment;
 import com.rayllanderson.raybank.models.inputs.DebitCardPayment;
-import com.rayllanderson.raybank.models.transaction.Transaction;
+import com.rayllanderson.raybank.models.BankStatement;
 import jakarta.persistence.FetchType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -65,7 +65,7 @@ public class CreditCard {
     private Set<Invoice> invoices;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.MERGE)
-    private List<Transaction> transactions = new ArrayList<>();
+    private List<BankStatement> bankStatements = new ArrayList<>();
 
     public static CreditCard create(Long number, BigDecimal limit, Integer securityCode, YearMonth expiryDate, Integer dueDate, BankAccount bankAccount) {
         final var c = CreditCard.builder()
@@ -83,19 +83,19 @@ public class CreditCard {
         return c;
     }
 
-    public Transaction payCurrentInvoice(final BigDecimal amount) {
+    public BankStatement payCurrentInvoice(final BigDecimal amount) {
         final var currentInvoice = getCurrentInvoiceToPay();
 
         return payInvoice(currentInvoice, amount);
     }
 
-    public Transaction payInvoiceById(final String invoiceId, final BigDecimal amount) {
+    public BankStatement payInvoiceById(final String invoiceId, final BigDecimal amount) {
         final Invoice invoice = getInvoiceById(invoiceId).orElseThrow(() -> new NotFoundException("Fatura não encontrada"));
 
         return payInvoice(invoice, amount);
     }
 
-    public Transaction payInvoice(Invoice invoice, BigDecimal amount) {
+    public BankStatement payInvoice(Invoice invoice, BigDecimal amount) {
         if (!invoice.hasValueToPay()) {
             throw new UnprocessableEntityException("Fatura não possui nenhum valor em aberto");
         }
@@ -109,14 +109,14 @@ public class CreditCard {
         balance = balance.add(amount);
         bankAccount.pay(amount);
 
-        return createInvoiceTransaction(amount);
+        return createInvoiceBankStatement(amount);
     }
 
     private Optional<Invoice> getInvoiceById(final String invoiceId) {
         return this.invoices.stream().filter(invoice -> invoice.getId().equals(invoiceId)).findFirst();
     }
 
-    public Transaction pay(final CreditCardPayment payment) throws UnprocessableEntityException {
+    public BankStatement pay(final CreditCardPayment payment) throws UnprocessableEntityException {
         if (this.hasLimit()) {
             if (isAmountGreaterThanBalance(payment.getTotal())) {
                 throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
@@ -128,38 +128,38 @@ public class CreditCard {
             processInvoice(payment.getTotal(), payment.getInstallments(), payment.getDescription(), payment.getOcurredOn());
 
             balance = balance.subtract(payment.getTotal());
-            return this.createPurchaseTransaction(payment.getTotal(), payment.getDescription());
+            return this.createPurchaseBankStatement(payment.getTotal(), payment.getDescription());
         } else
             throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
     }
 
-    public Transaction pay(final DebitCardPayment payment) throws UnprocessableEntityException {
+    public BankStatement pay(final DebitCardPayment payment) throws UnprocessableEntityException {
         if (this.isExpired())
             throw UnprocessableEntityException.with("Cartão está expirado");
         try {
             this.bankAccount.pay(payment.getTotal());
-            return this.createDebitTransaction(payment.getTotal(), payment.getDescription());
+            return this.createDebitBankStatement(payment.getTotal(), payment.getDescription());
         } catch (UnprocessableEntityException e) {
             throw new UnprocessableEntityException("Saldo em conta insuficiente para efetuar compra no débito");
         }
     }
 
-    private Transaction createInvoiceTransaction(BigDecimal amount) {
-        var transaction = Transaction.createInvoicePaymentTransaction(amount, bankAccount);
-        this.getTransactions().add(transaction);
-        return transaction;
+    private BankStatement createInvoiceBankStatement(BigDecimal amount) {
+        var bankStatement = BankStatement.createInvoicePaymentBankStatement(amount, bankAccount);
+        this.getBankStatements().add(bankStatement);
+        return bankStatement;
     }
 
-    private Transaction createDebitTransaction(BigDecimal amount, String message) {
-        var transaction = Transaction.createDebitCardTransaction(amount, bankAccount, message);
-        this.getTransactions().add(transaction);
-        return transaction;
+    private BankStatement createDebitBankStatement(BigDecimal amount, String message) {
+        var bankStatement = BankStatement.createDebitCardBankStatement(amount, bankAccount, message);
+        this.getBankStatements().add(bankStatement);
+        return bankStatement;
     }
 
-    private Transaction createPurchaseTransaction(BigDecimal amount, String message) {
-        var transaction = Transaction.createCreditTransaction(amount, bankAccount, message);
-        this.getTransactions().add(transaction);
-        return transaction;
+    private BankStatement createPurchaseBankStatement(BigDecimal amount, String message) {
+        var bankStatement = BankStatement.createCreditBankStatement(amount, bankAccount, message);
+        this.getBankStatements().add(bankStatement);
+        return bankStatement;
     }
 
     public boolean isValidSecurityCode(final Integer securityCode) {

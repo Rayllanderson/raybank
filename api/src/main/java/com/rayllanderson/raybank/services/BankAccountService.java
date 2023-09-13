@@ -7,10 +7,10 @@ import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.transaction.Transaction;
+import com.rayllanderson.raybank.models.BankStatement;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
-import com.rayllanderson.raybank.repositories.TransactionRepository;
+import com.rayllanderson.raybank.repositories.BankStatementRepository;
 import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
-    private final TransactionRepository transactionRepository;
+    private final BankStatementRepository bankStatementRepository;
     private final UserFinderService userFinderService;
 
     /**
@@ -58,7 +58,7 @@ public class BankAccountService {
     public void transfer(BankTransferDto transferDto) throws BadRequestException{
         var senderId = transferDto.getSenderId();
         if(senderId == null) throw new BadRequestException("Sender must be set before send");
-        BankAccount senderAccount = bankAccountRepository.findAccountWithTransactionsAndContactsByUserId(senderId);
+        BankAccount senderAccount = bankAccountRepository.findAccountWithBankStatementsAndContactsByUserId(senderId);
         BigDecimal amountToBeTransferred = transferDto.getAmount();
         if(senderAccount.hasAvailableBalance(amountToBeTransferred)) {
             User recipient = this.findUserByPixOrAccountNumber(transferDto);
@@ -67,13 +67,13 @@ public class BankAccountService {
             senderAccount.transferTo(recipientAccount, amountToBeTransferred);
 
             //criando e salvando extratos
-            Transaction recipientTransaction = transactionRepository.save(Transaction.createTransferTransaction(amountToBeTransferred,
+            BankStatement recipientBankStatement = bankStatementRepository.save(BankStatement.createTransferBankStatement(amountToBeTransferred,
                     senderAccount, recipientAccount, transferDto.getMessage()));
-            Transaction senderTransaction = transactionRepository.save(recipientTransaction.toNegative());
+            BankStatement senderBankStatement = bankStatementRepository.save(recipientBankStatement.toNegative());
 
             //adicionando extratos nas contas
-            recipientAccount.getTransactions().add(recipientTransaction);
-            senderAccount.getTransactions().add(senderTransaction);
+            recipientAccount.getBankStatements().add(recipientBankStatement);
+            senderAccount.getBankStatements().add(senderBankStatement);
 
             //adicionando ambos aos contatos
             senderAccount.addContact(recipientAccount);
@@ -90,11 +90,11 @@ public class BankAccountService {
     public void pay(BankPaymentDto paymentDto){
         var ownerId = paymentDto.getOwnerId();
         if(ownerId == null) throw new BadRequestException("Owner must be set before send");
-        BankAccount bankAccount = bankAccountRepository.findAccountWithTransactionsByUserId(ownerId);
+        BankAccount bankAccount = bankAccountRepository.findAccountWithBankStatementsByUserId(ownerId);
         var amountToBePaid = paymentDto.getAmount();
         bankAccount.pay(amountToBePaid);
-        Transaction transaction = transactionRepository.save(Transaction.createBoletoPaymentTransaction(amountToBePaid, bankAccount));
-        bankAccount.getTransactions().add(transaction);
+        BankStatement bankStatement = bankStatementRepository.save(BankStatement.createBoletoPaymentBankStatement(amountToBePaid, bankAccount));
+        bankAccount.getBankStatements().add(bankStatement);
         this.bankAccountRepository.save(bankAccount);
     }
 
@@ -107,11 +107,11 @@ public class BankAccountService {
     public void deposit(BankDepositDto depositDto) throws BadRequestException{
         var ownerId = depositDto.getOwnerId();
         if(ownerId == null) throw new BadRequestException("Owner must be set before send");
-        var ownerAccount = bankAccountRepository.findAccountWithTransactionsByUserId(ownerId);
+        var ownerAccount = bankAccountRepository.findAccountWithBankStatementsByUserId(ownerId);
         var amountToBeDeposited = depositDto.getAmount();
         ownerAccount.deposit(amountToBeDeposited);
-        Transaction transaction = transactionRepository.save(Transaction.createDepositTransaction(amountToBeDeposited, ownerAccount));
-        ownerAccount.getTransactions().add(transaction);
+        BankStatement bankStatement = bankStatementRepository.save(BankStatement.createDepositBankStatement(amountToBeDeposited, ownerAccount));
+        ownerAccount.getBankStatements().add(bankStatement);
         bankAccountRepository.save(ownerAccount);
     }
 
@@ -134,8 +134,8 @@ public class BankAccountService {
                 .orElseThrow(() -> new BadRequestException("Contato não encontrado"));
     }
 
-    private User findUserByPixOrAccountNumber(BankTransferDto transaction) {
-        String recipientPixKey = transaction.getTo();
+    private User findUserByPixOrAccountNumber(BankTransferDto bankStatement) {
+        String recipientPixKey = bankStatement.getTo();
         int recipientAccountNumber;
         try {
             recipientAccountNumber = Integer.parseInt(recipientPixKey);

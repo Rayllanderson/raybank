@@ -4,11 +4,11 @@ import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
 import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
-import com.rayllanderson.raybank.dtos.responses.bank.TransactionDto;
+import com.rayllanderson.raybank.dtos.responses.bank.BankStatementDto;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.services.BankAccountService;
-import com.rayllanderson.raybank.services.TransactionFinderService;
+import com.rayllanderson.raybank.services.BankStatementFinderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ import java.util.List;
 public class BankAccountController {
     private final BankAccountService bankAccountService;
     private final UserRepository userRepository;
-    private final TransactionFinderService transactionFinderService;
+    private final BankStatementFinderService bankStatementFinderService;
 
     @GetMapping
     public ResponseEntity<BankAccountDto> findUserBankAccount(@AuthenticationPrincipal Jwt jwt) {
@@ -37,27 +37,27 @@ public class BankAccountController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<Void> transfer(@RequestBody @Valid BankTransferDto transaction,
+    public ResponseEntity<Void> transfer(@RequestBody @Valid BankTransferDto bankStatement,
                                          @AuthenticationPrincipal Jwt jwt) {
 
-        transaction.setSenderId(JwtUtils.getUserIdFrom(jwt));
-        bankAccountService.transfer(transaction);
+        bankStatement.setSenderId(JwtUtils.getUserIdFrom(jwt));
+        bankAccountService.transfer(bankStatement);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<Void> deposit(@RequestBody @Valid BankDepositDto transaction,
+    public ResponseEntity<Void> deposit(@RequestBody @Valid BankDepositDto bankStatement,
                                         @AuthenticationPrincipal Jwt jwt) {
-        transaction.setOwnerId(JwtUtils.getUserIdFrom(jwt));
-        bankAccountService.deposit(transaction);
+        bankStatement.setOwnerId(JwtUtils.getUserIdFrom(jwt));
+        bankAccountService.deposit(bankStatement);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/statements")
-    public ResponseEntity<List<TransactionDto>> findAllStatements(@AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<List<BankStatementDto>> findAllStatements(@AuthenticationPrincipal Jwt jwt) {
         var authenticatedUser = userRepository.findById(JwtUtils.getUserIdFrom(jwt))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-        return ResponseEntity.ok(transactionFinderService.findAllAccountTransactions(authenticatedUser.getBankAccount()));
+        return ResponseEntity.ok(bankStatementFinderService.findAllAccountBankStatements(authenticatedUser.getBankAccount()));
     }
 
     @GetMapping("/contacts")

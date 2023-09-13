@@ -5,7 +5,7 @@ import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.CreditCard;
-import com.rayllanderson.raybank.models.transaction.Transaction;
+import com.rayllanderson.raybank.models.BankStatement;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
@@ -49,7 +49,7 @@ public class CreditCardService {
     }
 
     @Transactional
-    public Transaction pay(final PaymentCardInput payment) {
+    public BankStatement pay(final PaymentCardInput payment) {
         final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
 
         final CreditCard creditCard = creditCardRepository.findByNumber(payment.getCardNumber())
@@ -60,52 +60,52 @@ public class CreditCardService {
             throw badRequestException;
         }
 
-        final BankAccount establishmentAccount = Optional.of(bankAccountRepository.findAccountWithTransactionsByUserId(payment.getEstablishmentId()))
+        final BankAccount establishmentAccount = Optional.of(bankAccountRepository.findAccountWithBankStatementsByUserId(payment.getEstablishmentId()))
                 .orElseThrow(() -> new NotFoundException("Estabelecimento não pode receber pagamentos"));
 
         if (establishmentAccount.sameCard(creditCard)) {
             throw new UnprocessableEntityException("Estabelecimento não pode receber pagamentos desse cartão");
         }
 
-        final Transaction transaction;
+        final BankStatement bankStatement;
         if (payment.isCreditPayment()) {
-            transaction = creditCard.pay(payment.toCreditCardPayment());
+            bankStatement = creditCard.pay(payment.toCreditCardPayment());
         } else {
-            transaction = creditCard.pay(payment.toDebitCardPayment());
+            bankStatement = creditCard.pay(payment.toDebitCardPayment());
         }
 
-        establishmentAccount.receiveCardPayment(transaction);
+        establishmentAccount.receiveCardPayment(bankStatement);
 
         creditCardRepository.save(creditCard);
         bankAccountRepository.save(establishmentAccount);
 
-        return transaction;
+        return bankStatement;
     }
 
     @Transactional
-    public Transaction payCurrentInvoice(final PayInvoiceInput input) {
+    public BankStatement payCurrentInvoice(final PayInvoiceInput input) {
         final var creditCard = this.creditCardRepository.findByBankAccountUserId(input.getUserId())
                 .orElseThrow(() -> new NotFoundException("cartão não encontrado"));
 
-        final var transaction = creditCard.payCurrentInvoice(input.getAmount());
+        final var bankStatement = creditCard.payCurrentInvoice(input.getAmount());
 
         bankAccountRepository.save(creditCard.getBankAccount());
         creditCardRepository.save(creditCard);
 
-        return transaction;
+        return bankStatement;
     }
 
     @Transactional
-    public Transaction payInvoiceById(final PayInvoiceInput input) {
+    public BankStatement payInvoiceById(final PayInvoiceInput input) {
         final var creditCard = this.creditCardRepository.findByBankAccountUserId(input.getUserId())
                 .orElseThrow(() -> new NotFoundException("cartão não encontrado"));
 
-        final var transaction = creditCard.payInvoiceById(input.getInvoiceId(), input.getAmount());
+        final var bankStatement = creditCard.payInvoiceById(input.getInvoiceId(), input.getAmount());
 
         bankAccountRepository.save(creditCard.getBankAccount());
         creditCardRepository.save(creditCard);
 
-        return transaction;
+        return bankStatement;
     }
 
     private long generateCreditCardNumber() {
