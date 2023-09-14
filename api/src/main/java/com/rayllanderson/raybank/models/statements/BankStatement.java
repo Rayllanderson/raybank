@@ -31,6 +31,7 @@ public class BankStatement {
 
     @Id
     protected String id;
+    protected String transactionId;
     @Column(columnDefinition = "TIMESTAMP")
     protected Instant moment;
     @Enumerated(EnumType.STRING)
@@ -52,6 +53,19 @@ public class BankStatement {
                 .build();
     }
 
+    public static TransferStatement createTransferBankStatement(BigDecimal amount, BankAccount accountSender, BankAccount accountOwner,
+                                                                String message, String transactionId) {
+        return TransferStatement.builder().
+                moment(Instant.now())
+                .type(BankStatementType.TRANSFER)
+                .amount(amount)
+                .message(message)
+                .sender(accountSender)
+                .owner(accountOwner)
+                .transactionId(transactionId)
+                .build();
+    }
+
     public static BankStatement createDepositBankStatement(BigDecimal amount, BankAccount accountOwner){
         return BankStatement.builder().
                 moment(Instant.now())
@@ -62,15 +76,41 @@ public class BankStatement {
                 .build();
     }
 
+    public static BankStatement createDepositBankStatement(BigDecimal amount, BankAccount accountOwner, String transactionId){
+        return BankStatement.builder().
+                moment(Instant.now())
+                .type(BankStatementType.DEPOSIT)
+                .amount(amount)
+                .message(null)
+                .accountOwner(accountOwner)
+                .transactionId(transactionId)
+                .build();
+    }
+
     public static BankStatement receivingCardPayment(BankAccount accountOwner, BankStatement originalBankStatement){
-        final var bankStatement = BankStatement.builder()
+        return BankStatement.builder()
                 .moment(Instant.now())
                 .type(BankStatementType.CARD_RECEIVE_PAYMENT)
                 .amount(originalBankStatement.getAmount().abs())
                 .message(originalBankStatement.message)
                 .accountOwner(accountOwner)
                 .build();
-        return CardStatement.fromBankStatement(bankStatement, originalBankStatement);
+    }
+
+    public static BankStatement receivingCardPayment(BankAccount accountOwner,
+                                                     BigDecimal amount,
+                                                     String message,
+                                                     String transactionId,
+                                                     int installments) {
+        return CardStatement.builder()
+                .moment(Instant.now())
+                .type(BankStatementType.CARD_RECEIVE_PAYMENT)
+                .amount(amount)
+                .message(message)
+                .transactionId(transactionId)
+                .accountOwner(accountOwner)
+                .installments(installments)
+                .build();
     }
 
     public static BankStatement createBoletoPaymentBankStatement(BigDecimal amount, BankAccount accountOwner){
@@ -80,6 +120,17 @@ public class BankStatement {
                 .amount(amount.negate())
                 .message(null)
                 .accountOwner(accountOwner)
+                .build();
+    }
+
+    public static BankStatement createBoletoPaymentBankStatement(BigDecimal amount, BankAccount accountOwner, String transactionId){
+        return BankStatement.builder().
+                moment(Instant.now())
+                .type(BankStatementType.BRAZILIAN_BOLETO)
+                .amount(amount.negate())
+                .message(null)
+                .accountOwner(accountOwner)
+                .transactionId(transactionId)
                 .build();
     }
 
@@ -93,6 +144,17 @@ public class BankStatement {
                 .build();
     }
 
+    public static BankStatement createDebitCardBankStatement(BigDecimal amount, BankAccount accountOwner, String message, String transactionId){
+        return BankStatement.builder().
+                moment(Instant.now())
+                .type(BankStatementType.DEBIT_CARD_PAYMENT)
+                .amount(amount.negate())
+                .message(message)
+                .accountOwner(accountOwner)
+                .transactionId(transactionId)
+                .build();
+    }
+
     public static BankStatement createCreditBankStatement(BigDecimal amount, BankAccount accountOwner, String message){
         return BankStatement.builder().
                 moment(Instant.now())
@@ -103,6 +165,18 @@ public class BankStatement {
                 .build();
     }
 
+    public static BankStatement createCreditBankStatement(BigDecimal amount, BankAccount accountOwner, String message, String transactionId){
+        return BankStatement.builder().
+                moment(Instant.now())
+                .type(BankStatementType.CREDIT_CARD_PAYMENT)
+                .amount(amount.negate())
+                .message(message)
+                .accountOwner(accountOwner)
+                .transactionId(transactionId)
+                .build();
+    }
+
+
     public static BankStatement createInvoicePaymentBankStatement(BigDecimal amount, BankAccount accountOwner){
         return BankStatement.builder().
                 moment(Instant.now())
@@ -110,6 +184,17 @@ public class BankStatement {
                 .amount(amount)
                 .message(null)
                 .accountOwner(accountOwner)
+                .build();
+    }
+
+    public static BankStatement createInvoicePaymentBankStatement(BigDecimal amount, BankAccount accountOwner, String transactionId){
+        return BankStatement.builder().
+                moment(Instant.now())
+                .type(BankStatementType.INVOICE_PAYMENT)
+                .amount(amount)
+                .message(null)
+                .accountOwner(accountOwner)
+                .transactionId(transactionId)
                 .build();
     }
 
