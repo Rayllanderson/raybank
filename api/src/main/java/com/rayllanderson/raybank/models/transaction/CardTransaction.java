@@ -39,4 +39,8 @@ public class CardTransaction extends Transaction {
     public boolean isCreditTransaction() {
         return this.getPaymentType().equals(PaymentType.CREDIT);
     }
+
+    public String getPayerCardId() {
+        return this.payerCard.getId();
+    }
 }

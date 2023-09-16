@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.external.card.payment;
 
-import com.rayllanderson.raybank.dtos.requests.bank.PaymentCrediCardDto;
-import com.rayllanderson.raybank.dtos.requests.bank.PaymentTypeDto;
+import com.rayllanderson.raybank.card.controllers.external.PaymentCardRequest;
+import com.rayllanderson.raybank.card.controllers.external.PaymentTypeRequest;
 import com.rayllanderson.raybank.integrations.BaseBankOperation;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,13 +27,13 @@ class CardPaymentControllerTest extends BaseBankOperation {
         var defaultCreditCardBalance = new BigDecimal("5000.00");
         var expectedBalance = defaultCreditCardBalance.subtract(toPay);
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
-        var payment = PaymentCrediCardDto.builder()
+        var payment = PaymentCardRequest.builder()
                 .amount(toPay)
-                .card(PaymentCrediCardDto.Card.builder()
+                .card(PaymentCardRequest.Card.builder()
                         .number(userCreditCard.getNumber().toString())
                         .securityCode(userCreditCard.getSecurityCode().toString())
                         .expiryDate(userCreditCard.getExpiryDate()).build())
-                .paymentType(PaymentTypeDto.CREDIT)
+                .paymentType(PaymentTypeRequest.CREDIT)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL, payment, Void.class);
@@ -51,13 +51,13 @@ class CardPaymentControllerTest extends BaseBankOperation {
         var toPay = new BigDecimal("9999.00");
         var defaultCreditCardBalance = new BigDecimal("5000.00");
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
-        var payment = PaymentCrediCardDto.builder()
+        var payment = PaymentCardRequest.builder()
                 .amount(toPay)
-                .card(PaymentCrediCardDto.Card.builder()
+                .card(PaymentCardRequest.Card.builder()
                         .number(userCreditCard.getNumber().toString())
                         .securityCode(userCreditCard.getSecurityCode().toString())
                         .expiryDate(userCreditCard.getExpiryDate()).build())
-                .paymentType(PaymentTypeDto.CREDIT)
+                .paymentType(PaymentTypeRequest.CREDIT)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL, payment, Void.class);
@@ -73,13 +73,13 @@ class CardPaymentControllerTest extends BaseBankOperation {
     void shouldReturnBadRequestWhenCardNotExists() {
         var toPay = new BigDecimal("10.00");
         var defaultCreditCardBalance = new BigDecimal("5000.00");
-        var payment = PaymentCrediCardDto.builder()
+        var payment = PaymentCardRequest.builder()
                 .amount(toPay)
-                .card(PaymentCrediCardDto.Card.builder()
+                .card(PaymentCardRequest.Card.builder()
                         .number("1111111111111111")
                         .securityCode("123")
                         .expiryDate(YearMonth.now()).build())
-                .paymentType(PaymentTypeDto.CREDIT)
+                .paymentType(PaymentTypeRequest.CREDIT)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL, payment, Void.class);
@@ -96,13 +96,13 @@ class CardPaymentControllerTest extends BaseBankOperation {
         var toPay = new BigDecimal("200.00");
         deposit300();
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCreditCard();
-        var payment = PaymentCrediCardDto.builder()
+        var payment = PaymentCardRequest.builder()
                 .amount(toPay)
-                .card(PaymentCrediCardDto.Card.builder()
+                .card(PaymentCardRequest.Card.builder()
                         .number(userCreditCard.getNumber().toString())
                         .securityCode(userCreditCard.getSecurityCode().toString())
                         .expiryDate(userCreditCard.getExpiryDate()).build())
-                .paymentType(PaymentTypeDto.DEBIT)
+                .paymentType(PaymentTypeRequest.CREDIT)
                 .build();
 
         ResponseEntity<Void> response = post(API_URL, payment, Void.class);

@@ -20,6 +20,6 @@ public class CreditCardDto {
 
     public static CreditCardDto fromCreditCard(CreditCard c){
         if (c == null) return null;
-        return new CreditCardDto(c.getId(), c.getLimit(), c.getBalance(), c.getCurrentOpenInvoice().getTotal());
+        return new CreditCardDto(c.getId(), c.getLimit(), c.getBalance(), null);
     }
 }

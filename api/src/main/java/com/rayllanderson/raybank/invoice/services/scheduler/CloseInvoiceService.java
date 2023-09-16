@@ -25,12 +25,12 @@ public class CloseInvoiceService {
         invoicesToClose.forEach(closedInvoice -> {
             closedInvoice.close();
 
-            final CreditCard creditCard = cardRepository.findByInvoicesContaining(closedInvoice);
+//            final CreditCard creditCard = cardRepository.findByInvoicesContaining(closedInvoice);
 
-            final Invoice nextInvoice = creditCard.getCurrentOpenInvoice();
-            nextInvoice.open();
+//            final Invoice nextInvoice = creditCard.getCurrentOpenInvoice();
+//            nextInvoice.open();
 
-            invoiceRepository.saveAllAndFlush(List.of(closedInvoice, nextInvoice));
+//            invoiceRepository.saveAllAndFlush(List.of(closedInvoice, nextInvoice));
         });
     }
 

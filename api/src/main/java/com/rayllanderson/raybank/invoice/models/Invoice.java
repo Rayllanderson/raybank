@@ -1,18 +1,20 @@
 package com.rayllanderson.raybank.invoice.models;
 
+import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
-import jakarta.persistence.FetchType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,7 +28,6 @@ import static com.rayllanderson.raybank.utils.DateManagerUtil.isBeforeOrEquals;
 
 @Getter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 public class Invoice implements Comparable<Invoice> {
     @Id
@@ -36,8 +37,20 @@ public class Invoice implements Comparable<Invoice> {
     private BigDecimal total;
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
+    @ManyToOne
+    private CreditCard creditCard;
     @OneToMany(cascade =  {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Installment> installments = new ArrayList<>();
+
+    public Invoice(String id, LocalDate dueDate, LocalDate closingDate, BigDecimal total, InvoiceStatus status, CreditCard creditCard, List<Installment> installments) {
+        this.id = id;
+        this.dueDate = dueDate;
+        this.closingDate = closingDate;
+        this.total = MoneyUtils.from(total);
+        this.status = status;
+        this.creditCard = creditCard;
+        this.installments = new ArrayList<>(installments == null ? new ArrayList<>() : installments);
+    }
 
     @Transient
     private static final int DAYS_BEFORE_CLOSE = 6;
@@ -54,19 +67,20 @@ public class Invoice implements Comparable<Invoice> {
         return isOpen() || status.equals(InvoiceStatus.NONE);
     }
 
-    public static Invoice createOpenInvoice(LocalDate dueDate) {
-        final var invoice = create(dueDate);
+    public static Invoice createOpenInvoice(LocalDate dueDate, String cardId) {
+        final var invoice = create(dueDate, cardId);
         invoice.status = InvoiceStatus.OPEN;
         return invoice;
     }
 
-    public static Invoice create(LocalDate dueDate) {
+    public static Invoice create(LocalDate dueDate, String cardId) {
         final LocalDate nextWorkingDay = getNextWorkingDayOf(dueDate);
         return new Invoice(UUID.randomUUID().toString(),
                 nextWorkingDay,
                 nextWorkingDay.minusDays(DAYS_BEFORE_CLOSE),
                 BigDecimal.ZERO,
                 InvoiceStatus.NONE,
+                CreditCard.withId(cardId),
                 new ArrayList<>());
     }
 
@@ -97,26 +111,24 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     public void receivePayment(final BigDecimal amount) {
-        if (!canReceivePayment())
-            throw new UnprocessableEntityException("Não é possível receber pagamento para essa fatura.");
-
         if (isPaid())
             throw new UnprocessableEntityException("Não é possível receber pagamento para fatura já paga.");
 
-        var toPay = amount;
+        if (!canReceivePayment())
+            throw new UnprocessableEntityException("Não é possível receber pagamento para essa fatura.");
+
         if (isAmountGreaterThanTotal(amount)) {
-            final BigDecimal refund = amount.subtract(getTotal());
-            toPay = amount.subtract(refund);
+            throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
         }
 
         if (isPaymentDate() || isOverdue()) {
-            if (isPartialPayment(toPay)) {
+            if (isPartialPayment(amount)) {
                 throw new UnprocessableEntityException("Não é possível receber pagamento parcial para fatura fechada ou vencida. Total da fatura: " + this.total);
             }
             this.status = InvoiceStatus.PAID;
         }
 
-        total = total.subtract(toPay);
+        total = total.subtract(amount);
     }
 
     public boolean canReceivePayment() {
@@ -147,11 +159,13 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     protected boolean isOpen() {
-        return this.status.equals(InvoiceStatus.OPEN) || now().isBefore(closingDate);
+        // || now().isBefore(closingDate)
+        return this.status.equals(InvoiceStatus.OPEN);
     }
 
     protected boolean isClosed() {
-        return this.status.equals(InvoiceStatus.CLOSED) || isAfterOrEquals(now(), closingDate);
+        // || isAfterOrEquals(now(), closingDate)
+        return this.status.equals(InvoiceStatus.CLOSED);
     }
 
     protected boolean isPartialPayment(BigDecimal amount) {

@@ -1,7 +1,6 @@
-package com.rayllanderson.raybank.models;
+package com.rayllanderson.raybank.invoice.models;
 
-import com.rayllanderson.raybank.invoice.models.Invoice;
-import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
+import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static com.rayllanderson.raybank.invoice.InvoiceUtils.bigDecimalOf;
 import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.CLOSED;
 import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.NONE;
 import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.OPEN;
@@ -44,7 +44,7 @@ class InvoiceTest {
     @Test
     void shouldReceivePaymentWhenIsPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = create(dueDate, bigDecimalOf(50), NONE);
+        Invoice invoice = create(dueDate, bigDecimalOf(50), OPEN);
 
         invoice.receivePayment(bigDecimalOf(50));
 
@@ -55,11 +55,11 @@ class InvoiceTest {
     @Test
     void shouldNotReceiveParcialPaymentWhenIsPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = create(dueDate, bigDecimalOf(50), NONE);
+        Invoice invoice = create(dueDate, bigDecimalOf(50), CLOSED);
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
                 .isThrownBy(() -> invoice.receivePayment(bigDecimalOf(40)))
-                .withMessage("Não é possível receber pagamento parcial para fatura fechada.");
+                .withMessage("Não é possível receber pagamento parcial para fatura fechada ou vencida. Total da fatura: 50.00");
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(50));
         assertThat(invoice.isPaid()).isFalse();
@@ -80,7 +80,7 @@ class InvoiceTest {
     @Test
     void shouldThrowExceptionWhenAmmountIsGreaterThanInvoice() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = create(dueDate, bigDecimalOf(10), NONE);
+        Invoice invoice = create(dueDate, bigDecimalOf(10), OPEN);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> invoice.receivePayment(bigDecimalOf(40)))
@@ -161,14 +161,6 @@ class InvoiceTest {
     }
 
     private static Invoice create(LocalDate dueDate, BigDecimal total, InvoiceStatus status) {
-        return new Invoice("id", dueDate, dueDate.minusDays(6), total, status, new ArrayList<>());
-    }
-
-    private static BigDecimal bigDecimalOf(long o) {
-        return BigDecimal.valueOf(o);
-    }
-
-    private static LocalDate parse(String date) {
-        return LocalDate.parse(date);
+        return new Invoice("id", dueDate, dueDate.minusDays(6), total, status, new CreditCard(), new ArrayList<>());
     }
 }

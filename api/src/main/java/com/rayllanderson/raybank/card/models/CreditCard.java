@@ -77,14 +77,18 @@ public class CreditCard {
                 .dayOfDueDate(dueDate)
                 .invoices(new HashSet<>())
                 .build();
-        c.invoices.add(Invoice.createOpenInvoice(plusOneMonthOf(dueDate)));
+//        c.invoices.add(Invoice.createOpenInvoice(plusOneMonthOf(dueDate)));
         return c;
     }
 
-    public BankStatement payCurrentInvoice(final BigDecimal amount) {
-        final var currentInvoice = getCurrentInvoiceToPay();
+    public static CreditCard withId(String cardId) {
+        return CreditCard.builder().id(cardId).build();
+    }
 
-        return payInvoice(currentInvoice, amount);
+    public BankStatement payCurrentInvoice(final BigDecimal amount) {
+//        final var currentInvoice = getCurrentInvoiceToPay();
+return null;
+//        return payInvoice(currentInvoice, amount);
     }
 
     public BankStatement payInvoiceById(final String invoiceId, final BigDecimal amount) {
@@ -104,7 +108,7 @@ public class CreditCard {
 
         invoice.receivePayment(amount);
 
-        balance = balance.add(amount);
+        balance = balance.add(amount); //por event, maybe
         bankAccount.pay(amount);
 
         return createInvoiceBankStatement(amount);
@@ -130,8 +134,6 @@ public class CreditCard {
 
             if (this.isExpired())
                 throw UnprocessableEntityException.with("Cartão está expirado");
-
-            processInvoice(payment.getTotal(), payment.getInstallments(), payment.getDescription(), payment.getOcurredOn());
 
             balance = balance.subtract(payment.getTotal());
 //            this.createPurchaseBankStatement(payment.getTotal(), payment.getDescription());
@@ -179,84 +181,6 @@ public class CreditCard {
 
     public boolean hasLimit() {
         return !(balance.equals(BigDecimal.ZERO) || balance.equals(new BigDecimal("0.00")));
-    }
-
-    protected void processInvoice(BigDecimal total, int installments, String paymentDescription, LocalDateTime ocurredOn) {
-        final Invoice currentInvoice = getCurrentOpenInvoice();
-        checkOcurredDateItsOnRange(currentInvoice, ocurredOn.toLocalDate());
-
-        final var installmentValue = calculateInstallmentValue(total, installments);
-        currentInvoice.processPayment(createDescription(paymentDescription, 1, installments), total, installmentValue, ocurredOn);
-
-        this.invoices.add(currentInvoice);
-
-        Invoice invoiceCopy = currentInvoice;
-
-        for (int i = 1; i < installments; i++) {
-            final var nextInvoice = getNextOf(invoiceCopy);
-            invoiceCopy = nextInvoice.orElse(Invoice.create(getNextInvoiceDate(invoiceCopy)));
-            invoiceCopy.processPayment(createDescription(paymentDescription, i + 1, installments), total, installmentValue, ocurredOn);
-            this.invoices.add(invoiceCopy);
-        }
-    }
-
-    public Invoice getCurrentOpenInvoice() {
-        return getInvoiceBeforeClosingDateBy(LocalDate.now())
-                .orElse(Invoice.createOpenInvoice(plusOneMonthOf(dayOfDueDate)));
-    }
-
-    public Invoice getCurrentClosedInvoice() {
-        return getInvoiceBeforeOrEqualsDueDateBy(LocalDate.now()).orElse(null);
-    }
-
-    private Invoice getCurrentInvoiceToPay() {
-        var currentClosed = getCurrentClosedInvoice();
-        if (currentClosed != null && !currentClosed.isPaid())
-            return currentClosed;
-        return getCurrentOpenInvoice();
-    }
-
-    private static void checkOcurredDateItsOnRange(Invoice currentInvoice, LocalDate ocurredOn) {
-        if (ocurredOn.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("'ocurredOn' must not be in the future");
-        }
-
-        final LocalDate oldClosingDate = currentInvoice.getClosingDate().minusMonths(1);
-        if (isAfterOrEquals(oldClosingDate, ocurredOn)) {
-            throw new IllegalArgumentException("'ocurredOn' must not be before current invoice closing date");
-        }
-    }
-
-    private LocalDate getNextInvoiceDate(Invoice invoiceCopy) {
-        final Month month = invoiceCopy.getDueDate().getMonth();
-        final var year = invoiceCopy.getDueDate().getYear();
-        return plusOneMonthKeepingCurrentDayOfMonth(LocalDate.of(year, month, dayOfDueDate));
-    }
-
-    private Optional<Invoice> getInvoiceBeforeClosingDateBy(final LocalDate date) {
-        if (date == null) throw new NullPointerException("'date' must not be null");
-        final ArrayList<Invoice> sortedInvoices = getSortedInvoices();
-        return sortedInvoices.stream()
-                .filter(invoice -> date.isBefore(invoice.getClosingDate()))
-                .findFirst();
-    }
-
-    private Optional<Invoice> getInvoiceBeforeOrEqualsDueDateBy(final LocalDate date) {
-        if (date == null) throw new NullPointerException("'date' must not be null");
-        final ArrayList<Invoice> sortedInvoices = getSortedInvoices();
-        return sortedInvoices.stream()
-                .filter(invoice -> date.isBefore(invoice.getDueDate()) || date.isEqual(invoice.getDueDate()))
-                .findFirst();
-    }
-
-    private ArrayList<Invoice> getSortedInvoices() {
-        final var sortedInvoices = new ArrayList<>(invoices);
-        Collections.sort(sortedInvoices);
-        return sortedInvoices;
-    }
-
-    private Optional<Invoice> getNextOf(final Invoice invoice) {
-        return getInvoiceBeforeClosingDateBy(invoice.getDueDate().plusDays(1));
     }
 
     /**
