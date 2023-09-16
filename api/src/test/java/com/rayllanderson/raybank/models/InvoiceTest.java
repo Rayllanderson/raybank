@@ -1,5 +1,7 @@
 package com.rayllanderson.raybank.models;
 
+import com.rayllanderson.raybank.invoice.models.Invoice;
+import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import org.junit.jupiter.api.Test;
 
@@ -8,10 +10,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import static com.rayllanderson.raybank.models.InvoiceStatus.CLOSED;
-import static com.rayllanderson.raybank.models.InvoiceStatus.NONE;
-import static com.rayllanderson.raybank.models.InvoiceStatus.OPEN;
-import static com.rayllanderson.raybank.models.InvoiceStatus.PAID;
+import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.CLOSED;
+import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.NONE;
+import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.OPEN;
+import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.PAID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 

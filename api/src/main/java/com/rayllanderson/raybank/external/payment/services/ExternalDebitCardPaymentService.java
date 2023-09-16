@@ -6,7 +6,7 @@ import com.rayllanderson.raybank.external.payment.CardUtil;
 import com.rayllanderson.raybank.external.payment.repositories.ExternalTransactionRepository;
 import com.rayllanderson.raybank.external.payment.requests.ExternalPaymentRequest;
 import com.rayllanderson.raybank.external.payment.responses.ExternalPaymentResponse;
-import com.rayllanderson.raybank.repositories.CreditCardRepository;
+import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

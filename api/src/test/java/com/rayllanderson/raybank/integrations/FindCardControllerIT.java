@@ -20,7 +20,7 @@ import java.util.List;
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CreditCardControllerIT extends BaseBankOperation{
+class FindCardControllerIT extends BaseBankOperation{
 
     String API_URL = "/api/v1/users/authenticated/bank-account/credit-card";
 

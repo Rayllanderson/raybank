@@ -4,10 +4,8 @@ import com.rayllanderson.raybank.RaybankApplication;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.services.creditcard.CreditCardService;
+import com.rayllanderson.raybank.card.services.create.CreateCardService;
 import com.rayllanderson.raybank.services.FindAllUsersService;
-import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;
-import com.rayllanderson.raybank.services.creditcard.inputs.DueDays;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-
-import java.math.BigDecimal;
 
 @Log4j2
 @SpringBootTest(classes = RaybankApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -30,7 +26,7 @@ public abstract class BaseApiTest {
     @Autowired
     private FindAllUsersService userService;
     @Autowired
-    private CreditCardService creditCardService;
+    private CreateCardService createCardService;
 
     protected String jwtToken = "";
     protected BankAccount authenticatedUserAccount;

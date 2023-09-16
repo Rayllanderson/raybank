@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.controllers.invoice;
+package com.rayllanderson.raybank.invoice.controllers;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;

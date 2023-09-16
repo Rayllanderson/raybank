@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.controllers.invoice;
+package com.rayllanderson.raybank.invoice.controllers;
 
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import lombok.AllArgsConstructor;

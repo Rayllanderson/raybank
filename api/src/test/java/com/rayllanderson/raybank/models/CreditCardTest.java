@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.models;
 
+import com.rayllanderson.raybank.card.models.CreditCard;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

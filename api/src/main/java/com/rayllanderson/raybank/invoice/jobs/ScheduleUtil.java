@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.jobs;
+package com.rayllanderson.raybank.invoice.jobs;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

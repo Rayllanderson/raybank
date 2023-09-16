@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.controllers;
 import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.services.BankAccountService;
-import com.rayllanderson.raybank.services.creditcard.CreditCardService;
+import com.rayllanderson.raybank.card.services.create.CreateCardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
 
     private final BankAccountService bankAccountService;
-    private final CreditCardService creditCardService;
+    private final CreateCardService createCardService;
 
     @PostMapping("/boleto")
     public ResponseEntity<Void> pay(@RequestBody @Valid BankPaymentDto bankStatement, @AuthenticationPrincipal Jwt jwt) {

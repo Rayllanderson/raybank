@@ -1,8 +1,8 @@
-package com.rayllanderson.raybank.card.services.invoice.scheduler;
+package com.rayllanderson.raybank.invoice.services.scheduler;
 
-import com.rayllanderson.raybank.card.models.Invoice;
-import com.rayllanderson.raybank.card.models.InvoiceStatus;
-import com.rayllanderson.raybank.repositories.InvoiceRepository;
+import com.rayllanderson.raybank.invoice.models.Invoice;
+import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
+import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

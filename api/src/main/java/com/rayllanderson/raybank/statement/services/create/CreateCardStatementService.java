@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.statement.services.create;
 
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.CreditCard;
+import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.models.transaction.CardTransaction;
 import com.rayllanderson.raybank.models.transaction.Transaction;

@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.models;
+package com.rayllanderson.raybank.invoice.models;
 
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import jakarta.persistence.FetchType;
@@ -42,7 +42,7 @@ public class Invoice implements Comparable<Invoice> {
     @Transient
     private static final int DAYS_BEFORE_CLOSE = 6;
 
-    protected void processPayment(String description, BigDecimal total, BigDecimal installmentValue, LocalDateTime date) {
+    public void processPayment(String description, BigDecimal total, BigDecimal installmentValue, LocalDateTime date) {
         if (!canProcessPayment())
             throw new UnprocessableEntityException("Fatura atual não está aberta");
         this.total = this.total.add(installmentValue);
@@ -54,13 +54,13 @@ public class Invoice implements Comparable<Invoice> {
         return isOpen() || status.equals(InvoiceStatus.NONE);
     }
 
-    protected static Invoice createOpenInvoice(LocalDate dueDate) {
+    public static Invoice createOpenInvoice(LocalDate dueDate) {
         final var invoice = create(dueDate);
         invoice.status = InvoiceStatus.OPEN;
         return invoice;
     }
 
-    protected static Invoice create(LocalDate dueDate) {
+    public static Invoice create(LocalDate dueDate) {
         final LocalDate nextWorkingDay = getNextWorkingDayOf(dueDate);
         return new Invoice(UUID.randomUUID().toString(),
                 nextWorkingDay,
@@ -92,11 +92,11 @@ public class Invoice implements Comparable<Invoice> {
         return getId() != null ? getId().hashCode() : 0;
     }
 
-    protected boolean hasValueToPay() {
+    public boolean hasValueToPay() {
         return this.total.compareTo(BigDecimal.ZERO) > 0;
     }
 
-    protected void receivePayment(final BigDecimal amount) {
+    public void receivePayment(final BigDecimal amount) {
         if (!canReceivePayment())
             throw new UnprocessableEntityException("Não é possível receber pagamento para essa fatura.");
 
@@ -119,7 +119,7 @@ public class Invoice implements Comparable<Invoice> {
         total = total.subtract(toPay);
     }
 
-    protected boolean canReceivePayment() {
+    public boolean canReceivePayment() {
         return isOpen() || isOverdue() || isClosed();
     }
 
@@ -142,7 +142,7 @@ public class Invoice implements Comparable<Invoice> {
         return now().isAfter(dueDate) && !isPaid();
     }
 
-    protected boolean isPaid() {
+    public boolean isPaid() {
         return this.status.equals(InvoiceStatus.PAID);
     }
 

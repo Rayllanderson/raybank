@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.services.invoice;
+package com.rayllanderson.raybank.invoice.services;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

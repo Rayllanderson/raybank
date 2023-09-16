@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.utils;
 
-import com.rayllanderson.raybank.models.CreditCard;
+import com.rayllanderson.raybank.card.models.CreditCard;
 
 public class CreditCardCreator {
 

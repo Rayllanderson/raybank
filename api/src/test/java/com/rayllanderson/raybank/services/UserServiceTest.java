@@ -4,7 +4,7 @@ import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
 import com.rayllanderson.raybank.dtos.responses.user.UserPostResponseDto;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.repositories.UserRepository;
-import com.rayllanderson.raybank.services.creditcard.CreditCardService;
+import com.rayllanderson.raybank.card.services.create.CreateCardService;
 import com.rayllanderson.raybank.utils.BankAccountCreator;
 import com.rayllanderson.raybank.utils.CreditCardCreator;
 import com.rayllanderson.raybank.utils.UserCreator;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -32,7 +31,7 @@ class UserServiceTest {
     private BankAccountService bankAccountService;
 
     @Mock
-    private CreditCardService creditCardService;
+    private CreateCardService createCardService;
 
     @Mock
     private UserRepository userRepository;
@@ -54,7 +53,7 @@ class UserServiceTest {
         BDDMockito.when(bankAccountService.createAccountBank(ArgumentMatchers.any(User.class)))
                 .thenReturn(BankAccountCreator.createBankAccountSaved());
         //criando cartão de crédito
-        BDDMockito.when(creditCardService.createCreditCard(ArgumentMatchers.any()))
+        BDDMockito.when(createCardService.createCreditCard(ArgumentMatchers.any()))
                 .thenReturn(CreditCardCreator.createCreditCardSaved());
 
         BDDMockito.when(encoder.encode(ArgumentMatchers.anyString())).thenReturn("$2a$10$vjDC.rpWSRb7eDwXuGtGaOhv0Bc.S598scA/tlU0Vo1ZYY3NV4lea");

@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import lombok.AllArgsConstructor;

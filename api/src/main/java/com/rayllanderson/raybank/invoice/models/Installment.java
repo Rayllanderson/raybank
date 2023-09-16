@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.models;
+package com.rayllanderson.raybank.invoice.models;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;

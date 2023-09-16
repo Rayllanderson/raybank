@@ -1,7 +1,7 @@
-package com.rayllanderson.raybank.repositories;
+package com.rayllanderson.raybank.invoice.repository;
 
-import com.rayllanderson.raybank.card.models.Invoice;
-import com.rayllanderson.raybank.card.models.InvoiceStatus;
+import com.rayllanderson.raybank.invoice.models.Invoice;
+import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;

@@ -1,7 +1,7 @@
-package com.rayllanderson.raybank.card.jobs.invoice;
+package com.rayllanderson.raybank.invoice.jobs;
 
-import com.rayllanderson.raybank.card.jobs.ScheduleUtil;
-import com.rayllanderson.raybank.card.services.invoice.scheduler.CloseInvoiceService;
+import com.rayllanderson.raybank.invoice.jobs.ScheduleUtil;
+import com.rayllanderson.raybank.invoice.services.scheduler.CloseInvoiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.core.LockAssert;
