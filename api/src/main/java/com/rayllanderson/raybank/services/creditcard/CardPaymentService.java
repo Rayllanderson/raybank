@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.services.creditcard;
 
+import com.rayllanderson.raybank.aop.CreateStatement;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.models.BankAccount;
@@ -7,6 +8,7 @@ import com.rayllanderson.raybank.models.CreditCard;
 import com.rayllanderson.raybank.models.inputs.CardPayment;
 import com.rayllanderson.raybank.models.transaction.CardTransaction;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
+import com.rayllanderson.raybank.repositories.TransactionRepository;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.services.creditcard.inputs.PaymentCardInput;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CardPaymentService {
 
-    private final CreditCardRepository creditCardRepository;
     private final UserRepository userRepository;
+    private final CreditCardRepository creditCardRepository;
+    private final TransactionRepository transactionRepository;
 
     @Transactional
+    @CreateStatement
     public CardTransaction pay(final PaymentCardInput paymentInput) {
         final CreditCard creditCard = creditCardRepository.findByNumber(paymentInput.getCardNumber())
                 .orElseThrow(() -> new NotFoundException("Cartão de crédito inexistente"));
@@ -38,7 +42,7 @@ public class CardPaymentService {
         creditCard.pay(payment);
         establishmentAccount.receiveCardPayment(paymentInput.getAmount());
 
-        return CardTransaction.from(paymentInput, creditCard);
+        return transactionRepository.save(CardTransaction.from(paymentInput, creditCard));
     }
 
     private CardPayment getCardPayment(PaymentCardInput payment) {
