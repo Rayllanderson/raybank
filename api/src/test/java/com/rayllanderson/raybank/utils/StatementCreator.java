@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.utils;
 
-import com.rayllanderson.raybank.models.statements.BankStatement;
+import com.rayllanderson.raybank.statement.models.BankStatement;
 
 import java.math.BigDecimal;
 

@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.integrations;
 
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
-import com.rayllanderson.raybank.dtos.responses.bank.BankStatementDto;
+import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

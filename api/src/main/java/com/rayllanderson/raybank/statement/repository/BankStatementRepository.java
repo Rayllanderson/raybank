@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.repositories;
+package com.rayllanderson.raybank.statement.repository;
 
-import com.rayllanderson.raybank.models.statements.BankStatement;
+import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.models.BankStatementType;
 import org.springframework.data.jpa.repository.JpaRepository;
 

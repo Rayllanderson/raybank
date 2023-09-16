@@ -1,12 +1,12 @@
-package com.rayllanderson.raybank.services;
+package com.rayllanderson.raybank.statement.services;
 
 
-import com.rayllanderson.raybank.dtos.responses.bank.BankStatementDto;
+import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.statements.BankStatement;
+import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.models.BankStatementType;
-import com.rayllanderson.raybank.repositories.BankStatementRepository;
+import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

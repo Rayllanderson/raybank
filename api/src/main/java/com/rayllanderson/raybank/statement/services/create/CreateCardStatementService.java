@@ -1,13 +1,13 @@
-package com.rayllanderson.raybank.services.statements;
+package com.rayllanderson.raybank.statement.services.create;
 
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.CreditCard;
-import com.rayllanderson.raybank.models.statements.BankStatement;
+import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.models.transaction.CardTransaction;
 import com.rayllanderson.raybank.models.transaction.Transaction;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
-import com.rayllanderson.raybank.repositories.BankStatementRepository;
+import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

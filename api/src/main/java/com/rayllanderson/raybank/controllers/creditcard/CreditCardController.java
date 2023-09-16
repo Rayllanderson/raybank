@@ -6,10 +6,10 @@ import com.rayllanderson.raybank.controllers.creditcard.responses.CreditCardDeta
 import com.rayllanderson.raybank.controllers.creditcard.responses.CreditCardSensitiveDataResponse;
 import com.rayllanderson.raybank.controllers.creditcard.responses.PayInvoiceInternalResponse;
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
-import com.rayllanderson.raybank.dtos.responses.bank.BankStatementDto;
+import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
 import com.rayllanderson.raybank.models.CreditCard;
-import com.rayllanderson.raybank.models.statements.BankStatement;
-import com.rayllanderson.raybank.services.BankStatementFinderService;
+import com.rayllanderson.raybank.statement.models.BankStatement;
+import com.rayllanderson.raybank.statement.services.BankStatementFinderService;
 import com.rayllanderson.raybank.services.creditcard.CreditCardFinderService;
 import com.rayllanderson.raybank.services.creditcard.CreditCardService;
 import com.rayllanderson.raybank.services.creditcard.inputs.CreateCreditCardInput;

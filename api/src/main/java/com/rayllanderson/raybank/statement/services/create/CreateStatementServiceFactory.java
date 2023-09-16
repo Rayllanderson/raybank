@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.services.statements;
+package com.rayllanderson.raybank.statement.services.create;
 
 import com.rayllanderson.raybank.models.transaction.Transaction;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.services.creditcard;
 
-import com.rayllanderson.raybank.aop.CreateStatement;
+import com.rayllanderson.raybank.statement.aop.CreateStatement;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.models.BankAccount;

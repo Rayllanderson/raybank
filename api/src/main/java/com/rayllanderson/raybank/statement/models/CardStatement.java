@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.models.statements;
+package com.rayllanderson.raybank.statement.models;
 
 import com.rayllanderson.raybank.models.User;
 import jakarta.persistence.Entity;

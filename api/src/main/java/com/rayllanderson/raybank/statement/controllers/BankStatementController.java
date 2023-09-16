@@ -1,10 +1,8 @@
-package com.rayllanderson.raybank.controllers;
+package com.rayllanderson.raybank.statement.controllers;
 
-
-import com.rayllanderson.raybank.dtos.responses.bank.BankStatementDto;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
-import com.rayllanderson.raybank.services.BankStatementFinderService;
+import com.rayllanderson.raybank.statement.services.BankStatementFinderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

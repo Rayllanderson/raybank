@@ -1,9 +1,10 @@
 package com.rayllanderson.raybank.repositories;
 
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.statements.BankStatement;
+import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.models.User;
 import com.rayllanderson.raybank.models.BankStatementType;
+import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
 import com.rayllanderson.raybank.utils.BankAccountCreator;
 import com.rayllanderson.raybank.utils.UserCreator;
 import org.assertj.core.api.Assertions;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 @DataJpaTest
 class BankStatementRepositoryTest {
