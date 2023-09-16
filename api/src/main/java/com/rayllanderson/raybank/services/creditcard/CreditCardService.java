@@ -49,40 +49,6 @@ public class CreditCardService {
     }
 
     @Transactional
-    public BankStatement pay(final PaymentCardInput payment) {
-        final var badRequestException = new BadRequestException("Cartão de crédito inválido ou inexistente");
-
-        final CreditCard creditCard = creditCardRepository.findByNumber(payment.getCardNumber())
-                .orElseThrow(() -> badRequestException);
-
-        final boolean isValidCvvAndExpiryDate = creditCard.isValidSecurityCode(payment.getCardSecurityCode()) && creditCard.isValidExpiryDate(payment.getCardExpiryDate());
-        if (!isValidCvvAndExpiryDate) {
-            throw badRequestException;
-        }
-
-        final BankAccount establishmentAccount = Optional.of(bankAccountRepository.findAccountWithBankStatementsByUserId(payment.getEstablishmentId()))
-                .orElseThrow(() -> new NotFoundException("Estabelecimento não pode receber pagamentos"));
-
-        if (establishmentAccount.sameCard(creditCard)) {
-            throw new UnprocessableEntityException("Estabelecimento não pode receber pagamentos desse cartão");
-        }
-
-        final BankStatement bankStatement;
-        if (payment.isCreditPayment()) {
-            bankStatement = creditCard.pay(payment.toCreditCardPayment());
-        } else {
-            bankStatement = creditCard.pay(payment.toDebitCardPayment());
-        }
-
-        establishmentAccount.receiveCardPayment(bankStatement);
-
-        creditCardRepository.save(creditCard);
-        bankAccountRepository.save(establishmentAccount);
-
-        return bankStatement;
-    }
-
-    @Transactional
     public BankStatement payCurrentInvoice(final PayInvoiceInput input) {
         final var creditCard = this.creditCardRepository.findByBankAccountUserId(input.getUserId())
                 .orElseThrow(() -> new NotFoundException("cartão não encontrado"));

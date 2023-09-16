@@ -36,7 +36,7 @@ public class Invoice implements Comparable<Invoice> {
     private BigDecimal total;
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToMany(cascade =  {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Installment> installments = new ArrayList<>();
 
     @Transient

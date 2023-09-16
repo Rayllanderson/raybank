@@ -44,4 +44,12 @@ public class User {
         this.username = username;
         this.authorities = authorities;
     }
+
+    public boolean isEstablishment() {
+        return this.type.equals(UserType.ESTABLISMENT);
+    }
+
+    public static User fromId(final String id) {
+        return User.builder().id(id).build();
+    }
 }

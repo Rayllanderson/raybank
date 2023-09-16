@@ -54,9 +54,8 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public void receiveCardPayment(BankStatement originalBankStatement) {
-        this.deposit(originalBankStatement.getAmount().abs());
-        this.bankStatements.add(BankStatement.receivingCardPayment(this, originalBankStatement));
+    public void receiveCardPayment(BigDecimal amount) {
+        this.deposit(amount);
     }
 
     /**

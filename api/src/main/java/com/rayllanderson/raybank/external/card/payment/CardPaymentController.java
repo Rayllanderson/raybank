@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.external.card.payment;
 import com.rayllanderson.raybank.repositories.CreditCardRepository;
 import com.rayllanderson.raybank.repositories.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.services.creditcard.CardPaymentService;
 import com.rayllanderson.raybank.services.creditcard.CreditCardService;
 import com.rayllanderson.raybank.services.creditcard.inputs.PaymentCardInput;
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class CardPaymentController {
 
     private final CreditCardService creditCardService;
+    private final CardPaymentService cardPaymentService;
     private final UserRepository userRepository;
     private final CreditCardRepository creditCardRepository;
 
@@ -33,9 +35,9 @@ public class CardPaymentController {
         final var input = PaymentCardInput.fromRequest(request);
         input.setEstablishmentId(JwtUtils.getUserIdFrom(jwt));
 
-        final var bankStatement = creditCardService.pay(input);
+        final var transaction = cardPaymentService.pay(input);
 
-        return ResponseEntity.ok().body(CardPaymentResponse.fromBankStatement(bankStatement));
+        return ResponseEntity.ok().body(CardPaymentResponse.fromTransaction(transaction));
     }
 
     @GetMapping("/teste")

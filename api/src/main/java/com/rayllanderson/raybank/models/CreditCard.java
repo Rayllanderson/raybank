@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.models.inputs.CardPayment;
 import com.rayllanderson.raybank.models.inputs.CreditCardPayment;
 import com.rayllanderson.raybank.models.inputs.DebitCardPayment;
 import com.rayllanderson.raybank.models.statements.BankStatement;
@@ -116,7 +117,15 @@ public class CreditCard {
         return this.invoices.stream().filter(invoice -> invoice.getId().equals(invoiceId)).findFirst();
     }
 
-    public BankStatement pay(final CreditCardPayment payment) throws UnprocessableEntityException {
+    public void pay(final CardPayment payment) throws UnprocessableEntityException {
+        if (payment instanceof CreditCardPayment) {
+            this.pay((CreditCardPayment) payment);
+            return;
+        }
+        this.pay((DebitCardPayment) payment);
+    }
+
+    public void pay(final CreditCardPayment payment) throws UnprocessableEntityException {
         if (this.hasLimit()) {
             if (isAmountGreaterThanBalance(payment.getTotal())) {
                 throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
@@ -128,17 +137,17 @@ public class CreditCard {
             processInvoice(payment.getTotal(), payment.getInstallments(), payment.getDescription(), payment.getOcurredOn());
 
             balance = balance.subtract(payment.getTotal());
-            return this.createPurchaseBankStatement(payment.getTotal(), payment.getDescription());
+//            this.createPurchaseBankStatement(payment.getTotal(), payment.getDescription());
         } else
             throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
     }
 
-    public BankStatement pay(final DebitCardPayment payment) throws UnprocessableEntityException {
+    public void pay(final DebitCardPayment payment) throws UnprocessableEntityException {
         if (this.isExpired())
             throw UnprocessableEntityException.with("Cartão está expirado");
         try {
             this.bankAccount.pay(payment.getTotal());
-            return this.createDebitBankStatement(payment.getTotal(), payment.getDescription());
+            this.createDebitBankStatement(payment.getTotal(), payment.getDescription());
         } catch (UnprocessableEntityException e) {
             throw new UnprocessableEntityException("Saldo em conta insuficiente para efetuar compra no débito");
         }
