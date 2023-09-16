@@ -14,7 +14,6 @@ public class BankAccountCreator {
                 new BigDecimal(500),
                 CreditCardCreator.createCreditCardSaved(),
                 UserCreator.createUserWithId(),
-                new HashSet<>(),
                 new HashSet<>()
         );
     }

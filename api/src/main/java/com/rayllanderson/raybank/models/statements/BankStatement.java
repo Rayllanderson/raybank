@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.models.statements;
 
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.BankStatementType;
+import com.rayllanderson.raybank.models.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -144,7 +145,7 @@ public class BankStatement {
                 .build();
     }
 
-    public static BankStatement createDebitCardBankStatement(BigDecimal amount, BankAccount accountOwner, String message, String transactionId){
+    public static BankStatement createDebitCardBankStatement(BigDecimal amount, BankAccount accountOwner, String message, String transactionId, User establishment){
         return BankStatement.builder().
                 moment(Instant.now())
                 .type(BankStatementType.DEBIT_CARD_PAYMENT)
@@ -165,14 +166,17 @@ public class BankStatement {
                 .build();
     }
 
-    public static BankStatement createCreditBankStatement(BigDecimal amount, BankAccount accountOwner, String message, String transactionId){
-        return BankStatement.builder().
+    public static BankStatement createCreditBankStatement(BigDecimal amount, BankAccount accountOwner, String message, String transactionId,
+                                                          int installments, User establishment){
+        return CardStatement.builder().
                 moment(Instant.now())
                 .type(BankStatementType.CREDIT_CARD_PAYMENT)
                 .amount(amount.negate())
                 .message(message)
                 .accountOwner(accountOwner)
                 .transactionId(transactionId)
+                .installments(installments)
+                .establishment(establishment)
                 .build();
     }
 

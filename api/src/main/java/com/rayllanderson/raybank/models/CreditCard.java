@@ -8,19 +8,18 @@ import com.rayllanderson.raybank.models.inputs.CardPayment;
 import com.rayllanderson.raybank.models.inputs.CreditCardPayment;
 import com.rayllanderson.raybank.models.inputs.DebitCardPayment;
 import com.rayllanderson.raybank.models.statements.BankStatement;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -30,7 +29,6 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -64,9 +62,6 @@ public class CreditCard {
     private BankAccount bankAccount;
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private Set<Invoice> invoices;
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.MERGE)
-    private List<BankStatement> bankStatements = new ArrayList<>();
 
     public static CreditCard create(Long number, BigDecimal limit, Integer securityCode, YearMonth expiryDate, Integer dueDate, BankAccount bankAccount) {
         final var c = CreditCard.builder()
@@ -155,19 +150,16 @@ public class CreditCard {
 
     private BankStatement createInvoiceBankStatement(BigDecimal amount) {
         var bankStatement = BankStatement.createInvoicePaymentBankStatement(amount, bankAccount);
-        this.getBankStatements().add(bankStatement);
         return bankStatement;
     }
 
     private BankStatement createDebitBankStatement(BigDecimal amount, String message) {
         var bankStatement = BankStatement.createDebitCardBankStatement(amount, bankAccount, message);
-        this.getBankStatements().add(bankStatement);
         return bankStatement;
     }
 
     private BankStatement createPurchaseBankStatement(BigDecimal amount, String message) {
         var bankStatement = BankStatement.createCreditBankStatement(amount, bankAccount, message);
-        this.getBankStatements().add(bankStatement);
         return bankStatement;
     }
 
@@ -274,5 +266,9 @@ public class CreditCard {
 
     public boolean isExpired() {
         return YearMonth.now().isAfter(this.expiryDate);
+    }
+
+    public Long getAccountId() { //todo::getBankAccountId
+        return this.getBankAccount().getId();
     }
 }

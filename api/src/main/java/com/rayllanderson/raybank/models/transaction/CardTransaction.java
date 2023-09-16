@@ -35,4 +35,8 @@ public class CardTransaction extends Transaction {
                 .installments(paymentCardInput.getInstallments())
                 .build();
     }
+
+    public boolean isCreditTransaction() {
+        return this.getPaymentType().equals(PaymentType.CREDIT);
+    }
 }

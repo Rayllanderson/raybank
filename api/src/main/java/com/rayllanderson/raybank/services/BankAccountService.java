@@ -73,9 +73,9 @@ public class BankAccountService {
             TransferStatement senderBankStatement = recipientBankStatement.invert();
             bankStatementRepository.saveAll(List.of(recipientBankStatement, senderBankStatement));
 
-            //adicionando extratos nas contas
-            recipientAccount.getBankStatements().add(recipientBankStatement);
-            senderAccount.getBankStatements().add(senderBankStatement);
+//            //adicionando extratos nas contas
+//            recipientAccount.getBankStatements().add(recipientBankStatement);
+//            senderAccount.getBankStatements().add(senderBankStatement);
 
             //adicionando ambos aos contatos
             senderAccount.addContact(recipientAccount);
@@ -96,7 +96,7 @@ public class BankAccountService {
         var amountToBePaid = paymentDto.getAmount();
         bankAccount.pay(amountToBePaid);
         BankStatement bankStatement = bankStatementRepository.save(BankStatement.createBoletoPaymentBankStatement(amountToBePaid, bankAccount));
-        bankAccount.getBankStatements().add(bankStatement);
+//        bankAccount.getBankStatements().add(bankStatement);
         this.bankAccountRepository.save(bankAccount);
     }
 
@@ -113,7 +113,7 @@ public class BankAccountService {
         var amountToBeDeposited = depositDto.getAmount();
         ownerAccount.deposit(amountToBeDeposited);
         BankStatement bankStatement = bankStatementRepository.save(BankStatement.createDepositBankStatement(amountToBeDeposited, ownerAccount));
-        ownerAccount.getBankStatements().add(bankStatement);
+//        ownerAccount.getBankStatements().add(bankStatement);
         bankAccountRepository.save(ownerAccount);
     }
 

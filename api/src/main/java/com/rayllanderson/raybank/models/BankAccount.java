@@ -42,9 +42,6 @@ public class BankAccount {
     @OneToOne
     private User user;
     @JsonIgnore
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.MERGE)
-    private Set<BankStatement> bankStatements = new HashSet<>();
-    @JsonIgnore
     @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
 

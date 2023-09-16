@@ -37,7 +37,7 @@ class BankStatementRepositoryTest {
                 new BigDecimal(300), account
         ));
 
-        account.getBankStatements().addAll(Arrays.asList(bankStatement, secondStatement));
+//        account.getBankStatements().addAll(Arrays.asList(bankStatement, secondStatement));
         bankAccountRepository.save(account);
 
         Assertions.assertThat(statementRepository.findAllByAccountOwnerId(account.getId()).size()).isEqualTo(2);
@@ -59,7 +59,7 @@ class BankStatementRepositoryTest {
                 new BigDecimal(150), account
         ));
 
-        account.getBankStatements().add(bankStatement);
+//        account.getBankStatements().add(bankStatement);
         bankAccountRepository.save(account);
 
         Assertions.assertThat(statementRepository.findAllByAccountOwnerId(account.getId()).size()).isEqualTo(1);
