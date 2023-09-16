@@ -1,14 +1,15 @@
 package com.rayllanderson.raybank.card.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rayllanderson.raybank.card.events.CreditCardCreatedEvent;
+import com.rayllanderson.raybank.card.models.inputs.CardPayment;
+import com.rayllanderson.raybank.card.models.inputs.CreditCardPayment;
+import com.rayllanderson.raybank.card.models.inputs.DebitCardPayment;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.card.models.inputs.CardPayment;
-import com.rayllanderson.raybank.card.models.inputs.CreditCardPayment;
-import com.rayllanderson.raybank.card.models.inputs.DebitCardPayment;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,13 +23,10 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -36,18 +34,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.rayllanderson.raybank.utils.DateManagerUtil.isAfterOrEquals;
-import static com.rayllanderson.raybank.utils.DateManagerUtil.plusOneMonthKeepingCurrentDayOfMonth;
-import static com.rayllanderson.raybank.utils.DateManagerUtil.plusOneMonthOf;
-import static com.rayllanderson.raybank.utils.InstallmentUtil.calculateInstallmentValue;
-import static com.rayllanderson.raybank.utils.InstallmentUtil.createDescription;
-
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class CreditCard {
+public class CreditCard extends AbstractAggregateRoot<CreditCard> {
 
     @EqualsAndHashCode.Include
     @Id
@@ -59,6 +51,7 @@ public class CreditCard {
     private BigDecimal limit;
     private BigDecimal balance;
     private Integer dayOfDueDate;
+    private CardStatus status;
     @JsonIgnore
     @OneToOne
     private BankAccount bankAccount;
@@ -76,12 +69,13 @@ public class CreditCard {
                 .expiryDate(expiryDate)
                 .dayOfDueDate(dueDate)
                 .invoices(new HashSet<>())
+                .status(CardStatus.ANALYSIS)
                 .build();
-//        c.invoices.add(Invoice.createOpenInvoice(plusOneMonthOf(dueDate)));
+        c.registerEvent(new CreditCardCreatedEvent(c.id));
         return c;
     }
 
-    public static CreditCard withId(String cardId) {
+    public static CreditCard withId(final String cardId) {
         return CreditCard.builder().id(cardId).build();
     }
 
@@ -119,6 +113,9 @@ return null;
     }
 
     public void pay(final CardPayment payment) throws UnprocessableEntityException {
+        if (!isActive()) {
+            throw new UnprocessableEntityException("Cartão não está ativo para compras");
+        }
         if (payment instanceof CreditCardPayment) {
             this.pay((CreditCardPayment) payment);
             return;
@@ -126,7 +123,7 @@ return null;
         this.pay((DebitCardPayment) payment);
     }
 
-    public void pay(final CreditCardPayment payment) throws UnprocessableEntityException {
+    protected void pay(final CreditCardPayment payment) throws UnprocessableEntityException {
         if (this.hasLimit()) {
             if (isAmountGreaterThanBalance(payment.getTotal())) {
                 throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
@@ -141,7 +138,7 @@ return null;
             throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
     }
 
-    public void pay(final DebitCardPayment payment) throws UnprocessableEntityException {
+    protected void pay(final DebitCardPayment payment) throws UnprocessableEntityException {
         if (this.isExpired())
             throw UnprocessableEntityException.with("Cartão está expirado");
         try {
@@ -196,5 +193,13 @@ return null;
 
     public Long getAccountId() { //todo::getBankAccountId
         return this.getBankAccount().getId();
+    }
+
+    public void activate() {
+        this.status = CardStatus.ACTIVE;
+    }
+
+    public boolean isActive() {
+        return CardStatus.ACTIVE.equals(status);
     }
 }
