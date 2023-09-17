@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.users.services.find;
 
 import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
-import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
+import com.rayllanderson.raybank.card.services.CreditCardDto;
 import com.rayllanderson.raybank.users.controllers.find.UserResponseDto;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

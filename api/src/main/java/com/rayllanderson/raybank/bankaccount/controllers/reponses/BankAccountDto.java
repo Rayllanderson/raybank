@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.bankaccount.controllers.reponses;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
+import com.rayllanderson.raybank.card.services.CreditCardDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

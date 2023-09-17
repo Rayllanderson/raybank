@@ -54,9 +54,9 @@ public class BaseBankOperation extends BaseApiTest {
     /**
      * @return Cartão de crédito do usuário autenticado
      */
-    protected com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto getAuthCreditCard(){
+    protected com.rayllanderson.raybank.card.services.CreditCardDto getAuthCreditCard(){
         return get("/api/v1/users/authenticated/bank-account/credit-card",
-                com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto.class).getBody();
+                com.rayllanderson.raybank.card.services.CreditCardDto.class).getBody();
     }
 
     protected void payInvoice(BigDecimal value){

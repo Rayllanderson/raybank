@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.integrations;
 
-import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
+import com.rayllanderson.raybank.card.services.CreditCardDto;
 import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

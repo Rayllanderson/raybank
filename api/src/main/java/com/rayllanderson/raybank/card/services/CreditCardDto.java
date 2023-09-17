@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.dtos.responses.bank;
+package com.rayllanderson.raybank.card.services;
 
 import com.rayllanderson.raybank.card.models.CreditCard;
 import lombok.AllArgsConstructor;
@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreditCardDto {
+    //TODO::deletar
     private String id;
     private BigDecimal limit;
     private BigDecimal balance;
