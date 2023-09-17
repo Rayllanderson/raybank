@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.utils;
 
-import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
-import com.rayllanderson.raybank.models.Pix;
+import com.rayllanderson.raybank.pix.controllers.requests.PixPostDto;
+import com.rayllanderson.raybank.pix.model.Pix;
 
 public class PixCreator {
 

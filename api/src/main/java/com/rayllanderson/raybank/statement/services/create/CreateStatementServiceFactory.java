@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.statement.services.create;
 
-import com.rayllanderson.raybank.models.transaction.Transaction;
+import com.rayllanderson.raybank.transaction.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

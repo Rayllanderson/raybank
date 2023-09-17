@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.dtos.responses.pix;
+package com.rayllanderson.raybank.pix.controllers.responses;
 
-import com.rayllanderson.raybank.models.Pix;
+import com.rayllanderson.raybank.pix.model.Pix;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

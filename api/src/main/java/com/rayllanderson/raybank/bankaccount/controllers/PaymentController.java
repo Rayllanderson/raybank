@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.controllers;
+package com.rayllanderson.raybank.bankaccount.controllers;
 
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankPaymentDto;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users/authenticated/payment")
 @RestController
 public class PaymentController {
+    //todo::ajustar
 
     private final BankAccountService bankAccountService;
     private final CreateCardService createCardService;

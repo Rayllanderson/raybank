@@ -1,9 +1,9 @@
 package com.rayllanderson.raybank.integrations;
 
-import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
-import com.rayllanderson.raybank.dtos.requests.pix.PixPutDto;
-import com.rayllanderson.raybank.dtos.responses.pix.PixPostResponse;
-import com.rayllanderson.raybank.dtos.responses.pix.PixResponseDto;
+import com.rayllanderson.raybank.pix.controllers.requests.PixPostDto;
+import com.rayllanderson.raybank.pix.controllers.requests.PixPutDto;
+import com.rayllanderson.raybank.pix.controllers.responses.PixPostResponse;
+import com.rayllanderson.raybank.pix.controllers.responses.PixResponseDto;
 import com.rayllanderson.raybank.utils.PixCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

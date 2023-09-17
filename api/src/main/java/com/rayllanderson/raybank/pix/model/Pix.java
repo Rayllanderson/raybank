@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.models;
+package com.rayllanderson.raybank.pix.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.users.model.User;

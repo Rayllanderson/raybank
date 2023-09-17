@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.models.transaction;
+package com.rayllanderson.raybank.transaction;
 
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.users.model.User;

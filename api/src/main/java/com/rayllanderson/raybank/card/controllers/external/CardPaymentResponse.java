@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.controllers.external;
 
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.models.transaction.CardTransaction;
+import com.rayllanderson.raybank.transaction.CardTransaction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

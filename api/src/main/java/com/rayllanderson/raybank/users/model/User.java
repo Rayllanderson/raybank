@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.users.model;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.models.Pix;
+import com.rayllanderson.raybank.pix.model.Pix;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

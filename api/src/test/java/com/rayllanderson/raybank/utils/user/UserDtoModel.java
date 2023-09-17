@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.dtos.requests.user;
+package com.rayllanderson.raybank.utils.user;
 
 import com.rayllanderson.raybank.users.model.User;
 import lombok.Data;

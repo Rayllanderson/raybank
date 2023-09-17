@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.models.transaction;
+package com.rayllanderson.raybank.transaction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

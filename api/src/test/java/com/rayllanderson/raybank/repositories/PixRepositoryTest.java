@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.repositories;
 
-import com.rayllanderson.raybank.models.Pix;
+import com.rayllanderson.raybank.pix.model.Pix;
+import com.rayllanderson.raybank.pix.repository.PixRepository;
 import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.utils.PixCreator;

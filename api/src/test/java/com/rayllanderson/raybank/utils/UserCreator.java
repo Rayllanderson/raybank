@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.utils;
 
-import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
-import com.rayllanderson.raybank.dtos.requests.user.UserPutDto;
+import com.rayllanderson.raybank.utils.user.UserPostDto;
+import com.rayllanderson.raybank.utils.user.UserPutDto;
 import com.rayllanderson.raybank.users.controllers.UserPostResponseDto;
 import com.rayllanderson.raybank.users.model.User;
 

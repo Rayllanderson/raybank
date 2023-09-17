@@ -1,13 +1,13 @@
-package com.rayllanderson.raybank.services;
+package com.rayllanderson.raybank.pix.service;
 
-import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
-import com.rayllanderson.raybank.dtos.requests.pix.PixPutDto;
-import com.rayllanderson.raybank.dtos.responses.pix.PixPostResponse;
-import com.rayllanderson.raybank.dtos.responses.pix.PixResponseDto;
+import com.rayllanderson.raybank.pix.controllers.requests.PixPostDto;
+import com.rayllanderson.raybank.pix.controllers.requests.PixPutDto;
+import com.rayllanderson.raybank.pix.controllers.responses.PixPostResponse;
+import com.rayllanderson.raybank.pix.controllers.responses.PixResponseDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.models.Pix;
+import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.users.model.User;
-import com.rayllanderson.raybank.repositories.PixRepository;
+import com.rayllanderson.raybank.pix.repository.PixRepository;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.utils.PixUpdater;
 import lombok.RequiredArgsConstructor;

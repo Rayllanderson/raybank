@@ -1,12 +1,12 @@
-package com.rayllanderson.raybank.controllers;
+package com.rayllanderson.raybank.pix.controllers;
 
-import com.rayllanderson.raybank.dtos.requests.pix.PixPostDto;
-import com.rayllanderson.raybank.dtos.requests.pix.PixPutDto;
-import com.rayllanderson.raybank.dtos.responses.pix.PixPostResponse;
-import com.rayllanderson.raybank.dtos.responses.pix.PixResponseDto;
-import com.rayllanderson.raybank.models.Pix;
+import com.rayllanderson.raybank.pix.controllers.requests.PixPostDto;
+import com.rayllanderson.raybank.pix.controllers.requests.PixPutDto;
+import com.rayllanderson.raybank.pix.controllers.responses.PixPostResponse;
+import com.rayllanderson.raybank.pix.controllers.responses.PixResponseDto;
+import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
-import com.rayllanderson.raybank.services.PixService;
+import com.rayllanderson.raybank.pix.service.PixService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
