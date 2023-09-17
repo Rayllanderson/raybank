@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.card.services.payment;
 import com.rayllanderson.raybank.statement.aop.CreateStatement;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.models.inputs.CardPayment;
 import com.rayllanderson.raybank.models.transaction.CardTransaction;

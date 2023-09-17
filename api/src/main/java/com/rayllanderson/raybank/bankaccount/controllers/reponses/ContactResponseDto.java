@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.dtos.responses.bank;
+package com.rayllanderson.raybank.bankaccount.controllers.reponses;
 
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

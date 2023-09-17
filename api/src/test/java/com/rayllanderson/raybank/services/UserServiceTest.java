@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.services;
 
+import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
 import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
 import com.rayllanderson.raybank.users.controllers.UserPostResponseDto;
 import com.rayllanderson.raybank.users.model.User;

@@ -1,12 +1,12 @@
 package com.rayllanderson.raybank.integrations;
 
-import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
-import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
-import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
-import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.ContactResponseDto;
 import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.models.BankStatementType;
+import com.rayllanderson.raybank.statement.models.BankStatementType;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
 import com.rayllanderson.raybank.utils.BankTransferCreator;
 import org.assertj.core.api.Assertions;

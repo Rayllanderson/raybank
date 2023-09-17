@@ -1,9 +1,10 @@
 package com.rayllanderson.raybank.repositories;
 
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
+import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.users.model.User;
-import com.rayllanderson.raybank.models.BankStatementType;
+import com.rayllanderson.raybank.statement.models.BankStatementType;
 import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.utils.BankAccountCreator;

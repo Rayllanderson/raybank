@@ -1,10 +1,10 @@
 package com.rayllanderson.raybank.statement.controllers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rayllanderson.raybank.dtos.responses.bank.enums.IdentificationType;
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.IdentificationType;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.models.BankStatementType;
+import com.rayllanderson.raybank.statement.models.BankStatementType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

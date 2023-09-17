@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.users.model;
 
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.models.Pix;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

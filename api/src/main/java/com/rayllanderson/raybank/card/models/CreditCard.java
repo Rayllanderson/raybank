@@ -10,7 +10,7 @@ import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

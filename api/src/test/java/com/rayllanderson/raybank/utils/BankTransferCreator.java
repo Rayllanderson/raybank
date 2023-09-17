@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.utils;
 
-import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
 
 import java.math.BigDecimal;
 

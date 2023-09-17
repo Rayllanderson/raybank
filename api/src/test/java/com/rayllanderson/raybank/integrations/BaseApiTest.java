@@ -1,8 +1,8 @@
 package com.rayllanderson.raybank.integrations;
 
 import com.rayllanderson.raybank.RaybankApplication;
-import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.card.services.create.CreateCardService;
 import com.rayllanderson.raybank.users.services.find.FindAllUsersService;

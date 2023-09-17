@@ -3,9 +3,9 @@ package com.rayllanderson.raybank.statement.services;
 
 import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.models.BankStatementType;
+import com.rayllanderson.raybank.statement.models.BankStatementType;
 import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

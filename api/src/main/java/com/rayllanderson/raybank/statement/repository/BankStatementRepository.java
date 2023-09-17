@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.statement.repository;
 
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.models.BankStatementType;
+import com.rayllanderson.raybank.statement.models.BankStatementType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

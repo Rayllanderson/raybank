@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.integrations;
 
-import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
-import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankPaymentDto;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
-import java.time.YearMonth;
 
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)

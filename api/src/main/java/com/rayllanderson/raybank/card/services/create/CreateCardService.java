@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.card.services.create;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.card.models.CreditCard;
-import com.rayllanderson.raybank.repositories.BankAccountRepository;
+import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.RequiredArgsConstructor;

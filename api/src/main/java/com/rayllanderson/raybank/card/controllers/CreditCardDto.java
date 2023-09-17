@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.card.controllers;
 
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

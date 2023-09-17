@@ -1,16 +1,16 @@
-package com.rayllanderson.raybank.services;
+package com.rayllanderson.raybank.bankaccount.services;
 
-import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
-import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
-import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
-import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
-import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankPaymentDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.ContactResponseDto;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.statement.models.TransferStatement;
-import com.rayllanderson.raybank.repositories.BankAccountRepository;
+import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
 import com.rayllanderson.raybank.users.services.find.UserFinderService;
 import com.rayllanderson.raybank.utils.NumberUtil;

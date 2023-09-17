@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.repositories;
+package com.rayllanderson.raybank.bankaccount.repository;
 
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

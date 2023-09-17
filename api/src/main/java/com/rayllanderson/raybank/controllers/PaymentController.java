@@ -1,8 +1,8 @@
 package com.rayllanderson.raybank.controllers;
 
-import com.rayllanderson.raybank.dtos.requests.bank.BankPaymentDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankPaymentDto;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
-import com.rayllanderson.raybank.services.BankAccountService;
+import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
 import com.rayllanderson.raybank.card.services.create.CreateCardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

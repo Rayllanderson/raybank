@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.statement.models;
 
-import com.rayllanderson.raybank.models.BankAccount;
-import com.rayllanderson.raybank.models.BankStatementType;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.users.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

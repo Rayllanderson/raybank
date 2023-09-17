@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.invoice.services;
 
 import com.rayllanderson.raybank.exceptions.NotFoundException;
-import com.rayllanderson.raybank.repositories.BankAccountRepository;
+import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import lombok.RequiredArgsConstructor;

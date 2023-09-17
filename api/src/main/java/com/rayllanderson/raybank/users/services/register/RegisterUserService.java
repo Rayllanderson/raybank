@@ -6,7 +6,7 @@ import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.users.model.UserType;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.KeycloakProvider;
-import com.rayllanderson.raybank.services.BankAccountService;
+import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

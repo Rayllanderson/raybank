@@ -1,13 +1,13 @@
-package com.rayllanderson.raybank.controllers;
+package com.rayllanderson.raybank.bankaccount.controllers;
 
-import com.rayllanderson.raybank.dtos.requests.bank.BankDepositDto;
-import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
-import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
-import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.ContactResponseDto;
 import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
-import com.rayllanderson.raybank.services.BankAccountService;
+import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
 import com.rayllanderson.raybank.statement.services.BankStatementFinderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

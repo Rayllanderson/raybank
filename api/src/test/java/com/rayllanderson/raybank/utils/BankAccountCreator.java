@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.utils;
 
-import com.rayllanderson.raybank.models.BankAccount;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
