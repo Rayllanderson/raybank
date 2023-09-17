@@ -39,6 +39,7 @@ public class BankAccountService {
     public BankAccount createAccountBank(User savedUser) {
         int accountNumber = this.generateAccountNumber();
         var bankAccountToBeSaved = BankAccount.builder()
+                .id(savedUser.getId())
                 .accountNumber(accountNumber)
                 .balance(BigDecimal.ZERO)
                 .user(savedUser).build();
