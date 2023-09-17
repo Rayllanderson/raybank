@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.invoice.services;
 
+import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.rayllanderson.raybank.invoice.InvoiceUtils.bigDecimalOf;
@@ -37,7 +39,7 @@ class ProcessInvoiceServiceTest {
 
     @Test
     void shouldProcessInvoices() {
-        when(creditCardRepository.findDayOfDueDateById("cId")).thenReturn(1);
+        when(creditCardRepository.findById("cId")).thenReturn(Optional.of(CreditCard.builder().dayOfDueDate(1).build()));
         when(invoiceRepository.findAllByCreditCardId("cId")).thenReturn(Collections.emptySet());
 
         final var invoices = processInvoiceService.processInvoice(BigDecimal.valueOf(150),
@@ -74,7 +76,7 @@ class ProcessInvoiceServiceTest {
                 create(parse("2023-11-01"), bigDecimalOf(50.00), NONE, installment("alibaba 2/3", bigDecimalOf(150.00), bigDecimalOf(50.00))),
                 create(parse("2023-12-01"), bigDecimalOf(50.00), NONE, installment("alibaba 3/3", bigDecimalOf(150.00), bigDecimalOf(50.00)))
         );
-        when(creditCardRepository.findDayOfDueDateById("cId")).thenReturn(1);
+        when(creditCardRepository.findById("cId")).thenReturn(Optional.of(CreditCard.builder().dayOfDueDate(1).build()));
         when(invoiceRepository.findAllByCreditCardId("cId")).thenReturn(savedInvoices);
 
         final var invoices = processInvoiceService.processInvoice(BigDecimal.valueOf(100), 2, "amazon", LocalDateTime.parse("2023-09-01T20:41:37"), "cId");
@@ -103,7 +105,7 @@ class ProcessInvoiceServiceTest {
 
     @Test
     void shouldThrowExceptionWhenInvoiceDateIsNotOnRange() {
-        when(creditCardRepository.findDayOfDueDateById("cId")).thenReturn(1);
+        when(creditCardRepository.findById("cId")).thenReturn(Optional.of(CreditCard.builder().dayOfDueDate(1).build()));
         when(invoiceRepository.findAllByCreditCardId("cId")).thenReturn(Collections.emptySet());
 
         assertThatIllegalArgumentException()
@@ -118,7 +120,7 @@ class ProcessInvoiceServiceTest {
 
     @Test
     void shouldThrowExceptionWhenOcurrenceDateIsFuture() {
-        when(creditCardRepository.findDayOfDueDateById("cId")).thenReturn(1);
+        when(creditCardRepository.findById("cId")).thenReturn(Optional.of(CreditCard.builder().dayOfDueDate(1).build()));
         when(invoiceRepository.findAllByCreditCardId("cId")).thenReturn(Collections.emptySet());
 
         assertThatIllegalArgumentException()

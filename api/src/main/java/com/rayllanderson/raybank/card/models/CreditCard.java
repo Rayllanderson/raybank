@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.card.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rayllanderson.raybank.card.events.CardPaymentEvent;
 import com.rayllanderson.raybank.card.events.CreditCardCreatedEvent;
 import com.rayllanderson.raybank.card.models.inputs.CardPayment;
 import com.rayllanderson.raybank.card.models.inputs.CreditCardPayment;
@@ -116,11 +117,13 @@ return null;
         if (!isActive()) {
             throw new UnprocessableEntityException("Cartão não está ativo para compras");
         }
-        if (payment instanceof CreditCardPayment) {
+        if (payment instanceof CreditCardPayment)
             this.pay((CreditCardPayment) payment);
-            return;
-        }
-        this.pay((DebitCardPayment) payment);
+
+        if (payment instanceof DebitCardPayment)
+            this.pay((DebitCardPayment) payment);
+
+        registerEvent(new CardPaymentEvent(payment, this.id));
     }
 
     protected void pay(final CreditCardPayment payment) throws UnprocessableEntityException {

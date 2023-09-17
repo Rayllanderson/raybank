@@ -40,6 +40,7 @@ public class CardPaymentService {
 
         creditCard.pay(payment);
         establishmentAccount.receiveCardPayment(paymentInput.getAmount());
+        creditCardRepository.save(creditCard);
 
         return transactionRepository.save(CardTransaction.from(paymentInput, creditCard));
     }

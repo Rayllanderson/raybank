@@ -12,4 +12,5 @@ public abstract class CardPayment {
     final BigDecimal total;
     final LocalDateTime ocurredOn;
     final String description;
+    final String establishmentId;
 }

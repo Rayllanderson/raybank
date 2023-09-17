@@ -1,9 +1,10 @@
 package com.rayllanderson.raybank.invoice.services;
 
+import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
+import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
-import com.rayllanderson.raybank.models.transaction.CardTransaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,9 @@ public class ProcessInvoiceService {
 
     public List<Invoice> processInvoice(BigDecimal total, int installments, String paymentDescription, LocalDateTime ocurredOn, String cardId) {
         final Set<Invoice> invoices = invoiceRepository.findAllByCreditCardId(cardId);
-        final Integer dayOfDueDate = creditCardRepository.findDayOfDueDateById(cardId);
+
+        final Integer dayOfDueDate = getDayOfDueDate(cardId);
+
         final InvoiceListHelper invoiceList = new InvoiceListHelper(dayOfDueDate, invoices);
 
         final Invoice currentInvoice = invoiceList.getCurrentOpenInvoice().orElse(Invoice.createOpenInvoice(plusOneMonthOf(dayOfDueDate), cardId));
@@ -52,8 +55,10 @@ public class ProcessInvoiceService {
         return Collections.unmodifiableList(invoiceList.getSortedInvoices());
     }
 
-    public void processInvoice(CardTransaction transaction) {
-        processInvoice(transaction.getAmount(), transaction.getInstallments(), transaction.getDescription(), transaction.getMoment(), transaction.getPayerCardId());
+    private Integer getDayOfDueDate(String cardId) {
+        final CreditCard creditCard = creditCardRepository.findById(cardId)
+                .orElseThrow(() -> new NotFoundException(String.format("Card %s was not found", cardId)));
+        return creditCard.getDayOfDueDate();
     }
 
     private static void checkOcurredDateItsOnRange(Invoice currentInvoice, LocalDate ocurredOn) {

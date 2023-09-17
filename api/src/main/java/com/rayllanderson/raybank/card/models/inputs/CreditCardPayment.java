@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 public class CreditCardPayment extends CardPayment {
     private final int installments;
 
-    public CreditCardPayment(BigDecimal total, LocalDateTime ocurredOn, int installments, String description) {
-        super(total, ocurredOn, description);
+    public CreditCardPayment(BigDecimal total, LocalDateTime ocurredOn, int installments, String description, String establishmentId) {
+        super(total, ocurredOn, description, establishmentId);
         this.installments = installments;
     }
 }

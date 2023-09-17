@@ -61,11 +61,11 @@ public class PaymentCardInput {
     }
 
     public CreditCardPayment toCreditCardPayment() {
-        return new CreditCardPayment(this.amount, this.getOcurredOn(), this.installments, this.description);
+        return new CreditCardPayment(this.amount, this.getOcurredOn(), this.installments, this.description, establishmentId);
     }
 
     public DebitCardPayment toDebitCardPayment() {
-        return new DebitCardPayment(this.amount, this.getOcurredOn(), this.description);
+        return new DebitCardPayment(this.amount, this.getOcurredOn(), this.description, establishmentId);
     }
 
     public enum PaymentType {

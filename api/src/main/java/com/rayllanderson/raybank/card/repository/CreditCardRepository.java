@@ -13,5 +13,4 @@ public interface CreditCardRepository extends JpaRepository<CreditCard, String> 
     Optional<CreditCard> findByBankAccountUserId(String userId);
     CreditCard findByInvoicesContaining(Invoice invoice);
     Optional<CreditCard> findByNumber(Long number);
-    Integer findDayOfDueDateById(String id);
 }
