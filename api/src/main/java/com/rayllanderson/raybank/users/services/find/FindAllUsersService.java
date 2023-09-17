@@ -1,9 +1,9 @@
-package com.rayllanderson.raybank.services;
+package com.rayllanderson.raybank.users.services.find;
 
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.CreditCardDto;
-import com.rayllanderson.raybank.dtos.responses.user.UserResponseDto;
-import com.rayllanderson.raybank.repositories.UserRepository;
+import com.rayllanderson.raybank.users.controllers.find.UserResponseDto;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

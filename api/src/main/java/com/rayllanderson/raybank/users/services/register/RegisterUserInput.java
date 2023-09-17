@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.services.register;
+package com.rayllanderson.raybank.users.services.register;
 
-import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.users.model.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;

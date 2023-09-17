@@ -5,7 +5,7 @@ import com.rayllanderson.raybank.dtos.requests.bank.BankTransferDto;
 import com.rayllanderson.raybank.dtos.responses.bank.BankAccountDto;
 import com.rayllanderson.raybank.dtos.responses.bank.ContactResponseDto;
 import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
-import com.rayllanderson.raybank.repositories.UserRepository;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.services.BankAccountService;
 import com.rayllanderson.raybank.statement.services.BankStatementFinderService;

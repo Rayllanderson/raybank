@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.models.transaction;
 
 import com.rayllanderson.raybank.card.models.CreditCard;
-import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;

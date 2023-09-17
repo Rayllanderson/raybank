@@ -1,13 +1,11 @@
 package com.rayllanderson.raybank.external.boleto;
 
 import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.external.boleto.BoletoRepository;
-import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import com.rayllanderson.raybank.external.boleto.requests.PayBoletoRequest;
 import com.rayllanderson.raybank.external.exceptions.RaybankExternalException;
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
-import com.rayllanderson.raybank.repositories.UserRepository;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

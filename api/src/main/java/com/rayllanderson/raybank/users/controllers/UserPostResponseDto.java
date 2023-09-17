@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.dtos.responses.user;
+package com.rayllanderson.raybank.users.controllers;
 
-import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.users.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

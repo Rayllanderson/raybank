@@ -1,10 +1,11 @@
 package com.rayllanderson.raybank.services;
 
 import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
-import com.rayllanderson.raybank.dtos.responses.user.UserPostResponseDto;
-import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.repositories.UserRepository;
+import com.rayllanderson.raybank.users.controllers.UserPostResponseDto;
+import com.rayllanderson.raybank.users.model.User;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.card.services.create.CreateCardService;
+import com.rayllanderson.raybank.users.services.find.UserFinderService;
 import com.rayllanderson.raybank.utils.BankAccountCreator;
 import com.rayllanderson.raybank.utils.CreditCardCreator;
 import com.rayllanderson.raybank.utils.UserCreator;

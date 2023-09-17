@@ -2,7 +2,8 @@ package com.rayllanderson.raybank.repositories;
 
 import com.rayllanderson.raybank.models.BankAccount;
 import com.rayllanderson.raybank.models.Pix;
-import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.users.model.User;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.utils.BankAccountCreator;
 import com.rayllanderson.raybank.utils.UserCreator;
 import lombok.extern.log4j.Log4j2;

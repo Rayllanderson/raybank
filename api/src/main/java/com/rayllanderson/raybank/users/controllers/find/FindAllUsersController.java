@@ -1,7 +1,6 @@
-package com.rayllanderson.raybank.controllers;
+package com.rayllanderson.raybank.users.controllers.find;
 
-import com.rayllanderson.raybank.dtos.responses.user.UserResponseDto;
-import com.rayllanderson.raybank.services.FindAllUsersService;
+import com.rayllanderson.raybank.users.services.find.FindAllUsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

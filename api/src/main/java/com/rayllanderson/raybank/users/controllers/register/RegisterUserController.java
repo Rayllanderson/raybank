@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.controllers.register.establishment;
+package com.rayllanderson.raybank.users.controllers.register;
 
-import com.rayllanderson.raybank.services.register.RegisterUserService;
+import com.rayllanderson.raybank.users.services.register.RegisterUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/establishments")
+@RequestMapping("api/v1/users")
 @RequiredArgsConstructor
-public class RegisterEstablishmentController {
+public class RegisterUserController {
 
     private final RegisterUserService registerUserService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterEstablishmentRequest request){
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterUserRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(registerUserService.register(request.toInput()));
     }
 }

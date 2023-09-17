@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.integrations;
 
-import com.rayllanderson.raybank.dtos.responses.user.UserPostResponseDto;
-import com.rayllanderson.raybank.dtos.responses.user.UserResponseDto;
+import com.rayllanderson.raybank.users.controllers.UserPostResponseDto;
+import com.rayllanderson.raybank.users.controllers.find.UserResponseDto;
 import com.rayllanderson.raybank.utils.UserCreator;
 import lombok.extern.log4j.Log4j2;
 import org.assertj.core.api.Assertions;

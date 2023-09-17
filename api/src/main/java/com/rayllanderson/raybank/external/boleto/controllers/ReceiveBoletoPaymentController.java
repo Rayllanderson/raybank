@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.external.boleto.controllers;
 import com.rayllanderson.raybank.external.boleto.BoletoRepository;
 import com.rayllanderson.raybank.external.boleto.BoletoService;
 import com.rayllanderson.raybank.repositories.BankAccountRepository;
-import com.rayllanderson.raybank.repositories.UserRepository;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;

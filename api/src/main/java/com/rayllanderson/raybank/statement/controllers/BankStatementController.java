@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.statement.controllers;
 
-import com.rayllanderson.raybank.repositories.UserRepository;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.statement.services.BankStatementFinderService;
 import lombok.RequiredArgsConstructor;

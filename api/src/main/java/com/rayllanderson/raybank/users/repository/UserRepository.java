@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.repositories;
+package com.rayllanderson.raybank.users.repository;
 
-import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.users.model.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -2,8 +2,8 @@ package com.rayllanderson.raybank.utils;
 
 import com.rayllanderson.raybank.dtos.requests.user.UserPostDto;
 import com.rayllanderson.raybank.dtos.requests.user.UserPutDto;
-import com.rayllanderson.raybank.dtos.responses.user.UserPostResponseDto;
-import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.users.controllers.UserPostResponseDto;
+import com.rayllanderson.raybank.users.model.User;
 
 public class UserCreator {
 

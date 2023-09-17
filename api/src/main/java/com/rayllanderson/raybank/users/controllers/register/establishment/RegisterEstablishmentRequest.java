@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.controllers.register.establishment;
+package com.rayllanderson.raybank.users.controllers.register.establishment;
 
-import com.rayllanderson.raybank.services.register.RegisterUserInput;
+import com.rayllanderson.raybank.users.services.register.RegisterUserInput;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;

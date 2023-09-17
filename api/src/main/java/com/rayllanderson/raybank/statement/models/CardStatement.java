@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.statement.models;
 
-import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.users.model.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;

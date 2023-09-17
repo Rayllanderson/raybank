@@ -1,12 +1,10 @@
-package com.rayllanderson.raybank.services.register;
+package com.rayllanderson.raybank.users.services.register;
 
-import com.rayllanderson.raybank.constants.Groups;
+import com.rayllanderson.raybank.users.constants.Groups;
 import jakarta.ws.rs.core.Response;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.keycloak.representations.idm.CredentialRepresentation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.NONE)

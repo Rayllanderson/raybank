@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.utils;
 
 import com.rayllanderson.raybank.dtos.requests.user.UserPutDto;
-import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.users.model.User;
 import org.springframework.beans.BeanUtils;
 
 public class UserUpdater {

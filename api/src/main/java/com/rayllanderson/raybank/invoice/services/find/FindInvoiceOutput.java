@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.invoice.services.find;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class FindInvoiceOutput {
     private String id;
     private LocalDate dueDate;

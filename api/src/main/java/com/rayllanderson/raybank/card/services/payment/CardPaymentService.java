@@ -9,7 +9,7 @@ import com.rayllanderson.raybank.card.models.inputs.CardPayment;
 import com.rayllanderson.raybank.models.transaction.CardTransaction;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import com.rayllanderson.raybank.repositories.TransactionRepository;
-import com.rayllanderson.raybank.repositories.UserRepository;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

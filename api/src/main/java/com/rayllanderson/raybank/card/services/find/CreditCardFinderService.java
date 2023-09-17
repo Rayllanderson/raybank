@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.card.services.find;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
-import com.rayllanderson.raybank.repositories.UserRepository;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

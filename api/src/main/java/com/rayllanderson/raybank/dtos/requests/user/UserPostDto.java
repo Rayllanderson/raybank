@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.dtos.requests.user;
 
-import com.rayllanderson.raybank.models.User;
+import com.rayllanderson.raybank.users.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

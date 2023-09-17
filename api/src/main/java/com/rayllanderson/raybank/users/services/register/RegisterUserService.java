@@ -1,10 +1,10 @@
-package com.rayllanderson.raybank.services.register;
+package com.rayllanderson.raybank.users.services.register;
 
-import com.rayllanderson.raybank.constants.Groups;
+import com.rayllanderson.raybank.users.constants.Groups;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.models.User;
-import com.rayllanderson.raybank.models.UserType;
-import com.rayllanderson.raybank.repositories.UserRepository;
+import com.rayllanderson.raybank.users.model.User;
+import com.rayllanderson.raybank.users.model.UserType;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.security.keycloak.KeycloakProvider;
 import com.rayllanderson.raybank.services.BankAccountService;
 import jakarta.ws.rs.core.Response;
@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.rayllanderson.raybank.services.register.RegisterUtils.getGroupsByRegisterType;
-import static com.rayllanderson.raybank.services.register.RegisterUtils.getIdFromHeader;
+import static com.rayllanderson.raybank.users.services.register.RegisterUtils.getGroupsByRegisterType;
+import static com.rayllanderson.raybank.users.services.register.RegisterUtils.getIdFromHeader;
 
 @Slf4j
 @Service
