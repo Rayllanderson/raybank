@@ -32,7 +32,7 @@ public class BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
     private Integer accountNumber;
     private BigDecimal balance;
     @OneToOne(orphanRemoval = true)
@@ -44,7 +44,7 @@ public class BankAccount {
     @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
 
-    public BankAccount(Long id, Integer accountNumber, BigDecimal balance) {
+    public BankAccount(String id, Integer accountNumber, BigDecimal balance) {
         this.id = id;
         this.accountNumber = accountNumber;
         this.balance = balance;

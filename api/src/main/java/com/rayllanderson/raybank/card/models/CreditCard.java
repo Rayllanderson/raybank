@@ -194,7 +194,7 @@ return null;
         return YearMonth.now().isAfter(this.expiryDate);
     }
 
-    public Long getAccountId() { //todo::getBankAccountId
+    public String getAccountId() { //todo::getBankAccountId
         return this.getBankAccount().getId();
     }
 

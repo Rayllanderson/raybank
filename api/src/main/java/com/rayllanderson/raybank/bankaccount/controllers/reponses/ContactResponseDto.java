@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ContactResponseDto {
 
-    private Long id;
+    private String id;
     private String username;
     private String name;
     private Integer accountNumber;

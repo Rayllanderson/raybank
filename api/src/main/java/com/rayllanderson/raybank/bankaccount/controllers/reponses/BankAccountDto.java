@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BankAccountDto {
-    private Long id;
+    private String id;
     private String userName;
     private Integer accountNumber;
     private BigDecimal balance;

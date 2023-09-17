@@ -9,7 +9,7 @@ public class BankAccountCreator {
 
     public static BankAccount createBankAccountSaved(){
         return new BankAccount(
-                1L,
+                "1",
                 999999999,
                 new BigDecimal(500),
                 CreditCardCreator.createCreditCardSaved(),
@@ -20,7 +20,7 @@ public class BankAccountCreator {
 
     public static BankAccount createAnotherBankAccountSaved(){
         return BankAccount.builder()
-                .id(2L)
+                .id("2")
                 .accountNumber(999999999)
                 .balance(new BigDecimal(500))
                 .user(UserCreator.createUserWithId())
