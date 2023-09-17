@@ -221,4 +221,8 @@ public class BankStatement {
         if (Objects.isNull(this.id))
             this.id = UUID.randomUUID().toString();
     }
+
+    public String getUserId() {
+        return this.accountOwner.getUser().getId();
+    }
 }

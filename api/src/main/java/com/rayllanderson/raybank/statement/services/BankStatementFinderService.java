@@ -26,8 +26,23 @@ public class BankStatementFinderService {
     }
 
     @Transactional(readOnly = true)
+    public List<BankStatementDto> findAllByUserId(final String userId) {
+        return bankStatementRepository.findAllByAccountOwnerUserId(userId)
+                .stream()
+                .map(BankStatementDto::fromBankStatement)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public BankStatementDto findByIdAndAccountId(String id, Long accountId) {
         var bankStatement = bankStatementRepository.findByIdAndAccountOwnerId(id, accountId).orElseThrow(() -> new BadRequestException(
+                "Extrato não encontrado"));
+        return BankStatementDto.fromBankStatement(bankStatement);
+    }
+
+    @Transactional(readOnly = true)
+    public BankStatementDto findById(final String id) {
+        final var bankStatement = bankStatementRepository.findById(id).orElseThrow(() -> new BadRequestException(
                 "Extrato não encontrado"));
         return BankStatementDto.fromBankStatement(bankStatement);
     }

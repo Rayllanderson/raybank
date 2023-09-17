@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.security;
+package com.rayllanderson.raybank.security.method;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("@methodSecurityChecker.checkCard(#cardId,#jwt)")
-public @interface RequiredCardOwner {
+@PreAuthorize("@methodSecurityChecker.checkStatement(#statementId,#jwt)")
+public @interface RequiredStatementOwner {
 }
