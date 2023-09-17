@@ -60,7 +60,7 @@ public class BankAccountService {
     public void transfer(BankTransferDto transferDto) throws BadRequestException{
         var senderId = transferDto.getSenderId();
         if(senderId == null) throw new BadRequestException("Sender must be set before send");
-        BankAccount senderAccount = bankAccountRepository.findAccountWithBankStatementsAndContactsByUserId(senderId);
+        BankAccount senderAccount = bankAccountRepository.findAccountWithContactsByUserId(senderId);
         BigDecimal amountToBeTransferred = transferDto.getAmount();
         if(senderAccount.hasAvailableBalance(amountToBeTransferred)) {
             User recipient = this.findUserByPixOrAccountNumber(transferDto);
@@ -93,7 +93,7 @@ public class BankAccountService {
     public void pay(BankPaymentDto paymentDto){
         var ownerId = paymentDto.getOwnerId();
         if(ownerId == null) throw new BadRequestException("Owner must be set before send");
-        BankAccount bankAccount = bankAccountRepository.findAccountWithBankStatementsByUserId(ownerId);
+        BankAccount bankAccount = bankAccountRepository.findAccountByUserId(ownerId);
         var amountToBePaid = paymentDto.getAmount();
         bankAccount.pay(amountToBePaid);
         BankStatement bankStatement = bankStatementRepository.save(BankStatement.createBoletoPaymentBankStatement(amountToBePaid, bankAccount));
@@ -110,7 +110,7 @@ public class BankAccountService {
     public void deposit(BankDepositDto depositDto) throws BadRequestException{
         var ownerId = depositDto.getOwnerId();
         if(ownerId == null) throw new BadRequestException("Owner must be set before send");
-        var ownerAccount = bankAccountRepository.findAccountWithBankStatementsByUserId(ownerId);
+        var ownerAccount = bankAccountRepository.findAccountByUserId(ownerId);
         var amountToBeDeposited = depositDto.getAmount();
         ownerAccount.deposit(amountToBeDeposited);
         BankStatement bankStatement = bankStatementRepository.save(BankStatement.createDepositBankStatement(amountToBeDeposited, ownerAccount));

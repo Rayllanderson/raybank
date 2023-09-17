@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,8 +24,12 @@ public class FindStatementController {
     private final BankStatementFinderService bankStatementFinderService;
 
     @GetMapping
-    public ResponseEntity<List<BankStatementDto>> findAllStatements(@AuthenticationPrincipal Jwt jwt) {
-        return ResponseEntity.ok(bankStatementFinderService.findAllByUserId(getUserIdFrom(jwt)));
+    public ResponseEntity<List<BankStatementDto>> findAllStatements(@AuthenticationPrincipal Jwt jwt,
+                                                                    @RequestParam(required = false, defaultValue = "all") StatementTypeParam type) {
+        final String userId = getUserIdFrom(jwt);
+        final var statements = type.find(bankStatementFinderService, userId);
+
+        return ResponseEntity.ok(statements);
     }
 
     @RequiredStatementOwner

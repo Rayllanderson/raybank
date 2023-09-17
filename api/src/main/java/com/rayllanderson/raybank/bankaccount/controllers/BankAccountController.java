@@ -1,21 +1,24 @@
 package com.rayllanderson.raybank.bankaccount.controllers;
 
-import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
-import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
 import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
 import com.rayllanderson.raybank.bankaccount.controllers.reponses.ContactResponseDto;
-import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
-import com.rayllanderson.raybank.users.repository.UserRepository;
-import com.rayllanderson.raybank.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
+import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
 import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
-import com.rayllanderson.raybank.statement.services.BankStatementFinderService;
+import com.rayllanderson.raybank.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.users.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -26,7 +29,6 @@ import java.util.List;
 public class BankAccountController {
     private final BankAccountService bankAccountService;
     private final UserRepository userRepository;
-    private final BankStatementFinderService bankStatementFinderService;
 
     @GetMapping
     public ResponseEntity<BankAccountDto> findUserBankAccount(@AuthenticationPrincipal Jwt jwt) {
@@ -51,13 +53,6 @@ public class BankAccountController {
         bankStatement.setOwnerId(JwtUtils.getUserIdFrom(jwt));
         bankAccountService.deposit(bankStatement);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/statements")
-    public ResponseEntity<List<BankStatementDto>> findAllStatements(@AuthenticationPrincipal Jwt jwt) {
-        var authenticatedUser = userRepository.findById(JwtUtils.getUserIdFrom(jwt))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-        return ResponseEntity.ok(bankStatementFinderService.findAllAccountBankStatements(authenticatedUser.getBankAccount()));
     }
 
     @GetMapping("/contacts")

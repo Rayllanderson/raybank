@@ -14,4 +14,5 @@ public interface BankStatementRepository extends JpaRepository<BankStatement, St
     List<BankStatement> findAllByAccountOwnerIdAndType(Long ownerId, BankStatementType type);
     List<BankStatement> findAllByAccountOwnerUserIdAndType(String userId, BankStatementType type);
     List<BankStatement> findAllByAccountOwnerIdAndTypeNot(Long ownerId, BankStatementType type);
+    List<BankStatement> findAllByAccountOwnerUserIdAndTypeNot(String userId, BankStatementType type);
 }

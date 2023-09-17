@@ -10,15 +10,10 @@ import java.util.Optional;
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
     boolean existsByAccountNumber(Integer accountNumber);
 
-    @EntityGraph(attributePaths = {"bankStatements"})
-    BankAccount findAccountWithBankStatementsByUserId(String userId);
+    BankAccount findAccountByUserId(String userId);
 
     Optional<BankAccount> findByUserId(String userId);
 
     @EntityGraph(attributePaths = {"contacts"})
     BankAccount findAccountWithContactsByUserId(String userId);
-
-    @EntityGraph(attributePaths = {"bankStatements", "contacts"})
-    BankAccount findAccountWithBankStatementsAndContactsByUserId(String userId);
-
 }

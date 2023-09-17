@@ -55,7 +55,14 @@ public class BankStatementFinderService {
     }
 
     @Transactional(readOnly = true)
-    public List<BankStatementDto> findAllCreditCardBankStatementsByUserId(String userId){
+    public List<BankStatementDto> findAllAccountStatementsByUserId(final String userId){
+        List<BankStatement> accountStatements = bankStatementRepository.findAllByAccountOwnerUserIdAndTypeNot(
+                userId, BankStatementType.CREDIT_CARD_PAYMENT);
+        return accountStatements.stream().map(BankStatementDto::fromBankStatement).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<BankStatementDto> findAllCardStatementsByUserId(String userId){
         var creditCardStatements = bankStatementRepository.findAllByAccountOwnerUserIdAndType(
                 userId, BankStatementType.CREDIT_CARD_PAYMENT
         );
