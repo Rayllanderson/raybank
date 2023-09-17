@@ -116,4 +116,15 @@ public class RestExceptionHandler {
                 .build();
         return ResponseEntity.status(status).body(standardError);
     }
+
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<StandardError> handleHttpRequestMethodNotSupportedException(org.springframework.security.access.AccessDeniedException ex) {
+        final var status = HttpStatus.FORBIDDEN;
+        StandardError standardError = StandardError.builder().timestamp(LocalDateTime.now())
+                .title(status.name())
+                .message(ex.getMessage())
+                .status(status.value())
+                .build();
+        return ResponseEntity.status(status).body(standardError);
+    }
 }

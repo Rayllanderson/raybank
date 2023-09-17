@@ -184,4 +184,8 @@ public class Invoice implements Comparable<Invoice> {
     private boolean isAmountGreaterThanTotal(BigDecimal amount) {
         return amount.compareTo(this.total) > 0;
     }
+
+    public String getCardId() {
+        return this.creditCard.getId();
+    }
 }

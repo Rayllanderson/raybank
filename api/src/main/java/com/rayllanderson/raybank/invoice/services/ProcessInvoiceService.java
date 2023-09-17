@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +29,7 @@ public class ProcessInvoiceService {
     private final CreditCardRepository creditCardRepository;
 
     public List<Invoice> processInvoice(BigDecimal total, int installments, String paymentDescription, LocalDateTime ocurredOn, String cardId) {
-        final Set<Invoice> invoices = invoiceRepository.findAllByCreditCardId(cardId);
+        final Set<Invoice> invoices = new HashSet<>(invoiceRepository.findAllByCreditCardId(cardId));
 
         final Integer dayOfDueDate = getDayOfDueDate(cardId);
 
