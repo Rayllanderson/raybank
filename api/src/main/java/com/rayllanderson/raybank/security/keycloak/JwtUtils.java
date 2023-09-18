@@ -12,4 +12,8 @@ public final class JwtUtils {
     public static String getUserIdFrom(Jwt jwt) {
         return jwt.getClaim(USER_ID_CLAIM);
     }
+
+    public static String getAccountIdFrom(Jwt jwt) {
+        return getUserIdFrom(jwt);
+    }
 }

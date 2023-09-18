@@ -31,7 +31,6 @@ import java.util.Set;
 public class BankAccount {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private Integer accountNumber;
     private BigDecimal balance;
@@ -43,12 +42,6 @@ public class BankAccount {
     @JsonIgnore
     @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
-
-    public BankAccount(String id, Integer accountNumber, BigDecimal balance) {
-        this.id = id;
-        this.accountNumber = accountNumber;
-        this.balance = balance;
-    }
 
     public void receiveCardPayment(BigDecimal amount) {
         this.deposit(amount);

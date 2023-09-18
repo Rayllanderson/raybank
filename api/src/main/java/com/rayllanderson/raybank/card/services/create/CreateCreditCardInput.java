@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Getter
 @RequiredArgsConstructor
 public class CreateCreditCardInput {
-    private final String userId;
+    private final String accountId;
     private final BigDecimal limit;
     private final DueDays dueDay;
 }

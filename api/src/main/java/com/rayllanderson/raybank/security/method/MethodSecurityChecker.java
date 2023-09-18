@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
+import static com.rayllanderson.raybank.security.keycloak.JwtUtils.getAccountIdFrom;
 import static com.rayllanderson.raybank.security.keycloak.JwtUtils.getUserIdFrom;
 
 @Component
@@ -17,6 +18,15 @@ public class MethodSecurityChecker {
 
     private final CreditCardRepository creditCardRepository;
     private final BankStatementRepository bankStatementRepository;
+
+    public boolean checkAccount(String accountId, Jwt jwt) {
+        if (accountId == null || jwt == null) return false;
+
+        final var accountIdFromJwt = getAccountIdFrom(jwt);
+        if (accountIdFromJwt == null) return false;
+
+        return accountIdFromJwt.equals(accountId);
+    }
 
     public boolean checkCard(String cardId, Jwt jwt) {
         if (cardId == null || jwt == null) return false;

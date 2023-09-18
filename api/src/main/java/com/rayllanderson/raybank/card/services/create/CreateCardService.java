@@ -21,7 +21,7 @@ public class CreateCardService {
 
     @Transactional
     public CreditCard createCreditCard(final CreateCreditCardInput input){
-        final var bankAccount = bankAccountRepository.findByUserId(input.getUserId())
+        final var bankAccount = bankAccountRepository.findById(input.getAccountId())
                 .orElseThrow(() -> new BadRequestException("Conta bancária não disponível"));
 
         if (creditCardRepository.existsByBankAccountId(bankAccount.getId()))

@@ -13,8 +13,8 @@ public class CreditCardFinderService {
     private final CreditCardRepository creditCardRepository;
 
     @Transactional(readOnly = true)
-    public CardDetailsOutput findByUserId(String userId){
-        return CardDetailsOutput.fromCreditCard(creditCardRepository.findByBankAccountUserId(userId)
+    public CardDetailsOutput findById(String cardId){
+        return CardDetailsOutput.fromCreditCard(creditCardRepository.findById(cardId)
                 .orElseThrow(() -> new NotFoundException("Cartão não encontrado")));
     }
 }

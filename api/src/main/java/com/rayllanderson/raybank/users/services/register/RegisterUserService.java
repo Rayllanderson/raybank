@@ -56,6 +56,7 @@ public class RegisterUserService {
 
         userToBeSaved.setBankAccount(bankAccountService.createAccountBank(userToBeSaved));
         userRepository.flush();
+        //todo:: deletar user do keycloak quando der erro nesse processo.
     }
 
     private Response registerUserOnKeycloak(final RegisterUserInput user) {

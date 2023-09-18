@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.exceptions.handler;
 
 import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,19 @@ public class RestExceptionHandler {
                 StandardError.builder()
                         .timestamp(LocalDateTime.now())
                         .title("Bad Request")
+                        .message(e.getMessage())
+                        .path(request.getRequestURI())
+                        .status(statusCode.value())
+                        .build());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<StandardError> handleNotFoundException(NotFoundException e, HttpServletRequest request) {
+        HttpStatus statusCode = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(statusCode).body(
+                StandardError.builder()
+                        .timestamp(LocalDateTime.now())
+                        .title(statusCode.name())
                         .message(e.getMessage())
                         .path(request.getRequestURI())
                         .status(statusCode.value())
