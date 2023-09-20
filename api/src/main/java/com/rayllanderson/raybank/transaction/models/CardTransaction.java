@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.transaction;
+package com.rayllanderson.raybank.transaction.models;
 
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.users.model.User;
@@ -21,7 +21,7 @@ public class CardTransaction extends Transaction {
     private User establishment;
     @ManyToOne
     private CreditCard payerCard;
-    private PaymentType paymentType;
+    private CardPaymentType paymentType;
     private Integer installments;
 
     public static CardTransaction from(PaymentCardInput paymentCardInput, CreditCard payerCard) {
@@ -31,13 +31,13 @@ public class CardTransaction extends Transaction {
                 .description(paymentCardInput.getDescription())
                 .establishment(User.fromId(paymentCardInput.getEstablishmentId()))
                 .payerCard(payerCard)
-                .paymentType(PaymentType.valueOf(paymentCardInput.getPaymentType().name()))
+                .paymentType(CardPaymentType.valueOf(paymentCardInput.getPaymentType().name()))
                 .installments(paymentCardInput.getInstallments())
                 .build();
     }
 
     public boolean isCreditTransaction() {
-        return this.getPaymentType().equals(PaymentType.CREDIT);
+        return this.getPaymentType().equals(CardPaymentType.CREDIT);
     }
 
     public String getPayerCardId() {
