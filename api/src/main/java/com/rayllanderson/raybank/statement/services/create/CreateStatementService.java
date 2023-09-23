@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.statement.services.create;
 
-import com.rayllanderson.raybank.transaction.Transaction;
+import com.rayllanderson.raybank.transaction.models.Transaction;
 
 public interface CreateStatementService {
 

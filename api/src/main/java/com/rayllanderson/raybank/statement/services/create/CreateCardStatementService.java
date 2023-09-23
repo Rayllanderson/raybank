@@ -4,8 +4,8 @@ import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.transaction.CardTransaction;
-import com.rayllanderson.raybank.transaction.Transaction;
+import com.rayllanderson.raybank.transaction.models.card.CardPaymentTransaction;
+import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,9 @@ public class CreateCardStatementService implements CreateStatementService {
     @Override
     @Transactional
     public void process(final Transaction transaction) {
-        final var cardTransaction = (CardTransaction) transaction;
+        final var cardTransaction = (CardPaymentTransaction) transaction;
 
-        final CreditCard payerCard = cardTransaction.getPayerCard();
+        final CreditCard payerCard = null;
         final var payerAccount = bankAccountRepository.findById(payerCard.getAccountId())
                 .orElseThrow(() -> new NotFoundException(String.format("Bank Account from payer card id %s was not found", payerCard.getId())));
 
@@ -36,38 +36,38 @@ public class CreateCardStatementService implements CreateStatementService {
         processEstablishmentStatement(cardTransaction);
     }
 
-    private void processEstablishmentStatement(CardTransaction cardTransaction) {
-        final var establismentId = cardTransaction.getEstablishment().getId();
+    private void processEstablishmentStatement(CardPaymentTransaction cardPaymentTransaction) {
+        final var establismentId = cardPaymentTransaction.getEstablishmentId();
         final var establishmentAccount = bankAccountRepository.findByUserId(establismentId)
                 .orElseThrow(() -> new NotFoundException(String.format("Bank Account from establishment id %s was not found", establismentId)));
 
         this.bankStatementRepository.save(BankStatement.receivingCardPayment(
                 establishmentAccount,
-                cardTransaction.getAmount(),
-                cardTransaction.getDescription(),
-                cardTransaction.getId(),
-                cardTransaction.getInstallments()));
+                cardPaymentTransaction.getAmount(),
+                cardPaymentTransaction.getDescription(),
+                cardPaymentTransaction.getId(),
+                cardPaymentTransaction.getInstallments()));
     }
 
-    private void processCreditStatement(final CardTransaction cardTransaction, final BankAccount payerAccount) {
-        this.bankStatementRepository.save(BankStatement.createCreditBankStatement(cardTransaction.getAmount(),
+    private void processCreditStatement(final CardPaymentTransaction cardPaymentTransaction, final BankAccount payerAccount) {
+        this.bankStatementRepository.save(BankStatement.createCreditBankStatement(cardPaymentTransaction.getAmount(),
                 payerAccount,
-                cardTransaction.getDescription(),
-                cardTransaction.getId(),
-                cardTransaction.getInstallments(),
-                cardTransaction.getEstablishment()));
+                cardPaymentTransaction.getDescription(),
+                cardPaymentTransaction.getId(),
+                cardPaymentTransaction.getInstallments(),
+                null)); //todo
     }
 
-    private void processDebitStatement(final CardTransaction cardTransaction, final BankAccount payerAccount) {
-        this.bankStatementRepository.save(BankStatement.createDebitCardBankStatement(cardTransaction.getAmount(),
+    private void processDebitStatement(final CardPaymentTransaction cardPaymentTransaction, final BankAccount payerAccount) {
+        this.bankStatementRepository.save(BankStatement.createDebitCardBankStatement(cardPaymentTransaction.getAmount(),
                 payerAccount,
-                cardTransaction.getDescription(),
-                cardTransaction.getId(),
-                cardTransaction.getEstablishment()));
+                cardPaymentTransaction.getDescription(),
+                cardPaymentTransaction.getId(),
+                null)); //todo
     }
 
     @Override
     public boolean supports(final Transaction transaction) {
-        return transaction instanceof CardTransaction;
+        return transaction instanceof CardPaymentTransaction;
     }
 }
