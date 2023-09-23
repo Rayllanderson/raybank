@@ -1,5 +1,5 @@
 package com.rayllanderson.raybank.transaction.models;
 
-public enum InvoicePaymentType {
+public enum PaymentMethodType {
     BANK_ACCOUNT, BOLETO
 }

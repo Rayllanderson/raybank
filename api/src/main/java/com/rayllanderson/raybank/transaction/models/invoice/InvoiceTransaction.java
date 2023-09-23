@@ -33,13 +33,12 @@ public class InvoiceTransaction extends Transaction {
     public static class Payment {
         private String identifier;
         @Enumerated(EnumType.STRING)
-        private InvoicePaymentType type;
-
+        private PaymentMethodType methodType;
 
         private static Payment from(PayInvoiceInput payment) {
             final var p = new Payment();
             p.identifier = payment.getCardId();
-            p.type = InvoicePaymentType.BANK_ACCOUNT;
+            p.methodType = PaymentMethodType.BANK_ACCOUNT;
             return p;
         }
     }

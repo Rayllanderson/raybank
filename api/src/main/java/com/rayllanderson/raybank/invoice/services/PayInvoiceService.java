@@ -8,7 +8,6 @@ import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import com.rayllanderson.raybank.statement.aop.CreateStatement;
-import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.transaction.models.InvoiceTransaction;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
@@ -20,23 +19,43 @@ import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
-public class InvoicePaymentService {
+public class PaymentInvoiceService {
 
     private final CreditCardRepository creditCardRepository;
     private final BankAccountRepository bankAccountRepository;
     private final InvoiceRepository invoiceRepository;
     private final TransactionRepository transactionRepository;
 
+    //pagar invoice tem que gerar 3 transacoes? bah...
+
+    // uma geral (que une a transação) // uma operacao?
+    // uma para debitar
+    // uma para creditar no cartão
+
     @Transactional
     @CreateStatement
     public Transaction payCurrentInvoice(final PayInvoiceInput input) {
-        final BigDecimal amountToPay = input.getAmount();
-        final var creditCard = this.creditCardRepository.findById(input.getCardId())
-                .orElseThrow(() -> new NotFoundException("Cartão não encontrado"));
+        final CreditCard creditCard = getCardById(input.getCardId());
 
         final InvoiceListHelper invoices = getInvoicesFrom(creditCard);
-
         final Invoice invoiceToPay = invoices.getCurrentInvoiceToPay();
+
+        return processPayment(input, creditCard, invoiceToPay);
+    }
+
+    @Transactional
+    @CreateStatement
+    public Transaction payInvoiceById(final PayInvoiceInput input) {
+        final CreditCard creditCard = getCardById(input.getCardId());
+
+        final Invoice invoiceToPay = invoiceRepository.findById(input.getInvoiceId())
+                .orElseThrow(() -> new NotFoundException("Fatura não encontrada"));
+
+        return processPayment(input, creditCard, invoiceToPay);
+    }
+
+    private Transaction processPayment(PayInvoiceInput input, CreditCard creditCard, Invoice invoiceToPay) {
+        final BigDecimal amountToPay = input.getAmount();
         final BankAccount bankAccount = creditCard.getBankAccount();
 
         invoiceToPay.processPayment(amountToPay);
@@ -50,17 +69,9 @@ public class InvoicePaymentService {
         return transaction;
     }
 
-    @Transactional
-    public BankStatement payInvoiceById(final PayInvoiceInput input) {
-        final var creditCard = this.creditCardRepository.findByBankAccountId(input.getCardId())
-                .orElseThrow(() -> new NotFoundException("cartão não encontrado"));
-
-//        final var bankStatement = creditCard.payInvoiceById(input.getInvoiceId(), input.getAmount());
-
-        bankAccountRepository.save(creditCard.getBankAccount());
-        creditCardRepository.save(creditCard);
-
-        return null;
+    private CreditCard getCardById(String cardId) {
+        return this.creditCardRepository.findById(cardId)
+                .orElseThrow(() -> new NotFoundException("Cartão não encontrado"));
     }
 
     private void save(CreditCard creditCard, Invoice invoiceToPay, BankAccount bankAccount, Transaction transaction) {
