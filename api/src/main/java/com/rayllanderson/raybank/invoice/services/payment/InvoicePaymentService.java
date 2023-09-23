@@ -1,11 +1,9 @@
-package com.rayllanderson.raybank.invoice.services;
+package com.rayllanderson.raybank.invoice.services.payment;
 
 import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacade;
 import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacadeInput;
-import com.rayllanderson.raybank.exceptions.NotFoundException;
+import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.invoice.models.Invoice;
-import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
-import com.rayllanderson.raybank.invoice.services.find.FindInvoiceService;
 import com.rayllanderson.raybank.statement.aop.CreateStatement;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.models.invoice.InvoicePaymentTransaction;
@@ -18,16 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class InvoicePaymentService {
 
-    private final FindInvoiceService findInvoiceService;
-    private final InvoiceRepository invoiceRepository;
+    private final InvoiceGateway invoiceGateway;
     private final DebitAccountFacade debitAccountFacade;
     private final TransactionRepository transactionRepository;
 
     @Transactional
     @CreateStatement
-    public Transaction payCurrent(final PayInvoiceInput input) {
-        final var currentInvoice = findInvoiceService.findCurrentByCardId(input.getCardId())
-                .orElseThrow(() -> new NotFoundException("Fatura atual não existe"));
+    public Transaction payCurrent(final InvoicePaymentInput input) {
+        final var currentInvoice = invoiceGateway.findCurrentByCardId(input.getCardId());
 
         input.setInvoiceId(currentInvoice.getId());
         return processPayment(input, currentInvoice);
@@ -35,14 +31,13 @@ public class InvoicePaymentService {
 
     @Transactional
     @CreateStatement
-    public Transaction payById(final PayInvoiceInput input) {
-        final Invoice invoiceToPay = invoiceRepository.findById(input.getInvoiceId())
-                .orElseThrow(() -> new NotFoundException("Fatura não encontrada"));
+    public Transaction payById(final InvoicePaymentInput input) {
+        final Invoice invoiceToPay = invoiceGateway.findById(input.getInvoiceId());
 
         return processPayment(input, invoiceToPay);
     }
 
-    private Transaction processPayment(PayInvoiceInput input, Invoice invoiceToPay) {
+    private Transaction processPayment(final InvoicePaymentInput input, final Invoice invoiceToPay) {
         final var debit = DebitAccountFacadeInput.from(input);
         debitAccountFacade.process(debit);
 
