@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.invoice.services;
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
+import com.rayllanderson.raybank.invoice.helper.InvoiceListHelper;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import lombok.RequiredArgsConstructor;

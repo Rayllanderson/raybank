@@ -31,7 +31,7 @@ public class ExternalCreditCardPaymentService implements ExternalPaymentMethod {
         });
 
         try {
-//            creditCard.pay(request.getValue());
+//            creditCard.debit(request.getValue());
             creditCardRepository.save(creditCard);
             ExternalTransactionRepository.save(ExternalTransaction);
             log.info("Pagamento efetuado com sucesso={}", ExternalTransaction);

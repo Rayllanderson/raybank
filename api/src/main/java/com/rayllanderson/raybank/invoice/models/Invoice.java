@@ -55,6 +55,12 @@ public class Invoice implements Comparable<Invoice> {
     @Transient
     private static final int DAYS_BEFORE_CLOSE = 6;
 
+    public static Invoice withId(final String invoiceId) {
+        final var i = new Invoice();
+        i.id = invoiceId;
+        return i;
+    }
+
     public void processPayment(String description, BigDecimal total, BigDecimal installmentValue, LocalDateTime date) {
         if (!canProcessPayment())
             throw new UnprocessableEntityException("Fatura atual não está aberta");
@@ -110,7 +116,10 @@ public class Invoice implements Comparable<Invoice> {
         return this.total.compareTo(BigDecimal.ZERO) > 0;
     }
 
-    public void receivePayment(final BigDecimal amount) {
+    public void processPayment(final BigDecimal amount) {
+        if (!this.hasValueToPay())
+            throw new UnprocessableEntityException("Fatura não possui nenhum valor em aberto");
+
         if (isPaid())
             throw new UnprocessableEntityException("Não é possível receber pagamento para fatura já paga.");
 

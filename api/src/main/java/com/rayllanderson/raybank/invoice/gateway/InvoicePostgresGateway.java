@@ -14,18 +14,18 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     private final InvoiceRepository invoiceRepository;
 
     @Override
-    public void save(Invoice invoice) {
+    public void save(final Invoice invoice) {
         invoiceRepository.save(invoice);
     }
 
     @Override
-    public Invoice findById(String id) {
+    public Invoice findById(final String id) {
         return invoiceRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Fatura não encontrada"));
     }
 
     @Override
-    public Invoice findCurrentByCardId(String cardId) {
+    public Invoice findCurrentByCardId(final String cardId) {
         final var allInvoicesByCard = invoiceRepository.findAllByCreditCardId(cardId);
         final InvoiceListHelper invoices = new InvoiceListHelper(allInvoicesByCard);
         return invoices.getCurrentInvoiceToPay();

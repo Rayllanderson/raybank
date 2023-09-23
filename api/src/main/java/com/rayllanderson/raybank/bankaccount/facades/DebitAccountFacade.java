@@ -1,9 +1,7 @@
 package com.rayllanderson.raybank.bankaccount.facades;
 
 import com.rayllanderson.raybank.bankaccount.services.DebitAccountService;
-import com.rayllanderson.raybank.card.services.credit.CardReceivePaymentService;
 import com.rayllanderson.raybank.transaction.models.Transaction;
-import com.rayllanderson.raybank.transaction.models.card.CardCreditTransaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

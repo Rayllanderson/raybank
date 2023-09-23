@@ -1,14 +1,12 @@
 package com.rayllanderson.raybank.transaction.models.invoice;
 
-import com.rayllanderson.raybank.invoice.models.Invoice;
-import com.rayllanderson.raybank.invoice.services.PayInvoiceInput;
+import com.rayllanderson.raybank.invoice.services.payment.InvoicePaymentInput;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,10 +19,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class InvoiceTransaction extends Transaction {
+public class InvoicePaymentTransaction extends Transaction {
 
-    @ManyToOne
-    private Invoice invoice;
+    private String invoiceId;
     @Embedded
     private Payment payment;
 
@@ -36,19 +33,19 @@ public class InvoiceTransaction extends Transaction {
         @Enumerated(EnumType.STRING)
         private PaymentMethodType methodType;
 
-        private static Payment from(PayInvoiceInput payment) {
+        private static Payment from(final InvoicePaymentInput payment) {
             final var p = new Payment();
-            p.identifier = payment.getCardId();
+            p.identifier = payment.getAccountId();
             p.methodType = PaymentMethodType.BANK_ACCOUNT;
             return p;
         }
     }
 
-    public static InvoiceTransaction from(PayInvoiceInput payment) {
-        return InvoiceTransaction.builder()
+    public static InvoicePaymentTransaction from(final InvoicePaymentInput payment) {
+        return InvoicePaymentTransaction.builder()
                 .moment(LocalDateTime.now())
                 .amount(payment.getAmount())
-                .invoice(Invoice.withId(payment.getInvoiceId()))
+                .invoiceId(payment.getInvoiceId())
                 .payment(Payment.from(payment))
                 .build();
     }

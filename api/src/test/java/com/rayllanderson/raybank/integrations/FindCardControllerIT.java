@@ -93,7 +93,7 @@ class FindCardControllerIT extends BaseBankOperation{
                         .builder().amount(amountToPay)
                         .account(authenticatedUserAccount)
                         .build();
-        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/credit-card/pay/invoice", obj, Void.class);
+        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/credit-card/debit/invoice", obj, Void.class);
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
@@ -111,7 +111,7 @@ class FindCardControllerIT extends BaseBankOperation{
                         .builder().amount(amountToPay)
                         .account(authenticatedUserAccount)
                         .build();
-        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/credit-card/pay/invoice", obj, Void.class);
+        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/credit-card/debit/invoice", obj, Void.class);
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -127,7 +127,7 @@ class FindCardControllerIT extends BaseBankOperation{
                         .builder().amount(amountToPay)
                         .account(authenticatedUserAccount)
                         .build();
-        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/credit-card/pay/invoice", obj, Void.class);
+        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/credit-card/debit/invoice", obj, Void.class);
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);

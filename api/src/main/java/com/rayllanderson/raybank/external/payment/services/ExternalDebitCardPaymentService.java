@@ -31,7 +31,7 @@ public class ExternalDebitCardPaymentService implements ExternalPaymentMethod {
 
         var total = request.getValue();
         try {
-//            debitCard.pay(total);
+//            debitCard.debit(total);
             cardRepository.save(debitCard);
             log.info("Pagamento efetuado com sucesso no cartão de débito={}", ExternalTransaction);
             ExternalTransactionRepository.save(ExternalTransaction);

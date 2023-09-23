@@ -35,7 +35,7 @@ class InvoiceTest {
         final var dueDate = LocalDate.now().plusDays(15);
         Invoice invoice = create(dueDate, bigDecimalOf(50), OPEN);
 
-        invoice.receivePayment(bigDecimalOf(40));
+        invoice.processPayment(bigDecimalOf(40));
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(10));
         assertThat(invoice.isPaid()).isFalse();
@@ -46,7 +46,7 @@ class InvoiceTest {
         final var dueDate = LocalDate.now().plusDays(5);
         Invoice invoice = create(dueDate, bigDecimalOf(50), OPEN);
 
-        invoice.receivePayment(bigDecimalOf(50));
+        invoice.processPayment(bigDecimalOf(50));
 
         assertThat(invoice.getTotal()).isZero();
         assertThat(invoice.isPaid()).isTrue();
@@ -58,7 +58,7 @@ class InvoiceTest {
         Invoice invoice = create(dueDate, bigDecimalOf(50), CLOSED);
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
-                .isThrownBy(() -> invoice.receivePayment(bigDecimalOf(40)))
+                .isThrownBy(() -> invoice.processPayment(bigDecimalOf(40)))
                 .withMessage("Não é possível receber pagamento parcial para fatura fechada ou vencida. Total da fatura: 50.00");
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(50));
@@ -71,7 +71,7 @@ class InvoiceTest {
         Invoice invoice = create(dueDate, bigDecimalOf(10), PAID);
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
-                .isThrownBy(() -> invoice.receivePayment(bigDecimalOf(40)))
+                .isThrownBy(() -> invoice.processPayment(bigDecimalOf(40)))
                 .withMessage("Não é possível receber pagamento para fatura já paga.");
 
         assertThat(invoice.isPaid()).isTrue();
@@ -83,7 +83,7 @@ class InvoiceTest {
         Invoice invoice = create(dueDate, bigDecimalOf(10), OPEN);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> invoice.receivePayment(bigDecimalOf(40)))
+                .isThrownBy(() -> invoice.processPayment(bigDecimalOf(40)))
                 .withMessage("O valor recebido é superior ao da fatura.");
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(10));

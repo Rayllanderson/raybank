@@ -12,7 +12,7 @@ import java.time.YearMonth;
 @Setter
 public class CardDetailsSensitiveResponse {
     private String id;
-    private Long number;
+    private String number;
     private Integer securityCode;
     private YearMonth expiryDate;
     private BigDecimal limit;

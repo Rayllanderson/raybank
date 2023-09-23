@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.statement.aop;
 
-import com.rayllanderson.raybank.transaction.Transaction;
+import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.statement.services.create.CreateStatementService;
 import com.rayllanderson.raybank.statement.services.create.CreateStatementServiceFactory;
 import lombok.RequiredArgsConstructor;
