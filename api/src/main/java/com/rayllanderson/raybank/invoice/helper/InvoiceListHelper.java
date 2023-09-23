@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.invoice.services;
+package com.rayllanderson.raybank.invoice.helper;
 
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import lombok.Getter;
@@ -31,11 +31,11 @@ public class InvoiceListHelper {
         this.invoices = new HashSet<>(invoices == null ? new HashSet<>() : invoices);
     }
 
-    protected Optional<Invoice> getCurrentOpenInvoice() {
+    public Optional<Invoice> getCurrentOpenInvoice() {
         return getInvoiceBeforeClosingDateBy(LocalDate.now());
     }
 
-    protected Invoice getCurrentClosedInvoice() {
+    public Invoice getCurrentClosedInvoice() {
         return getInvoiceBeforeOrEqualsDueDateBy(LocalDate.now()).orElse(null);
     }
 
@@ -46,7 +46,7 @@ public class InvoiceListHelper {
         return getCurrentOpenInvoice().orElse(null);
     }
 
-    protected static void checkOcurredDateItsOnRange(Invoice currentInvoice, LocalDate ocurredOn) {
+    public static void checkOcurredDateItsOnRange(Invoice currentInvoice, LocalDate ocurredOn) {
         if (ocurredOn.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("'ocurredOn' must not be in the future");
         }
@@ -57,13 +57,13 @@ public class InvoiceListHelper {
         }
     }
 
-    protected LocalDate getNextInvoiceDate(Invoice invoiceCopy) {
+    public LocalDate getNextInvoiceDate(Invoice invoiceCopy) {
         final Month month = invoiceCopy.getDueDate().getMonth();
         final var year = invoiceCopy.getDueDate().getYear();
         return plusOneMonthKeepingCurrentDayOfMonth(LocalDate.of(year, month, dayOfDueDate));
     }
 
-    protected Optional<Invoice> getInvoiceBeforeClosingDateBy(final LocalDate date) {
+    public Optional<Invoice> getInvoiceBeforeClosingDateBy(final LocalDate date) {
         if (date == null) throw new NullPointerException("'date' must not be null");
         final ArrayList<Invoice> sortedInvoices = getSortedInvoices();
         return sortedInvoices.stream()
@@ -71,7 +71,7 @@ public class InvoiceListHelper {
                 .findFirst();
     }
 
-    protected Optional<Invoice> getInvoiceBeforeOrEqualsDueDateBy(final LocalDate date) {
+    public Optional<Invoice> getInvoiceBeforeOrEqualsDueDateBy(final LocalDate date) {
         if (date == null) throw new NullPointerException("'date' must not be null");
         final ArrayList<Invoice> sortedInvoices = getSortedInvoices();
         return sortedInvoices.stream()
@@ -79,17 +79,17 @@ public class InvoiceListHelper {
                 .findFirst();
     }
 
-    protected ArrayList<Invoice> getSortedInvoices() {
+    public ArrayList<Invoice> getSortedInvoices() {
         final var sortedInvoices = new ArrayList<>(invoices);
         Collections.sort(sortedInvoices);
         return sortedInvoices;
     }
 
-    protected Optional<Invoice> getNextOf(final Invoice invoice) {
+    public Optional<Invoice> getNextOf(final Invoice invoice) {
         return getInvoiceBeforeClosingDateBy(invoice.getDueDate().plusDays(1));
     }
 
-    protected void add(Invoice invoiceCopy) {
+    public void add(Invoice invoiceCopy) {
         this.invoices.add(invoiceCopy);
     }
 }
