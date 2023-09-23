@@ -123,6 +123,16 @@ public class BankStatement {
                 .build();
     }
 
+    public static BankStatement createDebitStatement(BigDecimal amount, BankAccount accountOwner, BankStatementType type){
+        return BankStatement.builder().
+                moment(Instant.now())
+                .type(type)
+                .amount(amount.negate())
+                .message(null)
+                .accountOwner(accountOwner)
+                .build();
+    }
+
     public static BankStatement createBoletoPaymentBankStatement(BigDecimal amount, BankAccount accountOwner, String transactionId){
         return BankStatement.builder().
                 moment(Instant.now())

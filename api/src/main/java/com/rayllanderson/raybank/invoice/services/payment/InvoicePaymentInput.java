@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class PayInvoiceInput {
     private BigDecimal amount;
-    private String userId;
+    private String accountId;
+    private String cardId;
     private String invoiceId;
 }

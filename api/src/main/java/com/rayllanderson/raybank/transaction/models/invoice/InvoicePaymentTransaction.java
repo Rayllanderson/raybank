@@ -1,7 +1,8 @@
-package com.rayllanderson.raybank.transaction.models;
+package com.rayllanderson.raybank.transaction.models.invoice;
 
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.services.PayInvoiceInput;
+import com.rayllanderson.raybank.transaction.models.Transaction;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
