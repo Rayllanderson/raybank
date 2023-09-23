@@ -20,6 +20,7 @@ import jakarta.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Builder
@@ -118,7 +119,13 @@ public class BankAccount {
         this.user = user;
     }
 
+    public static BankAccount withId(String id) {
+        return BankAccount.builder().id(id).build();
+    }
+
     public boolean sameCard(final CreditCard creditCard) {
-        return this.getCreditCard().getId().equals(creditCard.getId());
+        return Optional.ofNullable(this.getCreditCard())
+                .stream()
+                .anyMatch(c -> c.getId().equals(creditCard.getId()));
     }
 }
