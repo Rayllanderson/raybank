@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -17,11 +18,16 @@ import static com.rayllanderson.raybank.utils.DateManagerUtil.plusOneMonthKeepin
 @Getter
 public class InvoiceListHelper {
 
-    private final int dayOfDueDate;
+    private final Integer dayOfDueDate;
     private final Set<Invoice> invoices;
 
-    public InvoiceListHelper(final int dayOfDueDate, final Set<Invoice> invoices) {
+    public InvoiceListHelper(final Integer dayOfDueDate, final Collection<Invoice> invoices) {
         this.dayOfDueDate = dayOfDueDate;
+        this.invoices = new HashSet<>(invoices == null ? new HashSet<>() : invoices);
+    }
+
+    public InvoiceListHelper(final Collection<Invoice> invoices) {
+        this.dayOfDueDate = null;
         this.invoices = new HashSet<>(invoices == null ? new HashSet<>() : invoices);
     }
 
@@ -33,7 +39,7 @@ public class InvoiceListHelper {
         return getInvoiceBeforeOrEqualsDueDateBy(LocalDate.now()).orElse(null);
     }
 
-    protected Invoice getCurrentInvoiceToPay() {
+    public Invoice getCurrentInvoiceToPay() {
         var currentClosed = getCurrentClosedInvoice();
         if (currentClosed != null && !currentClosed.isPaid())
             return currentClosed;
