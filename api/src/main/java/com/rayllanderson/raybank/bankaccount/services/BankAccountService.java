@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.bankaccount.controllers.requests.BankPaymentDto
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
 import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
 import com.rayllanderson.raybank.bankaccount.controllers.reponses.ContactResponseDto;
+import com.rayllanderson.raybank.bankaccount.model.BankAccountType;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.statement.models.BankStatement;
@@ -42,6 +43,7 @@ public class BankAccountService {
                 .id(savedUser.getId())
                 .accountNumber(accountNumber)
                 .balance(BigDecimal.ZERO)
+                .type(savedUser.isEstablishment() ? BankAccountType.ESTABLISMENT : BankAccountType.NORMAL)
                 .user(savedUser).build();
         bankAccountToBeSaved = bankAccountRepository.save(bankAccountToBeSaved);
         return bankAccountRepository.save(bankAccountToBeSaved);
