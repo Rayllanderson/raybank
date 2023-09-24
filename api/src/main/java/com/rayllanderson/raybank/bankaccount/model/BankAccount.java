@@ -48,10 +48,6 @@ public class BankAccount {
     @ManyToMany
     private Set<BankAccount> contacts = new HashSet<>();
 
-    public void receiveCardPayment(BigDecimal amount) {
-        this.deposit(amount);
-    }
-
     /**
      * Realiza a ação de transferir. Será reduzido o valor de transferência dessa conta e será adicionado
      * na conta de destino.
@@ -87,6 +83,11 @@ public class BankAccount {
      */
     public void deposit(BigDecimal amount){
         this.setBalance(this.getBalance().add(amount));
+    }
+
+    public void credit(final BigDecimal amount) {
+        if (amount == null) return;
+        this.balance = balance.add(amount);
     }
 
     /**
