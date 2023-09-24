@@ -47,6 +47,8 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     protected TransactionType type;
 
+    //todo::status
+
     @Embedded
     protected Debit debit;
 

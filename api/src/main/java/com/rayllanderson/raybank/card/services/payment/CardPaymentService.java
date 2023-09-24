@@ -1,13 +1,12 @@
 package com.rayllanderson.raybank.card.services.payment;
 
-import com.rayllanderson.raybank.statement.aop.CreateStatement;
-import com.rayllanderson.raybank.exceptions.NotFoundException;
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.models.inputs.CardPayment;
-import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
+import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
+import com.rayllanderson.raybank.exceptions.NotFoundException;
+import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ public class CardPaymentService {
     private final TransactionRepository transactionRepository;
 
     @Transactional
-    @CreateStatement
     public CardPaymentTransaction pay(final PaymentCardInput paymentInput) {
         final CreditCard creditCard = creditCardRepository.findByNumber(paymentInput.getCardNumber())
                 .orElseThrow(() -> new NotFoundException("Cartão de crédito inexistente"));

@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class AccountPaymentTransaction extends Transaction {
+public class DebitAccountTransaction extends Transaction {
 
-    public static AccountPaymentTransaction from(final DebitAccountInput input) {
+    public static DebitAccountTransaction from(final DebitAccountInput input) {
         final var credit = new Credit(input.getDestination().getIdentifier(), Credit.Destination.valueOf(input.getDestination().getType().name()));
         final var debit = new Debit(input.getAccountId(), Debit.Origin.ACCOUNT);
 
-        return AccountPaymentTransaction.builder()
+        return DebitAccountTransaction.builder()
                 .type(input.getTransactionType())
                 .amount(input.getAmount())
                 .moment(LocalDateTime.now())

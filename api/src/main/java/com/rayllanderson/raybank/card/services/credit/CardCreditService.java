@@ -4,7 +4,6 @@ import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import com.rayllanderson.raybank.card.transactions.credit.CardCreditTransaction;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
-import com.rayllanderson.raybank.statement.aop.CreateStatement;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ public class CardCreditService {
     private final TransactionRepository transactionRepository;
 
     @Transactional
-    @CreateStatement
     public Transaction credit(final CardCreditInput cardCreditInput) {
         final CreditCard creditCard = creditCardRepository.findById(cardCreditInput.getCardId())
                 .orElseThrow(() -> new NotFoundException(String.format("card %s was not found", cardCreditInput.getCardId())));
