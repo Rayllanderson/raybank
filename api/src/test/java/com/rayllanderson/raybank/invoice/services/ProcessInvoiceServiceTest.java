@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.invoice.services;
 
-import com.rayllanderson.raybank.card.models.CreditCard;
-import com.rayllanderson.raybank.card.repository.CreditCardRepository;
+import com.rayllanderson.raybank.card.models.Card;
+import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,15 +32,15 @@ class ProcessInvoiceServiceTest {
     @Mock
     private InvoiceRepository invoiceRepository;
     @Mock
-    private CreditCardRepository creditCardRepository;
+    private CardRepository cardRepository;
     @InjectMocks
     private ProcessInvoiceService processInvoiceService;
 
 
     @Test
     void shouldProcessInvoices() {
-        when(creditCardRepository.findById("cId")).thenReturn(Optional.of(CreditCard.builder().dayOfDueDate(1).build()));
-        when(invoiceRepository.findAllByCreditCardId("cId")).thenReturn(Collections.emptyList());
+        when(cardRepository.findById("cId")).thenReturn(Optional.of(Card.builder().dayOfDueDate(1).build()));
+        when(invoiceRepository.findAllByCardId("cId")).thenReturn(Collections.emptyList());
 
         final var invoices = processInvoiceService.processInvoice(BigDecimal.valueOf(150),
                 3,
@@ -76,8 +76,8 @@ class ProcessInvoiceServiceTest {
                 create(parse("2023-11-01"), bigDecimalOf(50.00), NONE, installment("alibaba 2/3", bigDecimalOf(150.00), bigDecimalOf(50.00))),
                 create(parse("2023-12-01"), bigDecimalOf(50.00), NONE, installment("alibaba 3/3", bigDecimalOf(150.00), bigDecimalOf(50.00)))
         );
-        when(creditCardRepository.findById("cId")).thenReturn(Optional.of(CreditCard.builder().dayOfDueDate(1).build()));
-        when(invoiceRepository.findAllByCreditCardId("cId")).thenReturn(savedInvoices);
+        when(cardRepository.findById("cId")).thenReturn(Optional.of(Card.builder().dayOfDueDate(1).build()));
+        when(invoiceRepository.findAllByCardId("cId")).thenReturn(savedInvoices);
 
         final var invoices = processInvoiceService.processInvoice(BigDecimal.valueOf(100), 2, "amazon", LocalDateTime.parse("2023-09-01T20:41:37"), "cId");
 
@@ -105,8 +105,8 @@ class ProcessInvoiceServiceTest {
 
     @Test
     void shouldThrowExceptionWhenInvoiceDateIsNotOnRange() {
-        when(creditCardRepository.findById("cId")).thenReturn(Optional.of(CreditCard.builder().dayOfDueDate(1).build()));
-        when(invoiceRepository.findAllByCreditCardId("cId")).thenReturn(Collections.emptyList());
+        when(cardRepository.findById("cId")).thenReturn(Optional.of(Card.builder().dayOfDueDate(1).build()));
+        when(invoiceRepository.findAllByCardId("cId")).thenReturn(Collections.emptyList());
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> processInvoiceService.processInvoice(
@@ -120,8 +120,8 @@ class ProcessInvoiceServiceTest {
 
     @Test
     void shouldThrowExceptionWhenOcurrenceDateIsFuture() {
-        when(creditCardRepository.findById("cId")).thenReturn(Optional.of(CreditCard.builder().dayOfDueDate(1).build()));
-        when(invoiceRepository.findAllByCreditCardId("cId")).thenReturn(Collections.emptyList());
+        when(cardRepository.findById("cId")).thenReturn(Optional.of(Card.builder().dayOfDueDate(1).build()));
+        when(invoiceRepository.findAllByCardId("cId")).thenReturn(Collections.emptyList());
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> processInvoiceService.processInvoice(

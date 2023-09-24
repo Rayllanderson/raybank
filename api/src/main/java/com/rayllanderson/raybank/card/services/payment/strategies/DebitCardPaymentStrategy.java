@@ -2,8 +2,7 @@ package com.rayllanderson.raybank.card.services.payment.strategies;
 
 import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacade;
 import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacadeInput;
-import com.rayllanderson.raybank.card.models.CreditCard;
-import com.rayllanderson.raybank.card.services.payment.CardPaymentService;
+import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ public class DebitCardPaymentStrategy implements CardPaymentStrategy {
 
     @Override
     @Transactional
-    public Transaction pay(final PaymentCardInput payment, final CreditCard card) {
+    public Transaction pay(final PaymentCardInput payment, final Card card) {
 
         final var debit = DebitAccountFacadeInput.from(payment, card);
         return debitAccountFacade.process(debit);

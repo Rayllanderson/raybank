@@ -8,14 +8,15 @@ import java.util.HashSet;
 public class BankAccountCreator {
 
     public static BankAccount createBankAccountSaved(){
-        return new BankAccount(
-                "1",
-                999999999,
-                new BigDecimal(500),
-                CreditCardCreator.createCreditCardSaved(),
-                UserCreator.createUserWithId(),
-                new HashSet<>()
-        );
+        return null;
+//        return new BankAccount(
+//                "1",
+//                999999999,
+//                new BigDecimal(500),
+//                CreditCardCreator.createCreditCardSaved(),
+//                UserCreator.createUserWithId(),
+//                new HashSet<>()
+//        );
     }
 
     public static BankAccount createAnotherBankAccountSaved(){
@@ -24,7 +25,7 @@ public class BankAccountCreator {
                 .accountNumber(999999999)
                 .balance(new BigDecimal(500))
                 .user(UserCreator.createUserWithId())
-                .creditCard(CreditCardCreator.createCreditCardSaved())
+                .card(CreditCardCreator.createCreditCardSaved())
                 .build();
     }
 

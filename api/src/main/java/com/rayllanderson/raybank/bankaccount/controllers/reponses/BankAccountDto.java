@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.bankaccount.controllers.reponses;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.card.services.CreditCardDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,12 +18,12 @@ public class BankAccountDto {
     private String userName;
     private Integer accountNumber;
     private BigDecimal balance;
-    private CreditCardDto creditCardDto;
+//    private CreditCardDto creditCardDto; //todo:: criar novo dto para cartao
 
     public static BankAccountDto fromBankAccount(BankAccount bankAccount){
         BankAccountDto dto = new ModelMapper().map(bankAccount, BankAccountDto.class);
         dto.setUserName(bankAccount.getUser().getName());
-        dto.setCreditCardDto(CreditCardDto.fromCreditCard(bankAccount.getCreditCard()));
+//        dto.setCreditCardDto(CreditCardDto.fromCreditCard(bankAccount.getCard()));
         return dto;
     }
 }

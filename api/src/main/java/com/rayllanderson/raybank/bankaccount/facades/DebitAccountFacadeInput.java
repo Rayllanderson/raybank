@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.bankaccount.facades;
 
 import com.rayllanderson.raybank.bankaccount.services.DebitAccountInput;
-import com.rayllanderson.raybank.card.models.CreditCard;
+import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.invoice.services.payment.InvoicePaymentInput;
 import com.rayllanderson.raybank.shared.dtos.Destination;
@@ -31,7 +31,7 @@ public class DebitAccountFacadeInput {
         return new DebitAccountFacadeInput(input.getAccountId(), input.getAmount(), TransactionType.INVOICE_PAYMENT, destination);
     }
 
-    public static DebitAccountFacadeInput from(final PaymentCardInput input, final CreditCard card) {
+    public static DebitAccountFacadeInput from(final PaymentCardInput input, final Card card) {
         final var destination = new Destination(input.getEstablishmentId(), Type.ACCOUNT);
         return new DebitAccountFacadeInput(card.getAccountId(), input.getAmount(), TransactionType.DEBIT_CARD_PAYMENT, destination);
     }

@@ -19,7 +19,7 @@ import static com.rayllanderson.raybank.external.payment.models.ExternalTransact
 @RequiredArgsConstructor
 public class ExternalExceptionHandler {
 
-    private final ExternalTransactionRepository ExternalTransactionRepository;
+    private final ExternalTransactionRepository externalTransactionRepository;
 
     @ExceptionHandler(RaybankExternalException.class)
     public ResponseEntity<ExternalErrorResponse> handleExternalException(RaybankExternalException e) {
@@ -36,13 +36,13 @@ public class ExternalExceptionHandler {
     })
     public ResponseEntity<ExternalErrorResponse> handleExternalException(RaybankExternalException e, HttpServletRequest request) {
         log.error("Handling external exception: {}", e.toString());
-        var possibleBankStatement = e.getBankStatement();
+        var possibleBankStatement = e.getExternalTransaction();
         if(possibleBankStatement.isPresent()) {
             var bankStatement = possibleBankStatement.get();
             var situation = new ExternalTransactionSituation(ERROR, e.getDescription());
             bankStatement.setSituation(situation);
             log.error("Salvando {} com status {}", bankStatement, ERROR);
-            ExternalTransactionRepository.save(bankStatement);
+            externalTransactionRepository.save(bankStatement);
         }
         return ResponseEntity.status(e.getStatus()).body(ExternalErrorResponse.fromExternalException(e));
     }

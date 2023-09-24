@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     List<Invoice> findAllByClosingDateLessThanEqualAndStatus(LocalDate closingDate, InvoiceStatus status);
-    List<Invoice> findAllByCreditCardId(String creditCardId);
+    List<Invoice> findAllByCardId(String cardId);
     List<Invoice> findAllByDueDateLessThanEqualAndStatusAndTotalIsNot(LocalDate dueDate, InvoiceStatus status, BigDecimal total);
 }

@@ -1,9 +1,8 @@
 package com.rayllanderson.raybank.invoice.services.scheduler;
 
-import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
-import com.rayllanderson.raybank.card.repository.CreditCardRepository;
+import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import java.util.List;
 public class CloseInvoiceService {
 
     private final InvoiceRepository invoiceRepository;
-    private final CreditCardRepository cardRepository;
+    private final CardRepository cardRepository;
 
     public void execute() {
         final var now = LocalDate.now();
@@ -24,6 +23,8 @@ public class CloseInvoiceService {
 
         invoicesToClose.forEach(closedInvoice -> {
             closedInvoice.close();
+
+            //todo::ajustar para abrir next invoice
 
 //            final CreditCard creditCard = cardRepository.findByInvoicesContaining(closedInvoice);
 

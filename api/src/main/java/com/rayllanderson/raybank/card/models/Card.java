@@ -27,7 +27,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class CreditCard extends AbstractAggregateRoot<CreditCard> {
+public class Card extends AbstractAggregateRoot<Card> {
 
     @EqualsAndHashCode.Include
     @Id
@@ -44,8 +44,8 @@ public class CreditCard extends AbstractAggregateRoot<CreditCard> {
     @OneToOne
     private BankAccount bankAccount;
 
-    public static CreditCard create(Long number, BigDecimal limit, Integer securityCode, YearMonth expiryDate, Integer dueDate, BankAccount bankAccount) {
-        final var c = CreditCard.builder()
+    public static Card create(Long number, BigDecimal limit, Integer securityCode, YearMonth expiryDate, Integer dueDate, BankAccount bankAccount) {
+        final var c = Card.builder()
                 .id(UUID.randomUUID().toString())
                 .number(number)
                 .bankAccount(bankAccount)
@@ -60,8 +60,8 @@ public class CreditCard extends AbstractAggregateRoot<CreditCard> {
         return c;
     }
 
-    public static CreditCard withId(final String cardId) {
-        return CreditCard.builder().id(cardId).build();
+    public static Card withId(final String cardId) {
+        return Card.builder().id(cardId).build();
     }
 
     public void credit(final CreditInput creditInput) {

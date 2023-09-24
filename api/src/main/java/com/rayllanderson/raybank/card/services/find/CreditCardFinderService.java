@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.card.services.find;
 
-import com.rayllanderson.raybank.card.repository.CreditCardRepository;
+import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreditCardFinderService {
 
-    private final CreditCardRepository creditCardRepository;
+    private final CardRepository cardRepository;
 
     @Transactional(readOnly = true)
     public CardDetailsOutput findById(String cardId){
-        return CardDetailsOutput.fromCreditCard(creditCardRepository.findById(cardId)
+        return CardDetailsOutput.fromCreditCard(cardRepository.findById(cardId)
                 .orElseThrow(() -> new NotFoundException("Cartão não encontrado")));
     }
 }

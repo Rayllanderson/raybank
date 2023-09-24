@@ -1,12 +1,11 @@
 package com.rayllanderson.raybank.statement.services.create;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.card.repository.CreditCardRepository;
+import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
-import com.rayllanderson.raybank.transaction.models.invoice.InvoicePaymentTransaction;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateInvoicePaymentStatementService implements CreateStatementService {
 
-    private final CreditCardRepository cardRepository;
+    private final CardRepository cardRepository;
     private final InvoiceRepository invoiceRepository;
     private final BankStatementRepository bankStatementRepository;
 

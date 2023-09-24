@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.invoice;
 
-import com.rayllanderson.raybank.card.models.CreditCard;
+import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.invoice.models.Installment;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
@@ -16,11 +16,11 @@ import java.util.UUID;
 public class InvoiceUtils {
 
     public static Invoice create(LocalDate dueDate, BigDecimal total, InvoiceStatus status) {
-        return new Invoice(UUID.randomUUID().toString(), dueDate, dueDate.minusDays(6), total, status, new CreditCard(), new ArrayList<>());
+        return new Invoice(UUID.randomUUID().toString(), dueDate, dueDate.minusDays(6), total, status, new Card(), new ArrayList<>());
     }
 
     public static Invoice create(LocalDate dueDate, BigDecimal total, InvoiceStatus status, Installment... installments) {
-        return new Invoice(UUID.randomUUID().toString(), dueDate, dueDate.minusDays(6), total, status, new CreditCard(), new ArrayList<>(List.of(installments)));
+        return new Invoice(UUID.randomUUID().toString(), dueDate, dueDate.minusDays(6), total, status, new Card(), new ArrayList<>(List.of(installments)));
     }
 
     public static Installment installment(String description, BigDecimal total, BigDecimal value) {

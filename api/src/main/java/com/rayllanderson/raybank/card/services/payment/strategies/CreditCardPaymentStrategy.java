@@ -1,9 +1,8 @@
 package com.rayllanderson.raybank.card.services.payment.strategies;
 
 import com.rayllanderson.raybank.card.events.CardPaymentCompletedEvent;
-import com.rayllanderson.raybank.card.models.CreditCard;
+import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
-import com.rayllanderson.raybank.card.services.payment.strategies.CardPaymentStrategy;
 import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
 import com.rayllanderson.raybank.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.transaction.models.Transaction;
@@ -21,7 +20,7 @@ public class CreditCardPaymentStrategy implements CardPaymentStrategy {
 
     @Override
     @Transactional
-    public Transaction pay(final PaymentCardInput payment, final CreditCard card) {
+    public Transaction pay(final PaymentCardInput payment, final Card card) {
 
         card.pay(payment.toCreditCardPayment());
 

@@ -22,7 +22,7 @@ import static com.rayllanderson.raybank.external.exceptions.RaybankExternalTypeE
 public class RaybankExternalException extends RuntimeException {
     private final RaybankExternalTypeError reason;
     private String message;
-    private ExternalTransaction bankStatement;
+    private ExternalTransaction externalTransaction;
 
     public RaybankExternalException(RaybankExternalTypeError reason) {
         super(reason.getDescription());
@@ -35,17 +35,17 @@ public class RaybankExternalException extends RuntimeException {
         this.message = message;
     }
 
-    public RaybankExternalException(RaybankExternalTypeError reason, String message, ExternalTransaction bankStatement) {
+    public RaybankExternalException(RaybankExternalTypeError reason, String message, ExternalTransaction externalTransaction) {
         super(reason.getDescription());
         this.reason = reason;
         this.message = message;
-        this.bankStatement = bankStatement;
+        this.externalTransaction = externalTransaction;
     }
 
-    public RaybankExternalException(RaybankExternalTypeError reason, ExternalTransaction bankStatement) {
+    public RaybankExternalException(RaybankExternalTypeError reason, ExternalTransaction externalTransaction) {
         super(reason.getDescription());
         this.reason = reason;
-        this.bankStatement = bankStatement;
+        this.externalTransaction = externalTransaction;
     }
 
     public HttpStatus getStatus() {
@@ -64,8 +64,8 @@ public class RaybankExternalException extends RuntimeException {
         return reason.name();
     }
 
-    public Optional<ExternalTransaction> getBankStatement() {
-        return Optional.ofNullable(bankStatement);
+    public Optional<ExternalTransaction> getExternalTransaction() {
+        return Optional.ofNullable(externalTransaction);
     }
 
     public static class InsufficientCreditCardLimit extends RaybankExternalException {

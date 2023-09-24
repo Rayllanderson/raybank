@@ -26,7 +26,7 @@ public class InvoicePostgresGateway implements InvoiceGateway {
 
     @Override
     public Invoice findCurrentByCardId(final String cardId) {
-        final var allInvoicesByCard = invoiceRepository.findAllByCreditCardId(cardId);
+        final var allInvoicesByCard = invoiceRepository.findAllByCardId(cardId);
         final InvoiceListHelper invoices = new InvoiceListHelper(allInvoicesByCard);
         return invoices.getCurrentInvoiceToPay();
     }

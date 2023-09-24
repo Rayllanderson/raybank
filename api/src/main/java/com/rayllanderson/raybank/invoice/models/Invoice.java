@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.invoice.models;
 
-import com.rayllanderson.raybank.card.models.CreditCard;
+import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.CascadeType;
@@ -38,17 +38,17 @@ public class Invoice implements Comparable<Invoice> {
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
     @ManyToOne
-    private CreditCard creditCard;
+    private Card card;
     @OneToMany(cascade =  {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Installment> installments = new ArrayList<>();
 
-    public Invoice(String id, LocalDate dueDate, LocalDate closingDate, BigDecimal total, InvoiceStatus status, CreditCard creditCard, List<Installment> installments) {
+    public Invoice(String id, LocalDate dueDate, LocalDate closingDate, BigDecimal total, InvoiceStatus status, Card card, List<Installment> installments) {
         this.id = id;
         this.dueDate = dueDate;
         this.closingDate = closingDate;
         this.total = MoneyUtils.from(total);
         this.status = status;
-        this.creditCard = creditCard;
+        this.card = card;
         this.installments = new ArrayList<>(installments == null ? new ArrayList<>() : installments);
     }
 
@@ -86,7 +86,7 @@ public class Invoice implements Comparable<Invoice> {
                 nextWorkingDay.minusDays(DAYS_BEFORE_CLOSE),
                 BigDecimal.ZERO,
                 InvoiceStatus.NONE,
-                CreditCard.withId(cardId),
+                Card.withId(cardId),
                 new ArrayList<>());
     }
 
@@ -195,6 +195,6 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     public String getCardId() {
-        return this.creditCard.getId();
+        return this.card.getId();
     }
 }

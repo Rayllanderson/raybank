@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.card.services.find;
 
-import com.rayllanderson.raybank.card.models.CreditCard;
+import com.rayllanderson.raybank.card.models.Card;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -18,7 +18,7 @@ public class CardDetailsOutput {
     private BigDecimal limit;
     private BigDecimal balance;
 
-    public static CardDetailsOutput fromCreditCard(CreditCard c){
+    public static CardDetailsOutput fromCreditCard(Card c){
         return new ModelMapper().map(c, CardDetailsOutput.class);
     }
 }

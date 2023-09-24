@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.services.credit;
 
-import com.rayllanderson.raybank.card.models.CreditCard;
-import com.rayllanderson.raybank.card.repository.CreditCardRepository;
+import com.rayllanderson.raybank.card.models.Card;
+import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.card.transactions.credit.CardCreditTransaction;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.transaction.models.Transaction;
@@ -14,19 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CardCreditService {
 
-    private final CreditCardRepository creditCardRepository;
+    private final CardRepository cardRepository;
     private final TransactionRepository transactionRepository;
 
     @Transactional
     public Transaction credit(final CardCreditInput cardCreditInput) {
-        final CreditCard creditCard = creditCardRepository.findById(cardCreditInput.getCardId())
+        final Card card = cardRepository.findById(cardCreditInput.getCardId())
                 .orElseThrow(() -> new NotFoundException(String.format("card %s was not found", cardCreditInput.getCardId())));
 
         final Transaction originalTransaction = getReferenceTransaction(cardCreditInput);
 
-        creditCard.credit(cardCreditInput.toDomainInput());
+        card.credit(cardCreditInput.toDomainInput());
 
-        final Transaction cardCreditTransaction = CardCreditTransaction.from(cardCreditInput, creditCard.getAccountId(), originalTransaction.getId());
+        final Transaction cardCreditTransaction = CardCreditTransaction.from(cardCreditInput, card.getAccountId(), originalTransaction.getId());
         return transactionRepository.save(cardCreditTransaction);
     }
 

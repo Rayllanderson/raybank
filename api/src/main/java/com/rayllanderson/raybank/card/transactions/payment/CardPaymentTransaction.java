@@ -1,14 +1,12 @@
 package com.rayllanderson.raybank.card.transactions.payment;
 
-import com.rayllanderson.raybank.card.models.CreditCard;
+import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.transaction.models.Credit;
 import com.rayllanderson.raybank.transaction.models.Debit;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +22,7 @@ public class CardPaymentTransaction extends Transaction {
 
     private Integer installments;
 
-    public static CardPaymentTransaction from(PaymentCardInput paymentCardInput, CreditCard card) {
+    public static CardPaymentTransaction from(PaymentCardInput paymentCardInput, Card card) {
         final var credit = new Credit(paymentCardInput.getEstablishmentId(), Credit.Destination.ESTABLISHMENT_ACCOUNT);
         final var debit = new Debit(card.getId(), Debit.Origin.CARD);
 

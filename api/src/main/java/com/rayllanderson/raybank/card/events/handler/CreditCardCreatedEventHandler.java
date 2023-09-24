@@ -1,8 +1,8 @@
 package com.rayllanderson.raybank.card.events.handler;
 
 import com.rayllanderson.raybank.card.events.CreditCardCreatedEvent;
-import com.rayllanderson.raybank.card.models.CreditCard;
-import com.rayllanderson.raybank.card.repository.CreditCardRepository;
+import com.rayllanderson.raybank.card.models.Card;
+import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
@@ -21,7 +21,7 @@ import static com.rayllanderson.raybank.utils.DateManagerUtil.plusOneMonthOf;
 @RequiredArgsConstructor
 public class CreditCardCreatedEventHandler {
 
-    private final CreditCardRepository creditCardRepository;
+    private final CardRepository cardRepository;
     private final InvoiceRepository invoiceRepository;
 
     @Async
@@ -29,13 +29,13 @@ public class CreditCardCreatedEventHandler {
     public void handler(final CreditCardCreatedEvent event) {
         log.info("Handling CreditCardCreatedEvent={}", event.id());
 
-        final CreditCard creditCard = creditCardRepository.findById(event.id())
+        final Card card = cardRepository.findById(event.id())
                 .orElseThrow(() -> new NotFoundException(String.format("Card %s was not found", event.id())));
 
-        final var firstInvoice = Invoice.createOpenInvoice(plusOneMonthOf(creditCard.getDayOfDueDate()), creditCard.getId());
+        final var firstInvoice = Invoice.createOpenInvoice(plusOneMonthOf(card.getDayOfDueDate()), card.getId());
         invoiceRepository.save(firstInvoice);
 
-        creditCard.activate();
-        creditCardRepository.save(creditCard);
+        card.activate();
+        cardRepository.save(card);
     }
 }

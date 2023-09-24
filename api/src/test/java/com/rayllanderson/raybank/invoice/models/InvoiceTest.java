@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.invoice.models;
 
-import com.rayllanderson.raybank.card.models.CreditCard;
+import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import org.junit.jupiter.api.Test;
 
@@ -82,7 +82,7 @@ class InvoiceTest {
         final var dueDate = LocalDate.now().plusDays(5);
         Invoice invoice = create(dueDate, bigDecimalOf(10), OPEN);
 
-        assertThatExceptionOfType(IllegalArgumentException.class)
+        assertThatExceptionOfType(UnprocessableEntityException.class)
                 .isThrownBy(() -> invoice.processPayment(bigDecimalOf(40)))
                 .withMessage("O valor recebido é superior ao da fatura.");
 
@@ -161,6 +161,6 @@ class InvoiceTest {
     }
 
     private static Invoice create(LocalDate dueDate, BigDecimal total, InvoiceStatus status) {
-        return new Invoice("id", dueDate, dueDate.minusDays(6), total, status, new CreditCard(), new ArrayList<>());
+        return new Invoice("id", dueDate, dueDate.minusDays(6), total, status, new Card(), new ArrayList<>());
     }
 }

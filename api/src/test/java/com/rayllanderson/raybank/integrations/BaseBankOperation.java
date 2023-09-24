@@ -2,7 +2,6 @@ package com.rayllanderson.raybank.integrations;
 
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
-import com.rayllanderson.raybank.card.controllers.CreditCardDto;
 import com.rayllanderson.raybank.pix.controllers.requests.PixPostDto;
 import com.rayllanderson.raybank.pix.controllers.responses.PixPostResponse;
 import com.rayllanderson.raybank.card.controllers.external.PaymentCardRequest;
@@ -54,31 +53,31 @@ public class BaseBankOperation extends BaseApiTest {
     /**
      * @return Cartão de crédito do usuário autenticado
      */
-    protected com.rayllanderson.raybank.card.services.CreditCardDto getAuthCreditCard(){
-        return get("/api/v1/users/authenticated/bank-account/process-card",
-                com.rayllanderson.raybank.card.services.CreditCardDto.class).getBody();
-    }
+//    protected com.rayllanderson.raybank.card.services.CreditCardDto getAuthCreditCard(){
+//        return get("/api/v1/users/authenticated/bank-account/process-card",
+//                com.rayllanderson.raybank.card.services.CreditCardDto.class).getBody();
+//    }
 
     protected void payInvoice(BigDecimal value){
-        var obj = CreditCardDto.builder().amount(value).account(authenticatedUserAccount).build();
-        super.post("/api/v1/users/authenticated/bank-account/process-card/debit/invoice", obj, Void.class);
+//        var obj = CreditCardDto.builder().amount(value).account(authenticatedUserAccount).build();
+//        super.post("/api/v1/users/authenticated/bank-account/process-card/debit/invoice", obj, Void.class);
     }
 
     /**
      * Realiza o pagamento da fatura no valor de 300 reais
      */
     protected void pay300Invoice(){
-        var obj = CreditCardDto.builder().amount(new BigDecimal("300.00")).account(authenticatedUserAccount).build();
-        super.post("/api/v1/users/authenticated/bank-account/process-card/debit/invoice", obj, Void.class);
+//        var obj = CreditCardDto.builder().amount(new BigDecimal("300.00")).account(authenticatedUserAccount).build();
+//        super.post("/api/v1/users/authenticated/bank-account/process-card/debit/invoice", obj, Void.class);
     }
 
     protected void buyWithCreditCard(BigDecimal value){
         var payment = PaymentCardRequest.builder()
                 .amount(value)
                 .card(PaymentCardRequest.Card.builder()
-                        .number(authenticatedUserAccount.getCreditCard().getNumber().toString())
-                        .securityCode(authenticatedUserAccount.getCreditCard().getSecurityCode().toString())
-                        .expiryDate(authenticatedUserAccount.getCreditCard().getExpiryDate()).build())
+                        .number(authenticatedUserAccount.getCard().getNumber().toString())
+                        .securityCode(authenticatedUserAccount.getCard().getSecurityCode().toString())
+                        .expiryDate(authenticatedUserAccount.getCard().getExpiryDate()).build())
                 .paymentType(PaymentTypeRequest.CREDIT)
                 .installments(3)
                 .ocurredOn(LocalDateTime.now())

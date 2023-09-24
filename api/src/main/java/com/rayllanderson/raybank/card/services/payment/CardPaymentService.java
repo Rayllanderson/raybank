@@ -2,8 +2,8 @@ package com.rayllanderson.raybank.card.services.payment;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
-import com.rayllanderson.raybank.card.models.CreditCard;
-import com.rayllanderson.raybank.card.repository.CreditCardRepository;
+import com.rayllanderson.raybank.card.models.Card;
+import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.card.services.payment.strategies.CardPaymentStrategy;
 import com.rayllanderson.raybank.card.services.payment.strategies.CardPaymentStrategyFactory;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
@@ -18,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CardPaymentService {
 
     private final BankAccountRepository bankAccountRepository;
-    private final CreditCardRepository creditCardRepository;
+    private final CardRepository cardRepository;
     private final CardPaymentStrategyFactory cardPaymentStrategyFactory;
 
     @Transactional
     public Transaction pay(final PaymentCardInput payment) {
-        final CreditCard card = creditCardRepository.findByNumber(payment.getCardNumber())
+        final Card card = cardRepository.findByNumber(payment.getCardNumber())
                 .orElseThrow(() -> new NotFoundException("Cartão de crédito inexistente"));
 
         validateCvvAndExpiryDate(payment, card);
@@ -48,7 +48,7 @@ public class CardPaymentService {
         return establishment;
     }
 
-    private static void validateCvvAndExpiryDate(PaymentCardInput payment, CreditCard card) {
+    private static void validateCvvAndExpiryDate(PaymentCardInput payment, Card card) {
         if (!card.isValidSecurityCode(payment.getCardSecurityCode())) {
             throw new UnprocessableEntityException("Código de Segurança Inválido");
         }

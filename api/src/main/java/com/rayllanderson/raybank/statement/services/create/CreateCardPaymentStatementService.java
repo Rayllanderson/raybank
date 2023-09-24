@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.statement.services.create;
 
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.card.models.CreditCard;
+import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
 import com.rayllanderson.raybank.transaction.models.Transaction;
@@ -24,7 +24,7 @@ public class CreateCardPaymentStatementService implements CreateStatementService
     public void process(final Transaction transaction) {
         final var cardTransaction = (CardPaymentTransaction) transaction;
 
-        final CreditCard payerCard = null;
+        final Card payerCard = null;
         final var payerAccount = bankAccountRepository.findById(payerCard.getAccountId())
                 .orElseThrow(() -> new NotFoundException(String.format("Bank Account from payer card id %s was not found", payerCard.getId())));
 

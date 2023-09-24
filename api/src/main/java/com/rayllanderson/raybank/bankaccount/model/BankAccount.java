@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.bankaccount.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rayllanderson.raybank.card.models.CreditCard;
+import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import com.rayllanderson.raybank.users.model.User;
@@ -38,7 +38,7 @@ public class BankAccount {
     @Enumerated(EnumType.STRING)
     private BankAccountType type;
     @OneToOne(orphanRemoval = true)
-    private CreditCard creditCard;
+    private Card card;
     @JsonIgnore
     @OneToOne
     private User user;
@@ -126,10 +126,10 @@ public class BankAccount {
         return BankAccount.builder().id(id).build();
     }
 
-    public boolean sameCard(final CreditCard creditCard) {
-        return Optional.ofNullable(this.getCreditCard())
+    public boolean sameCard(final Card card) {
+        return Optional.ofNullable(this.getCard())
                 .stream()
-                .anyMatch(c -> c.getId().equals(creditCard.getId()));
+                .anyMatch(c -> c.getId().equals(card.getId()));
     }
 
     public boolean isEstablishment() {
