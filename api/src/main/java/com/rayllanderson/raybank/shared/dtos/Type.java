@@ -1,5 +1,5 @@
 package com.rayllanderson.raybank.shared.dtos;
 
-public enum CreditType {
+public enum Type {
     INVOICE
 }
