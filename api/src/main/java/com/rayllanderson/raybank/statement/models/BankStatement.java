@@ -189,17 +189,6 @@ public class BankStatement {
                 .build();
     }
 
-
-    public static BankStatement createInvoicePaymentBankStatement(BigDecimal amount, BankAccount accountOwner){
-        return BankStatement.builder().
-                moment(Instant.now())
-                .type(BankStatementType.INVOICE_PAYMENT)
-                .amount(amount)
-                .message(null)
-                .accountOwner(accountOwner)
-                .build();
-    }
-
     public static BankStatement createInvoicePaymentBankStatement(BigDecimal amount, BankAccount accountOwner, String transactionId){
         return BankStatement.builder().
                 moment(Instant.now())

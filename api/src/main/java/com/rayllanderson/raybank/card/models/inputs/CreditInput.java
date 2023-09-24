@@ -1,21 +1,15 @@
 package com.rayllanderson.raybank.card.models.inputs;
 
+import com.rayllanderson.raybank.shared.dtos.Origin;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
 public class CreditInput {
 
-    private final BigDecimal amount;
-    private final CreditOrigin origin;
-
-    @Getter
-    @RequiredArgsConstructor
-    public static class CreditOrigin {
-        private final String identifier;
-        private final CreditOriginType type;
-    }
+    private BigDecimal amount;
+    private Origin origin;
 }

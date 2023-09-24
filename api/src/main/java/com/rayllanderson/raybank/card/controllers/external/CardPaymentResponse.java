@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.controllers.external;
 
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.transaction.models.card.CardPaymentTransaction;
+import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +23,7 @@ public class CardPaymentResponse {
         return new CardPaymentResponse(bankStatement.getId(), null, bankStatement.getType().name(), amount);
     }
 
-    public static CardPaymentResponse fromTransaction(final CardPaymentTransaction bankStatement) {
-        return new CardPaymentResponse(bankStatement.getId(), bankStatement.getMoment(), bankStatement.getPaymentType().name(), bankStatement.getAmount());
+    public static CardPaymentResponse fromTransaction(final CardPaymentTransaction transaction) {
+        return new CardPaymentResponse(transaction.getId(), transaction.getMoment(), transaction.getType().name(), transaction.getAmount());
     }
 }

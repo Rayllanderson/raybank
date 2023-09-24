@@ -4,7 +4,7 @@ import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.transaction.models.card.CardPaymentTransaction;
+import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CreateCardStatementService implements CreateStatementService {
+public class CreateCardPaymentStatementService implements CreateStatementService {
 
     private final BankAccountRepository bankAccountRepository;
     private final BankStatementRepository bankStatementRepository;
@@ -37,7 +37,8 @@ public class CreateCardStatementService implements CreateStatementService {
     }
 
     private void processEstablishmentStatement(CardPaymentTransaction cardPaymentTransaction) {
-        final var establismentId = cardPaymentTransaction.getEstablishmentId();
+//        final var establismentId = cardPaymentTransaction.getEstablishmentId();
+        final String establismentId = null;
         final var establishmentAccount = bankAccountRepository.findByUserId(establismentId)
                 .orElseThrow(() -> new NotFoundException(String.format("Bank Account from establishment id %s was not found", establismentId)));
 

@@ -6,7 +6,7 @@ import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.models.inputs.CardPayment;
-import com.rayllanderson.raybank.transaction.models.card.CardPaymentTransaction;
+import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import com.rayllanderson.raybank.users.repository.UserRepository;
@@ -39,10 +39,10 @@ public class CardPaymentService {
         final CardPayment payment = getCardPayment(paymentInput);
 
         creditCard.pay(payment);
-        establishmentAccount.receiveCardPayment(paymentInput.getAmount());
+        establishmentAccount.receiveCardPayment(paymentInput.getAmount()); //todo:: por event
         creditCardRepository.save(creditCard);
 
-        return transactionRepository.save(CardPaymentTransaction.from(paymentInput));
+        return transactionRepository.save(CardPaymentTransaction.from(paymentInput, creditCard.getAccountId()));
     }
 
     private CardPayment getCardPayment(PaymentCardInput payment) {
