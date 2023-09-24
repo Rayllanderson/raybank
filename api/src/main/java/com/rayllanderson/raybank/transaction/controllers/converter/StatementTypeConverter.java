@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.statement.controllers.converter;
+package com.rayllanderson.raybank.transaction.controllers.converter;
 
-import com.rayllanderson.raybank.statement.controllers.StatementTypeParam;
+import com.rayllanderson.raybank.transaction.controllers.StatementTypeParam;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

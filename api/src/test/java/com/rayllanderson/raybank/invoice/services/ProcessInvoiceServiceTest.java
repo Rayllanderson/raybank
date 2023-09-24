@@ -40,7 +40,7 @@ class ProcessInvoiceServiceTest {
     @Test
     void shouldProcessInvoices() {
         when(cardRepository.findById("cId")).thenReturn(Optional.of(Card.builder().dayOfDueDate(1).build()));
-        when(invoiceRepository.findAllByCardId("cId")).thenReturn(Collections.emptyList());
+        when(invoiceRepository.findAllByCard_Id("cId")).thenReturn(Collections.emptyList());
 
         final var invoices = processInvoiceService.processInvoice(BigDecimal.valueOf(150),
                 3,
@@ -77,7 +77,7 @@ class ProcessInvoiceServiceTest {
                 create(parse("2023-12-01"), bigDecimalOf(50.00), NONE, installment("alibaba 3/3", bigDecimalOf(150.00), bigDecimalOf(50.00)))
         );
         when(cardRepository.findById("cId")).thenReturn(Optional.of(Card.builder().dayOfDueDate(1).build()));
-        when(invoiceRepository.findAllByCardId("cId")).thenReturn(savedInvoices);
+        when(invoiceRepository.findAllByCard_Id("cId")).thenReturn(savedInvoices);
 
         final var invoices = processInvoiceService.processInvoice(BigDecimal.valueOf(100), 2, "amazon", LocalDateTime.parse("2023-09-01T20:41:37"), "cId");
 
@@ -106,7 +106,7 @@ class ProcessInvoiceServiceTest {
     @Test
     void shouldThrowExceptionWhenInvoiceDateIsNotOnRange() {
         when(cardRepository.findById("cId")).thenReturn(Optional.of(Card.builder().dayOfDueDate(1).build()));
-        when(invoiceRepository.findAllByCardId("cId")).thenReturn(Collections.emptyList());
+        when(invoiceRepository.findAllByCard_Id("cId")).thenReturn(Collections.emptyList());
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> processInvoiceService.processInvoice(
@@ -121,7 +121,7 @@ class ProcessInvoiceServiceTest {
     @Test
     void shouldThrowExceptionWhenOcurrenceDateIsFuture() {
         when(cardRepository.findById("cId")).thenReturn(Optional.of(Card.builder().dayOfDueDate(1).build()));
-        when(invoiceRepository.findAllByCardId("cId")).thenReturn(Collections.emptyList());
+        when(invoiceRepository.findAllByCard_Id("cId")).thenReturn(Collections.emptyList());
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> processInvoiceService.processInvoice(

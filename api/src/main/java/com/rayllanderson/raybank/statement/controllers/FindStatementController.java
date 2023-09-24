@@ -16,9 +16,9 @@ import java.util.List;
 
 import static com.rayllanderson.raybank.security.keycloak.JwtUtils.getUserIdFrom;
 
-@RestController
+//@RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/internal/statements")
+//@RequestMapping("api/v1/internal/statements")
 public class FindStatementController {
 
     private final BankStatementFinderService bankStatementFinderService;

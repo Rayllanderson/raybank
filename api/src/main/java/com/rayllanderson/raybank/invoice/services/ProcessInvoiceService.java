@@ -30,7 +30,7 @@ public class ProcessInvoiceService {
     private final CardRepository cardRepository;
 
     public List<Invoice> processInvoice(BigDecimal total, int installments, String paymentDescription, LocalDateTime ocurredOn, String cardId) {
-        final Set<Invoice> invoices = new HashSet<>(invoiceRepository.findAllByCardId(cardId));
+        final Set<Invoice> invoices = new HashSet<>(invoiceRepository.findAllByCard_Id(cardId));
 
         final Integer dayOfDueDate = getDayOfDueDate(cardId);
 

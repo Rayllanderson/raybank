@@ -194,6 +194,7 @@ public class Invoice implements Comparable<Invoice> {
         return amount.compareTo(this.total) > 0;
     }
 
+    @Transient
     public String getCardId() {
         return this.card.getId();
     }

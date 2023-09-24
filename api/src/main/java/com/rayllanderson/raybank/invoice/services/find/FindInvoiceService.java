@@ -16,7 +16,7 @@ public class FindInvoiceService {
     private final InvoiceRepository invoiceRepository;
 
     public List<FindInvoiceOutput> findAllByCardId(final String cardId) {
-        final var invoices = invoiceRepository.findAllByCardId(cardId);
+        final var invoices = invoiceRepository.findAllByCard_Id(cardId);
 
         Collections.sort(invoices);
 
