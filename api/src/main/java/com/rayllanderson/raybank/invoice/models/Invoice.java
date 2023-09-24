@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.invoice.models;
 
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.invoice.events.InvoiceClosedEvent;
 import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,7 +31,7 @@ import static com.rayllanderson.raybank.utils.DateManagerUtil.isBeforeOrEquals;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Invoice implements Comparable<Invoice> {
+public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparable<Invoice> {
     @Id
     private String id;
     private LocalDate dueDate;
@@ -150,8 +152,10 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     public void close() {
-        if (isAfterOrEquals(now(), closingDate) && isOpen())
+        if (isAfterOrEquals(now(), closingDate) && isOpen()) {
             this.status = InvoiceStatus.CLOSED;
+            registerEvent(new InvoiceClosedEvent(this));
+        }
     }
 
     public void overdue() {
