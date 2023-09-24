@@ -17,7 +17,6 @@ public class CardCreditFacadeInput {
 
     private String cardId;
     private BigDecimal amount;
-    private String referenceTransactionId;
     private Origin origin;
 
     public CardCreditInput toServiceInput() {
@@ -25,7 +24,7 @@ public class CardCreditFacadeInput {
     }
 
     public static CardCreditFacadeInput createFromInvoicePayment(final BigDecimal amount, String cardId, String invoiceId, String referenceTransactionId) {
-        final var origin = new Origin(invoiceId, Type.INVOICE);
-        return new CardCreditFacadeInput(cardId, amount, referenceTransactionId, origin);
+        final var origin = new Origin(invoiceId, Type.INVOICE, referenceTransactionId);
+        return new CardCreditFacadeInput(cardId, amount, origin);
     }
 }

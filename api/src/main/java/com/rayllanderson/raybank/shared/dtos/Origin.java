@@ -10,4 +10,5 @@ import lombok.Setter;
 public class Origin {
     private String identifier;
     private Type type;
+    private String referenceTransactionId;
 }

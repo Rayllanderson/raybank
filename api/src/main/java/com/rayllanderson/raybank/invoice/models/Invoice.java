@@ -127,7 +127,7 @@ public class Invoice implements Comparable<Invoice> {
             throw new UnprocessableEntityException("Não é possível receber pagamento para essa fatura.");
 
         if (isAmountGreaterThanTotal(amount)) {
-            throw new IllegalArgumentException("O valor recebido é superior ao da fatura.");
+            throw new UnprocessableEntityException("O valor recebido é superior ao da fatura.");
         }
 
         if (isPaymentDate() || isOverdue()) {

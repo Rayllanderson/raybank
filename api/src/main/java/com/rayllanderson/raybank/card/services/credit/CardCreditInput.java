@@ -14,7 +14,6 @@ public class CardCreditInput {
 
     private String cardId;
     private BigDecimal amount;
-    private String referenceTransactionId;
     private Origin origin;
 
     public CreditInput toDomainInput() {

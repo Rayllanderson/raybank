@@ -22,7 +22,7 @@ public class CardCreditService {
         final CreditCard creditCard = creditCardRepository.findById(cardCreditInput.getCardId())
                 .orElseThrow(() -> new NotFoundException(String.format("card %s was not found", cardCreditInput.getCardId())));
 
-        final Transaction originalTransaction = getReferenceTransaction(cardCreditInput, creditCard);
+        final Transaction originalTransaction = getReferenceTransaction(cardCreditInput, creditCard.getId());
 
         creditCard.credit(cardCreditInput.toDomainInput());
 
@@ -30,9 +30,10 @@ public class CardCreditService {
         return transactionRepository.save(cardCreditTransaction);
     }
 
-    private Transaction getReferenceTransaction(CardCreditInput cardCreditInput, CreditCard creditCard) {
-        return transactionRepository.findById(cardCreditInput.getReferenceTransactionId())
+    private Transaction getReferenceTransaction(CardCreditInput cardCreditInput, String cardId) {
+        final String referenceTransactionId = cardCreditInput.getOrigin().getReferenceTransactionId();
+        return transactionRepository.findById(referenceTransactionId)
                 .orElseThrow(() -> new NotFoundException(String.format("No Reference Transaction with id %s were found to credit the card %s",
-                        cardCreditInput.getReferenceTransactionId(), creditCard.getId())));
+                        referenceTransactionId, cardId)));
     }
 }
