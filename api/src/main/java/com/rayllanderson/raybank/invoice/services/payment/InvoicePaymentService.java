@@ -2,12 +2,11 @@ package com.rayllanderson.raybank.invoice.services.payment;
 
 import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacade;
 import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacadeInput;
+import com.rayllanderson.raybank.event.IntegrationEventPublisher;
+import com.rayllanderson.raybank.invoice.events.InvoicePaidEvent;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.invoice.models.Invoice;
-import com.rayllanderson.raybank.statement.aop.CreateStatement;
 import com.rayllanderson.raybank.transaction.models.Transaction;
-import com.rayllanderson.raybank.transaction.models.invoice.InvoicePaymentTransaction;
-import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +17,9 @@ public class InvoicePaymentService {
 
     private final InvoiceGateway invoiceGateway;
     private final DebitAccountFacade debitAccountFacade;
-    private final TransactionRepository transactionRepository;
+    private final IntegrationEventPublisher eventPublisher;
 
     @Transactional
-    @CreateStatement
     public Transaction payCurrent(final InvoicePaymentInput input) {
         final var currentInvoice = invoiceGateway.findCurrentByCardId(input.getCardId());
 
@@ -30,7 +28,6 @@ public class InvoicePaymentService {
     }
 
     @Transactional
-    @CreateStatement
     public Transaction payById(final InvoicePaymentInput input) {
         final Invoice invoiceToPay = invoiceGateway.findById(input.getInvoiceId());
 
@@ -38,11 +35,13 @@ public class InvoicePaymentService {
     }
 
     private Transaction processPayment(final InvoicePaymentInput input, final Invoice invoiceToPay) {
-        final var debit = DebitAccountFacadeInput.from(input);
-        debitAccountFacade.process(debit);
-
         invoiceToPay.processPayment(input.getAmount());
 
-        return transactionRepository.save(InvoicePaymentTransaction.from(input));
+        final var debit = DebitAccountFacadeInput.from(input);
+        final Transaction debitTransaction = debitAccountFacade.process(debit);
+
+        eventPublisher.publish(new InvoicePaidEvent(invoiceToPay, debitTransaction));
+
+        return debitTransaction;
     }
 }
