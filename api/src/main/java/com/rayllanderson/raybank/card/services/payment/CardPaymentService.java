@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.card.services.payment;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
+import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.card.events.CardPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.models.inputs.CardPayment;
@@ -10,7 +11,6 @@ import com.rayllanderson.raybank.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
-import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CardPaymentService {
 
-    private final UserRepository userRepository;
+    private final BankAccountRepository bankAccountRepository;
     private final IntegrationEventPublisher eventPublisher;
     private final CreditCardRepository creditCardRepository;
     private final TransactionRepository transactionRepository;
@@ -52,14 +52,14 @@ public class CardPaymentService {
     }
 
     private BankAccount getEstablishmentAccount(final PaymentCardInput payment) {
-        final var establishment = userRepository.findById(payment.getEstablishmentId())
+        final var establishment = bankAccountRepository.findById(payment.getEstablishmentId())
                 .orElseThrow(() -> new UnprocessableEntityException("Estabelecimento não pode receber pagamentos"));
 
         if (!establishment.isEstablishment()) {
             throw new UnprocessableEntityException("Estabelecimento não pode receber pagamentos");
         }
 
-        return establishment.getBankAccount();
+        return establishment;
     }
 
     private static void validateCvvAndExpiryDate(PaymentCardInput payment, CreditCard creditCard) {

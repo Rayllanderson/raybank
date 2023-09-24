@@ -5,20 +5,18 @@ import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import com.rayllanderson.raybank.users.model.User;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
@@ -132,5 +130,9 @@ public class BankAccount {
         return Optional.ofNullable(this.getCreditCard())
                 .stream()
                 .anyMatch(c -> c.getId().equals(creditCard.getId()));
+    }
+
+    public boolean isEstablishment() {
+        return BankAccountType.ESTABLISMENT.equals(this.type);
     }
 }

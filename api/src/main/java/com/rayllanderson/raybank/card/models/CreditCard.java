@@ -2,7 +2,6 @@ package com.rayllanderson.raybank.card.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.card.events.CardPaymentEvent;
 import com.rayllanderson.raybank.card.events.CreditCardCreatedEvent;
 import com.rayllanderson.raybank.card.models.inputs.CardPayment;
 import com.rayllanderson.raybank.card.models.inputs.CreditCardPayment;
@@ -81,8 +80,6 @@ public class CreditCard extends AbstractAggregateRoot<CreditCard> {
 
         if (payment instanceof DebitCardPayment)
             this.pay((DebitCardPayment) payment);
-
-        registerEvent(new CardPaymentEvent(payment, this.id));
     }
 
     protected void pay(final CreditCardPayment payment) throws UnprocessableEntityException {
@@ -129,7 +126,7 @@ public class CreditCard extends AbstractAggregateRoot<CreditCard> {
         return YearMonth.now().isAfter(this.expiryDate);
     }
 
-    public String getAccountId() { //todo::getBankAccountId
+    public String getAccountId() {
         return this.getBankAccount().getId();
     }
 
