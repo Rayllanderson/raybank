@@ -1,10 +1,12 @@
 package com.rayllanderson.raybank.card.services.payment;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
+import com.rayllanderson.raybank.card.events.CardPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.models.inputs.CardPayment;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
 import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
+import com.rayllanderson.raybank.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
@@ -18,29 +20,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class CardPaymentService {
 
     private final UserRepository userRepository;
+    private final IntegrationEventPublisher eventPublisher;
     private final CreditCardRepository creditCardRepository;
     private final TransactionRepository transactionRepository;
 
     @Transactional
     public CardPaymentTransaction pay(final PaymentCardInput paymentInput) {
-        final CreditCard creditCard = creditCardRepository.findByNumber(paymentInput.getCardNumber())
+        final CreditCard card = creditCardRepository.findByNumber(paymentInput.getCardNumber())
                 .orElseThrow(() -> new NotFoundException("Cartão de crédito inexistente"));
 
-        validateCvvAndExpiryDate(paymentInput, creditCard);
+        validateCvvAndExpiryDate(paymentInput, card);
 
         final var establishmentAccount = getEstablishmentAccount(paymentInput);
 
-        if (establishmentAccount.sameCard(creditCard)) {
+        if (establishmentAccount.sameCard(card)) {
             throw new UnprocessableEntityException("Estabelecimento não pode receber pagamentos desse cartão");
         }
 
         final CardPayment payment = getCardPayment(paymentInput);
+        card.pay(payment);
 
-        creditCard.pay(payment);
-        establishmentAccount.receiveCardPayment(paymentInput.getAmount()); //todo:: por event
-        creditCardRepository.save(creditCard);
+        final var transaction = transactionRepository.save(CardPaymentTransaction.from(paymentInput, card));
 
-        return transactionRepository.save(CardPaymentTransaction.from(paymentInput, creditCard.getAccountId()));
+        eventPublisher.publish(new CardPaymentCompletedEvent(transaction));
+
+        return transaction;
     }
 
     private CardPayment getCardPayment(PaymentCardInput payment) {
