@@ -5,6 +5,8 @@ import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import com.rayllanderson.raybank.users.model.User;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,6 +37,8 @@ public class BankAccount {
     private String id;
     private Integer accountNumber;
     private BigDecimal balance;
+    @Enumerated(EnumType.STRING)
+    private BankAccountType type;
     @OneToOne(orphanRemoval = true)
     private CreditCard creditCard;
     @JsonIgnore
