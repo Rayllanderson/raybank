@@ -1,13 +1,11 @@
-package com.rayllanderson.raybank.transaction.models.card;
+package com.rayllanderson.raybank.card.transactions.credit;
 
 import com.rayllanderson.raybank.card.services.credit.CardCreditInput;
+import com.rayllanderson.raybank.transaction.models.Credit;
+import com.rayllanderson.raybank.transaction.models.Debit;
 import com.rayllanderson.raybank.transaction.models.Transaction;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
+import com.rayllanderson.raybank.transaction.models.TransactionType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,35 +20,19 @@ import java.time.LocalDateTime;
 @Entity
 public class CardCreditTransaction extends Transaction {
 
-    private String cardId;
-    @Embedded
-    private CardCreditOrigin origin;
+    public static CardCreditTransaction from(final CardCreditInput input, String accountId, String referenceId) {
+        final var credit = new Credit(input.getCardId(), Credit.Destination.CREDIT_CARD);
+        final var debit = new Debit(input.getOrigin().getIdentifier(), Debit.Origin.valueOf(input.getOrigin().getType().name()));
 
-    @Getter
-    @Setter
-    @Embeddable
-    public static class CardCreditOrigin {
-        private String identifier;
-        @Column(name = "_type")
-        @Enumerated(EnumType.STRING)
-        private CardCreditOriginType type;
-
-        public static CardCreditOrigin from(CardCreditInput.CreditOrigin origin) {
-            final var o = new CardCreditOrigin();
-            o.identifier = origin.getIdentifier();
-            o.type = o.getType();
-            return o;
-        }
-    }
-
-    public static CardCreditTransaction from(final CardCreditInput input) {
         return CardCreditTransaction.builder()
                 .amount(input.getAmount())
                 .moment(LocalDateTime.now())
                 .description(input.getOrigin().getType().name())
-                .cardId(input.getCardId())
-                .accountId(input.getCardId())
-                .origin(CardCreditOrigin.from(input.getOrigin()))
+                .debit(debit)
+                .credit(credit)
+                .type(TransactionType.CREDITING_CARD)
+                .referenceId(referenceId)
+                .accountId(accountId)
                 .build();
     }
 }

@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.transaction.models.card;
+package com.rayllanderson.raybank.card.transactions.payment;
 
 public enum CardPaymentType {
     CREDIT, DEBIT
