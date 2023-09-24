@@ -3,7 +3,6 @@ package com.rayllanderson.raybank.card.services.payment;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
 import com.rayllanderson.raybank.card.controllers.external.PaymentCardRequest;
 import com.rayllanderson.raybank.card.models.inputs.CreditCardPayment;
-import com.rayllanderson.raybank.card.models.inputs.DebitCardPayment;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -62,10 +61,6 @@ public class PaymentCardInput {
 
     public CreditCardPayment toCreditCardPayment() {
         return new CreditCardPayment(this.amount, this.getOcurredOn(), this.installments, this.description, establishmentId);
-    }
-
-    public DebitCardPayment toDebitCardPayment() {
-        return new DebitCardPayment(this.amount, this.getOcurredOn(), this.description, establishmentId);
     }
 
     public enum PaymentType {

@@ -133,6 +133,6 @@ public class BankAccount {
     }
 
     public boolean isEstablishment() {
-        return BankAccountType.ESTABLISMENT.equals(this.type);
+        return BankAccountType.ESTABLISHMENT.equals(this.type);
     }
 }

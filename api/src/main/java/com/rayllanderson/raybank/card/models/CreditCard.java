@@ -3,9 +3,7 @@ package com.rayllanderson.raybank.card.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.events.CreditCardCreatedEvent;
-import com.rayllanderson.raybank.card.models.inputs.CardPayment;
 import com.rayllanderson.raybank.card.models.inputs.CreditCardPayment;
-import com.rayllanderson.raybank.card.models.inputs.DebitCardPayment;
 import com.rayllanderson.raybank.card.models.inputs.CreditInput;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import jakarta.persistence.Column;
@@ -68,42 +66,25 @@ public class CreditCard extends AbstractAggregateRoot<CreditCard> {
 
     public void credit(final CreditInput creditInput) {
         this.balance = balance.add(creditInput.getAmount());
-        //todo:: evento
     }
 
-    public void pay(final CardPayment payment) throws UnprocessableEntityException {
+    public void pay(final CreditCardPayment payment) throws UnprocessableEntityException {
         if (!isActive()) {
             throw new UnprocessableEntityException("Cartão não está ativo para compras");
         }
-        if (payment instanceof CreditCardPayment)
-            this.pay((CreditCardPayment) payment);
 
-        if (payment instanceof DebitCardPayment)
-            this.pay((DebitCardPayment) payment);
-    }
-
-    protected void pay(final CreditCardPayment payment) throws UnprocessableEntityException {
-        if (this.hasLimit()) {
-            if (isAmountGreaterThanBalance(payment.getTotal())) {
-                throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
-            }
-
-            if (this.isExpired())
-                throw UnprocessableEntityException.with("Cartão está expirado");
-
-            balance = balance.subtract(payment.getTotal());
-        } else
-            throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
-    }
-
-    protected void pay(final DebitCardPayment payment) throws UnprocessableEntityException {
         if (this.isExpired())
             throw UnprocessableEntityException.with("Cartão está expirado");
-        try {
-            this.bankAccount.pay(payment.getTotal());
-        } catch (UnprocessableEntityException e) {
-            throw new UnprocessableEntityException("Saldo em conta insuficiente para efetuar compra no débito");
+
+        if (!this.hasLimit()) {
+            throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
         }
+
+        if (isAmountGreaterThanBalance(payment.getTotal())) {
+            throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
+        }
+
+        balance = balance.subtract(payment.getTotal());
     }
 
     public boolean isValidSecurityCode(final Integer securityCode) {

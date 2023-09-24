@@ -43,7 +43,7 @@ public class BankAccountService {
                 .id(savedUser.getId())
                 .accountNumber(accountNumber)
                 .balance(BigDecimal.ZERO)
-                .type(savedUser.isEstablishment() ? BankAccountType.ESTABLISMENT : BankAccountType.NORMAL)
+                .type(savedUser.isEstablishment() ? BankAccountType.ESTABLISHMENT : BankAccountType.NORMAL)
                 .user(savedUser).build();
         bankAccountToBeSaved = bankAccountRepository.save(bankAccountToBeSaved);
         return bankAccountRepository.save(bankAccountToBeSaved);

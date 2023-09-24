@@ -2,15 +2,13 @@ package com.rayllanderson.raybank.card.services.payment;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
-import com.rayllanderson.raybank.card.events.CardPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.models.CreditCard;
-import com.rayllanderson.raybank.card.models.inputs.CardPayment;
 import com.rayllanderson.raybank.card.repository.CreditCardRepository;
-import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
-import com.rayllanderson.raybank.event.IntegrationEventPublisher;
+import com.rayllanderson.raybank.card.services.payment.strategies.CardPaymentStrategy;
+import com.rayllanderson.raybank.card.services.payment.strategies.CardPaymentStrategyFactory;
 import com.rayllanderson.raybank.exceptions.NotFoundException;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
-import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
+import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,35 +18,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class CardPaymentService {
 
     private final BankAccountRepository bankAccountRepository;
-    private final IntegrationEventPublisher eventPublisher;
     private final CreditCardRepository creditCardRepository;
-    private final TransactionRepository transactionRepository;
+    private final CardPaymentStrategyFactory cardPaymentStrategyFactory;
 
     @Transactional
-    public CardPaymentTransaction pay(final PaymentCardInput paymentInput) {
-        final CreditCard card = creditCardRepository.findByNumber(paymentInput.getCardNumber())
+    public Transaction pay(final PaymentCardInput payment) {
+        final CreditCard card = creditCardRepository.findByNumber(payment.getCardNumber())
                 .orElseThrow(() -> new NotFoundException("Cartão de crédito inexistente"));
 
-        validateCvvAndExpiryDate(paymentInput, card);
+        validateCvvAndExpiryDate(payment, card);
 
-        final var establishmentAccount = getEstablishmentAccount(paymentInput);
-
+        final var establishmentAccount = getEstablishmentAccount(payment);
         if (establishmentAccount.sameCard(card)) {
             throw new UnprocessableEntityException("Estabelecimento não pode receber pagamentos desse cartão");
         }
 
-        final CardPayment payment = getCardPayment(paymentInput);
-        card.pay(payment);
-
-        final var transaction = transactionRepository.save(CardPaymentTransaction.from(paymentInput, card));
-
-        eventPublisher.publish(new CardPaymentCompletedEvent(transaction));
-
-        return transaction;
-    }
-
-    private CardPayment getCardPayment(PaymentCardInput payment) {
-        return payment.isCreditPayment() ? payment.toCreditCardPayment() : payment.toDebitCardPayment();
+        final CardPaymentStrategy cardPaymentService = cardPaymentStrategyFactory.getStrategyBy(payment.getPaymentType());
+        return cardPaymentService.pay(payment, card);
     }
 
     private BankAccount getEstablishmentAccount(final PaymentCardInput payment) {
@@ -62,12 +48,14 @@ public class CardPaymentService {
         return establishment;
     }
 
-    private static void validateCvvAndExpiryDate(PaymentCardInput payment, CreditCard creditCard) {
-        if (!creditCard.isValidSecurityCode(payment.getCardSecurityCode())) {
+    private static void validateCvvAndExpiryDate(PaymentCardInput payment, CreditCard card) {
+        if (!card.isValidSecurityCode(payment.getCardSecurityCode())) {
             throw new UnprocessableEntityException("Código de Segurança Inválido");
         }
-        if (!creditCard.isValidExpiryDate(payment.getCardExpiryDate())) {
+        if (!card.isValidExpiryDate(payment.getCardExpiryDate())) {
             throw new UnprocessableEntityException("Data de Vencimento Inválida");
         }
+        if (card.isExpired())
+            throw UnprocessableEntityException.with("Cartão está expirado");
     }
 }
