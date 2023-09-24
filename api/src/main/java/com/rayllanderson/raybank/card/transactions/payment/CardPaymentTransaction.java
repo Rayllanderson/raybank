@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.card.transactions.payment;
 
+import com.rayllanderson.raybank.card.models.CreditCard;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.transaction.models.Credit;
 import com.rayllanderson.raybank.transaction.models.Debit;
@@ -23,14 +24,15 @@ public class CardPaymentTransaction extends Transaction {
 
     private Integer installments;
 
-    public static CardPaymentTransaction from(PaymentCardInput paymentCardInput, String accountId) {
+    public static CardPaymentTransaction from(PaymentCardInput paymentCardInput, CreditCard card) {
         final var credit = new Credit(paymentCardInput.getEstablishmentId(), Credit.Destination.ESTABLISHMENT_ACCOUNT);
-        final var debit = new Debit(accountId, Debit.Origin.CARD);
+        final var debit = new Debit(card.getId(), Debit.Origin.CARD);
 
         return CardPaymentTransaction.builder()
                 .amount(paymentCardInput.getAmount())
                 .moment(paymentCardInput.getOcurredOn())
                 .description(paymentCardInput.getDescription())
+                .accountId(card.getAccountId())
                 .credit(credit)
                 .debit(debit)
                 .type(paymentCardInput.isCreditPayment() ? TransactionType.CREDIT_CARD_PAYMENT : TransactionType.DEBIT_CARD_PAYMENT)
@@ -40,6 +42,6 @@ public class CardPaymentTransaction extends Transaction {
 
     @Transient
     public boolean isCreditTransaction() {
-        return true; //todo:remover
+        return TransactionType.CREDIT_CARD_PAYMENT.equals(this.type);
     }
 }
