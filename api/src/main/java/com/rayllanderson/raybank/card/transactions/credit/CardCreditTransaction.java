@@ -49,6 +49,7 @@ public class CardCreditTransaction extends Transaction {
                 .moment(LocalDateTime.now())
                 .description(input.getOrigin().getType().name())
                 .cardId(input.getCardId())
+                .accountId(input.getCardId())
                 .origin(CardCreditOrigin.from(input.getOrigin()))
                 .build();
     }
