@@ -1,7 +1,10 @@
 package com.rayllanderson.raybank.transaction.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -26,17 +29,34 @@ public class Transaction {
 
     @Id
     protected String id;
-    @Column(columnDefinition = "TIMESTAMP")
+
+    @Column(columnDefinition = "TIMESTAMP", nullable = false)
     protected LocalDateTime moment;
+
+    @Column(nullable = false)
     protected BigDecimal amount;
+
     protected String referenceId;
+
     protected String description;
+
+    @Column(nullable = false)
+    protected String accountId;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    protected TransactionType type;
+
+    @Embedded
+    protected Debit debit;
+
+    @Embedded
+    protected Credit credit;
 
     @PrePersist
     public void createId() {
         if (Objects.isNull(this.id)) {
             this.id = UUID.randomUUID().toString();
-            this.referenceId = this.id.split("-")[0];
         }
     }
 }
