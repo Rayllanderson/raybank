@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.rayllanderson.raybank.utils.DateManagerUtil.plusOneMonthKeepingCurrentDayOfMonth;
 import static com.rayllanderson.raybank.utils.InstallmentUtil.createDescription;
 
 @Service
@@ -39,7 +40,7 @@ public class CreateInstallmentPlanService {
             final String description = createDescription(plan.getDescription(), i + 1, plan.getInstallmentCount());
             final Installment installment = Installment.create(description, dueDate, plan);
             plan.addInstallment(installment);
-            dueDate = dueDate.plusMonths(1);
+            dueDate = plusOneMonthKeepingCurrentDayOfMonth(dueDate);
         }
     }
 }

@@ -5,6 +5,7 @@ import de.focus_shift.HolidayManager;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
@@ -30,13 +31,21 @@ public class DateManagerUtil {
 
     public static LocalDate plusOneMonthOf(int day) {
         var now = LocalDate.now();
-        return LocalDate.of(now.getYear(), now.getMonth(), day).plusMonths(1);
+        return plusOneMonthKeepingCurrentDayOfMonth(LocalDate.of(now.getYear(), now.getMonth(), day));
     }
 
     public static LocalDate plusOneMonthKeepingCurrentDayOfMonth(LocalDate date) {
         final Month month = date.getMonth().plus(1);
         final var year = date.plusMonths(1).getYear();
-        return LocalDate.of(year, month, date.getDayOfMonth());
+        try {
+            return LocalDate.of(year, month, date.getDayOfMonth());
+        } catch (DateTimeException e) {
+            return date.plusMonths(1);
+        }
+    }
+
+    public static LocalDate plusOneMonthKeepingCurrentDayOfMonth(final LocalDate date, final int originalDay) {
+        return plusOneMonthKeepingCurrentDayOfMonth(LocalDate.of(date.getYear(), date.getMonth(), originalDay));
     }
 
     public static boolean isAfterOrEquals(LocalDate compare, LocalDate to) {

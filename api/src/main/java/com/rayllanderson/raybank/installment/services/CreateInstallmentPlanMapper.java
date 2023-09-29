@@ -1,10 +1,10 @@
 package com.rayllanderson.raybank.installment.services;
 
-import com.rayllanderson.raybank.invoice.services.ProcessInvoiceInput;
+import com.rayllanderson.raybank.invoice.services.processinstallment.ProcessInstallmentInvoiceInput;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface CreateInstallmentPlanMapper {
 
-    CreateInstallmentPlanInput from(ProcessInvoiceInput input, String invoiceId);
+    CreateInstallmentPlanInput from(ProcessInstallmentInvoiceInput input, String invoiceId);
 }

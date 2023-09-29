@@ -2,7 +2,6 @@ package com.rayllanderson.raybank.bankaccount.facades.credit;
 
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
 import com.rayllanderson.raybank.card.events.CardPaymentCompletedEvent;
-import com.rayllanderson.raybank.card.services.credit.CardCreditInput;
 import com.rayllanderson.raybank.shared.dtos.Origin;
 import com.rayllanderson.raybank.shared.dtos.Type;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
