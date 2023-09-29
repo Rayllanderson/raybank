@@ -1,8 +1,6 @@
 package com.rayllanderson.raybank.transaction.controllers;
 
 import com.rayllanderson.raybank.security.method.RequiredStatementOwner;
-import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
-import com.rayllanderson.raybank.statement.services.BankStatementFinderService;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.services.TransactionFinderService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static com.rayllanderson.raybank.security.keycloak.JwtUtils.getAccountIdFrom;
-import static com.rayllanderson.raybank.security.keycloak.JwtUtils.getUserIdFrom;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,12 +1,12 @@
 package com.rayllanderson.raybank.users.services.register;
 
-import com.rayllanderson.raybank.users.constants.Groups;
+import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
 import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.security.keycloak.KeycloakProvider;
+import com.rayllanderson.raybank.users.constants.Groups;
 import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.users.model.UserType;
 import com.rayllanderson.raybank.users.repository.UserRepository;
-import com.rayllanderson.raybank.security.keycloak.KeycloakProvider;
-import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,11 +39,25 @@ public class RegisterUserService {
         final boolean hasSuccessfullyRegistered = response.getStatus() == HttpStatus.CREATED.value();
         if (hasSuccessfullyRegistered) {
             final String userId = getIdFromHeader(response);
-            saveOnDatabase(user, userId);
+            tryToSaveOnDatabase(user, userId);
             return new RegisterUserOutput(userId);
         } else {
             throw handlerError(user, response);
         }
+    }
+
+    private void tryToSaveOnDatabase(RegisterUserInput user, String userId) {
+        try {
+            saveOnDatabase(user, userId);
+        } catch (final Exception e) {
+            log.error("Failed to save user {} on database. Unregistering from provider", userId, e);
+            unregisterFromKeycloak(userId);
+            throw e;
+        }
+    }
+
+    private void unregisterFromKeycloak(final String userId) {
+        keycloakProvider.getRealmInstance().users().delete(userId);
     }
 
     private void saveOnDatabase(final RegisterUserInput userInput, final String userId) {
@@ -56,7 +70,6 @@ public class RegisterUserService {
 
         userToBeSaved.setBankAccount(bankAccountService.createAccountBank(userToBeSaved));
         userRepository.flush();
-        //todo:: deletar user do keycloak quando der erro nesse processo.
     }
 
     private Response registerUserOnKeycloak(final RegisterUserInput user) {

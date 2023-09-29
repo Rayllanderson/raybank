@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.users.model;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.pix.model.Pix;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,6 +32,7 @@ public class User {
     @Size(min = 1, max = 100)
     private String name;
     @Size(min = 3, max = 100)
+    @Column(unique = true)
     private String username;
     private String authorities;
     @Enumerated(EnumType.STRING)
