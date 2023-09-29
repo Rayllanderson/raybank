@@ -1,7 +1,9 @@
 package com.rayllanderson.raybank.invoice;
 
 import com.rayllanderson.raybank.card.models.Card;
-import com.rayllanderson.raybank.invoice.models.Installment;
+import com.rayllanderson.raybank.installment.models.Installment;
+import com.rayllanderson.raybank.installment.models.InstallmentPlan;
+import com.rayllanderson.raybank.installment.models.InstallmentStatus;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
 import com.rayllanderson.raybank.utils.MoneyUtils;
@@ -23,8 +25,8 @@ public class InvoiceUtils {
         return new Invoice(UUID.randomUUID().toString(), dueDate, dueDate.minusDays(6), total, status, new Card(), new ArrayList<>(List.of(installments)));
     }
 
-    public static Installment installment(String description, BigDecimal total, BigDecimal value) {
-        return new Installment(UUID.randomUUID().toString(), description, total, value, LocalDateTime.now());
+    public static Installment installment(String description, BigDecimal value, LocalDate dueDate) {
+        return new Installment(UUID.randomUUID().toString(), description, value, dueDate, InstallmentStatus.OPEN, new InstallmentPlan());
     }
 
     public static BigDecimal bigDecimalOf(Long o) {

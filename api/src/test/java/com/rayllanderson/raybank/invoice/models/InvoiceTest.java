@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static com.rayllanderson.raybank.invoice.InvoiceUtils.bigDecimalOf;
@@ -20,11 +19,11 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class InvoiceTest {
 
     @Test
-    void shouldProcesstPayment() {
+    void shouldProcessInstallment() {
         final var dueDate = LocalDate.now().plusDays(15);
         Invoice invoice = create(dueDate, bigDecimalOf(0), OPEN);
 
-        invoice.processPayment("amazon", bigDecimalOf(500), bigDecimalOf(50), LocalDateTime.parse("2023-04-16T14:45:00"));
+        invoice.processInstallment(bigDecimalOf(50), "id");
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(50));
         assertThat(invoice.getInstallments()).isNotEmpty().hasSize(1);

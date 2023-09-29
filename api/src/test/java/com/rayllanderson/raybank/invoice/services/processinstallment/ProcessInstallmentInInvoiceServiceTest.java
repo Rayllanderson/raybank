@@ -31,7 +31,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProcessInvoiceServiceTest {
+class ProcessInstallmentInInvoiceServiceTest {
 
     @Mock
     private InvoiceGateway invoiceGateway;
@@ -40,7 +40,7 @@ class ProcessInvoiceServiceTest {
     @Spy
     private CreateInstallmentPlanMapper planMapper = Mappers.getMapper(CreateInstallmentPlanMapper.class);
     @InjectMocks
-    private ProcessInvoiceService processInvoiceService;
+    private ProcessInstallmentInInvoiceService processInstallmentInInvoiceService;
 
     @Test
     void shouldProcessInvoices() {
@@ -51,7 +51,7 @@ class ProcessInvoiceServiceTest {
                         new CreateInstallmentPlanOutput.InstallmentOutput("i2", parse("2023-10-26")),
                         new CreateInstallmentPlanOutput.InstallmentOutput("i3", parse("2023-11-26"))));
         when(createInstallmentPlanService.create(any())).thenReturn(expectedOutput);
-        final var input = new ProcessInvoiceInput(
+        final var input = new ProcessInstallmentInvoiceInput(
                 "transactionId",
                 "cId",
                 "establishmentId",
@@ -60,7 +60,7 @@ class ProcessInvoiceServiceTest {
                 "alibaba",
                 LocalDateTime.parse("2023-09-01T18:40:00"));
 
-        final var invoices = processInvoiceService.processInvoice(input);
+        final var invoices = processInstallmentInInvoiceService.processInvoice(input);
 
         final var invoice1 = invoices.get(0);
         assertThat(invoice1.getTotal()).isEqualTo(new BigDecimal("50.00"));
@@ -89,7 +89,7 @@ class ProcessInvoiceServiceTest {
                 List.of(new CreateInstallmentPlanOutput.InstallmentOutput("i1", LocalDate.now()),
                         new CreateInstallmentPlanOutput.InstallmentOutput("i2", LocalDate.now().plusMonths(1))));
         when(createInstallmentPlanService.create(any())).thenReturn(expectedOutput);
-        final var input = new ProcessInvoiceInput(
+        final var input = new ProcessInstallmentInvoiceInput(
                 "transactionId",
                 "cId",
                 "establishmentId",
@@ -98,7 +98,7 @@ class ProcessInvoiceServiceTest {
                 "amazon",
                 LocalDateTime.now());
 
-        final var invoices = processInvoiceService.processInvoice(input);
+        final var invoices = processInstallmentInInvoiceService.processInvoice(input);
 
         final var invoice1 = invoices.get(0);
         assertThat(invoice1.getTotal()).isEqualTo(new BigDecimal("100.00"));
@@ -113,7 +113,7 @@ class ProcessInvoiceServiceTest {
 
     @Test
     void shouldThrowExceptionWhenOcurrenceDateIsFuture() {
-        final var input = new ProcessInvoiceInput(
+        final var input = new ProcessInstallmentInvoiceInput(
                 "transactionId",
                 "cId",
                 "establishmentId",
@@ -123,7 +123,7 @@ class ProcessInvoiceServiceTest {
                 LocalDateTime.parse("2099-02-01T20:41:37"));
 
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> processInvoiceService.processInvoice(input))
+                .isThrownBy(() -> processInstallmentInInvoiceService.processInvoice(input))
                 .withMessage("'ocurredOn' must not be in the future");
     }
 }
