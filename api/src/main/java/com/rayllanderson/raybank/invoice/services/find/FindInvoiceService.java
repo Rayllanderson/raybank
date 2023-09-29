@@ -1,34 +1,31 @@
 package com.rayllanderson.raybank.invoice.services.find;
 
-import com.rayllanderson.raybank.exceptions.NotFoundException;
-import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
+import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FindInvoiceService {
 
-    private final InvoiceRepository invoiceRepository;
+    private final InvoiceGateway invoiceGateway;
+    private final FindInvoiceMapper mapper;
 
     public List<FindInvoiceOutput> findAllByCardId(final String cardId) {
-        final var invoices = invoiceRepository.findAllByCard_Id(cardId);
+        final var invoices = invoiceGateway.findAllByCardIdWithouInstallments(cardId);
 
         Collections.sort(invoices);
 
-        return invoices.stream().map(FindInvoiceOutput::withoutInstallments)
-                .collect(Collectors.toList());
+        return mapper.from(invoices);
     }
 
     public FindInvoiceOutput findById(final String id) {
-        final var invoice = invoiceRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Fatura não encontrada"));
+        final var invoice = invoiceGateway.findById(id);
 
-        return FindInvoiceOutput.withtInstallments(invoice);
+        return mapper.from(invoice);
     }
 
 }

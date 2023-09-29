@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.invoice.controllers.find;
 
+import com.rayllanderson.raybank.invoice.services.find.FindInvoiceMapper;
 import com.rayllanderson.raybank.invoice.services.find.FindInvoiceService;
 import com.rayllanderson.raybank.security.method.RequiredAccountAndCardOwner;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,15 @@ import java.util.List;
 public class FindInvoiceController {
 
     private final FindInvoiceService findInvoiceService;
+    private final FindInvoiceMapper mapper;
 
     @RequiredAccountAndCardOwner
     @GetMapping("/invoices")
-    public ResponseEntity<List<FindInvoiceResponse>> findAll(@PathVariable String accountId,
+    public ResponseEntity<List<FindInvoiceListResponse>> findAll(@PathVariable String accountId,
                                                              @PathVariable String cardId,
                                                              @AuthenticationPrincipal Jwt jwt) {
         final var invoices = findInvoiceService.findAllByCardId(cardId);
-        return ResponseEntity.ok(FindInvoiceResponse.map(invoices));
+        return ResponseEntity.ok(mapper.fromOutput(invoices));
     }
 
     @RequiredAccountAndCardOwner
@@ -36,7 +38,7 @@ public class FindInvoiceController {
                                                        @PathVariable String invoiceId,
                                                        @AuthenticationPrincipal Jwt jwt) {
         final var invoice = findInvoiceService.findById(invoiceId);
-        return ResponseEntity.ok(FindInvoiceResponse.from(invoice));
+        return ResponseEntity.ok(mapper.fromOutput(invoice));
     }
 
 }

@@ -26,5 +26,4 @@ public class OverdueInvoiceService {
 
         invoiceRepository.saveAll(invoicesToClose);
     }
-
 }
