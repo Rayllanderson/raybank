@@ -2,9 +2,9 @@ package com.rayllanderson.raybank.invoice.models;
 
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.installment.models.Installment;
 import com.rayllanderson.raybank.invoice.events.InvoiceClosedEvent;
 import com.rayllanderson.raybank.utils.MoneyUtils;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,7 +19,6 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +40,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     private InvoiceStatus status;
     @ManyToOne
     private Card card;
-    @OneToMany(cascade =  {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Installment> installments = new ArrayList<>();
 
     public Invoice(String id, LocalDate dueDate, LocalDate closingDate, BigDecimal total, InvoiceStatus status, Card card, List<Installment> installments) {
@@ -63,12 +62,11 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         return i;
     }
 
-    public void processPayment(String description, BigDecimal total, BigDecimal installmentValue, LocalDateTime date) {
+    public void processInstallment(final BigDecimal installmentValue, final String invoiceId) {
         if (!canProcessPayment())
             throw new UnprocessableEntityException("Fatura atual não está aberta");
         this.total = this.total.add(installmentValue);
-        final Installment installment = Installment.create(description, total, installmentValue, date);
-        this.installments.add(installment);
+        this.addInstallmentId(invoiceId);
     }
 
     private boolean canProcessPayment() {
@@ -201,5 +199,9 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     @Transient
     public String getCardId() {
         return this.card.getId();
+    }
+
+    public void addInstallmentId(final String id) {
+        this.installments.add(Installment.withId(id));
     }
 }
