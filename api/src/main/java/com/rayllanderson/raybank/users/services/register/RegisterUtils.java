@@ -15,8 +15,8 @@ public class RegisterUtils {
     }
 
     public static List<String> getGroupsByRegisterType(RegisterUserInput.RegisterType registerType) {
-        if (RegisterUserInput.RegisterType.ESTABLISMENT.equals(registerType))
-            return List.of(Groups.ESTABLISMENT.name());
+        if (RegisterUserInput.RegisterType.ESTABLISHMENT.equals(registerType))
+            return List.of(Groups.ESTABLISHMENT.name());
         return List.of(Groups.USER.name());
     }
 }

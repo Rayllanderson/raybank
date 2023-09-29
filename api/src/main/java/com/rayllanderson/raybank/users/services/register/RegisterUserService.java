@@ -50,7 +50,7 @@ public class RegisterUserService {
         try {
             saveOnDatabase(user, userId);
         } catch (final Exception e) {
-            log.error("Failed to save user {} on database. Unregistering from provider", userId, e);
+            log.error("Failed to save user {} on database. Unregistering from provider", userId);
             unregisterFromKeycloak(userId);
             throw e;
         }
@@ -61,10 +61,11 @@ public class RegisterUserService {
     }
 
     private void saveOnDatabase(final RegisterUserInput userInput, final String userId) {
+        final String registerType = userInput.getRegisterType().name();
         User userToBeSaved = userInput.toModel();
         userToBeSaved.setId(userId);
-        userToBeSaved.setAuthorities(Groups.USER.name());
-        userToBeSaved.setType(UserType.valueOf(userInput.getRegisterType().name()));
+        userToBeSaved.setAuthorities(Groups.valueOf(registerType).name());
+        userToBeSaved.setType(UserType.valueOf(registerType));
 
         userToBeSaved = userRepository.save(userToBeSaved);
 

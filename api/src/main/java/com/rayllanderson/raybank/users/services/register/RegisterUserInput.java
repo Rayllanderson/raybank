@@ -18,7 +18,7 @@ public class RegisterUserInput {
     }
 
     public enum RegisterType {
-        USER, ESTABLISMENT
+        USER, ESTABLISHMENT
     }
 
 }

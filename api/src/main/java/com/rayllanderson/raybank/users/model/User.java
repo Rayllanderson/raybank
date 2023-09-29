@@ -50,7 +50,7 @@ public class User {
     }
 
     public boolean isEstablishment() {
-        return this.type.equals(UserType.ESTABLISMENT);
+        return this.type.equals(UserType.ESTABLISHMENT);
     }
 
     public static User fromId(final String id) {

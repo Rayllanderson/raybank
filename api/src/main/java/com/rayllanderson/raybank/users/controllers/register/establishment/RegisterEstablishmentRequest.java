@@ -14,7 +14,7 @@ public class RegisterEstablishmentRequest {
 
     public RegisterUserInput toInput() {
         final var input = new ModelMapper().map(this, RegisterUserInput.class);
-        input.setRegisterType(RegisterUserInput.RegisterType.ESTABLISMENT);
+        input.setRegisterType(RegisterUserInput.RegisterType.ESTABLISHMENT);
         return input;
     }
 }
