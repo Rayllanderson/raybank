@@ -14,8 +14,10 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -58,5 +60,41 @@ public class InstallmentPlan {
 
     public void addInstallment(Installment installment) {
         this.installments.add(installment);
+    }
+
+    public void fullRefund() {
+        refundInstallmentsPaid();
+        cancelOpenInstallments();
+        cancelOverdueInstallments();
+    }
+
+    public List<Installment> getInstallmentsPaid() {
+        return this.installments.stream()
+                .filter(Installment::isPaid)
+                .collect(Collectors.toList());
+    }
+
+    public List<Installment> getInstallmentsOverdue() {
+        return this.installments.stream()
+                .filter(Installment::isOverdue)
+                .collect(Collectors.toList());
+    }
+
+    public List<Installment> getInstallmentsOpen() {
+        return this.installments.stream()
+                .filter(Installment::isOpen)
+                .collect(Collectors.toList());
+    }
+
+    protected void refundInstallmentsPaid() {
+        getInstallmentsPaid().forEach(Installment::refund);
+    }
+
+    protected void cancelOpenInstallments() {
+        getInstallmentsOpen().forEach(Installment::cancel);
+    }
+
+    protected void cancelOverdueInstallments() {
+        getInstallmentsOverdue().forEach(Installment::cancel);
     }
 }

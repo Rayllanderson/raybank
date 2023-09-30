@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.installment.services;
+package com.rayllanderson.raybank.installment.services.create;
 
 import com.rayllanderson.raybank.installment.models.InstallmentPlan;
 import lombok.Getter;

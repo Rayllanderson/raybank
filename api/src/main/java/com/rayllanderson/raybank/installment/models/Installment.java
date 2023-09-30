@@ -25,6 +25,7 @@ public class Installment {
     private String description;
     @Column(name = "_value")
     private BigDecimal value;
+    private BigDecimal paidValue;
     @Enumerated(EnumType.STRING)
     private InstallmentStatus status;
     private LocalDate dueDate;
@@ -48,5 +49,31 @@ public class Installment {
         Installment installment = new Installment();
         installment.id = id;
         return installment;
+    }
+
+    public boolean isPaid() {
+        return this.status.equals(InstallmentStatus.PAID);
+    }
+
+    public boolean isRefunded() {
+        return this.status.equals(InstallmentStatus.REFUNDED);
+    }
+
+    public boolean isOpen() {
+        return this.status.equals(InstallmentStatus.OPEN);
+    }
+
+    public boolean isOverdue() {
+        return this.status.equals(InstallmentStatus.OVERDUE);
+    }
+
+    public void refund() {
+        if (isPaid())
+            this.status = InstallmentStatus.REFUNDED;
+    }
+
+    public void cancel() {
+        if (!isPaid() && !isRefunded())
+            this.status = InstallmentStatus.CANCELED;
     }
 }

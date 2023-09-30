@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.installment.services;
+package com.rayllanderson.raybank.installment.services.create;
 
 import com.rayllanderson.raybank.installment.models.Installment;
 import com.rayllanderson.raybank.installment.models.InstallmentPlan;

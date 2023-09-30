@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.installment.services;
+package com.rayllanderson.raybank.installment.services.create;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
