@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.card.events.handler.payment;
 
-import com.rayllanderson.raybank.card.events.CardPaymentCompletedEvent;
+import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.events.handler.payment.services.CardPaymentHandlerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class CardPaymentCompletedEventHandler {
 
     @Async
     @TransactionalEventListener
-    public void handler(final CardPaymentCompletedEvent event) {
+    public void handler(final CardCreditPaymentCompletedEvent event) {
         final String cardId = event.getCardId();
         log.info("Handling CardPaymentEvent for card id {}", cardId);
 
