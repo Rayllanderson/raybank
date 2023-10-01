@@ -18,6 +18,7 @@ public class CardPaymentCompletedEvent implements Event {
     private final String paymentType;
     private final Integer installments;
     private final String transactionId;
+    private final String planId;
     private final LocalDateTime ocurredOn;
 
     public CardPaymentCompletedEvent(final CardPaymentTransaction payment) {
@@ -31,9 +32,11 @@ public class CardPaymentCompletedEvent implements Event {
         if (payment.isCreditTransaction()) {
             this.paymentType = PaymentCardInput.PaymentType.CREDIT.name();
             this.installments = payment.getInstallments();
+            this.planId = payment.getPlanId();
         } else {
             this.paymentType = PaymentCardInput.PaymentType.DEBIT.name();
             this.installments = null;
+            this.planId = null;
         }
     }
 
