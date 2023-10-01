@@ -22,6 +22,7 @@ public class CloseInvoiceService {
         invoicesToClose.forEach(closedInvoice -> {
             closedInvoice.close();
             invoiceRepository.saveAndFlush(closedInvoice);
+            //todo:: se tiver saldo remanescente, jogar na nova fatura.
         });
     }
 

@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface InvoiceGateway {
 
-    void save(Invoice invoice);
+    Invoice save(Invoice invoice);
     void saveAll(Collection<Invoice> invoices);
+    void flush();
     Invoice findById(String invoiceId);
     Invoice findCurrentByCardId(String cardId);
     Collection<Invoice> findAllByCardIdAndStatus(String cardId, Collection<InvoiceStatus> status);

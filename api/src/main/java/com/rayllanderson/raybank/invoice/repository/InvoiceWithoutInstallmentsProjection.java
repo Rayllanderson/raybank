@@ -17,6 +17,7 @@ import java.time.LocalDate;
 public class InvoiceWithoutInstallmentsProjection {
     private String id;
     private LocalDate dueDate;
+    private LocalDate originalDueDate;
     private LocalDate closingDate;
     private BigDecimal total;
     private InvoiceStatus status;

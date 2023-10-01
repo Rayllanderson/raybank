@@ -1,15 +1,16 @@
 package com.rayllanderson.raybank.invoice.services.processinstallment;
 
-import com.rayllanderson.raybank.installment.services.CreateInstallmentPlanMapper;
-import com.rayllanderson.raybank.installment.services.CreateInstallmentPlanOutput;
-import com.rayllanderson.raybank.installment.services.CreateInstallmentPlanService;
+import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
+import com.rayllanderson.raybank.installment.models.Installment;
+import com.rayllanderson.raybank.installment.models.InstallmentPlan;
+import com.rayllanderson.raybank.installment.repository.InstallmentPlanGateway;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.invoice.helper.InvoiceListHelper;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
+import com.rayllanderson.raybank.transaction.gateway.TransactionGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ import java.util.Set;
 
 import static com.rayllanderson.raybank.invoice.services.processinstallment.ProcessInvoiceHelper.createOpenInvoice;
 import static com.rayllanderson.raybank.invoice.services.processinstallment.ProcessInvoiceHelper.generateInvoicesFromInstallments;
+import static com.rayllanderson.raybank.invoice.services.processinstallment.ProcessInvoiceHelper.getSimulatedPreviousClosingDate;
 import static com.rayllanderson.raybank.utils.DateManagerUtil.isAfterOrEquals;
 
 @Service
@@ -27,55 +29,58 @@ import static com.rayllanderson.raybank.utils.DateManagerUtil.isAfterOrEquals;
 public class ProcessInstallmentInInvoiceService {
 
     private final InvoiceGateway invoiceGateway;
-    private final CreateInstallmentPlanService createInstallmentPlanService;
-    private final CreateInstallmentPlanMapper planMapper;
+    private final TransactionGateway transactionGateway;
+    private final InstallmentPlanGateway planGateway;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<Invoice> processInvoice(final ProcessInstallmentInvoiceInput processInstallmentInvoiceInput) {
-        validateFutureDate(processInstallmentInvoiceInput);
-        final String cardId = processInstallmentInvoiceInput.getCardId();
+    @Transactional
+    public List<Invoice> processInvoice(final ProcessInstallmentInvoiceInput input) {
+        final var transaction = (CardPaymentTransaction) transactionGateway.findById(input.getTransactionId());
+
+        validateFutureDate(transaction.getMoment());
+        final String cardId = transaction.getDebit().getId();
         final Set<Invoice> invoices = new HashSet<>(invoiceGateway.findAllByCardIdAndStatus(cardId, List.of(InvoiceStatus.OPEN, InvoiceStatus.NONE)));
         final Integer dayOfDueDate = getDayOfDueDate(cardId);
         final InvoiceListHelper invoiceList = new InvoiceListHelper(dayOfDueDate, cardId, invoices);
 
-        final Invoice currentInvoice = getCurrentInvoice(invoiceList);
+        final var installmentPlan = planGateway.findById(transaction.getPlanId());
+        installmentPlan.attachOriginalInvoice(getCurrentInvoice(invoiceList));
 
-        final var createPlanInput = planMapper.from(processInstallmentInvoiceInput, currentInvoice.getId());
-        final var installmentPlan = createInstallmentPlanService.create(createPlanInput);
-
-        generateInvoicesFromInstallments(invoiceList, installmentPlan.getInstallments().size());
+        generateInvoicesFromInstallments(invoiceList, installmentPlan.getInstallments().size(), invoiceGateway);
 
         processInvoice(invoiceList, installmentPlan);
+        installmentPlan.checkIfInstallmentsHasInvoice();
+
+        invoiceGateway.saveAll(invoiceList.getInvoices());
 
         return Collections.unmodifiableList(invoiceList.getSortedInvoices());
     }
 
-    private static Invoice getCurrentInvoice(final InvoiceListHelper invoiceList) {
+    private Invoice getCurrentInvoice(final InvoiceListHelper invoiceList) {
         return invoiceList.getCurrentOpenInvoice().orElseGet(() -> {
             final var newInvoice = createOpenInvoice(invoiceList.getDayOfDueDate(), invoiceList.getCardId());
             invoiceList.add(newInvoice);
-            return newInvoice;
+            return this.invoiceGateway.save(newInvoice);
         });
     }
 
-    private static void validateFutureDate(final ProcessInstallmentInvoiceInput processInstallmentInvoiceInput) {
-        if (processInstallmentInvoiceInput.getOcurredOn().isAfter(LocalDateTime.now())) {
+    private static void validateFutureDate(final LocalDateTime ocurredOn) {
+        if (ocurredOn.isAfter(LocalDateTime.now())) {
             throw new IllegalArgumentException("'ocurredOn' must not be in the future");
         }
     }
 
-    private static void processInvoice(final InvoiceListHelper invoiceList, final CreateInstallmentPlanOutput installmentPlan) {
+    private static void processInvoice(final InvoiceListHelper invoiceList, final InstallmentPlan installmentPlan) {
         invoiceList.getInvoices().forEach(invoice -> {
-            for (CreateInstallmentPlanOutput.InstallmentOutput installment : installmentPlan.getInstallments()) {
-                var previousInvoiceClosingDate = invoiceList.getPreviousOf(invoice)
+            for (final Installment installment : installmentPlan.getInstallments()) {
+                final var previousInvoiceClosingDate = invoiceList.getPreviousOf(invoice)
                         .map(Invoice::getClosingDate)
-                        .orElse(invoice.getClosingDate().minusMonths(1));
+                        .orElse(getSimulatedPreviousClosingDate(invoice.getOriginalDueDate(), invoiceList.getDayOfDueDate()));
 
-                final boolean isOnRange = installment.getDueDate().isAfter(previousInvoiceClosingDate) &&
+                final boolean isOnRange = isAfterOrEquals(installment.getDueDate(), previousInvoiceClosingDate) &&
                         isAfterOrEquals(invoice.getClosingDate(), installment.getDueDate());
                 if (isOnRange) {
                     invoice.processInstallment(installmentPlan.getInstallmentValue(), installment.getId());
-                    break;
+                    installment.addInvoice(invoice);
                 }
             }
         });

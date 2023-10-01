@@ -1,7 +1,9 @@
 package com.rayllanderson.raybank.invoice.services.processinstallment;
 
+import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.invoice.helper.InvoiceListHelper;
 import com.rayllanderson.raybank.invoice.models.Invoice;
+import com.rayllanderson.raybank.utils.DateManagerUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +21,29 @@ public class ProcessInvoiceHelper {
         final int difference = installmentsSize - invoiceList.getInvoices().size();
         for (int i = 0; i < difference; i++) {
             Invoice newInvoice = Invoice.create(plusOneMonthKeepingCurrentDayOfMonth(dueDate, invoiceList.getDayOfDueDate()), invoiceList.getCardId());
+            if (newInvoice.getClosingDate().isEqual(LocalDate.now())) {
+                newInvoice.changeClosingDate();
+            }
             invoiceList.add(newInvoice);
+            dueDate = newInvoice.getDueDate();
+        }
+    }
+
+    public static LocalDate getSimulatedPreviousClosingDate(LocalDate dueDate, int dayOfDueDate) {
+        return DateManagerUtil.minusOneMonthKeepingCurrentDayOfMonth(dueDate, dayOfDueDate).minusDays(Invoice.DAYS_BEFORE_CLOSE);
+    }
+
+    public static void generateInvoicesFromInstallments(final InvoiceListHelper invoiceList, final int installmentsSize, InvoiceGateway invoiceGateway) {
+        LocalDate dueDate = invoiceList.getLastInvoiceDueDate();
+
+        final int difference = installmentsSize - invoiceList.getInvoices().size();
+        for (int i = 0; i < difference; i++) {
+            Invoice newInvoice = Invoice.create(plusOneMonthKeepingCurrentDayOfMonth(dueDate, invoiceList.getDayOfDueDate()), invoiceList.getCardId());
+            if (newInvoice.getClosingDate().isEqual(LocalDate.now())) {
+                newInvoice.changeClosingDate();
+            }
+            invoiceList.add(newInvoice);
+            invoiceGateway.save(newInvoice);
             dueDate = newInvoice.getDueDate();
         }
     }

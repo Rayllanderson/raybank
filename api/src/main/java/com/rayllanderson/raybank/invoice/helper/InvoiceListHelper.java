@@ -100,7 +100,7 @@ public class InvoiceListHelper {
     }
 
     protected Optional<Invoice> getPreviousOf(final LocalDate dueDate) {
-        return getInvoiceBeforeClosingDateBy(dueDate.minusMonths(1).minusDays(1))
+        return getInvoiceBeforeClosingDateBy(dueDate.minusMonths(1).minusDays(10))
                 .filter(pv -> !pv.getDueDate().equals(dueDate))
                 .stream().findFirst();
 

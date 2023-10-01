@@ -1,5 +1,7 @@
 package com.rayllanderson.raybank.installment.models;
 
+import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.utils.InstallmentUtil;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -15,6 +17,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,7 +39,7 @@ public class InstallmentPlan {
     private BigDecimal total;
     private String description;
     private LocalDateTime createdAt;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "installmentPlan")
     private Set<Installment> installments;
 
     public static InstallmentPlan create(String transactionId,
@@ -96,5 +100,17 @@ public class InstallmentPlan {
 
     protected void cancelOverdueInstallments() {
         getInstallmentsOverdue().forEach(Installment::cancel);
+    }
+
+    public void attachOriginalInvoice(Invoice invoice) {
+        if (Objects.isNull(this.originalInvoiceId))
+            this.originalInvoiceId = invoice.getId();
+    }
+
+    public void checkIfInstallmentsHasInvoice() {
+        Optional<Installment> any = this.installments.stream().filter(i -> Objects.isNull(i.getInvoice())).findAny();
+        any.ifPresent(i -> {
+            throw new UnprocessableEntityException(String.format("Installment %s has no invoice", i.getId()));
+        });
     }
 }

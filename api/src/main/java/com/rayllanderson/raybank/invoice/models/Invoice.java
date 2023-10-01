@@ -34,18 +34,20 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     @Id
     private String id;
     private LocalDate dueDate;
+    private LocalDate originalDueDate;
     private LocalDate closingDate;
     private BigDecimal total;
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
     @ManyToOne
     private Card card;
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Installment> installments = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice")
+    private List<Installment> installments;
 
-    public Invoice(String id, LocalDate dueDate, LocalDate closingDate, BigDecimal total, InvoiceStatus status, Card card, List<Installment> installments) {
+    public Invoice(String id, LocalDate dueDate, LocalDate originalDueDate, LocalDate closingDate, BigDecimal total, InvoiceStatus status, Card card, List<Installment> installments) {
         this.id = id;
         this.dueDate = dueDate;
+        this.originalDueDate = originalDueDate;
         this.closingDate = closingDate;
         this.total = MoneyUtils.from(total);
         this.status = status;
@@ -54,7 +56,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     }
 
     @Transient
-    private static final int DAYS_BEFORE_CLOSE = 6;
+    public static final int DAYS_BEFORE_CLOSE = 7;
 
     public static Invoice withId(final String invoiceId) {
         final var i = new Invoice();
@@ -83,7 +85,8 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         final LocalDate nextWorkingDay = getNextWorkingDayOf(dueDate);
         return new Invoice(UUID.randomUUID().toString(),
                 nextWorkingDay,
-                nextWorkingDay.minusDays(DAYS_BEFORE_CLOSE),
+                dueDate,
+                dueDate.minusDays(DAYS_BEFORE_CLOSE),
                 BigDecimal.ZERO,
                 InvoiceStatus.NONE,
                 Card.withId(cardId),
@@ -92,8 +95,8 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     @Override
     public int compareTo(Invoice o) {
-        if (this.dueDate.isBefore(o.getDueDate())) return -1;
-        if (this.dueDate.isAfter(o.dueDate)) return 1;
+        if (this.originalDueDate.isBefore(o.originalDueDate)) return -1;
+        if (this.originalDueDate.isAfter(o.originalDueDate)) return 1;
         else return 0;
     }
 
@@ -140,6 +143,10 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         total = total.subtract(amount);
     }
 
+    public void processCredit(final BigDecimal amount) {
+        total = total.subtract(amount);
+    }
+
     public boolean canReceivePayment() {
         return isOpen() || isOverdue() || isClosed();
     }
@@ -169,7 +176,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         return this.status.equals(InvoiceStatus.PAID);
     }
 
-    protected boolean isOpen() {
+    public boolean isOpen() {
         // || now().isBefore(closingDate)
         return this.status.equals(InvoiceStatus.OPEN);
     }
@@ -203,5 +210,11 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     public void addInstallmentId(final String id) {
         this.installments.add(Installment.withId(id));
+    }
+
+    public void changeClosingDate() {
+        if (this.closingDate.isEqual(LocalDate.now())) {
+            this.closingDate = closingDate.plusDays(1);
+        }
     }
 }

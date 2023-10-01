@@ -1,5 +1,7 @@
 package com.rayllanderson.raybank.installment.models;
 
+import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -31,6 +34,8 @@ public class Installment {
     private LocalDate dueDate;
     @ManyToOne
     private InstallmentPlan installmentPlan;
+    @ManyToOne
+    private Invoice invoice;
 
     public Installment(String id, String description, BigDecimal value, LocalDate dueDate, InstallmentStatus status, InstallmentPlan installmentPlan) {
         this.id = id;
@@ -75,5 +80,12 @@ public class Installment {
     public void cancel() {
         if (!isPaid() && !isRefunded())
             this.status = InstallmentStatus.CANCELED;
+    }
+
+    public void addInvoice(final Invoice invoice) {
+        if (Objects.nonNull(this.invoice)) {
+            throw new UnprocessableEntityException("Invoice already existis to this installment");
+        }
+        this.invoice = invoice;
     }
 }

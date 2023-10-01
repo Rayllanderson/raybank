@@ -22,13 +22,18 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     private final CardRepository cardRepository;
 
     @Override
-    public void save(final Invoice invoice) {
-        invoiceRepository.save(invoice);
+    public Invoice save(final Invoice invoice) {
+        return invoiceRepository.saveAndFlush(invoice);
     }
 
     @Override
     public void saveAll(Collection<Invoice> invoices) {
-        this.invoiceRepository.saveAll(invoices);
+        this.invoiceRepository.saveAllAndFlush(invoices);
+    }
+
+    @Override
+    public void flush() {
+        this.invoiceRepository.flush();
     }
 
     @Override
@@ -46,7 +51,7 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     public List<Invoice> findAllByCardIdWithouInstallments(String cardId) {
         return invoiceRepository.findAllByCardIdAndWithoutInstallments(cardId)
                 .stream()
-                .map(p -> new Invoice(p.getId(), p.getDueDate(), p.getClosingDate(), p.getTotal(), p.getStatus(), p.getCard(), null))
+                .map(p -> new Invoice(p.getId(), p.getDueDate(), p.getOriginalDueDate(), p.getClosingDate(), p.getTotal(), p.getStatus(), p.getCard(), null))
                 .collect(Collectors.toList());
     }
 

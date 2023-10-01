@@ -17,6 +17,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     Optional<Invoice> findAnyByCard_Id(String cardId);
     List<Invoice> findAllByDueDateLessThanEqualAndStatusAndTotalIsNot(LocalDate dueDate, InvoiceStatus status, BigDecimal total);
 
-    @Query("SELECT new com.rayllanderson.raybank.invoice.repository.InvoiceWithoutInstallmentsProjection(s.id, s.dueDate, s.closingDate, s.total, s.status, s.card) FROM Invoice s WHERE s.card.id = ?1")
+    @Query("SELECT new com.rayllanderson.raybank.invoice.repository.InvoiceWithoutInstallmentsProjection(s.id, s.dueDate, s.originalDueDate, s.closingDate, s.total, s.status, s.card) FROM Invoice s WHERE s.card.id = ?1")
     List<InvoiceWithoutInstallmentsProjection> findAllByCardIdAndWithoutInstallments(final String cardId);
 }
