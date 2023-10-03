@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.installment.models;
 
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
+import com.rayllanderson.raybank.utils.MathUtils;
 import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +29,7 @@ public class Installment {
     private String description;
     @Column(name = "_value")
     private BigDecimal value;
-    private BigDecimal paidValue;
+    private BigDecimal valueToPay;
     @Enumerated(EnumType.STRING)
     private InstallmentStatus status;
     private LocalDate dueDate;
@@ -41,6 +42,7 @@ public class Installment {
         this.id = id;
         this.description = description;
         this.value = MoneyUtils.from(value);
+        this.valueToPay = this.value;
         this.dueDate = dueDate;
         this.installmentPlan = installmentPlan;
         this.status = status;
@@ -87,5 +89,16 @@ public class Installment {
             throw new UnprocessableEntityException("Invoice already existis to this installment");
         }
         this.invoice = invoice;
+    }
+
+    public void pay(final BigDecimal percentage) {
+        final var toPay = MathUtils.fromPercentage(percentage, this.value);
+
+        this.valueToPay = valueToPay.subtract(toPay);
+
+        final boolean isFullyPaid = valueToPay.compareTo(BigDecimal.ZERO) == 0;
+        if (isFullyPaid) {
+            this.status = InstallmentStatus.PAID;
+        }
     }
 }

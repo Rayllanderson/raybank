@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.installment.models.Installment;
 import com.rayllanderson.raybank.invoice.events.InvoiceClosedEvent;
 import com.rayllanderson.raybank.utils.MoneyUtils;
+import com.rayllanderson.raybank.utils.MathUtils;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,8 +21,10 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.rayllanderson.raybank.utils.DateManagerUtil.getNextWorkingDayOf;
 import static com.rayllanderson.raybank.utils.DateManagerUtil.isAfterOrEquals;
@@ -36,20 +39,20 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     private LocalDate dueDate;
     private LocalDate originalDueDate;
     private LocalDate closingDate;
-    private BigDecimal total;
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
     @ManyToOne
     private Card card;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice")
     private List<Installment> installments;
+    @Transient
+    private BigDecimal total;
 
-    public Invoice(String id, LocalDate dueDate, LocalDate originalDueDate, LocalDate closingDate, BigDecimal total, InvoiceStatus status, Card card, List<Installment> installments) {
+    public Invoice(String id, LocalDate dueDate, LocalDate originalDueDate, LocalDate closingDate, InvoiceStatus status, Card card, List<Installment> installments) {
         this.id = id;
         this.dueDate = dueDate;
         this.originalDueDate = originalDueDate;
         this.closingDate = closingDate;
-        this.total = MoneyUtils.from(total);
         this.status = status;
         this.card = card;
         this.installments = new ArrayList<>(installments == null ? new ArrayList<>() : installments);
@@ -64,11 +67,10 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         return i;
     }
 
-    public void processInstallment(final BigDecimal installmentValue, final String invoiceId) {
+    public void processInstallment(final Installment installment) {
         if (!canProcessPayment())
             throw new UnprocessableEntityException("Fatura atual não está aberta");
-        this.total = this.total.add(installmentValue);
-        this.addInstallmentId(invoiceId);
+        this.installments.add(installment);
     }
 
     private boolean canProcessPayment() {
@@ -87,10 +89,13 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
                 nextWorkingDay,
                 dueDate,
                 dueDate.minusDays(DAYS_BEFORE_CLOSE),
-                BigDecimal.ZERO,
                 InvoiceStatus.NONE,
                 Card.withId(cardId),
                 new ArrayList<>());
+    }
+
+    public BigDecimal getTotal() {
+        return MoneyUtils.from(MathUtils.sum(this.installments.stream().map(Installment::getValueToPay)));
     }
 
     @Override
@@ -116,7 +121,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     }
 
     public boolean hasValueToPay() {
-        return this.total.compareTo(BigDecimal.ZERO) > 0;
+        return this.getTotal().compareTo(BigDecimal.ZERO) > 0;
     }
 
     public void processPayment(final BigDecimal amount) {
@@ -129,6 +134,8 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         if (!canReceivePayment())
             throw new UnprocessableEntityException("Não é possível receber pagamento para essa fatura.");
 
+        this.total = getTotal();
+
         if (isAmountGreaterThanTotal(amount)) {
             throw new UnprocessableEntityException("O valor recebido é superior ao da fatura.");
         }
@@ -140,11 +147,23 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
             this.status = InvoiceStatus.PAID;
         }
 
-        total = total.subtract(amount);
+        processInstallmentsPayment(amount);
+    }
+
+    private void processInstallmentsPayment(final BigDecimal amount) {
+        if (installments.isEmpty())
+            throw new UnprocessableEntityException("Fatura não pode receber pagamentos sem parcelas.");
+
+        final var percentage = MathUtils.toPercentage(amount, this.total);
+        getOpenInstallments().forEach(installment -> installment.pay(percentage));
+    }
+
+    private Collection<Installment> getOpenInstallments() {
+        return this.installments.stream().filter(Installment::isOpen).collect(Collectors.toList());
     }
 
     public void processCredit(final BigDecimal amount) {
-        total = total.subtract(amount);
+        total = total.subtract(amount); //todo::ajustar...
     }
 
     public boolean canReceivePayment() {

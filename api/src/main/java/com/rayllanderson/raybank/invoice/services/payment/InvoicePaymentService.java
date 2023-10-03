@@ -42,8 +42,6 @@ public class InvoicePaymentService {
 
         eventPublisher.publish(new InvoicePaidEvent(invoiceToPay, debitTransaction));
 
-        //todo:: ajustar o pagamento de parcelas, considerar as parcelas também
-
         return debitTransaction;
     }
 }
