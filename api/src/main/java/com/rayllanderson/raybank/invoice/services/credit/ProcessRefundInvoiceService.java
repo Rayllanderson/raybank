@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class InvoiceCreditCurrentService {
+public class CreditInvoiceCurrentService {
     private final InvoiceGateway invoiceGateway;
 
     @Transactional
-    public void credit(InvoiceCreditCurrentInput input) {
+    public void credit(CreditCurrentInvoiceInput input) {
         final Invoice invoice = invoiceGateway.findCurrentByCardId(input.getCardId());
 
         invoice.processCredit(input.getAmountToBeCredited());
