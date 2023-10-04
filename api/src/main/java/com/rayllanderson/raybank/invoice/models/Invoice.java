@@ -4,8 +4,10 @@ import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.installment.models.Installment;
 import com.rayllanderson.raybank.invoice.events.InvoiceClosedEvent;
-import com.rayllanderson.raybank.utils.MoneyUtils;
+import com.rayllanderson.raybank.invoice.models.inputs.ProcessInvoiceCredit;
 import com.rayllanderson.raybank.utils.MathUtils;
+import com.rayllanderson.raybank.utils.MoneyUtils;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -45,10 +47,19 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     private Card card;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "invoice")
     private List<Installment> installments;
+    @OneToMany(cascade =  {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "invoice")
+    private List<InvoiceCredit> credits;
     @Transient
     private BigDecimal total;
 
-    public Invoice(String id, LocalDate dueDate, LocalDate originalDueDate, LocalDate closingDate, InvoiceStatus status, Card card, List<Installment> installments) {
+    public Invoice(String id,
+                   LocalDate dueDate,
+                   LocalDate originalDueDate,
+                   LocalDate closingDate,
+                   InvoiceStatus status,
+                   Card card,
+                   Collection<Installment> installments,
+                   Collection<InvoiceCredit> invoiceCredits) {
         this.id = id;
         this.dueDate = dueDate;
         this.originalDueDate = originalDueDate;
@@ -56,6 +67,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         this.status = status;
         this.card = card;
         this.installments = new ArrayList<>(installments == null ? new ArrayList<>() : installments);
+        this.credits = new ArrayList<>(invoiceCredits == null ? new ArrayList<>() : invoiceCredits);
     }
 
     @Transient
@@ -91,11 +103,14 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
                 dueDate.minusDays(DAYS_BEFORE_CLOSE),
                 InvoiceStatus.NONE,
                 Card.withId(cardId),
+                new ArrayList<>(),
                 new ArrayList<>());
     }
 
     public BigDecimal getTotal() {
-        return MoneyUtils.from(MathUtils.sum(this.installments.stream().map(Installment::getValueToPay)));
+        final BigDecimal credit = MathUtils.sum(this.credits.stream().filter(InvoiceCredit::isRefund).map(InvoiceCredit::getAmount));
+        final BigDecimal debit = MathUtils.sum(this.getOpenInstallments().stream().map(Installment::getValueToPay));
+        return MoneyUtils.from(debit.subtract(credit));
     }
 
     @Override
@@ -124,7 +139,14 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         return this.getTotal().compareTo(BigDecimal.ZERO) > 0;
     }
 
-    public void processPayment(final BigDecimal amount) {
+    public void processCredit(final ProcessInvoiceCredit credit) {
+        if (InvoiceCreditType.INVOICE_PAYMENT.equals(credit.getType())) {
+            pay(credit.getAmount());
+        }
+        this.getCredits().add(InvoiceCredit.from(credit, this));
+    }
+
+    private void pay(final BigDecimal amount) {
         if (!this.hasValueToPay())
             throw new UnprocessableEntityException("Fatura não possui nenhum valor em aberto");
 
@@ -160,10 +182,6 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     private Collection<Installment> getOpenInstallments() {
         return this.installments.stream().filter(Installment::isOpen).collect(Collectors.toList());
-    }
-
-    public void processCredit(final BigDecimal amount) {
-        total = total.subtract(amount); //todo::ajustar...
     }
 
     public boolean canReceivePayment() {
@@ -225,10 +243,6 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     @Transient
     public String getCardId() {
         return this.card.getId();
-    }
-
-    public void addInstallmentId(final String id) {
-        this.installments.add(Installment.withId(id));
     }
 
     public void changeClosingDate() {

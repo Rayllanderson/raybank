@@ -1,14 +1,15 @@
 package com.rayllanderson.raybank.invoice.models;
 
-import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.invoice.models.inputs.ProcessInvoiceCredit;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import static com.rayllanderson.raybank.invoice.InvoiceUtils.bigDecimalOf;
+import static com.rayllanderson.raybank.invoice.InvoiceUtils.create;
+import static com.rayllanderson.raybank.invoice.InvoiceUtils.installment;
 import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.CLOSED;
 import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.NONE;
 import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.OPEN;
@@ -23,7 +24,7 @@ class InvoiceTest {
         final var dueDate = LocalDate.now().plusDays(15);
         Invoice invoice = create(dueDate, bigDecimalOf(0), OPEN);
 
-        invoice.processInstallment(bigDecimalOf(50), "id");
+        invoice.processInstallment(installment(bigDecimalOf(50)));
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(50));
         assertThat(invoice.getInstallments()).isNotEmpty().hasSize(1);
@@ -32,60 +33,70 @@ class InvoiceTest {
     @Test
     void shouldReceiveParcialPaymentWhenIsNotPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(15);
-        Invoice invoice = create(dueDate, bigDecimalOf(50), OPEN);
+        Invoice invoice = create(dueDate, OPEN, installment(bigDecimalOf(25)), installment(bigDecimalOf(25)));
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
 
-        invoice.processPayment(bigDecimalOf(40));
+        invoice.processCredit(creditInput);
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(10));
         assertThat(invoice.isPaid()).isFalse();
+        assertThat(invoice.getCredits()).isNotEmpty().hasSize(1);
     }
 
     @Test
     void shouldReceivePaymentWhenIsPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = create(dueDate, bigDecimalOf(50), OPEN);
+        Invoice invoice = create(dueDate, OPEN, installment(bigDecimalOf(50)));
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(50), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
 
-        invoice.processPayment(bigDecimalOf(50));
+        invoice.processCredit(creditInput);
 
         assertThat(invoice.getTotal()).isZero();
         assertThat(invoice.isPaid()).isTrue();
+        assertThat(invoice.getCredits()).isNotEmpty().hasSize(1);
     }
 
     @Test
     void shouldNotReceiveParcialPaymentWhenIsPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = create(dueDate, bigDecimalOf(50), CLOSED);
+        Invoice invoice = create(dueDate, CLOSED, installment(bigDecimalOf(50)));
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
-                .isThrownBy(() -> invoice.processPayment(bigDecimalOf(40)))
+                .isThrownBy(() -> invoice.processCredit(creditInput))
                 .withMessage("Não é possível receber pagamento parcial para fatura fechada ou vencida. Total da fatura: 50.00");
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(50));
         assertThat(invoice.isPaid()).isFalse();
+        assertThat(invoice.getCredits()).isEmpty();
     }
 
     @Test
     void shouldThrowExceptionWhenInvoiceIsPaid() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = create(dueDate, bigDecimalOf(10), PAID);
+        Invoice invoice = create(dueDate, PAID, installment(bigDecimalOf(50)));
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
-                .isThrownBy(() -> invoice.processPayment(bigDecimalOf(40)))
+                .isThrownBy(() -> invoice.processCredit(creditInput))
                 .withMessage("Não é possível receber pagamento para fatura já paga.");
 
         assertThat(invoice.isPaid()).isTrue();
+        assertThat(invoice.getCredits()).isEmpty();
     }
 
     @Test
     void shouldThrowExceptionWhenAmmountIsGreaterThanInvoice() {
         final var dueDate = LocalDate.now().plusDays(5);
-        Invoice invoice = create(dueDate, bigDecimalOf(10), OPEN);
+        Invoice invoice = create(dueDate, OPEN, installment(bigDecimalOf(10)));
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
-                .isThrownBy(() -> invoice.processPayment(bigDecimalOf(40)))
+                .isThrownBy(() -> invoice.processCredit(creditInput))
                 .withMessage("O valor recebido é superior ao da fatura.");
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(10));
+        assertThat(invoice.getCredits()).isEmpty();
     }
 
     @Test
@@ -159,7 +170,14 @@ class InvoiceTest {
         assertThat(invoice.isOverdue()).isFalse();
     }
 
-    private static Invoice create(LocalDate dueDate, BigDecimal total, InvoiceStatus status) {
-        return new Invoice("id", dueDate, dueDate.minusDays(6), total, status, new Card(), new ArrayList<>());
+    @Test
+    void shouldReceiveCreditRefund() {
+        final var dueDate = LocalDate.now();
+        Invoice invoice = create(dueDate, OPEN, installment(bigDecimalOf(50)));
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(25), InvoiceCreditType.REFUND, "tId", LocalDate.now());
+
+        invoice.processCredit(creditInput);
+
+        assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(25));
     }
 }
