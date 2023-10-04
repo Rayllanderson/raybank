@@ -6,10 +6,14 @@ import com.rayllanderson.raybank.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.invoice.events.InvoicePaidEvent;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.invoice.models.Invoice;
+import com.rayllanderson.raybank.invoice.models.InvoiceCreditType;
+import com.rayllanderson.raybank.invoice.models.inputs.ProcessInvoiceCredit;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +39,11 @@ public class InvoicePaymentService {
     }
 
     private Transaction processPayment(final InvoicePaymentInput input, final Invoice invoiceToPay) {
-        invoiceToPay.processPayment(input.getAmount());
-
         final var debit = DebitAccountFacadeInput.from(input);
         final Transaction debitTransaction = debitAccountFacade.process(debit);
+
+        final var creditInput = new ProcessInvoiceCredit(input.getAmount(), InvoiceCreditType.INVOICE_PAYMENT, debitTransaction.getId(), LocalDate.now());
+        invoiceToPay.processCredit(creditInput);
 
         eventPublisher.publish(new InvoicePaidEvent(invoiceToPay, debitTransaction));
 
