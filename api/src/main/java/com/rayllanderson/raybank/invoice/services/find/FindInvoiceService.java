@@ -14,8 +14,8 @@ public class FindInvoiceService {
     private final InvoiceGateway invoiceGateway;
     private final FindInvoiceMapper mapper;
 
-    public List<FindInvoiceOutput> findAllByCardId(final String cardId) {
-        final var invoices = invoiceGateway.findAllByCardIdWithouInstallments(cardId);
+    public List<FindInvoiceListOutput> findAllByCardId(final String cardId) {
+        final var invoices = invoiceGateway.findAllByCardId(cardId);
 
         Collections.sort(invoices);
 

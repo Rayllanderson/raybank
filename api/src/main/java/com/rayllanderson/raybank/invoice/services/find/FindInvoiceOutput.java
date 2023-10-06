@@ -20,6 +20,7 @@ public class FindInvoiceOutput {
     private BigDecimal total;
     private String status;
     private List<InstallmentOutput> installments;
+    private List<CreditOutput> credits;
 
     @Getter
     @Setter
@@ -30,5 +31,15 @@ public class FindInvoiceOutput {
         private String planId;
         private String status;
         private LocalDate dueDate;
+    }
+
+    @Getter
+    @Setter
+    public static class CreditOutput {
+        private String id;
+        private BigDecimal amount;
+        private String type;
+        private String description;
+        private LocalDate occuredOn;
     }
 }

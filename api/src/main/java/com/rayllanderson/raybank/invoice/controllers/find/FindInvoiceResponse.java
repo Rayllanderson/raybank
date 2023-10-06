@@ -17,16 +17,27 @@ public class FindInvoiceResponse {
     private LocalDate closingDate;
     private BigDecimal total;
     private String status;
-    private List<InstallmentResponse> installments;
+    private List<? extends InvoiceTransactionResponse> transactions;
 
     @Getter
     @Setter
-    public static class InstallmentResponse {
+    public abstract static class InvoiceTransactionResponse {
         private String id;
         private BigDecimal value;
         private String description;
+        private LocalDate occuredOn;
+    }
+
+    @Getter
+    @Setter
+    public static class InstallmentTransactionResponse extends InvoiceTransactionResponse {
         private String planId;
         private String status;
-        private LocalDate dueDate;
+    }
+
+    @Getter
+    @Setter
+    public static class CreditTransactionResponse extends InvoiceTransactionResponse {
+        private String type;
     }
 }
