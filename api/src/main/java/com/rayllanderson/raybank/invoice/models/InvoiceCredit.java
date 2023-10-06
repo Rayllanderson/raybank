@@ -2,6 +2,8 @@ package com.rayllanderson.raybank.invoice.models;
 
 import com.rayllanderson.raybank.invoice.models.inputs.ProcessInvoiceCredit;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
@@ -20,8 +22,10 @@ import java.util.UUID;
 public class InvoiceCredit {
     @Id
     private String id;
+    @Enumerated(EnumType.STRING)
     private InvoiceCreditType type;
     private BigDecimal amount;
+    private String description;
     private String transactionId;
     private LocalDate occuredOn;
     @ManyToOne
@@ -31,6 +35,7 @@ public class InvoiceCredit {
         return new InvoiceCredit(UUID.randomUUID().toString(),
                 credit.getType(),
                 credit.getAmount(),
+                credit.getDescription(),
                 credit.getTransactionId(),
                 credit.getOccuredOn(),
                 invoice);
