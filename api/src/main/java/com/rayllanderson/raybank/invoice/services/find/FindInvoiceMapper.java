@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,8 +34,12 @@ public interface FindInvoiceMapper {
     @AfterMapping
     default void setTransactions(@MappingTarget FindInvoiceResponse response, FindInvoiceOutput output) {
         final var creditTransactions = mapCredits(output.getCredits());
+        creditTransactions.removeIf(t -> t.getValue().compareTo(BigDecimal.ZERO) == 0);
+
         final var installmentsTransactions = mapInstallments(output.getInstallments());
+
         final var transactions = new ArrayList<FindInvoiceResponse.InvoiceTransactionResponse>(creditTransactions);
+
         transactions.addAll(installmentsTransactions);
         response.setTransactions(transactions);
     }
