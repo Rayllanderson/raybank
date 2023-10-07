@@ -15,7 +15,7 @@ public class GenerateBoletoInput {
 
     @Getter
     @Setter
-    public class BeneficiaryInput {
+    public static class BeneficiaryInput {
         private String id;
         private BeneficiaryType type;
     }
