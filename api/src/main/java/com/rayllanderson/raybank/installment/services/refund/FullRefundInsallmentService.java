@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.rayllanderson.raybank.utils.SumUtils.sum;
+import static com.rayllanderson.raybank.utils.MathUtils.sum;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class FullRefundInsallmentService {
         final InstallmentPlan plan = installmentPlanGateway.findById(planId);
 
         final var sumInstallmentsPaid = sum(plan.getInstallmentsPaid().stream().map(Installment::getValue));
-        final var sumInstallmentsOverdue = sum(plan.getInstallmentsOverdue().stream().map(Installment::getPaidValue));
+        final var sumInstallmentsOverdue = sum(plan.getInstallmentsOverdue().stream().map(Installment::getValueToPay));
         final var totalSum = sumInstallmentsPaid.add(sumInstallmentsOverdue);
 
         plan.fullRefund();
