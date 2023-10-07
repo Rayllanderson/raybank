@@ -32,6 +32,7 @@ public class Boleto {
     private BigDecimal value;
 
     @Embedded
+    @NotNull
     private Beneficiary beneficiary;
 
     @ManyToOne(optional = false)
@@ -51,7 +52,7 @@ public class Boleto {
     @Column(nullable = false)
     private LocalDate expirationDate;
 
-    public static Boleto create(final String barCode, BigDecimal value, Beneficiary beneficiary, BankAccount holder) {
+    public static Boleto generate(final String barCode, BigDecimal value, Beneficiary beneficiary, BankAccount holder) {
         final var creationDate = LocalDate.now();
         return new Boleto(barCode, value, beneficiary, holder, null, BoletoStatus.WAITING_PAYMENT, creationDate, BoletoUtil.generateExpirationDate(creationDate));
     }

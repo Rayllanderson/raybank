@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.external.boleto;
+package com.rayllanderson.raybank.boleto;
 
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import org.springframework.data.jpa.repository.JpaRepository;
