@@ -5,6 +5,8 @@ import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.utils.InstallmentUtil;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -39,6 +41,8 @@ public class InstallmentPlan {
     private BigDecimal total;
     private String description;
     private LocalDateTime createdAt;
+    @Enumerated(EnumType.STRING)
+    private InstallmentPlanStatus status;
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "installmentPlan")
     private Set<Installment> installments;
 
@@ -59,6 +63,7 @@ public class InstallmentPlan {
                 total,
                 description,
                 LocalDateTime.now(),
+                InstallmentPlanStatus.OPEN,
                 new HashSet<>());
     }
 
@@ -70,6 +75,11 @@ public class InstallmentPlan {
         refundInstallmentsPaid();
         cancelOpenInstallments();
         cancelOverdueInstallments();
+        this.status = InstallmentPlanStatus.REFUNDED;
+    }
+
+    public boolean isRefunded() {
+        return InstallmentPlanStatus.REFUNDED.equals(this.status);
     }
 
     public List<Installment> getInstallmentsPaid() {
