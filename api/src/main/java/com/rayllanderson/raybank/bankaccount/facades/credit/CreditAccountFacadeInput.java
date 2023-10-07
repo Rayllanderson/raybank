@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.bankaccount.facades.credit;
 
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
-import com.rayllanderson.raybank.card.events.CardPaymentCompletedEvent;
+import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.shared.dtos.Origin;
 import com.rayllanderson.raybank.shared.dtos.Type;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
@@ -31,7 +31,7 @@ public class CreditAccountFacadeInput {
         return new CreditAccountFacadeInput(accountId, amount, origin, TransactionType.CARD_RECEIVE_PAYMENT);
     }
 
-    public static CreditAccountFacadeInput createFromCardPayment(CardPaymentCompletedEvent event) {
+    public static CreditAccountFacadeInput createFromCardPayment(CardCreditPaymentCompletedEvent event) {
         final var origin = new Origin(event.getCardId(), Type.CARD, event.getTransactionId());
         return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.CARD_RECEIVE_PAYMENT);
     }

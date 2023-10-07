@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.installment.services.create;
 
-import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
+import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
 import com.rayllanderson.raybank.invoice.services.processinstallment.ProcessInstallmentInvoiceInput;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,5 +14,5 @@ public interface CreateInstallmentPlanMapper {
     @Mapping(target = "installmentCount", source = "installments")
     @Mapping(target = "establishmentId", source = "credit.id")
     @Mapping(target = "total", source = "amount")
-    CreateInstallmentPlanInput from(CardPaymentTransaction input);
+    CreateInstallmentPlanInput from(CardCreditPaymentTransaction transaction);
 }

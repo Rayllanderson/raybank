@@ -27,14 +27,14 @@ class CardPaymentControllerTest extends BaseBankOperation {
         var defaultCreditCardBalance = new BigDecimal("5000.00");
         var expectedBalance = defaultCreditCardBalance.subtract(toPay);
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCard();
-        var payment = PaymentCardRequest.builder()
-                .amount(toPay)
-                .card(PaymentCardRequest.Card.builder()
-                        .number(userCreditCard.getNumber().toString())
-                        .securityCode(userCreditCard.getSecurityCode().toString())
-                        .expiryDate(userCreditCard.getExpiryDate()).build())
-                .paymentType(PaymentTypeRequest.CREDIT)
-                .build();
+        var payment = new PaymentCardRequest();
+//                .amount(toPay)
+//                .card(PaymentCardRequest.Card.builder()
+//                        .number(userCreditCard.getNumber().toString())
+//                        .securityCode(userCreditCard.getSecurityCode().toString())
+//                        .expiryDate(userCreditCard.getExpiryDate()).build())
+//                .paymentType(PaymentTypeRequest.CREDIT)
+//                .build();
 
         ResponseEntity<Void> response = post(API_URL, payment, Void.class);
 
@@ -51,14 +51,14 @@ class CardPaymentControllerTest extends BaseBankOperation {
         var toPay = new BigDecimal("9999.00");
         var defaultCreditCardBalance = new BigDecimal("5000.00");
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCard();
-        var payment = PaymentCardRequest.builder()
-                .amount(toPay)
-                .card(PaymentCardRequest.Card.builder()
-                        .number(userCreditCard.getNumber().toString())
-                        .securityCode(userCreditCard.getSecurityCode().toString())
-                        .expiryDate(userCreditCard.getExpiryDate()).build())
-                .paymentType(PaymentTypeRequest.CREDIT)
-                .build();
+        var payment = new PaymentCardRequest();
+//                .amount(toPay)
+//                .card(PaymentCardRequest.Card.builder()
+//                        .number(userCreditCard.getNumber().toString())
+//                        .securityCode(userCreditCard.getSecurityCode().toString())
+//                        .expiryDate(userCreditCard.getExpiryDate()).build())
+//                .paymentType(PaymentTypeRequest.CREDIT)
+//                .build();
 
         ResponseEntity<Void> response = post(API_URL, payment, Void.class);
 
@@ -73,14 +73,15 @@ class CardPaymentControllerTest extends BaseBankOperation {
     void shouldReturnBadRequestWhenCardNotExists() {
         var toPay = new BigDecimal("10.00");
         var defaultCreditCardBalance = new BigDecimal("5000.00");
-        var payment = PaymentCardRequest.builder()
-                .amount(toPay)
-                .card(PaymentCardRequest.Card.builder()
-                        .number("1111111111111111")
-                        .securityCode("123")
-                        .expiryDate(YearMonth.now()).build())
-                .paymentType(PaymentTypeRequest.CREDIT)
-                .build();
+        var payment = new PaymentCardRequest();
+//                .builder()
+//                .amount(toPay)
+//                .card(PaymentCardRequest.Card.builder()
+//                        .number("1111111111111111")
+//                        .securityCode("123")
+//                        .expiryDate(YearMonth.now()).build())
+//                .paymentType(PaymentTypeRequest.CREDIT)
+//                .build();
 
         ResponseEntity<Void> response = post(API_URL, payment, Void.class);
 
@@ -96,14 +97,14 @@ class CardPaymentControllerTest extends BaseBankOperation {
         var toPay = new BigDecimal("200.00");
         deposit300();
         final var userCreditCard = authenticatedUserAccount.getUser().getBankAccount().getCard();
-        var payment = PaymentCardRequest.builder()
-                .amount(toPay)
-                .card(PaymentCardRequest.Card.builder()
-                        .number(userCreditCard.getNumber().toString())
-                        .securityCode(userCreditCard.getSecurityCode().toString())
-                        .expiryDate(userCreditCard.getExpiryDate()).build())
-                .paymentType(PaymentTypeRequest.CREDIT)
-                .build();
+        var payment = new PaymentCardRequest();
+//                .amount(toPay)
+//                .card(PaymentCardRequest.Card.builder()
+//                        .number(userCreditCard.getNumber().toString())
+//                        .securityCode(userCreditCard.getSecurityCode().toString())
+//                        .expiryDate(userCreditCard.getExpiryDate()).build())
+//                .paymentType(PaymentTypeRequest.CREDIT)
+//                .build();
 
         ResponseEntity<Void> response = post(API_URL, payment, Void.class);
 

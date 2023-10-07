@@ -29,6 +29,12 @@ public class DateManagerUtil {
         else return getNextWorkingDayOf(date.plusDays(1));
     }
 
+    public static LocalDate getPreviousWorkingDayOf(final LocalDate date) {
+        if (isWorkingDay(date))
+            return date;
+        else return getPreviousWorkingDayOf(date.minusDays(1));
+    }
+
     public static LocalDate plusOneMonthOf(int day) {
         var now = LocalDate.now();
         return plusOneMonthKeepingCurrentDayOfMonth(LocalDate.of(now.getYear(), now.getMonth(), day));
@@ -41,6 +47,16 @@ public class DateManagerUtil {
             return LocalDate.of(year, month, date.getDayOfMonth());
         } catch (DateTimeException e) {
             return date.plusMonths(1);
+        }
+    }
+
+    public static LocalDate minusOneMonthKeepingCurrentDayOfMonth(final LocalDate date, final int originalDay) {
+        final Month month = date.getMonth().minus(1);
+        final var year = date.minusMonths(1).getYear();
+        try {
+            return LocalDate.of(year, month, originalDay);
+        } catch (DateTimeException e) {
+            return date.minusMonths(1);
         }
     }
 

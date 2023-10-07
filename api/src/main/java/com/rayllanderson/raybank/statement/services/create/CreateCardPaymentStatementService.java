@@ -47,7 +47,7 @@ public class CreateCardPaymentStatementService implements CreateStatementService
                 cardPaymentTransaction.getAmount(),
                 cardPaymentTransaction.getDescription(),
                 cardPaymentTransaction.getId(),
-                cardPaymentTransaction.getInstallments()));
+                0));
     }
 
     private void processCreditStatement(final CardPaymentTransaction cardPaymentTransaction, final BankAccount payerAccount) {
@@ -55,7 +55,7 @@ public class CreateCardPaymentStatementService implements CreateStatementService
                 payerAccount,
                 cardPaymentTransaction.getDescription(),
                 cardPaymentTransaction.getId(),
-                cardPaymentTransaction.getInstallments(),
+                0,
                 null)); //todo
     }
 

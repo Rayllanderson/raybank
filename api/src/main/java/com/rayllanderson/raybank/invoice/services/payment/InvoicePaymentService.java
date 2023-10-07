@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+import static com.rayllanderson.raybank.invoice.constants.InvoiceCreditDescriptionConstant.INVOICE_PAYMENT_DESCRIPTION;
+
 @Service
 @RequiredArgsConstructor
 public class InvoicePaymentService {
@@ -42,7 +44,7 @@ public class InvoicePaymentService {
         final var debit = DebitAccountFacadeInput.from(input);
         final Transaction debitTransaction = debitAccountFacade.process(debit);
 
-        final var creditInput = new ProcessInvoiceCredit(input.getAmount(), InvoiceCreditType.INVOICE_PAYMENT, debitTransaction.getId(), LocalDate.now());
+        final var creditInput = new ProcessInvoiceCredit(input.getAmount(), InvoiceCreditType.INVOICE_PAYMENT, INVOICE_PAYMENT_DESCRIPTION, debitTransaction.getId(), LocalDate.now());
         invoiceToPay.processCredit(creditInput);
 
         eventPublisher.publish(new InvoicePaidEvent(invoiceToPay, debitTransaction));

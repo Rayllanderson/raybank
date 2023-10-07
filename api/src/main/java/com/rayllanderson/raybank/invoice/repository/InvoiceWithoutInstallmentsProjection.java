@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -19,7 +18,6 @@ public class InvoiceWithoutInstallmentsProjection {
     private LocalDate dueDate;
     private LocalDate originalDueDate;
     private LocalDate closingDate;
-    private BigDecimal total;
     private InvoiceStatus status;
     private Card card;
 }

@@ -1,16 +1,19 @@
 package com.rayllanderson.raybank.invoice.facade;
 
-import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditCurrentInput;
-import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditCurrentService;
+import com.rayllanderson.raybank.invoice.services.credit.CreditCurrentInvoiceInput;
+import com.rayllanderson.raybank.invoice.services.credit.ProcessRefundInvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class InvoiceCreditCurrentFacade {
-    private final InvoiceCreditCurrentService service;
+public class CreditCurrentInvoiceFacade {
+    private final ProcessRefundInvoiceService service;
 
-    public void process(InvoiceCreditCurrentFacadeInput input) {
-        service.credit(new InvoiceCreditCurrentInput(input.getCardId(), input.getAmountToBeCredited()));
+    public void process(final CreditCurrentInvoiceFacadeInput input) {
+        service.credit(new CreditCurrentInvoiceInput(input.getCardId(),
+                input.getAmountToBeCredited(),
+                input.getDescription(),
+                input.getTransactionId()));
     }
 }

@@ -79,13 +79,13 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         return i;
     }
 
-    public void processInstallment(final Installment installment) {
-        if (!canProcessPayment())
+    public void addInstallment(final Installment installment) {
+        if (!canAddInstallment())
             throw new UnprocessableEntityException("Fatura atual não está aberta");
         this.installments.add(installment);
     }
 
-    private boolean canProcessPayment() {
+    private boolean canAddInstallment() {
         return isOpen() || status.equals(InvoiceStatus.NONE);
     }
 

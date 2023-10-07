@@ -48,14 +48,6 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     }
 
     @Override
-    public List<Invoice> findAllByCardIdWithouInstallments(String cardId) {
-        return invoiceRepository.findAllByCardIdAndWithoutInstallments(cardId)
-                .stream()
-                .map(p -> new Invoice(p.getId(), p.getDueDate(), p.getOriginalDueDate(), p.getClosingDate(), p.getTotal(), p.getStatus(), p.getCard(), null))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public Integer getDayOfDueDateByCardId(final String cardId) {
         return cardRepository.findById(cardId)
                 .orElseThrow(() -> new NotFoundException(String.format("Card %s not found", cardId)))

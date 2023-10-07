@@ -18,9 +18,7 @@ public class OverdueInvoiceService {
 
     public void execute() {
         final var now = LocalDate.now();
-        final List<Invoice> invoicesToClose = invoiceRepository.findAllByDueDateLessThanEqualAndStatusAndTotalIsNot(now,
-                InvoiceStatus.CLOSED,
-                BigDecimal.ZERO.setScale(2));
+        final List<Invoice> invoicesToClose = invoiceRepository.findAllByDueDateLessThanEqualAndStatus(now, InvoiceStatus.CLOSED);
 
         invoicesToClose.forEach(Invoice::overdue);
 

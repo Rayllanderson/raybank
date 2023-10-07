@@ -24,7 +24,7 @@ class InvoiceTest {
         final var dueDate = LocalDate.now().plusDays(15);
         Invoice invoice = create(dueDate, bigDecimalOf(0), OPEN);
 
-        invoice.processInstallment(installment(bigDecimalOf(50)));
+        invoice.addInstallment(installment(bigDecimalOf(50)));
 
         assertThat(invoice.getTotal()).isEqualTo(bigDecimalOf(50));
         assertThat(invoice.getInstallments()).isNotEmpty().hasSize(1);
@@ -34,7 +34,7 @@ class InvoiceTest {
     void shouldReceiveParcialPaymentWhenIsNotPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(15);
         Invoice invoice = create(dueDate, OPEN, installment(bigDecimalOf(25)), installment(bigDecimalOf(25)));
-        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "", "tId", LocalDate.now());
 
         invoice.processCredit(creditInput);
 
@@ -47,7 +47,7 @@ class InvoiceTest {
     void shouldReceivePaymentWhenIsPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(5);
         Invoice invoice = create(dueDate, OPEN, installment(bigDecimalOf(50)));
-        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(50), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(50), InvoiceCreditType.INVOICE_PAYMENT, "", "tId", LocalDate.now());
 
         invoice.processCredit(creditInput);
 
@@ -60,7 +60,7 @@ class InvoiceTest {
     void shouldNotReceiveParcialPaymentWhenIsPaymentDate() {
         final var dueDate = LocalDate.now().plusDays(5);
         Invoice invoice = create(dueDate, CLOSED, installment(bigDecimalOf(50)));
-        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT,"", "tId", LocalDate.now());
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
                 .isThrownBy(() -> invoice.processCredit(creditInput))
@@ -75,7 +75,7 @@ class InvoiceTest {
     void shouldThrowExceptionWhenInvoiceIsPaid() {
         final var dueDate = LocalDate.now().plusDays(5);
         Invoice invoice = create(dueDate, PAID, installment(bigDecimalOf(50)));
-        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "", "tId", LocalDate.now());
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
                 .isThrownBy(() -> invoice.processCredit(creditInput))
@@ -89,7 +89,7 @@ class InvoiceTest {
     void shouldThrowExceptionWhenAmmountIsGreaterThanInvoice() {
         final var dueDate = LocalDate.now().plusDays(5);
         Invoice invoice = create(dueDate, OPEN, installment(bigDecimalOf(10)));
-        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "tId", LocalDate.now());
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(40), InvoiceCreditType.INVOICE_PAYMENT, "", "tId", LocalDate.now());
 
         assertThatExceptionOfType(UnprocessableEntityException.class)
                 .isThrownBy(() -> invoice.processCredit(creditInput))
@@ -174,7 +174,7 @@ class InvoiceTest {
     void shouldReceiveCreditRefund() {
         final var dueDate = LocalDate.now();
         Invoice invoice = create(dueDate, OPEN, installment(bigDecimalOf(50)));
-        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(25), InvoiceCreditType.REFUND, "tId", LocalDate.now());
+        final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(25), InvoiceCreditType.REFUND, "", "tId", LocalDate.now());
 
         invoice.processCredit(creditInput);
 

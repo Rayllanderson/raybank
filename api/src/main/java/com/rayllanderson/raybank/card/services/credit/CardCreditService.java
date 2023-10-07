@@ -33,7 +33,7 @@ public class CardCreditService {
     private Transaction getReferenceTransaction(CardCreditInput cardCreditInput) {
         final String referenceTransactionId = cardCreditInput.getOrigin().getReferenceTransactionId();
         return transactionRepository.findById(referenceTransactionId)
-                .orElseThrow(() -> new NotFoundException(String.format("No Reference Transaction with id %s were found to credit the card %s",
+                .orElseThrow(() -> new NotFoundException(String.format("No Reference Transaction with id %s were found to process the card %s",
                         referenceTransactionId, cardCreditInput.getCardId())));
     }
 }

@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.invoice.services.processinstallment;
 
-import com.rayllanderson.raybank.card.transactions.payment.CardPaymentTransaction;
+import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
 import com.rayllanderson.raybank.installment.models.Installment;
 import com.rayllanderson.raybank.installment.models.InstallmentPlan;
 import com.rayllanderson.raybank.installment.repository.InstallmentPlanGateway;
@@ -34,7 +34,7 @@ public class ProcessInstallmentInInvoiceService {
 
     @Transactional
     public List<Invoice> processInvoice(final ProcessInstallmentInvoiceInput input) {
-        final var transaction = (CardPaymentTransaction) transactionGateway.findById(input.getTransactionId());
+        final var transaction = (CardCreditPaymentTransaction) transactionGateway.findById(input.getTransactionId());
 
         validateFutureDate(transaction.getMoment());
         final String cardId = transaction.getDebit().getId();
@@ -79,7 +79,7 @@ public class ProcessInstallmentInInvoiceService {
                 final boolean isOnRange = isAfterOrEquals(installment.getDueDate(), previousInvoiceClosingDate) &&
                         isAfterOrEquals(invoice.getClosingDate(), installment.getDueDate());
                 if (isOnRange) {
-                    invoice.processInstallment(installmentPlan.getInstallmentValue(), installment.getId());
+                    invoice.addInstallment(installment);
                     installment.addInvoice(invoice);
                 }
             }

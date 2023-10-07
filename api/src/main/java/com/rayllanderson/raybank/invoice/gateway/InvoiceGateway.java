@@ -15,6 +15,5 @@ public interface InvoiceGateway {
     Invoice findCurrentByCardId(String cardId);
     Collection<Invoice> findAllByCardIdAndStatus(String cardId, Collection<InvoiceStatus> status);
     List<Invoice> findAllByCardId(final String cardId);
-    List<Invoice> findAllByCardIdWithouInstallments(final String cardId);
     Integer getDayOfDueDateByCardId(final String cardId);
 }

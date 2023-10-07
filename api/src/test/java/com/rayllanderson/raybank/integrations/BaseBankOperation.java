@@ -72,17 +72,17 @@ public class BaseBankOperation extends BaseApiTest {
     }
 
     protected void buyWithCreditCard(BigDecimal value){
-        var payment = PaymentCardRequest.builder()
-                .amount(value)
-                .card(PaymentCardRequest.Card.builder()
-                        .number(authenticatedUserAccount.getCard().getNumber().toString())
-                        .securityCode(authenticatedUserAccount.getCard().getSecurityCode().toString())
-                        .expiryDate(authenticatedUserAccount.getCard().getExpiryDate()).build())
-                .paymentType(PaymentTypeRequest.CREDIT)
-                .installments(3)
-                .ocurredOn(LocalDateTime.now())
-                .description("Amazon")
-                .build();
+        var payment = new PaymentCardRequest();
+//                .amount(value)
+//                .card(PaymentCardRequest.Card.builder()
+//                        .number(authenticatedUserAccount.getCard().getNumber().toString())
+//                        .securityCode(authenticatedUserAccount.getCard().getSecurityCode().toString())
+//                        .expiryDate(authenticatedUserAccount.getCard().getExpiryDate()).build())
+//                .paymentType(PaymentTypeRequest.CREDIT)
+//                .installments(3)
+//                .ocurredOn(LocalDateTime.now())
+//                .description("Amazon")
+//                .build();
         super.post("/api/v1/external/payments/card", payment, Void.class);
     }
 

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @RequiredArgsConstructor
-public class CreditInvoiceCurrentFacadeInput {
+public class CreditCurrentInvoiceFacadeInput {
     private final String cardId;
     private final BigDecimal amountToBeCredited;
     private final String description;
