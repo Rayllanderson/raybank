@@ -12,5 +12,5 @@ public class GenerateBoletoResponse {
     private final String barCode;
     private final BigDecimal value;
     private final LocalDate creationAt;
-    private final LocalDate expiryDate;
+    private final LocalDate expirationDate;
 }

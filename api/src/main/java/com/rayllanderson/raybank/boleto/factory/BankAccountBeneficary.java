@@ -16,7 +16,7 @@ class BankAccountBeneficary implements BeneficiaryTypeFinder {
     public Beneficiary find(final String id) {
         final var bankAccount = bankAccountGateway.findById(id);
 
-        return new Beneficiary(bankAccount.getId(), BeneficiaryType.BANK_ACCOUNT);
+        return new Beneficiary(bankAccount.getId(), BeneficiaryType.BANK_ACCOUNT, bankAccount);
     }
 
     @Override

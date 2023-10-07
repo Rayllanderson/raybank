@@ -46,7 +46,7 @@ public class Boleto {
 
     @NotNull
     @Column(nullable = false)
-    private LocalDate creationDate;
+    private LocalDate createdAt;
 
     @NotNull
     @Column(nullable = false)

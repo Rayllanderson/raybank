@@ -18,6 +18,10 @@ public class BeneficiaryFactory {
         return getBeneficiaryByIdAndType(beneficiaryInput.getId(), beneficiaryInput.getType());
     }
 
+    public Beneficiary getBeneficiaryDataFrom(final Beneficiary beneficiary) {
+        return getBeneficiaryByIdAndType(beneficiary.getId(), beneficiary.getType());
+    }
+
     public Beneficiary getBeneficiaryByIdAndType(final String id, final BeneficiaryType type){
         return finders.stream()
                 .filter(f -> f.supports(type))

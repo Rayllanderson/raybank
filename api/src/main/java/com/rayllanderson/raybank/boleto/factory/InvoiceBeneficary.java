@@ -16,7 +16,7 @@ class InvoiceBeneficary implements BeneficiaryTypeFinder {
     public Beneficiary find(final String id) {
         final var invoice = invoiceGateway.findById(id);
 
-        return new Beneficiary(invoice.getId(), BeneficiaryType.INVOICE);
+        return new Beneficiary(invoice.getId(), BeneficiaryType.INVOICE, invoice);
     }
 
     @Override
