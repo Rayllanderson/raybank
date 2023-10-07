@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.boleto.controllers;
+package com.rayllanderson.raybank.boleto.controllers.generate;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

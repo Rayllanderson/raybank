@@ -1,7 +1,7 @@
-package com.rayllanderson.raybank.boleto.controllers;
+package com.rayllanderson.raybank.boleto.controllers.generate;
 
-import com.rayllanderson.raybank.boleto.services.GenerateBoletoInput;
-import com.rayllanderson.raybank.boleto.services.GenerateBoletoOutput;
+import com.rayllanderson.raybank.boleto.services.generate.GenerateBoletoInput;
+import com.rayllanderson.raybank.boleto.services.generate.GenerateBoletoOutput;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

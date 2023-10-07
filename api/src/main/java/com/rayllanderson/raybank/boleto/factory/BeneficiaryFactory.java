@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.boleto.factory;
 
 import com.rayllanderson.raybank.boleto.models.Beneficiary;
 import com.rayllanderson.raybank.boleto.models.BeneficiaryType;
-import com.rayllanderson.raybank.boleto.services.GenerateBoletoInput;
+import com.rayllanderson.raybank.boleto.services.generate.GenerateBoletoInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

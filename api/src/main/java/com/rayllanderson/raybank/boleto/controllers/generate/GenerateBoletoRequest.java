@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.boleto.controllers;
+package com.rayllanderson.raybank.boleto.controllers.generate;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;

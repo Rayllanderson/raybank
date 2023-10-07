@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.boleto.services;
+package com.rayllanderson.raybank.boleto.services.generate;
 
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import lombok.Getter;
