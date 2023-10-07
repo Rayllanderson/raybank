@@ -39,6 +39,7 @@ public class InstallmentPlan {
     private Integer installmentCount;
     private BigDecimal installmentValue;
     private BigDecimal total;
+    private BigDecimal refunded;
     private String description;
     private LocalDateTime createdAt;
     @Enumerated(EnumType.STRING)
@@ -61,6 +62,7 @@ public class InstallmentPlan {
                 installmentCount,
                 InstallmentUtil.calculateInstallmentValue(total, installmentCount),
                 total,
+                BigDecimal.ZERO,
                 description,
                 LocalDateTime.now(),
                 InstallmentPlanStatus.OPEN,
@@ -72,13 +74,35 @@ public class InstallmentPlan {
     }
 
     public void fullRefund() {
+        if (this.hasRefunded())
+            throw new UnprocessableEntityException("Plan is already refunded");
+
+        if (hasPartialRefund())
+            throw new UnprocessableEntityException("Plan cannot be fully refunded. There's already a partial refund for this plan");
+
         refundInstallmentsPaid();
         cancelOpenInstallments();
         cancelOverdueInstallments();
         this.status = InstallmentPlanStatus.REFUNDED;
     }
 
-    public boolean isRefunded() {
+    private boolean hasPartialRefund() {
+        return this.refunded.compareTo(BigDecimal.ZERO) > 0;
+    }
+
+    public void partialRefund(final BigDecimal value) {
+        final BigDecimal availableToRefund = this.total.subtract(this.refunded);
+        if (value.compareTo(availableToRefund) > 0) {
+            throw new UnprocessableEntityException("Available balance to refund is less than amount to refund");
+        }
+
+        this.refunded = this.refunded.add(value);
+
+        if (refunded.compareTo(total) == 0)
+            this.status = InstallmentPlanStatus.REFUNDED;
+    }
+
+    public boolean hasRefunded() {
         return InstallmentPlanStatus.REFUNDED.equals(this.status);
     }
 
