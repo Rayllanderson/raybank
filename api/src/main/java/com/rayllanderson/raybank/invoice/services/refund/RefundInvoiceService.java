@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.invoice.services.credit;
+package com.rayllanderson.raybank.invoice.services.refund;
 
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.invoice.models.Invoice;
@@ -12,11 +12,11 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
-public class ProcessRefundInvoiceService {
+public class RefundInvoiceService {
     private final InvoiceGateway invoiceGateway;
 
     @Transactional
-    public void credit(final CreditCurrentInvoiceInput input) {
+    public void credit(final RefundInvoiceInput input) {
         final Invoice invoice = invoiceGateway.findCurrentByCardId(input.getCardId());
 
         final var creditInput = new ProcessInvoiceCredit(input.getAmountToBeCredited(),
