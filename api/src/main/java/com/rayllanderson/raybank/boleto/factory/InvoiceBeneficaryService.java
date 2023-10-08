@@ -3,18 +3,21 @@ package com.rayllanderson.raybank.boleto.factory;
 import com.rayllanderson.raybank.boleto.models.Beneficiary;
 import com.rayllanderson.raybank.boleto.models.BeneficiaryType;
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
+import com.rayllanderson.raybank.invoice.facade.CreditInvoiceFacade;
+import com.rayllanderson.raybank.invoice.facade.CreditInvoiceFacadeInputMapper;
+import com.rayllanderson.raybank.invoice.facade.RefundInvoiceFacadeInput;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
-import com.rayllanderson.raybank.invoice.models.inputs.ProcessInvoiceCredit;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class InvoiceBeneficary implements BeneficiaryTypeFinder {
+class InvoiceBeneficaryService implements BeneficiaryTypeService {
 
     private final InvoiceGateway invoiceGateway;
-    private final ProcessInvoiceCredit processInvoiceCredit;
+    private final CreditInvoiceFacade creditInvoiceFacade;
+    private final CreditInvoiceFacadeInputMapper mapper;
 
     @Override
     public Beneficiary find(final String id) {
@@ -24,8 +27,9 @@ class InvoiceBeneficary implements BeneficiaryTypeFinder {
     }
 
     @Override
-    public Transaction receiveCredit(BoletoCreditInput input) {
-        return null;
+    public void receiveCredit(BoletoCreditInput input) {
+        final var creditInput = mapper.from(input);
+        creditInvoiceFacade.credit(creditInput);
     }
 
     @Override

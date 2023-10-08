@@ -6,13 +6,12 @@ import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
 import com.rayllanderson.raybank.boleto.models.Beneficiary;
 import com.rayllanderson.raybank.boleto.models.BeneficiaryType;
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
-import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class BankAccountBeneficary implements BeneficiaryTypeFinder {
+class BankAccountBeneficaryService implements BeneficiaryTypeService {
 
     private final BankAccountGateway bankAccountGateway;
     private final CreditAccountFacade creditAccountFacade;
@@ -25,9 +24,9 @@ class BankAccountBeneficary implements BeneficiaryTypeFinder {
     }
 
     @Override
-    public Transaction receiveCredit(BoletoCreditInput input) {
+    public void receiveCredit(BoletoCreditInput input) {
         final var credit = CreditAccountFacadeInput.from(input);
-        return creditAccountFacade.process(credit);
+        creditAccountFacade.process(credit);
     }
 
     @Override

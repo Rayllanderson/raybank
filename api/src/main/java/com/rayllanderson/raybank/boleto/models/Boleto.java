@@ -80,6 +80,13 @@ public class Boleto {
         }
     }
 
+    public void concludePayment() {
+        if (isLiquidated())
+            this.status = BoletoStatus.PAID;
+        else
+            throw new UnprocessableEntityException("Boleto is not liquidated");
+    }
+
     public boolean isLiquidated() {
         return BoletoStatus.PROCESSING.equals(this.status);
     }

@@ -2,9 +2,12 @@ package com.rayllanderson.raybank.boleto.gateway;
 
 import com.rayllanderson.raybank.boleto.BoletoRepository;
 import com.rayllanderson.raybank.boleto.models.Boleto;
+import com.rayllanderson.raybank.boleto.models.BoletoStatus;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -21,5 +24,10 @@ public class BoletoPostgresGateway implements BoletoGateway {
     public Boleto findByBarCode(String barCode) {
         return boletoRepository.findByBarCode(barCode)
                 .orElseThrow(() -> new NotFoundException(String.format("Boleto %s was not found", barCode)));
+    }
+
+    @Override
+    public List<Boleto> findAllByStatus(BoletoStatus boletoStatus) {
+        return boletoRepository.findAllByStatus(boletoStatus);
     }
 }
