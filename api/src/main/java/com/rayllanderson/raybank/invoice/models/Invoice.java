@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.invoice.models;
 
 import com.rayllanderson.raybank.card.models.Card;
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.installment.models.Installment;
 import com.rayllanderson.raybank.invoice.events.InvoiceClosedEvent;
 import com.rayllanderson.raybank.invoice.models.inputs.ProcessInvoiceCredit;
@@ -176,8 +176,16 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         if (installments.isEmpty())
             throw new UnprocessableEntityException("Fatura não pode receber pagamentos sem parcelas.");
 
-        final var percentage = MathUtils.toPercentage(amount, this.total);
-        getOpenInstallments().forEach(installment -> installment.pay(percentage));
+        var openInstallments = getOpenInstallments();
+
+        var toPay = MathUtils.divide(amount, openInstallments.size());
+        var possiblyAmountRemaing = BigDecimal.ZERO;
+
+        for (Installment installment : openInstallments) {
+            possiblyAmountRemaing = possiblyAmountRemaing.add(installment.pay(toPay));
+        }
+        if (possiblyAmountRemaing.abs().compareTo(BigDecimal.ZERO) > 0)
+            processInstallmentsPayment(possiblyAmountRemaing.abs());
     }
 
     private Collection<Installment> getOpenInstallments() {

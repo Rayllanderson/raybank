@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.installment.models;
 
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.utils.MathUtils;
 import com.rayllanderson.raybank.utils.MoneyUtils;
@@ -91,8 +91,17 @@ public class Installment {
         this.invoice = invoice;
     }
 
-    public void pay(final BigDecimal percentage) {
-        final var toPay = MathUtils.fromPercentage(percentage, this.value);
+    public BigDecimal pay(final BigDecimal value) {
+        var remaining = valueToPay.subtract(value);
+        boolean isRemaingGreaterThanValueToPay = remaining.compareTo(BigDecimal.ZERO) < 0;
+
+        var toPay = value;
+
+        if (isRemaingGreaterThanValueToPay) {
+            toPay = valueToPay;
+        } else {
+            remaining = BigDecimal.ZERO;
+        }
 
         this.valueToPay = valueToPay.subtract(toPay);
 
@@ -100,5 +109,7 @@ public class Installment {
         if (isFullyPaid) {
             this.status = InstallmentStatus.PAID;
         }
+
+        return remaining;
     }
 }
