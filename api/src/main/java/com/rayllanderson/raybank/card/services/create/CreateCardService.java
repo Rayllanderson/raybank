@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.services.create;
 
-import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.card.repository.CardRepository;

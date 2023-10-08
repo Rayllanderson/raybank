@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.security.keycloak;
+package com.rayllanderson.raybank.core.security.keycloak;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

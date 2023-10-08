@@ -1,12 +1,12 @@
 package com.rayllanderson.raybank.external.boleto.model;
 
+import com.rayllanderson.raybank.boleto.models.BoletoStatus;
 import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.Getter;
 import lombok.ToString;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
@@ -23,7 +23,6 @@ import java.util.UUID;
 
 @Getter
 @ToString
-@Entity
 public class Boleto {
 
     @Id

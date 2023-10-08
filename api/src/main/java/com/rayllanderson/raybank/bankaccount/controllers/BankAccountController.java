@@ -5,7 +5,7 @@ import com.rayllanderson.raybank.bankaccount.controllers.reponses.ContactRespons
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
 import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
-import com.rayllanderson.raybank.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

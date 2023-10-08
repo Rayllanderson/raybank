@@ -4,4 +4,5 @@ import com.rayllanderson.raybank.transaction.models.Transaction;
 
 public interface TransactionGateway {
     Transaction findById(final String id);
+    Transaction findByCreditId(final String creditId);
 }

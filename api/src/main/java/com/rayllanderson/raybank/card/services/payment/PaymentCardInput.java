@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.card.services.payment;
 
-import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.card.controllers.external.PaymentCardRequest;
 import com.rayllanderson.raybank.card.models.inputs.CreditCardPayment;
 import lombok.Getter;

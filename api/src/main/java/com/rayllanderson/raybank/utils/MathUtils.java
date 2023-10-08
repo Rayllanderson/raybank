@@ -16,7 +16,11 @@ public class MathUtils {
      * @return A porcentagem a partir de um valor. Exemplo: 50 reais é quantos % de 50 reais? return 100%
      */
     public static BigDecimal toPercentage(final BigDecimal value, final BigDecimal total) {
-        return (value.divide(total).multiply(new BigDecimal(100))).setScale(2, HALF_UP);
+        return (value.divide(total, 2, HALF_UP).multiply(new BigDecimal(100))).setScale(2, HALF_UP);
+    }
+
+    public static BigDecimal divide(final BigDecimal dividend, final Integer divider) {
+        return dividend.divide(BigDecimal.valueOf(divider), 2, HALF_UP);
     }
 
     /**

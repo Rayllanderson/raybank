@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.external.payment.services;
 
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.exceptions.RaybankExternalException;
 import com.rayllanderson.raybank.external.payment.CardUtil;
 import com.rayllanderson.raybank.external.payment.repositories.ExternalTransactionRepository;

@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.security.method;
+package com.rayllanderson.raybank.core.security.method;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 

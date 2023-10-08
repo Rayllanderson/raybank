@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.security.method;
+package com.rayllanderson.raybank.core.security.method;
 
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.repository.CardRepository;
@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
-import static com.rayllanderson.raybank.security.keycloak.JwtUtils.getAccountIdFrom;
-import static com.rayllanderson.raybank.security.keycloak.JwtUtils.getUserIdFrom;
+import static com.rayllanderson.raybank.core.security.keycloak.JwtUtils.getAccountIdFrom;
+import static com.rayllanderson.raybank.core.security.keycloak.JwtUtils.getUserIdFrom;
 
 @Component
 @RequiredArgsConstructor

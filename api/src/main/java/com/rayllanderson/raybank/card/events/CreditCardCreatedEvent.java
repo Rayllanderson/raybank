@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.card.events;
 
-import com.rayllanderson.raybank.event.Event;
+import com.rayllanderson.raybank.shared.event.Event;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.security;
+package com.rayllanderson.raybank.core.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

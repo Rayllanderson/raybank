@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.installment.models;
 
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.utils.InstallmentUtil;
 import jakarta.persistence.CascadeType;

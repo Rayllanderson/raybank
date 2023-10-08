@@ -4,7 +4,7 @@ import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
-import com.rayllanderson.raybank.event.IntegrationEventPublisher;
+import com.rayllanderson.raybank.shared.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanMapper;
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanService;
 import com.rayllanderson.raybank.transaction.models.Transaction;

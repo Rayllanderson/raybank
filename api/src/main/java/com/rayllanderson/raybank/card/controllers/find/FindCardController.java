@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.controllers.find;
 
 import com.rayllanderson.raybank.card.services.find.CreditCardFinderService;
-import com.rayllanderson.raybank.security.method.RequiredAccountOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

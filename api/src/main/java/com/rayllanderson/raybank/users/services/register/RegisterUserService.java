@@ -1,8 +1,8 @@
 package com.rayllanderson.raybank.users.services.register;
 
 import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
-import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.security.keycloak.KeycloakProvider;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.security.keycloak.KeycloakProvider;
 import com.rayllanderson.raybank.users.constants.Groups;
 import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.users.model.UserType;

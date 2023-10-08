@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.invoice.controllers.find;
 
 import com.rayllanderson.raybank.invoice.services.find.FindInvoiceMapper;
 import com.rayllanderson.raybank.invoice.services.find.FindInvoiceService;
-import com.rayllanderson.raybank.security.method.RequiredAccountAndCardOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

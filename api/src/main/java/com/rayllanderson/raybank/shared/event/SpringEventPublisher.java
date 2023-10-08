@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.core.configuration.event;
+package com.rayllanderson.raybank.shared.event;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

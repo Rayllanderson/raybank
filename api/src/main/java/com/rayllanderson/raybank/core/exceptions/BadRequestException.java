@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.exceptions;
+package com.rayllanderson.raybank.core.exceptions;
 
 public class BadRequestException extends RuntimeException{
 

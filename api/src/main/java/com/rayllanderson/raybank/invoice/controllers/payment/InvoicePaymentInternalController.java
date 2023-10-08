@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.invoice.controllers.payment;
 
 import com.rayllanderson.raybank.invoice.services.payment.InvoicePaymentInput;
 import com.rayllanderson.raybank.invoice.services.payment.InvoicePaymentService;
-import com.rayllanderson.raybank.security.method.RequiredAccountAndCardOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.transaction.services;
 
 
-import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;

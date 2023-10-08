@@ -5,7 +5,7 @@ import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.events.CreditCardCreatedEvent;
 import com.rayllanderson.raybank.card.models.inputs.CreditCardPayment;
 import com.rayllanderson.raybank.card.models.inputs.CreditInput;
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

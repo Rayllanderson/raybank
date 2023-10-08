@@ -19,8 +19,8 @@ public class Beneficiary {
 
     @Column(name = "beneficiary_type")
     @Enumerated(EnumType.STRING)
-
     private BeneficiaryType type;
+
     @Transient
     private Object data;
 }

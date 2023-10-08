@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.card.events.handler;
 import com.rayllanderson.raybank.card.events.CreditCardCreatedEvent;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.repository.CardRepository;
-import com.rayllanderson.raybank.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import lombok.RequiredArgsConstructor;

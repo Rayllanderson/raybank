@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.users.services.find;
 
-import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

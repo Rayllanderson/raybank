@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.external.boleto.controllers;
 
-import com.rayllanderson.raybank.external.boleto.BoletoRepository;
+import com.rayllanderson.raybank.boleto.BoletoRepository;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import com.rayllanderson.raybank.external.boleto.requests.GenerateBoletoRequest;
 import com.rayllanderson.raybank.external.boleto.response.GenerateBoletoResponse;
@@ -20,8 +20,8 @@ import java.net.URI;
 
 @Slf4j
 @RequiredArgsConstructor
-@RestController
-@RequestMapping("/api/v1/public/external/boletos")
+//@RestController
+//@RequestMapping("/api/v1/public/external/boletos")
 public class GenerateBoletoController {
 
     private final BoletoRepository boletoRepository;
@@ -36,7 +36,7 @@ public class GenerateBoletoController {
         log.info("Nova emissão de boleto recebida: {}", request);
 
         Boleto boleto = request.toModel(postBackUrl);
-        boletoRepository.save(boleto);
+//        boletoRepository.save(boleto);
 
         log.info("Boleto emitido com sucesso: {}", boleto);
 

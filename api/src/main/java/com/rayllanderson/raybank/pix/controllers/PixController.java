@@ -5,7 +5,7 @@ import com.rayllanderson.raybank.pix.controllers.requests.PixPutDto;
 import com.rayllanderson.raybank.pix.controllers.responses.PixPostResponse;
 import com.rayllanderson.raybank.pix.controllers.responses.PixResponseDto;
 import com.rayllanderson.raybank.pix.model.Pix;
-import com.rayllanderson.raybank.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.pix.service.PixService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

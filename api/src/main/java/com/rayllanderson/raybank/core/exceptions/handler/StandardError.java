@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.exceptions.handler;
+package com.rayllanderson.raybank.core.exceptions.handler;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;

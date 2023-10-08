@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.invoice.gateway;
 
 import com.rayllanderson.raybank.card.repository.CardRepository;
-import com.rayllanderson.raybank.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.invoice.helper.InvoiceListHelper;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor

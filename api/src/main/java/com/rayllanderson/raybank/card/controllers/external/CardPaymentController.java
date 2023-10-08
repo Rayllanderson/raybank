@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.card.controllers.external;
 
 import com.rayllanderson.raybank.card.services.payment.CardPaymentService;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
-import com.rayllanderson.raybank.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

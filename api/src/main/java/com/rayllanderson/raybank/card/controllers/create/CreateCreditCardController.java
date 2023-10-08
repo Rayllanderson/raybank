@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.card.controllers.create;
 import com.rayllanderson.raybank.card.services.create.CreateCardService;
 import com.rayllanderson.raybank.card.services.create.CreateCreditCardInput;
 import com.rayllanderson.raybank.card.services.create.DueDays;
-import com.rayllanderson.raybank.security.method.RequiredAccountOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

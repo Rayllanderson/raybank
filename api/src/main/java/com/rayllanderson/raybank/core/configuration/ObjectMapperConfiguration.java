@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.configuration;
+package com.rayllanderson.raybank.core.configuration;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

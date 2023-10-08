@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.card.events;
 
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
-import com.rayllanderson.raybank.event.Event;
+import com.rayllanderson.raybank.shared.event.Event;
 import lombok.Getter;
 
 import java.math.BigDecimal;

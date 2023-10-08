@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.invoice.events;
 
-import com.rayllanderson.raybank.event.Event;
+import com.rayllanderson.raybank.shared.event.Event;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.invoice.models;
 
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.models.inputs.ProcessInvoiceCredit;
 import org.junit.jupiter.api.Test;
 

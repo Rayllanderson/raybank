@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.statement.services;
 
 
-import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.statement.controllers.BankStatementDto;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.statement.models.BankStatementType;

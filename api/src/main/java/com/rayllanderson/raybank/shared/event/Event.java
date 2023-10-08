@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.event;
+package com.rayllanderson.raybank.shared.event;
 
 import java.time.LocalDateTime;
 

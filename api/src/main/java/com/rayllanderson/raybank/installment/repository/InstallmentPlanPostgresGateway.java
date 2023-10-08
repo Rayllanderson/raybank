@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.installment.repository;
 
-import com.rayllanderson.raybank.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.installment.models.InstallmentPlan;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

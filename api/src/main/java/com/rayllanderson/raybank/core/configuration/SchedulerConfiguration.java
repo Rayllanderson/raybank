@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.configuration;
+package com.rayllanderson.raybank.core.configuration;
 
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider;

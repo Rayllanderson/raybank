@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.security.keycloak;
+package com.rayllanderson.raybank.core.security.keycloak;
 
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;

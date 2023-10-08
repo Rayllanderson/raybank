@@ -21,7 +21,7 @@ import java.util.List;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class FindCardControllerIT extends BaseBankOperation{
 
-    String API_URL = "/api/v1/users/authenticated/bank-account/process-card";
+    String API_URL = "/api/v1/users/authenticated/bank-account/refund-card";
 
     @Test
     void find(){
@@ -92,7 +92,7 @@ class FindCardControllerIT extends BaseBankOperation{
 //                        .builder().amount(amountToPay)
 //                        .account(authenticatedUserAccount)
 //                        .build();
-//        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/process-card/debit/invoice", obj, Void.class);
+//        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/refund-card/debit/invoice", obj, Void.class);
 
 //        Assertions.assertThat(response).isNotNull();
 //        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
@@ -110,7 +110,7 @@ class FindCardControllerIT extends BaseBankOperation{
 //                        .builder().amount(amountToPay)
 //                        .account(authenticatedUserAccount)
 //                        .build();
-//        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/process-card/debit/invoice", obj, Void.class);
+//        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/refund-card/debit/invoice", obj, Void.class);
 //
 //        Assertions.assertThat(response).isNotNull();
 //        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -126,7 +126,7 @@ class FindCardControllerIT extends BaseBankOperation{
 //                        .builder().amount(amountToPay)
 //                        .account(authenticatedUserAccount)
 //                        .build();
-//        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/process-card/debit/invoice", obj, Void.class);
+//        ResponseEntity<Void> response = super.post("/api/v1/users/authenticated/bank-account/refund-card/debit/invoice", obj, Void.class);
 //
 //        Assertions.assertThat(response).isNotNull();
 //        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);

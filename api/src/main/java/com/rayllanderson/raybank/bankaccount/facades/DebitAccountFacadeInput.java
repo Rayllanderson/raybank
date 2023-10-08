@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.bankaccount.facades;
 
 import com.rayllanderson.raybank.bankaccount.services.DebitAccountInput;
+import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
@@ -41,5 +42,10 @@ public class DebitAccountFacadeInput {
     public static DebitAccountFacadeInput fromRefundCardCredit(Transaction transaction, BigDecimal amount) {
         final var destination = new Destination(transaction.getDebit().getId(), Type.CREDIT_CARD);
         return new DebitAccountFacadeInput(transaction.getCredit().getId(), amount, TransactionType.CREDIT_CARD_REFUND, destination);
+    }
+
+    public static DebitAccountFacadeInput from(String accountId, Boleto boleto) {
+        final Destination destination = new Destination(boleto.getBarCode(), Type.BOLETO);
+        return new DebitAccountFacadeInput(accountId, boleto.getValue(), TransactionType.BRAZILIAN_BOLETO, destination);
     }
 }

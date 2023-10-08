@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.bankaccount.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.card.models.Card;
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import com.rayllanderson.raybank.users.model.User;
 import jakarta.persistence.Entity;

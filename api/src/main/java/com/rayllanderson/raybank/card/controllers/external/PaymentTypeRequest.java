@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.controllers.external;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 
 import java.util.Arrays;
 

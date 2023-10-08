@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.bankaccount.services;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.bankaccount.transactions.DebitAccountTransaction;
-import com.rayllanderson.raybank.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;

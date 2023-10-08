@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.invoice.services.payment;
 
 import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacade;
 import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacadeInput;
-import com.rayllanderson.raybank.event.IntegrationEventPublisher;
+import com.rayllanderson.raybank.shared.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.invoice.events.InvoicePaidEvent;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.invoice.models.Invoice;

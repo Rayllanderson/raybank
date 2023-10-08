@@ -6,7 +6,7 @@ import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDt
 import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
 import com.rayllanderson.raybank.bankaccount.controllers.reponses.ContactResponseDto;
 import com.rayllanderson.raybank.bankaccount.model.BankAccountType;
-import com.rayllanderson.raybank.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.users.model.User;

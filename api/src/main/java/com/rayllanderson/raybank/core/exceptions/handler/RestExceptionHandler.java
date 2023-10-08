@@ -1,8 +1,8 @@
-package com.rayllanderson.raybank.exceptions.handler;
+package com.rayllanderson.raybank.core.exceptions.handler;
 
-import com.rayllanderson.raybank.exceptions.BadRequestException;
-import com.rayllanderson.raybank.exceptions.NotFoundException;
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

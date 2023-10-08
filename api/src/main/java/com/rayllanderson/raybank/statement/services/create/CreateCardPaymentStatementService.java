@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.statement.services.create;
 
-import com.rayllanderson.raybank.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.statement.models.BankStatement;

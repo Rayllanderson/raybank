@@ -54,13 +54,13 @@ public class BaseBankOperation extends BaseApiTest {
      * @return Cartão de crédito do usuário autenticado
      */
 //    protected com.rayllanderson.raybank.card.services.CreditCardDto getAuthCreditCard(){
-//        return get("/api/v1/users/authenticated/bank-account/process-card",
+//        return get("/api/v1/users/authenticated/bank-account/refund-card",
 //                com.rayllanderson.raybank.card.services.CreditCardDto.class).getBody();
 //    }
 
     protected void payInvoice(BigDecimal value){
 //        var obj = CreditCardDto.builder().amount(value).account(authenticatedUserAccount).build();
-//        super.post("/api/v1/users/authenticated/bank-account/process-card/debit/invoice", obj, Void.class);
+//        super.post("/api/v1/users/authenticated/bank-account/refund-card/debit/invoice", obj, Void.class);
     }
 
     /**
@@ -68,7 +68,7 @@ public class BaseBankOperation extends BaseApiTest {
      */
     protected void pay300Invoice(){
 //        var obj = CreditCardDto.builder().amount(new BigDecimal("300.00")).account(authenticatedUserAccount).build();
-//        super.post("/api/v1/users/authenticated/bank-account/process-card/debit/invoice", obj, Void.class);
+//        super.post("/api/v1/users/authenticated/bank-account/refund-card/debit/invoice", obj, Void.class);
     }
 
     protected void buyWithCreditCard(BigDecimal value){

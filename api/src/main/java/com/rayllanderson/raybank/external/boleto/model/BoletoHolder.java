@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-@Entity
 public class BoletoHolder {
     @Id
     @CPFOrCNPJ

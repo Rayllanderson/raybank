@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.external.boleto.controllers;
 
-import com.rayllanderson.raybank.external.boleto.BoletoRepository;
+import com.rayllanderson.raybank.boleto.BoletoRepository;
 import com.rayllanderson.raybank.external.boleto.BoletoService;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.users.repository.UserRepository;

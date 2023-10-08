@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.refund.service;
 
-import com.rayllanderson.raybank.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.refund.service.strategies.ProcessRefundFactory;
 import com.rayllanderson.raybank.refund.service.strategies.RefundCommand;
 import com.rayllanderson.raybank.refund.service.strategies.RefundService;
