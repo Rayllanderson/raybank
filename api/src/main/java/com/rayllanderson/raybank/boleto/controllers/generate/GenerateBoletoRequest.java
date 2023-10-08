@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 @Getter
+@Setter
 public class GenerateBoletoRequest {
     @NotNull
     @DecimalMin("0.1")
@@ -32,7 +33,7 @@ public class GenerateBoletoRequest {
         private BeneficiaryType type;
 
         enum BeneficiaryType {
-            INVOICE, BANK_ACCOUNT;
+            INVOICE, ACCOUNT;
 
             @JsonCreator
             static BeneficiaryType from(String type) {

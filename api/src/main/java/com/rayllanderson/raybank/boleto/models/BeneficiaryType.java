@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum BeneficiaryType {
-   INVOICE, BANK_ACCOUNT
+   INVOICE, ACCOUNT
 }

@@ -21,7 +21,7 @@ public interface FindBoletoMapper {
     default void afterMapping(@MappingTarget BoletoDetailsOutput boletoDetailsOutput, Boleto boleto, Object beneficiaryData) {
         boletoDetailsOutput.setBoleto(mapFrom(boleto));
 
-        if (boleto.getBeneficiary().getType().equals(BeneficiaryType.BANK_ACCOUNT)) {
+        if (boleto.getBeneficiary().getType().equals(BeneficiaryType.ACCOUNT)) {
             boletoDetailsOutput.getBeneficiary().setAccount(mapAccount((BankAccount) beneficiaryData));
         } else if (boleto.getBeneficiary().getType().equals(BeneficiaryType.INVOICE)) {
             boletoDetailsOutput.getBeneficiary().setInvoice(mapInvoice((Invoice) beneficiaryData));

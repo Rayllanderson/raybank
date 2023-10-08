@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.boleto.models;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.boleto.BoletoUtil;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -72,7 +73,23 @@ public class Boleto {
         }
     }
 
-    public void liquidate() { //todo ajustar
-        this.status = BoletoStatus.PAID;
+    public void liquidate(final String payerId) {
+        if (!isExpired() || !isPaid()) {
+            this.status = BoletoStatus.PROCESSING;
+            this.payer = BankAccount.withId(payerId);
+        }
+    }
+
+    public boolean isLiquidated() {
+        return BoletoStatus.PROCESSING.equals(this.status);
+    }
+
+    public void validateIfCanReceivePayment() {
+        if (isPaid())
+            throw UnprocessableEntityException.with("Boleto já pago");
+        if (isExpired())
+            throw UnprocessableEntityException.with("Boleto expirado");
+        if (isLiquidated())
+            throw UnprocessableEntityException.with("Boleto está sendo processado");
     }
 }
