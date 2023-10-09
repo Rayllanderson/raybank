@@ -23,14 +23,11 @@ class InvoiceBeneficaryService implements BeneficiaryTypeService {
     public Beneficiary find(final String id) {
         final var invoice = invoiceGateway.findById(id);
 
-        final Beneficiary beneficiary = new Beneficiary(invoice.getId(), BeneficiaryType.INVOICE, invoice);
-        validate(beneficiary);
-
-        return beneficiary;
+        return new Beneficiary(invoice.getId(), BeneficiaryType.INVOICE, invoice);
     }
 
     @Override
-    public void validate(Beneficiary beneficiary) {
+    public void validate(final Beneficiary beneficiary) {
         final Invoice invoice = (Invoice) beneficiary.getData();
 
         if (invoice.cannotReceivePayment()) {

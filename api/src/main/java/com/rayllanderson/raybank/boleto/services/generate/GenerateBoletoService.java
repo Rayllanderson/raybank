@@ -20,7 +20,7 @@ public class GenerateBoletoService {
     @Transactional
     public GenerateBoletoOutput generate(final GenerateBoletoInput input) {
         final var holderAccount = bankAccountGateway.findById(input.getAccountHolderId());
-        final var beneficiary = beneficiaryFactory.getBeneficiaryFrom(input.getBeneficiary());
+        final var beneficiary = beneficiaryFactory.getBeneficiaryAndValidate(input.getBeneficiary());
 
         final var barCode = BoletoUtil.generateBarCode(input.getValue());
         final Boleto boleto = Boleto.generate(barCode, input.getValue(), beneficiary, holderAccount);

@@ -15,8 +15,13 @@ public class BeneficiaryFactory {
 
     private final List<BeneficiaryTypeService> services;
 
-    public Beneficiary getBeneficiaryFrom(final GenerateBoletoInput.BeneficiaryInput beneficiaryInput){
-        return getBeneficiaryByIdAndType(beneficiaryInput.getId(), beneficiaryInput.getType());
+    public Beneficiary getBeneficiaryAndValidate(final GenerateBoletoInput.BeneficiaryInput beneficiaryInput){
+        final BeneficiaryTypeService beneficiaryTypeService = getBeneficiaryTypeService(beneficiaryInput.getType());
+
+        final Beneficiary beneficiary = beneficiaryTypeService.find(beneficiaryInput.getId());
+        beneficiaryTypeService.validate(beneficiary);
+
+        return beneficiary;
     }
 
     public Beneficiary getBeneficiaryDataFrom(final Beneficiary beneficiary) {

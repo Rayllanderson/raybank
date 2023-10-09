@@ -22,10 +22,7 @@ class BankAccountBeneficaryService implements BeneficiaryTypeService {
     public Beneficiary find(final String id) {
         final var bankAccount = bankAccountGateway.findById(id);
 
-        final Beneficiary beneficiary = new Beneficiary(bankAccount.getId(), BeneficiaryType.ACCOUNT, bankAccount);
-        validate(beneficiary);
-
-        return beneficiary;
+        return new Beneficiary(bankAccount.getId(), BeneficiaryType.ACCOUNT, bankAccount);
     }
 
     @Override
