@@ -109,8 +109,14 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     public BigDecimal getTotal() {
         final BigDecimal credit = MathUtils.sum(this.getCredits().stream().map(InvoiceCredit::getAmount));
-        final BigDecimal debit = MathUtils.sum(this.getInstallments().stream().map(Installment::getValue));
+        final BigDecimal debit = MathUtils.sum(this.getDebitInstallments().stream().map(Installment::getValue));
         return MoneyUtils.from(debit.subtract(credit));
+    }
+
+    protected List<Installment> getDebitInstallments() {
+        return this.getInstallments().stream()
+                .filter(Installment::shouldCountAsDebit)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.rayllanderson.raybank.installment.models;
 
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
-import com.rayllanderson.raybank.utils.MathUtils;
 import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -69,6 +68,10 @@ public class Installment {
 
     public boolean isOpen() {
         return this.status.equals(InstallmentStatus.OPEN);
+    }
+
+    public boolean shouldCountAsDebit() {
+        return isOpen() || isOverdue() || isPaid();
     }
 
     public boolean isOverdue() {
