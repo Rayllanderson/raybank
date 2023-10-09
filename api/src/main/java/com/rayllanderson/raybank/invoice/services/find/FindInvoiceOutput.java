@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -30,7 +31,7 @@ public class FindInvoiceOutput {
         private String description;
         private String planId;
         private String status;
-        private LocalDate dueDate;
+        private LocalDateTime occuredOn;
     }
 
     @Getter
@@ -40,6 +41,6 @@ public class FindInvoiceOutput {
         private BigDecimal amount;
         private String type;
         private String description;
-        private LocalDate occuredOn;
+        private LocalDateTime occuredOn;
     }
 }

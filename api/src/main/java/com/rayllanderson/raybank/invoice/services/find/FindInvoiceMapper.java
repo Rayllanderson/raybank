@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface FindInvoiceMapper {
@@ -20,13 +21,14 @@ public interface FindInvoiceMapper {
     List<FindInvoiceListOutput> from(Collection<Invoice> invoices);
     FindInvoiceOutput from(Invoice invoice);
     @Mapping(target = "planId", source = "installmentPlan.id")
+    @Mapping(target = "occuredOn", expression = "java(installment.getUpatedOcurredOn())")
     FindInvoiceOutput.InstallmentOutput from(Installment installment);
 
     List<FindInvoiceListResponse> fromOutput(Collection<FindInvoiceListOutput> invoices);
     FindInvoiceResponse fromOutput(FindInvoiceOutput invoice);
     List<FindInvoiceResponse.InstallmentTransactionResponse> mapInstallments(List<FindInvoiceOutput.InstallmentOutput> installment);
     List<FindInvoiceResponse.CreditTransactionResponse> mapCredits(List<FindInvoiceOutput.CreditOutput> creditOutputs);
-    @Mapping(target = "occuredOn", source = "dueDate")
+    @Mapping(target = "type", constant = "INSTALLMENT")
     FindInvoiceResponse.InstallmentTransactionResponse mapInstallment(FindInvoiceOutput.InstallmentOutput installment);
     @Mapping(target = "value", source = "amount")
     FindInvoiceResponse.CreditTransactionResponse mapCredit(FindInvoiceOutput.CreditOutput creditOutputs);
@@ -41,7 +43,7 @@ public interface FindInvoiceMapper {
         final var transactions = new ArrayList<FindInvoiceResponse.InvoiceTransactionResponse>(creditTransactions);
 
         transactions.addAll(installmentsTransactions);
-        response.setTransactions(transactions);
+        response.setTransactions(transactions.stream().sorted().collect(Collectors.toList()));
     }
 
 }

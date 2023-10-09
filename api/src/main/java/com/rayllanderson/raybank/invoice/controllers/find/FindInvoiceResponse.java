@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -21,11 +22,19 @@ public class FindInvoiceResponse {
 
     @Getter
     @Setter
-    public abstract static class InvoiceTransactionResponse {
+    public abstract static class InvoiceTransactionResponse implements Comparable<InvoiceTransactionResponse> {
         private String id;
         private BigDecimal value;
         private String description;
-        private LocalDate occuredOn;
+        private LocalDateTime occuredOn;
+        private String type;
+
+        @Override
+        public int compareTo(InvoiceTransactionResponse o) {
+            if (this.occuredOn.isBefore(o.occuredOn)) return 1;
+            if (this.occuredOn.isAfter(o.occuredOn)) return -1;
+            else return 0;
+        }
     }
 
     @Getter
@@ -38,6 +47,6 @@ public class FindInvoiceResponse {
     @Getter
     @Setter
     public static class CreditTransactionResponse extends InvoiceTransactionResponse {
-        private String type;
+
     }
 }

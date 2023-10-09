@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class CreditInvoiceService {
                 InvoiceCreditType.INVOICE_PAYMENT,
                 input.getDescription(),
                 input.getTransactionId(),
-                LocalDate.now());
+                LocalDateTime.now());
 
         invoice.processCredit(creditInput);
     }

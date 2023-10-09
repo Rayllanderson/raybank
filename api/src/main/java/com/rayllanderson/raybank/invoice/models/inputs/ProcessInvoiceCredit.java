@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -18,5 +18,5 @@ public class ProcessInvoiceCredit {
     private InvoiceCreditType type;
     private String description;
     private String transactionId;
-    private LocalDate occuredOn;
+    private LocalDateTime occuredOn;
 }

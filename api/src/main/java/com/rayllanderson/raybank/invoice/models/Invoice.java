@@ -229,7 +229,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     }
 
     protected boolean isPartialPayment(BigDecimal amount) {
-        return amount.compareTo(this.total) != 0;
+        return !(amount.compareTo(this.total) == 0 || amount.compareTo(this.total) > 0);
     }
 
     protected boolean isPaymentDate() {
@@ -239,10 +239,6 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     private static LocalDate now() {
         return LocalDate.now();
-    }
-
-    public boolean isAmountGreaterThanTotal(BigDecimal amount) {
-        return amount.compareTo(this.total) > 0;
     }
 
     @Transient

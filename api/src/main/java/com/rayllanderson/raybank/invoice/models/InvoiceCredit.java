@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -27,7 +28,7 @@ public class InvoiceCredit {
     private BigDecimal amount;
     private String description;
     private String transactionId;
-    private LocalDate occuredOn;
+    private LocalDateTime occuredOn;
     @ManyToOne
     private Invoice invoice;
 

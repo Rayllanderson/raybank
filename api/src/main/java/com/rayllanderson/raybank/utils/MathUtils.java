@@ -19,7 +19,9 @@ public class MathUtils {
         return (value.divide(total, 2, HALF_UP).multiply(new BigDecimal(100))).setScale(2, HALF_UP);
     }
 
-    public static BigDecimal divide(final BigDecimal dividend, final Integer divider) {
+    public static BigDecimal divide(final BigDecimal dividend, Integer divider) {
+        if (divider.compareTo(0) == 0)
+            divider = 1;
         return dividend.divide(BigDecimal.valueOf(divider), 2, HALF_UP);
     }
 
