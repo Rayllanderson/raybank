@@ -7,6 +7,8 @@ import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -21,6 +23,11 @@ public class BoletoPostgresGateway implements BoletoGateway {
     }
 
     @Override
+    public void saveAll(Collection<Boleto> boletos) {
+        this.boletoRepository.saveAll(boletos);
+    }
+
+    @Override
     public Boleto findByBarCode(String barCode) {
         return boletoRepository.findByBarCode(barCode)
                 .orElseThrow(() -> new NotFoundException(String.format("Boleto %s was not found", barCode)));
@@ -29,5 +36,10 @@ public class BoletoPostgresGateway implements BoletoGateway {
     @Override
     public List<Boleto> findAllByStatus(BoletoStatus boletoStatus) {
         return boletoRepository.findAllByStatus(boletoStatus);
+    }
+
+    @Override
+    public List<Boleto> findAllByExpirationDateAndStatus(LocalDate expiryDate, BoletoStatus boletoStatus) {
+        return boletoRepository.findAllByExpirationDateAndStatus(expiryDate, boletoStatus);
     }
 }

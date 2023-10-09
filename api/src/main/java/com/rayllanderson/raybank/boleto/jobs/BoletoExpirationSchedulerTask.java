@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.boleto.jobs;
 
-import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditService;
+import com.rayllanderson.raybank.boleto.services.expire.BoletoExpirationService;
 import com.rayllanderson.raybank.invoice.jobs.ScheduleUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,20 +17,20 @@ import java.time.LocalDateTime;
 @Component
 @RequiredArgsConstructor
 @EnableSchedulerLock(defaultLockAtMostFor = "30S")
-public class BoletoCreditSchedulerTask {
+public class BoletoExpirationSchedulerTask {
 
-    private final BoletoCreditService boletoCreditService;
+    private final BoletoExpirationService boletoExpirationService;
 
     @Async
     @Scheduled(cron = ScheduleUtil.Cron.EVERY_MINUTE)
-    @SchedulerLock(name = "BoletoCredit_ScheduleTask", lockAtLeastFor = "29S", lockAtMostFor = "30S")
+    @SchedulerLock(name = "BoletoExpiration_ScheduleTask", lockAtLeastFor = "29S", lockAtMostFor = "30S")
     public void process() {
         LockAssert.assertLocked();
 
-        log.info("fetching all boletos to finalize payment, {}", LocalDateTime.now());
+        log.info("fetching all boletos to expire, {}", LocalDateTime.now());
 
-        boletoCreditService.credit();
+        boletoExpirationService.expire();
 
-        log.info("completed 'finalize boleto payment' scheduler task -> {}", LocalDateTime.now());
+        log.info("completed 'boleto expire' scheduler task -> {}", LocalDateTime.now());
     }
 }
