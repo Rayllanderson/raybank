@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.boleto;
+package com.rayllanderson.raybank.boleto.repositories;
 
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.models.BoletoStatus;

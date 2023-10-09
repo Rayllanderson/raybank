@@ -91,6 +91,11 @@ public class Boleto {
         return BoletoStatus.PROCESSING.equals(this.status);
     }
 
+    public void unprocessed() {
+        if (isLiquidated())
+            this.status = BoletoStatus.PROCESSING_FAILURE;
+    }
+
     public void validateIfCanReceivePayment() {
         if (isPaid())
             throw UnprocessableEntityException.with("Boleto já pago");

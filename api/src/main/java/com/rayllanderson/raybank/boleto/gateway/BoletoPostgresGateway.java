@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.boleto.gateway;
 
-import com.rayllanderson.raybank.boleto.BoletoRepository;
+import com.rayllanderson.raybank.boleto.repositories.BoletoRepository;
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.models.BoletoStatus;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
