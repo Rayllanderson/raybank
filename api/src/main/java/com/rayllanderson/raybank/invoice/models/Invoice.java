@@ -108,8 +108,8 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     }
 
     public BigDecimal getTotal() {
-        final BigDecimal credit = MathUtils.sum(this.credits.stream().filter(InvoiceCredit::isRefund).map(InvoiceCredit::getAmount));
-        final BigDecimal debit = MathUtils.sum(this.getOpenInstallments().stream().map(Installment::getValueToPay));
+        final BigDecimal credit = MathUtils.sum(this.getCredits().stream().map(InvoiceCredit::getAmount));
+        final BigDecimal debit = MathUtils.sum(this.getInstallments().stream().map(Installment::getValue));
         return MoneyUtils.from(debit.subtract(credit));
     }
 
@@ -147,20 +147,13 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     }
 
     private void pay(final BigDecimal amount) {
-        if (!this.hasValueToPay())
-            throw new UnprocessableEntityException("Fatura não possui nenhum valor em aberto");
-
         if (isPaid())
             throw new UnprocessableEntityException("Não é possível receber pagamento para fatura já paga.");
 
-        if (!canReceivePayment())
+        if (cannotReceivePayment())
             throw new UnprocessableEntityException("Não é possível receber pagamento para essa fatura.");
 
         this.total = getTotal();
-
-        if (isAmountGreaterThanTotal(amount)) {
-            throw new UnprocessableEntityException("O valor recebido é superior ao da fatura.");
-        }
 
         if (isPaymentDate() || isOverdue()) {
             if (isPartialPayment(amount)) {
@@ -194,6 +187,10 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     public boolean canReceivePayment() {
         return isOpen() || isOverdue() || isClosed();
+    }
+
+    public boolean cannotReceivePayment() {
+        return !canReceivePayment();
     }
 
     public void open() {
@@ -244,7 +241,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         return LocalDate.now();
     }
 
-    private boolean isAmountGreaterThanTotal(BigDecimal amount) {
+    public boolean isAmountGreaterThanTotal(BigDecimal amount) {
         return amount.compareTo(this.total) > 0;
     }
 
