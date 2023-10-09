@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.invoice.services.credit;
 
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
+import com.rayllanderson.raybank.invoice.helper.InvoiceListHelper;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.models.InvoiceCreditType;
 import com.rayllanderson.raybank.invoice.models.inputs.ProcessInvoiceCredit;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,18 @@ public class CreditInvoiceService {
                 input.getTransactionId(),
                 LocalDateTime.now());
 
-        invoice.processCredit(creditInput);
+        if (!invoice.isPaid()) {
+            invoice.processCredit(creditInput);
+        }
+
+        creditNextInvoice(invoice, creditInput);
+    }
+
+    private void creditNextInvoice(Invoice invoice, ProcessInvoiceCredit creditInput) {
+        final List<Invoice> allByCardId = invoiceGateway.findAllByCardId(invoice.getCardId());
+        final var invoiceList = new InvoiceListHelper(allByCardId);
+
+        final Invoice nextInvoiceToPay = invoiceList.getCurrentInvoiceToPay();
+        nextInvoiceToPay.processCredit(creditInput);
     }
 }

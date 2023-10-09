@@ -4,7 +4,6 @@ import com.rayllanderson.raybank.invoice.services.credit.CreditInvoiceInput;
 import com.rayllanderson.raybank.invoice.services.credit.CreditInvoiceService;
 import com.rayllanderson.raybank.invoice.services.refund.RefundInvoiceInput;
 import com.rayllanderson.raybank.invoice.services.refund.RefundInvoiceService;
-import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
