@@ -3,11 +3,11 @@ package com.rayllanderson.raybank.boleto.factory;
 import com.rayllanderson.raybank.boleto.models.Beneficiary;
 import com.rayllanderson.raybank.boleto.models.BeneficiaryType;
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.facade.CreditInvoiceFacade;
 import com.rayllanderson.raybank.invoice.facade.CreditInvoiceFacadeInputMapper;
-import com.rayllanderson.raybank.invoice.facade.RefundInvoiceFacadeInput;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
-import com.rayllanderson.raybank.transaction.models.Transaction;
+import com.rayllanderson.raybank.invoice.models.Invoice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,19 @@ class InvoiceBeneficaryService implements BeneficiaryTypeService {
     public Beneficiary find(final String id) {
         final var invoice = invoiceGateway.findById(id);
 
-        return new Beneficiary(invoice.getId(), BeneficiaryType.INVOICE, invoice);
+        final Beneficiary beneficiary = new Beneficiary(invoice.getId(), BeneficiaryType.INVOICE, invoice);
+        validate(beneficiary);
+
+        return beneficiary;
+    }
+
+    @Override
+    public void validate(Beneficiary beneficiary) {
+        final Invoice invoice = (Invoice) beneficiary.getData();
+
+        if (invoice.cannotReceivePayment()) {
+            throw UnprocessableEntityException.with("Não é possível gerar boleto para fatura, pois fatura não pode receber pagamentos");
+        }
     }
 
     @Override

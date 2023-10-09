@@ -3,9 +3,11 @@ package com.rayllanderson.raybank.boleto.factory;
 import com.rayllanderson.raybank.bankaccount.facades.credit.CreditAccountFacade;
 import com.rayllanderson.raybank.bankaccount.facades.credit.CreditAccountFacadeInput;
 import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.boleto.models.Beneficiary;
 import com.rayllanderson.raybank.boleto.models.BeneficiaryType;
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +22,19 @@ class BankAccountBeneficaryService implements BeneficiaryTypeService {
     public Beneficiary find(final String id) {
         final var bankAccount = bankAccountGateway.findById(id);
 
-        return new Beneficiary(bankAccount.getId(), BeneficiaryType.ACCOUNT, bankAccount);
+        final Beneficiary beneficiary = new Beneficiary(bankAccount.getId(), BeneficiaryType.ACCOUNT, bankAccount);
+        validate(beneficiary);
+
+        return beneficiary;
+    }
+
+    @Override
+    public void validate(final Beneficiary beneficiary) {
+        final var account = (BankAccount) beneficiary.getData();
+
+        if (!account.isActive()) {
+            throw UnprocessableEntityException.with("Não é possível gerar boletos para conta bancária inativa");
+        }
     }
 
     @Override

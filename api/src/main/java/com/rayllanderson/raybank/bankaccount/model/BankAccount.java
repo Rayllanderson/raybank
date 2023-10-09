@@ -36,6 +36,8 @@ public class BankAccount {
     private BigDecimal balance;
     @Enumerated(EnumType.STRING)
     private BankAccountType type;
+    @Enumerated(EnumType.STRING)
+    private BankAccountStatus status;
     @OneToOne(orphanRemoval = true)
     private Card card;
     @JsonIgnore
@@ -122,5 +124,13 @@ public class BankAccount {
 
     public boolean isEstablishment() {
         return BankAccountType.ESTABLISHMENT.equals(this.type);
+    }
+
+    public boolean isActive() {
+        return BankAccountStatus.ACTIVE.equals(this.status);
+    }
+
+    public boolean isInactive() {
+        return BankAccountStatus.INACTIVE.equals(this.status);
     }
 }
