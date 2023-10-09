@@ -3,7 +3,6 @@ package com.rayllanderson.raybank.bankaccount.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
-import com.rayllanderson.raybank.external.boleto.model.Boleto;
 import com.rayllanderson.raybank.users.model.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -62,17 +61,6 @@ public class BankAccount {
         if (this.hasAvailableBalance(amount)){
             this.balance = this.balance.subtract(amount);
         } else throw new UnprocessableEntityException("Sua conta não tem saldo disponível");
-    }
-
-    public void pay (Boleto boleto) throws UnprocessableEntityException {
-        if (boleto.isExpired()) {
-            throw new UnprocessableEntityException("Boleto "+ boleto.getCode() + " vencido");
-        }
-        if (boleto.isPaid()){
-            throw new UnprocessableEntityException("Boleto "+ boleto.getCode() + " já foi pago");
-        }
-        this.pay(boleto.getValue());
-        boleto.liquidate();
     }
 
     /**
