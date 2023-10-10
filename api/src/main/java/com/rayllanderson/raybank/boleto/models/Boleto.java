@@ -19,6 +19,13 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static com.rayllanderson.raybank.boleto.models.BoletoStatus.EXPIRED;
+import static com.rayllanderson.raybank.boleto.models.BoletoStatus.PAID;
+import static com.rayllanderson.raybank.boleto.models.BoletoStatus.PROCESSING;
+import static com.rayllanderson.raybank.boleto.models.BoletoStatus.PROCESSING_FAILURE;
+import static com.rayllanderson.raybank.boleto.models.BoletoStatus.REFUNDED;
+import static com.rayllanderson.raybank.boleto.models.BoletoStatus.WAITING_PAYMENT;
+
 @Getter
 @Entity
 @AllArgsConstructor
@@ -55,45 +62,45 @@ public class Boleto {
 
     public static Boleto generate(final String barCode, BigDecimal value, Beneficiary beneficiary, BankAccount holder) {
         final var creationDate = LocalDate.now();
-        return new Boleto(barCode, value, beneficiary, holder, null, BoletoStatus.WAITING_PAYMENT, creationDate, BoletoUtil.generateExpirationDate(creationDate));
+        return new Boleto(barCode, value, beneficiary, holder, null, WAITING_PAYMENT, creationDate, BoletoUtil.generateExpirationDate(creationDate));
     }
 
     public boolean isExpired() {
-        return BoletoStatus.EXPIRED.equals(this.status);
+        return EXPIRED.equals(this.status);
     }
 
     public boolean isPaid() {
-        return BoletoStatus.PAID.equals(this.status);
+        return PAID.equals(this.status);
     }
 
     public void expire() {
         var today = LocalDate.now();
         if (today.isAfter(expirationDate)) {
-            this.status = BoletoStatus.EXPIRED;
+            this.status = EXPIRED;
         }
     }
 
     public void liquidate(final String payerId) {
         if (!isExpired() || !isPaid()) {
-            this.status = BoletoStatus.PROCESSING;
+            this.status = PROCESSING;
             this.payer = BankAccount.withId(payerId);
         }
     }
 
     public void concludePayment() {
         if (isLiquidated())
-            this.status = BoletoStatus.PAID;
+            this.status = PAID;
         else
             throw new UnprocessableEntityException("Boleto is not liquidated");
     }
 
     public boolean isLiquidated() {
-        return BoletoStatus.PROCESSING.equals(this.status);
+        return PROCESSING.equals(this.status);
     }
 
     public void unprocessed() {
         if (isLiquidated())
-            this.status = BoletoStatus.PROCESSING_FAILURE;
+            this.status = PROCESSING_FAILURE;
     }
 
     public void validateIfCanReceivePayment() {
@@ -103,5 +110,15 @@ public class Boleto {
             throw UnprocessableEntityException.with("Boleto expirado");
         if (isLiquidated())
             throw UnprocessableEntityException.with("Boleto está sendo processado");
+    }
+
+    public String getPayerId() {
+        return this.payer.getId();
+    }
+
+    public void refund() {
+        if (this.status.equals(PROCESSING_FAILURE)) {
+            this.status = REFUNDED;
+        }
     }
 }

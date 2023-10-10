@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.bankaccount.facades.credit;
 
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
+import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
 import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.shared.dtos.Origin;
@@ -40,5 +41,10 @@ public class CreditAccountFacadeInput {
     public static CreditAccountFacadeInput from(BoletoCreditInput boleto) {
         final var origin = new Origin(boleto.getBarCode(), Type.BOLETO, boleto.getOriginalTransactionId());
         return new CreditAccountFacadeInput(boleto.getBeneficiaryId(), boleto.getAmount(), origin, TransactionType.BRAZILIAN_BOLETO);
+    }
+
+    public static CreditAccountFacadeInput refundBoleto(final Boleto boleto, final String originalTransactionId) {
+        final var origin = new Origin(boleto.getBarCode(), Type.REFUND, originalTransactionId);
+        return new CreditAccountFacadeInput(boleto.getPayerId(), boleto.getValue(), origin, TransactionType.BRAZILIAN_BOLETO_REFUND);
     }
 }
