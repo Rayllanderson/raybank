@@ -1,21 +1,10 @@
 package com.rayllanderson.raybank.pix.service;
 
-import com.rayllanderson.raybank.pix.controllers.requests.PixPostDto;
-import com.rayllanderson.raybank.pix.controllers.requests.PixPutDto;
-import com.rayllanderson.raybank.pix.controllers.responses.PixPostResponse;
-import com.rayllanderson.raybank.pix.controllers.responses.PixResponseDto;
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;
-import com.rayllanderson.raybank.pix.model.Pix;
-import com.rayllanderson.raybank.users.model.User;
-import com.rayllanderson.raybank.pix.repository.PixRepository;
+import com.rayllanderson.raybank.pix.repositories.PixRepository;
 import com.rayllanderson.raybank.users.repository.UserRepository;
-import com.rayllanderson.raybank.utils.PixUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service

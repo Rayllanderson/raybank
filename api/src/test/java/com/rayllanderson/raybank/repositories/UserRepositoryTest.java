@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.repositories;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.pix.model.Pix;
-import com.rayllanderson.raybank.pix.repository.PixRepository;
+import com.rayllanderson.raybank.pix.repositories.PixRepository;
 import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.users.repository.UserRepository;
 import com.rayllanderson.raybank.utils.BankAccountCreator;
@@ -16,8 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.Optional;
 
 @Log4j2
 @ExtendWith(SpringExtension.class)

@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.pix.service.key.register;
 
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
@@ -23,7 +24,7 @@ public class RegisterPixKeyService {
 
         boolean isKeyValid = keyType.isValid(key);
         if (!isKeyValid) {
-            throw UnprocessableEntityException.withFormatted("Chave Pix %s não é valida", key);
+            throw BadRequestException.formatted("Chave Pix %s não é valida", key);
         }
 
         validateNumberOfKeyInAccount(keyInput.getBankAccountId());
