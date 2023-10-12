@@ -27,6 +27,11 @@ public class PixPostgresGateway implements PixGateway {
     }
 
     @Override
+    public void deleteKeyById(String key) {
+        keyRepository.deleteById(key);
+    }
+
+    @Override
     public List<PixKey> findAllKeysByAccountId(String accountId) {
         return keyRepository.findAllByBankAccountId(accountId);
     }

@@ -10,6 +10,8 @@ public interface PixGateway {
 
     boolean existsByKey(final String key);
 
+    void deleteKeyById(final String key);
+
     List<PixKey> findAllKeysByAccountId(String accountId);
 
     PixKey findByKey(String key);
