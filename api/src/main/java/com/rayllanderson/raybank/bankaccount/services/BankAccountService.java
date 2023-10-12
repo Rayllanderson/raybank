@@ -148,7 +148,8 @@ public class BankAccountService {
         }catch (NumberFormatException e){
             recipientAccountNumber = -1;
         }
-        return userFinderService.findByPixOrAccountNumber(recipientPixKey, recipientAccountNumber);
+        return null;
+//        return userFinderService.findByPixOrAccountNumber(recipientPixKey, recipientAccountNumber);
 
     }
 

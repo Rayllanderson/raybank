@@ -18,10 +18,10 @@ public class UserFinderService {
         return userRepository.findById(id).orElseThrow(() -> new BadRequestException("Usuário não encontrado."));
     }
 
-    @Transactional(readOnly = true)
-    public User findByPixOrAccountNumber(String key, int accountNumber){
-        return userRepository
-                .findByPixKeysKeyOrBankAccountAccountNumber(key, accountNumber)
-                .orElseThrow(() -> new BadRequestException("Pix ou número da conta estão incorretos ou destinatário não existe"));
-    }
+//    @Transactional(readOnly = true)
+//    public User findByPixOrAccountNumber(String key, int accountNumber){
+//        return userRepository
+//                .findByPixKeysKeyOrBankAccountAccountNumber(key, accountNumber)
+//                .orElseThrow(() -> new BadRequestException("Pix ou número da conta estão incorretos ou destinatário não existe"));
+//    }
 }

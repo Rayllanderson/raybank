@@ -31,33 +31,33 @@ public class PixController {
 
     private final PixService pixService;
 
-    @PostMapping
-    public ResponseEntity<PixPostResponse> save(@RequestBody @Valid PixPostDto pixPostDto,
-                                                @AuthenticationPrincipal Jwt jwt) {
-        pixPostDto.setOwnerId(JwtUtils.getUserIdFrom(jwt));
-        return ResponseEntity.status(HttpStatus.CREATED).body(pixService.register(pixPostDto));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<PixResponseDto>> findAll(@AuthenticationPrincipal Jwt jwt) {
-        return ResponseEntity.ok(pixService.findAllFromUserId(JwtUtils.getUserIdFrom(jwt)));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Pix> findById(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
-        return ResponseEntity.ok(pixService.findById(id, JwtUtils.getUserIdFrom(jwt)));
-    }
-
-    @PutMapping
-    public ResponseEntity<Void> update(@RequestBody @Valid PixPutDto pixPutDto, @AuthenticationPrincipal Jwt jwt) {
-        pixPutDto.setOwnerId(JwtUtils.getUserIdFrom(jwt));
-        pixService.update(pixPutDto);
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
-        pixService.deleteById(id, JwtUtils.getUserIdFrom(jwt));
-        return ResponseEntity.noContent().build();
-    }
+//    @PostMapping
+//    public ResponseEntity<PixPostResponse> save(@RequestBody @Valid PixPostDto pixPostDto,
+//                                                @AuthenticationPrincipal Jwt jwt) {
+//        pixPostDto.setOwnerId(JwtUtils.getUserIdFrom(jwt));
+//        return ResponseEntity.status(HttpStatus.CREATED).body(pixService.register(pixPostDto));
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<List<PixResponseDto>> findAll(@AuthenticationPrincipal Jwt jwt) {
+//        return ResponseEntity.ok(pixService.findAllFromUserId(JwtUtils.getUserIdFrom(jwt)));
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Pix> findById(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+//        return ResponseEntity.ok(pixService.findById(id, JwtUtils.getUserIdFrom(jwt)));
+//    }
+//
+//    @PutMapping
+//    public ResponseEntity<Void> update(@RequestBody @Valid PixPutDto pixPutDto, @AuthenticationPrincipal Jwt jwt) {
+//        pixPutDto.setOwnerId(JwtUtils.getUserIdFrom(jwt));
+//        pixService.update(pixPutDto);
+//        return ResponseEntity.noContent().build();
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+//        pixService.deleteById(id, JwtUtils.getUserIdFrom(jwt));
+//        return ResponseEntity.noContent().build();
+//    }
 }
