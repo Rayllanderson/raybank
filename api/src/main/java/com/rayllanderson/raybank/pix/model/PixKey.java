@@ -19,8 +19,6 @@ import lombok.NoArgsConstructor;
 public class PixKey {
 
     @Id
-    private Long id;
-
     @Size(min = 5, max = 99)
     @Column(name = "_key")
     private String key;
@@ -30,4 +28,8 @@ public class PixKey {
 
     @ManyToOne
     private BankAccount bankAccount;
+
+    public static PixKey from(String key, PixKeyType type, String accountId) {
+        return new PixKey(key, type, BankAccount.withId(accountId));
+    }
 }

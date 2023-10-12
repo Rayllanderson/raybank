@@ -9,4 +9,8 @@ public class UnprocessableEntityException extends RuntimeException {
     public static UnprocessableEntityException with(String s) {
         return new UnprocessableEntityException(s);
     }
+
+    public static UnprocessableEntityException withFormatted(String s, Object... args) {
+        return new UnprocessableEntityException(String.format(s, args));
+    }
 }
