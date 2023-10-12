@@ -15,6 +15,8 @@ public interface PixGateway {
 
     boolean existsByKey(final String key);
 
+    boolean existsLimitByAccountId(final String accountId);
+
     void deleteKeyById(final String key);
 
     List<PixKey> findAllKeysByAccountId(String accountId);

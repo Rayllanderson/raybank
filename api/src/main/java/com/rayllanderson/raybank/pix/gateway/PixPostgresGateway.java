@@ -41,6 +41,11 @@ public class PixPostgresGateway implements PixGateway {
     }
 
     @Override
+    public boolean existsLimitByAccountId(String accountId) {
+        return limitRepository.existsByBankAccount_Id(accountId);
+    }
+
+    @Override
     public void deleteKeyById(String key) {
         keyRepository.deleteById(key);
     }
