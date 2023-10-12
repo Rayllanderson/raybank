@@ -33,10 +33,10 @@ public class RegisterPixKeyController {
                                                 @AuthenticationPrincipal Jwt jwt) {
 
         final var key = new RegisterPixKeyInput(request.getKey(), getKeytype(request.getType()), accountId);
-        registerKeyService.register(key);
+        final var registeredKey = registerKeyService.register(key);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(RegisterPixResponse.from(request.getKey(), request.getType()));
+                .body(RegisterPixResponse.from(registeredKey, request.getType()));
     }
 
     private static PixKeyType getKeytype(String keyType) {

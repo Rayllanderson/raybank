@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.pix.gateway;
 
+import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.repository.PixKeyRepository;
 import com.rayllanderson.raybank.pix.repository.PixRepository;
@@ -28,6 +29,12 @@ public class PixPostgresGateway implements PixGateway {
     @Override
     public List<PixKey> findAllKeysByAccountId(String accountId) {
         return keyRepository.findAllByBankAccountId(accountId);
+    }
+
+    @Override
+    public PixKey findByKey(String key) {
+        return keyRepository.findById(key)
+                .orElseThrow(() -> NotFoundException.formatted("Chave %s não encontrada", key));
     }
 
     @Override

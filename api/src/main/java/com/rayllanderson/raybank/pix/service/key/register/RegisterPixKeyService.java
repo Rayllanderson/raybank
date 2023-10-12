@@ -17,7 +17,7 @@ public class RegisterPixKeyService {
     private final PixGateway pixGateway;
     protected static final int MAX_NUMBER_KEYS_PER_ACCOUNT = 5;
 
-    public void register(final RegisterPixKeyInput keyInput) {
+    public String register(final RegisterPixKeyInput keyInput) {
         String key = getKey(keyInput);
         PixKeyType keyType = keyInput.getType();
 
@@ -34,6 +34,8 @@ public class RegisterPixKeyService {
 
         final PixKey pixKey = PixKey.from(key, keyType, keyInput.getBankAccountId());
         pixGateway.save(pixKey);
+
+        return pixKey.getKey();
     }
 
     private static String getKey(final RegisterPixKeyInput keyInput) {

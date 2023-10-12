@@ -12,5 +12,7 @@ public interface PixGateway {
 
     List<PixKey> findAllKeysByAccountId(String accountId);
 
+    PixKey findByKey(String key);
+
     int countKeysByAccountId(String accountId);
 }
