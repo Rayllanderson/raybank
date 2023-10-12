@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.pix.util;
 
-import com.rayllanderson.raybank.pix.model.Pix2;
-import com.rayllanderson.raybank.pix.model.PixKey;
+import com.rayllanderson.raybank.pix.model.Pix;
+import com.rayllanderson.raybank.pix.model.key.PixKey;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class PixQrCodeGenerator {
     private static final EMV POSTAL_CODE = new EMV("61", "08", "05031***");
     private static final EMV CRC16_CCITT = new EMV("63", "04", "D417");
 
-    public static String generateQrCode(final Pix2 pix) {
+    public static String generateQrCode(final Pix pix) {
         return String.valueOf(
                 payloadFormatIndicator()) +
                 merchantAccountInformation(pix.getCredit()) +

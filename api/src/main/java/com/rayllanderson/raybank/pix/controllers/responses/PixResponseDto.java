@@ -16,8 +16,8 @@ public class PixResponseDto {
 
     public static PixResponseDto fromPix(Pix pix){
         PixResponseDto pixDto = new PixResponseDto();
-        pixDto.setPixKeys(pix.getKey());
-        pixDto.setId(pix.getId());
+//        pixDto.setPixKeys(pix.getKey());
+//        pixDto.setId(pix.getId());
         return pixDto;
     }
 }

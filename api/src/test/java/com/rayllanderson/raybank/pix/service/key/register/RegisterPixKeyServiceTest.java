@@ -2,8 +2,8 @@ package com.rayllanderson.raybank.pix.service.key.register;
 
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
-import com.rayllanderson.raybank.pix.model.PixKey;
-import com.rayllanderson.raybank.pix.model.PixKeyType;
+import com.rayllanderson.raybank.pix.model.key.PixKey;
+import com.rayllanderson.raybank.pix.model.key.PixKeyType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

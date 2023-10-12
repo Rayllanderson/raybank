@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.pix.service.key.register;
 
-import com.rayllanderson.raybank.pix.model.PixKeyType;
+import com.rayllanderson.raybank.pix.model.key.PixKeyType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

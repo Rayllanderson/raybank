@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.pix.model;
+package com.rayllanderson.raybank.pix.model.key;
 
 import com.rayllanderson.raybank.utils.RegexPattern;
 

@@ -108,7 +108,7 @@ class UserRepositoryTest {
         bankAccount.attacthUser(userToBeSaved);
         bankAccount = bankAccountRepository.save(bankAccount);
         userToBeSaved.setBankAccount(bankAccount);
-        Pix pix = new Pix(null, "rayllanderson", userToBeSaved);
+        Pix pix = null;
         pixRepository.save(pix);
         userToBeSaved.getPixKeys().add(pix);
 
@@ -117,7 +117,7 @@ class UserRepositoryTest {
         Assertions.assertThat(pix.getId()).isNotNull();
 
         Assertions.assertThat(userRepository
-                .findByPixKeysKeyOrBankAccountAccountNumber(pix.getKey(), 5466121))
+                .findByPixKeysKeyOrBankAccountAccountNumber(null, 5466121))
                 .isPresent();
     }
 }

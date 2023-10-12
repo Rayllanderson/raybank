@@ -1,37 +1,41 @@
 package com.rayllanderson.raybank.pix.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rayllanderson.raybank.users.model.User;
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import com.rayllanderson.raybank.pix.model.key.PixKey;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Data
-@Builder
+import java.math.BigDecimal;
+
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Pix {
 
-    @EqualsAndHashCode.Include
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @Size(min = 5, max = 99)
-    @Column(name = "_key")
-    private String key;
-    @JsonIgnore
+    private String id;
+
+    private BigDecimal amount;
+
+    @Enumerated(EnumType.STRING)
+    private PixStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private PixType type;
+
     @ManyToOne
-    private User owner;
+    private PixKey debit;
+
+    @ManyToOne
+    private PixKey credit;
+
+    public String getCreditName() {
+        return this.credit.getBankAccount().getUser().getName();
+    }
 }

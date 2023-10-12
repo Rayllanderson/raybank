@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.pix.repository;
 
-import com.rayllanderson.raybank.pix.model.PixKey;
+import com.rayllanderson.raybank.pix.model.key.PixKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.pix.gateway;
 
-import com.rayllanderson.raybank.pix.model.PixKey;
+import com.rayllanderson.raybank.pix.model.key.PixKey;
 
 import java.util.List;
 
