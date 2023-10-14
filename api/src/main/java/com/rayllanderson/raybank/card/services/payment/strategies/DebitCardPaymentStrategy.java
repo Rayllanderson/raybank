@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.services.payment.strategies;
 
-import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacade;
-import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacadeInput;
+import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacade;
+import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInput;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.transaction.models.Transaction;

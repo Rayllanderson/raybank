@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.bankaccount.services;
+package com.rayllanderson.raybank.bankaccount.services.debit;
 
 import com.rayllanderson.raybank.shared.dtos.Destination;
 import com.rayllanderson.raybank.transaction.models.TransactionMethod;
@@ -14,7 +14,14 @@ public class DebitAccountInput {
 
     private String accountId;
     private BigDecimal amount;
+    private DebitTransaction transaction;
     private Destination destination;
-    private TransactionType transactionType;
-    private TransactionMethod transactionMethod;
+
+    @Getter
+    @Setter
+    public static class DebitTransaction {
+        private String referenceId;
+        private TransactionType transactionType;
+        private TransactionMethod transactionMethod;
+    }
 }

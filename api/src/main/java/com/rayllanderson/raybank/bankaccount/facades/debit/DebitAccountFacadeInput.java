@@ -1,6 +1,5 @@
-package com.rayllanderson.raybank.bankaccount.facades;
+package com.rayllanderson.raybank.bankaccount.facades.debit;
 
-import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountInput;
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
@@ -13,8 +12,9 @@ import com.rayllanderson.raybank.transaction.models.TransactionMethod;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
@@ -28,27 +28,27 @@ public class DebitAccountFacadeInput {
     private final Destination destination;
 
     @Getter
+    @Setter
     @AllArgsConstructor
-    @RequiredArgsConstructor
     public static class DebitTransaction {
         private String referenceId;
-        private final TransactionType transactionType;
-        private final TransactionMethod transactionMethod;
-    }
+        private TransactionType transactionType;
+        private TransactionMethod transactionMethod;
 
-    public DebitAccountInput toServiceInput() {
-        return new ModelMapper().map(this, DebitAccountInput.class);
+        private static DebitTransaction from(TransactionType transactionType, TransactionMethod transactionMethod) {
+            return new DebitTransaction(null, transactionType, transactionMethod);
+        }
     }
 
     public static DebitAccountFacadeInput from(final InvoicePaymentInput input) {
         final var destination = new Destination(input.getInvoiceId(), Type.INVOICE);
-        final var debitTransaction = new DebitTransaction(TransactionType.PAYMENT, TransactionMethod.ACCOUNT);
+        final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.ACCOUNT);
         return new DebitAccountFacadeInput(input.getAccountId(), input.getAmount(), debitTransaction, destination);
     }
 
     public static DebitAccountFacadeInput from(final PaymentCardInput input, final Card card) {
         final var destination = new Destination(input.getEstablishmentId(), Type.ACCOUNT);
-        final var debitTransaction = new DebitTransaction(TransactionType.PAYMENT, TransactionMethod.DEBIT_CARD);
+        final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.DEBIT_CARD);
         return new DebitAccountFacadeInput(card.getAccountId(), input.getAmount(), debitTransaction, destination);
     }
 
@@ -60,13 +60,13 @@ public class DebitAccountFacadeInput {
 
     public static DebitAccountFacadeInput from(String accountId, Boleto boleto) {
         final Destination destination = new Destination(boleto.getBarCode(), Type.BOLETO);
-        final var debitTransaction = new DebitTransaction(TransactionType.PAYMENT, TransactionMethod.BOLETO);
+        final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.BOLETO);
         return new DebitAccountFacadeInput(accountId, boleto.getValue(), debitTransaction, destination);
     }
 
     public static DebitAccountFacadeInput transfer(Pix pix) {
         final Destination destination = new Destination(pix.getCreditAccountId(), Type.ACCOUNT);
-        final var debitTransaction = new DebitTransaction(TransactionType.TRANSFER, TransactionMethod.PIX);
+        final var debitTransaction = DebitTransaction.from(TransactionType.TRANSFER, TransactionMethod.PIX);
         return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), debitTransaction, destination);
     }
 }

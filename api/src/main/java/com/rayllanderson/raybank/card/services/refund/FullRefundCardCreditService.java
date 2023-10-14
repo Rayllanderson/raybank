@@ -25,7 +25,13 @@ public class FullRefundCardCreditService implements RefundService {
 
         final var fullRefundInsallment = fullRefundInsallmentService.process(transaction.getPlanId());
 
-        refundProcesses.forEach(service -> service.refund(transaction, fullRefundInsallment.getAmountRefunded()));
+        refundProcesses.forEach(service -> {
+            if (service instanceof DebitEstablishmentRefundProcess) {
+                service.refund(transaction, command.getAmount());
+                return;
+            }
+            service.refund(transaction, fullRefundInsallment.getAmountRefunded());
+        });
 
         return new RefundOutput(transaction.getId(), fullRefundInsallment.getAmountRefunded());
     }

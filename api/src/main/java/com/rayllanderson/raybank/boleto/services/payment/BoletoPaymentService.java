@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.boleto.services.payment;
 
-import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacade;
-import com.rayllanderson.raybank.bankaccount.facades.DebitAccountFacadeInput;
+import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacade;
+import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInput;
 import com.rayllanderson.raybank.boleto.gateway.BoletoGateway;
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.transaction.models.Transaction;

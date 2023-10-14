@@ -4,7 +4,9 @@ import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.transaction.models.Credit;
 import com.rayllanderson.raybank.transaction.models.Debit;
+import com.rayllanderson.raybank.transaction.models.FinancialMovement;
 import com.rayllanderson.raybank.transaction.models.Transaction;
+import com.rayllanderson.raybank.transaction.models.TransactionMethod;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -33,7 +35,9 @@ public class CardCreditPaymentTransaction extends Transaction {
                 .accountId(card.getAccountId())
                 .credit(credit)
                 .debit(debit)
-                .type(TransactionType.CREDIT_CARD_PAYMENT)
+                .type(TransactionType.PAYMENT)
+                .method(TransactionMethod.CREDIT_CARD)
+                .financialMovement(FinancialMovement.DEBIT)
                 .installments(paymentCardInput.getInstallments())
                 .build();
     }

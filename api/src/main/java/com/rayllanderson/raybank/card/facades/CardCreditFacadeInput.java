@@ -3,6 +3,8 @@ package com.rayllanderson.raybank.card.facades;
 import com.rayllanderson.raybank.shared.dtos.Origin;
 import com.rayllanderson.raybank.shared.dtos.Type;
 import com.rayllanderson.raybank.card.services.credit.CardCreditInput;
+import com.rayllanderson.raybank.transaction.models.TransactionMethod;
+import com.rayllanderson.raybank.transaction.models.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +20,8 @@ public class CardCreditFacadeInput {
     private String cardId;
     private BigDecimal amount;
     private Origin origin;
+    private TransactionType transactionType;
+    private TransactionMethod transactionMethod;
 
     public CardCreditInput toServiceInput() {
         return new ModelMapper().map(this, CardCreditInput.class);
@@ -25,6 +29,6 @@ public class CardCreditFacadeInput {
 
     public static CardCreditFacadeInput createFromInvoicePayment(final BigDecimal amount, String cardId, String invoiceId, String referenceTransactionId) {
         final var origin = new Origin(invoiceId, Type.INVOICE, referenceTransactionId);
-        return new CardCreditFacadeInput(cardId, amount, origin);
+        return new CardCreditFacadeInput(cardId, amount, origin, TransactionType.DEPOSIT, TransactionMethod.INVOICE);
     }
 }

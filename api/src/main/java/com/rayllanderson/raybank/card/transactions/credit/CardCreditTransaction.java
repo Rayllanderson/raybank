@@ -3,7 +3,9 @@ package com.rayllanderson.raybank.card.transactions.credit;
 import com.rayllanderson.raybank.card.services.credit.CardCreditInput;
 import com.rayllanderson.raybank.transaction.models.Credit;
 import com.rayllanderson.raybank.transaction.models.Debit;
+import com.rayllanderson.raybank.transaction.models.FinancialMovement;
 import com.rayllanderson.raybank.transaction.models.Transaction;
+import com.rayllanderson.raybank.transaction.models.TransactionMethod;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -28,9 +30,11 @@ public class CardCreditTransaction extends Transaction {
                 .amount(input.getAmount())
                 .moment(LocalDateTime.now())
                 .description(input.getOrigin().getType().name())
+                .financialMovement(FinancialMovement.CREDIT)
                 .debit(debit)
                 .credit(credit)
-                .type(TransactionType.CREDITING_CARD)
+                .type(input.getTransactionType())
+                .method(input.getTransactionMethod())
                 .referenceId(referenceId)
                 .accountId(accountId)
                 .build();

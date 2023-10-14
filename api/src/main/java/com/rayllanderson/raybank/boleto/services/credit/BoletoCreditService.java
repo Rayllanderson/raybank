@@ -27,9 +27,9 @@ public class BoletoCreditService {
     private final BoletoPaymentAttemptRepository paymentAttemptRepository;
 
     public void credit() {
-        final List<Boleto> paidBoletos = boletoGateway.findAllByStatus(BoletoStatus.PROCESSING);
+        final List<Boleto> processingBoletos = boletoGateway.findAllByStatus(BoletoStatus.PROCESSING);
 
-        paidBoletos.forEach(boleto -> {
+        processingBoletos.forEach(boleto -> {
             try {
                 final Transaction originalTransaction = transactionGateway.findByCreditId(boleto.getBarCode());
 

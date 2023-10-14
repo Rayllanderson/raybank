@@ -26,8 +26,8 @@ public class CreditAccountService {
 
         bankAccount.credit(creditInput.getAmount());
 
-        final Transaction cardCreditTransaction = CreditAccountTransaction.from(creditInput, originalTransaction.getId(), originalTransaction.getDescription());
-        return transactionRepository.save(cardCreditTransaction);
+        final Transaction transaction = CreditAccountTransaction.from(creditInput, originalTransaction.getId(), originalTransaction.getDescription());
+        return transactionRepository.save(transaction);
     }
 
     private Transaction getReferenceTransaction(final CreditAccountInput accountInput) {

@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.bankaccount.transactions;
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
 import com.rayllanderson.raybank.transaction.models.Credit;
 import com.rayllanderson.raybank.transaction.models.Debit;
+import com.rayllanderson.raybank.transaction.models.FinancialMovement;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -26,6 +27,8 @@ public class CreditAccountTransaction extends Transaction {
 
         return CreditAccountTransaction.builder()
                 .amount(input.getAmount())
+                .method(input.getTransactionMethod())
+                .financialMovement(FinancialMovement.CREDIT)
                 .moment(LocalDateTime.now())
                 .description(description)
                 .debit(debit)

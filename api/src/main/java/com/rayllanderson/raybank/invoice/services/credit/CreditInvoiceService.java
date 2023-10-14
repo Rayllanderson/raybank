@@ -27,11 +27,12 @@ public class CreditInvoiceService {
                 input.getTransactionId(),
                 LocalDateTime.now());
 
-        if (!invoice.isPaid()) {
-            invoice.processCredit(creditInput);
+        if (invoice.isPaid()) {
+            creditNextInvoice(invoice, creditInput);
+            return;
         }
 
-        creditNextInvoice(invoice, creditInput);
+        invoice.processCredit(creditInput);
     }
 
     private void creditNextInvoice(Invoice invoice, ProcessInvoiceCredit creditInput) {
