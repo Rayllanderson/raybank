@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.bankaccount.facades;
 
-import com.rayllanderson.raybank.bankaccount.services.DebitAccountService;
+import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountService;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

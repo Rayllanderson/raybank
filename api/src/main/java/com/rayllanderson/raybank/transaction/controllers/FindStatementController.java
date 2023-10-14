@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.transaction.controllers;
 
+import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.core.security.method.RequiredStatementOwner;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.services.TransactionFinderService;
@@ -33,9 +34,8 @@ public class FindStatementController {
         return ResponseEntity.ok(statements);
     }
 
-    @RequiredStatementOwner
     @GetMapping("/{statementId}")
     public ResponseEntity<Transaction> findBankStatementByIdAndUserId(@PathVariable String statementId, @AuthenticationPrincipal Jwt jwt) {
-        return ResponseEntity.ok(transactionFinderService.findById(statementId));
+        return ResponseEntity.ok(transactionFinderService.findByIdAndAccountId(statementId, JwtUtils.getAccountIdFrom(jwt)));
     }
 }

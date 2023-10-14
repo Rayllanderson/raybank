@@ -47,4 +47,9 @@ public class TransactionFinderService {
                 "Extrato não encontrado"));
 //        return BankStatementDto.fromBankStatement(Transaction);
     }
+
+    public Transaction findByIdAndAccountId(final String id, String accountId) {
+        return transactionRepository.findByIdAndAccountId(id, accountId).orElseThrow(() -> new BadRequestException(
+                "Extrato não encontrado"));
+    }
 }

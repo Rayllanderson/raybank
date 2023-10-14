@@ -6,6 +6,8 @@ import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class TransactionPostegresGateway implements TransactionGateway {
@@ -21,5 +23,15 @@ public class TransactionPostegresGateway implements TransactionGateway {
     public Transaction findByCreditId(String creditId) {
         return transactionRepository.findByCreditId(creditId)
                 .orElseThrow(() -> new NotFoundException(String.format("No Transaction with credit id %s were found", creditId)));
+    }
+
+    @Override
+    public Transaction save(Transaction transaction) {
+        return this.transactionRepository.save(transaction);
+    }
+
+    @Override
+    public Optional<Transaction> findByReferenceIdAndAccountId(String referenceId, String accountId) {
+        return transactionRepository.findByReferenceIdAndAccountId(referenceId, accountId);
     }
 }

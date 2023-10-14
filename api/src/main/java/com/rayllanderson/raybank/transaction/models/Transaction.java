@@ -47,8 +47,13 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     protected TransactionType type;
 
-    //todo::status
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    protected TransactionMethod method;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    protected FinancialMovement financialMovement;
     @Embedded
     protected Debit debit;
 
