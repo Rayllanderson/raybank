@@ -1,5 +1,5 @@
 package com.rayllanderson.raybank.pix.model;
 
-public enum PixStatus {
+public enum PixQrCodeStatus {
     WAITING_PAYMENT, SUCCESSFULLY_COMPLETED, EXPIRED
 }

@@ -111,7 +111,7 @@ class RegisterPixKeyServiceTest {
                 .withMessage("Chave Pix kaguya@sama.com já cadastrada");
 
         verify(pixGateway).existsByKey(anyString());
-        verify(pixGateway, never()).save(any());
+        verify(pixGateway, never()).save(any(PixKey.class));
     }
 
     @Test
@@ -123,7 +123,7 @@ class RegisterPixKeyServiceTest {
                 .withMessage("Chave Pix kaguya@sama não é valida");
 
         verify(pixGateway, never()).existsByKey(anyString());
-        verify(pixGateway, never()).save(any());
+        verify(pixGateway, never()).save(any(PixKey.class));
     }
 
     @Test
@@ -136,6 +136,6 @@ class RegisterPixKeyServiceTest {
                 .withMessage("Número máximo (5) de chaves excedido.");
 
         verify(pixGateway, never()).existsByKey(anyString());
-        verify(pixGateway, never()).save(any());
+        verify(pixGateway, never()).save(any(PixKey.class));
     }
 }

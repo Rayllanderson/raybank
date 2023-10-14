@@ -14,6 +14,7 @@ public class DebitAccountInput {
 
     private String accountId;
     private BigDecimal amount;
+    private String description;
     private DebitTransaction transaction;
     private Destination destination;
 

@@ -38,4 +38,12 @@ public class PixKey {
     public static PixKey from(String key, PixKeyType type, String accountId) {
         return new PixKey(key, type, LocalDateTime.now(), BankAccount.withId(accountId));
     }
+
+    public String getAccountId() {
+        return this.bankAccount.getId();
+    }
+
+    public String getName() {
+        return this.bankAccount.getUser().getName();
+    }
 }

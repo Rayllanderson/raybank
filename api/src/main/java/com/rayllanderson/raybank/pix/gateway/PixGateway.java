@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.pix.gateway;
 
+import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixLimit;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 
@@ -7,7 +8,9 @@ import java.util.List;
 
 public interface PixGateway {
 
-    void save(PixKey pix);
+    void save(Pix pix);
+
+    void save(PixKey pixKey);
 
     void save(PixLimit pixLimit);
 
@@ -22,6 +25,8 @@ public interface PixGateway {
     List<PixKey> findAllKeysByAccountId(String accountId);
 
     PixKey findByKey(String key);
+
+    PixKey findKeyByAccountId(String accountId);
 
     int countKeysByAccountId(String accountId);
 }

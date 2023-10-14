@@ -1,6 +1,8 @@
 package com.rayllanderson.raybank.pix.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,5 +18,9 @@ public class PixQrCode {
 
     @Id
     private String code;
+
+    @Enumerated(EnumType.STRING)
+    private PixQrCodeStatus status;
+
     private LocalDateTime expiresIn;
 }

@@ -38,4 +38,8 @@ public class PixLimit {
     public void updateLimit(BigDecimal newLimit) {
         this.limit = newLimit;
     }
+
+    public boolean hasLimitFor(BigDecimal amount) {
+        return this.limit.compareTo(amount) >= 0;
+    }
 }

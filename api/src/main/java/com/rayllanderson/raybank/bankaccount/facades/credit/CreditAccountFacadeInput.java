@@ -48,7 +48,7 @@ public class CreditAccountFacadeInput {
     }
 
     public static CreditAccountFacadeInput transfer(final Pix pix, final String originalTransactionId) {
-        final var origin = new Origin(pix.getDebitAccountId(), Type.ACCOUNT, originalTransactionId);
+        final var origin = new Origin(pix.getId(), Type.PIX, originalTransactionId);
         return new CreditAccountFacadeInput(pix.getCreditAccountId(), pix.getAmount(), origin, TransactionType.TRANSFER, TransactionMethod.PIX);
     }
 }

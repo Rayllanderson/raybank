@@ -31,6 +31,7 @@ public class DebitAccountTransaction extends Transaction {
                 .financialMovement(FinancialMovement.DEBIT)
                 .amount(input.getAmount())
                 .moment(LocalDateTime.now())
+                .description(input.getDescription())
                 .accountId(input.getAccountId())
                 .credit(credit)
                 .debit(debit)

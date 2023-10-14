@@ -21,6 +21,6 @@ public class Credit {
     private Destination destination;
 
     public enum Destination {
-        INVOICE, CREDIT_CARD, ACCOUNT, ESTABLISHMENT_ACCOUNT, BOLETO
+        INVOICE, CREDIT_CARD, ACCOUNT, ESTABLISHMENT_ACCOUNT, BOLETO, PIX
     }
 }

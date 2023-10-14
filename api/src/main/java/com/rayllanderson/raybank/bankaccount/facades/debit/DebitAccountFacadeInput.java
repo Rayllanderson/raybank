@@ -12,18 +12,19 @@ import com.rayllanderson.raybank.transaction.models.TransactionMethod;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Getter
+@AllArgsConstructor
 @RequiredArgsConstructor
 public class DebitAccountFacadeInput {
 
     private final String accountId;
     private final BigDecimal amount;
+    private String description;
     private final DebitTransaction transaction;
     private final Destination destination;
 
@@ -64,9 +65,9 @@ public class DebitAccountFacadeInput {
         return new DebitAccountFacadeInput(accountId, boleto.getValue(), debitTransaction, destination);
     }
 
-    public static DebitAccountFacadeInput transfer(Pix pix) {
-        final Destination destination = new Destination(pix.getCreditAccountId(), Type.ACCOUNT);
+    public static DebitAccountFacadeInput transfer(final Pix pix) {
+        final Destination destination = new Destination(pix.getId(), Type.PIX);
         final var debitTransaction = DebitTransaction.from(TransactionType.TRANSFER, TransactionMethod.PIX);
-        return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), debitTransaction, destination);
+        return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), pix.getMessage(), debitTransaction, destination);
     }
 }
