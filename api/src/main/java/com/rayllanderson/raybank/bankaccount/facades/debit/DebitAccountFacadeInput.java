@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.invoice.services.payment.InvoicePaymentInput;
 import com.rayllanderson.raybank.pix.model.Pix;
+import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.shared.dtos.Destination;
 import com.rayllanderson.raybank.shared.dtos.Type;
 import com.rayllanderson.raybank.transaction.models.Transaction;
@@ -75,5 +76,11 @@ public class DebitAccountFacadeInput {
         final Destination destination = new Destination(pix.getId(), Type.PIX);
         final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.PIX);
         return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), pix.getMessage(), debitTransaction, destination);
+    }
+
+    public static DebitAccountFacadeInput returnPix(final Pix pix, PixReturn pixReturn) {
+        final Destination destination = new Destination(pixReturn.getId(), Type.PIX);
+        final var debitTransaction = DebitTransaction.from(TransactionType.RETURN, TransactionMethod.PIX);
+        return new DebitAccountFacadeInput(pix.getCreditAccountId(), pixReturn.getAmount(), pixReturn.getMessage(), debitTransaction, destination);
     }
 }

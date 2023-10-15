@@ -50,4 +50,8 @@ public class PixKey {
     public boolean sameAccount(final PixKey key) {
         return this.getAccountId().equals(key.getAccountId());
     }
+
+    public boolean sameAccount(final String accountId) {
+        return this.getAccountId().equals(accountId);
+    }
 }

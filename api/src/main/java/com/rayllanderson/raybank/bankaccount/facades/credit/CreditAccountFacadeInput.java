@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
 import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.pix.model.Pix;
+import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.shared.dtos.Origin;
 import com.rayllanderson.raybank.shared.dtos.Type;
 import com.rayllanderson.raybank.transaction.models.FinancialMovement;
@@ -55,5 +56,10 @@ public class CreditAccountFacadeInput {
     public static CreditAccountFacadeInput credit(final Pix pix, final String originalTransactionId) {
         final var origin = new Origin(pix.getId(), Type.PIX, originalTransactionId);
         return new CreditAccountFacadeInput(pix.getCreditAccountId(), pix.getAmount(), origin, TransactionType.DEPOSIT, TransactionMethod.PIX);
+    }
+
+    public static CreditAccountFacadeInput doReturn(final Pix pix, PixReturn pixReturn, final String originalTransactionId) {
+        final var origin = new Origin(pixReturn.getId(), Type.PIX, originalTransactionId);
+        return new CreditAccountFacadeInput(pix.getDebitAccountId(), pixReturn.getAmount(), origin, TransactionType.RETURN, TransactionMethod.PIX);
     }
 }

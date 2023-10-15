@@ -4,11 +4,13 @@ import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixLimit;
 import com.rayllanderson.raybank.pix.model.PixQrCode;
+import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.repositories.PixKeyRepository;
 import com.rayllanderson.raybank.pix.repositories.PixLimitRepository;
 import com.rayllanderson.raybank.pix.repositories.PixQrCodeRepository;
 import com.rayllanderson.raybank.pix.repositories.PixRepository;
+import com.rayllanderson.raybank.pix.repositories.PixReturnRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,7 @@ public class PixPostgresGateway implements PixGateway {
     private final PixLimitRepository limitRepository;
     private final PixKeyRepository keyRepository;
     private final PixQrCodeRepository qrCodeRepository;
+    private final PixReturnRepository returnRepository;
 
     @Override
     public void save(Pix pix) {
@@ -41,6 +44,11 @@ public class PixPostgresGateway implements PixGateway {
     @Override
     public void save(PixQrCode pixQrCode) {
         qrCodeRepository.save(pixQrCode);
+    }
+
+    @Override
+    public void save(PixReturn pixReturn) {
+        returnRepository.save(pixReturn);
     }
 
     @Override
@@ -89,6 +97,17 @@ public class PixPostgresGateway implements PixGateway {
     public PixKey findKeyByAccountId(String accountId) {
         return keyRepository.findAllByBankAccountId(accountId).stream().findFirst()
                 .orElseThrow(() -> NotFoundException.formatted("Nenhuma chave Pix encontrada para conta %s", accountId));
+    }
+
+    @Override
+    public Pix findPixById(String pixId) {
+        return pixRepository.findById(pixId)
+                .orElseThrow(() -> NotFoundException.formatted("Pix %s não encontrado", pixId));
+    }
+
+    @Override
+    public List<PixReturn> findAllPixReturnByPixId(String pixId) {
+        return returnRepository.findAllByOriginId(pixId);
     }
 
     @Override

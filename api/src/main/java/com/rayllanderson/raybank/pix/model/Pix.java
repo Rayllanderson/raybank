@@ -45,7 +45,11 @@ public class Pix {
     private LocalDateTime occuredOn;
 
     public String getCreditName() {
-        return this.credit.getBankAccount().getUser().getName();
+        return credit.getName();
+    }
+
+    public String getDebitName() {
+        return debit.getName();
     }
 
     public String getCreditAccountId() {
