@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.invoice.facade;
 
-import com.rayllanderson.raybank.invoice.services.credit.CreditInvoiceInput;
-import com.rayllanderson.raybank.invoice.services.credit.CreditInvoiceService;
+import com.rayllanderson.raybank.invoice.services.payment.InvoicePaymentService;
+import com.rayllanderson.raybank.invoice.services.payment.InvoiceReceiveCreditInput;
 import com.rayllanderson.raybank.invoice.services.refund.RefundInvoiceInput;
 import com.rayllanderson.raybank.invoice.services.refund.RefundInvoiceService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CreditInvoiceFacade {
     private final RefundInvoiceService refundService;
-    private final CreditInvoiceService creditService;
+    private final InvoicePaymentService invoicePaymentService;
 
     public void refund(final RefundInvoiceFacadeInput input) {
         refundService.credit(new RefundInvoiceInput(input.getCardId(),
@@ -21,7 +21,7 @@ public class CreditInvoiceFacade {
     }
 
     public void credit(final CreditInvoiceFacadeInput input) {
-        creditService.credit(new CreditInvoiceInput(input.getInvoiceId(),
+        invoicePaymentService.receiveCredit(new InvoiceReceiveCreditInput(input.getInvoiceId(),
                 input.getAmount(),
                 input.getDescription(),
                 input.getTransactionId()));

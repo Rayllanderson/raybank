@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.pix.model;
 
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
+import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
 import com.rayllanderson.raybank.pix.util.E2EIdGenerator;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

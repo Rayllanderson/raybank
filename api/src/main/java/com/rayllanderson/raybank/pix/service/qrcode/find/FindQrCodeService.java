@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.pix.service.qrcode.find;
 
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
-import com.rayllanderson.raybank.pix.model.PixQrCode;
+import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

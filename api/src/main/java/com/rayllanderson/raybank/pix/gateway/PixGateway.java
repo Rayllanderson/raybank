@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.pix.gateway;
 
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixLimit;
-import com.rayllanderson.raybank.pix.model.PixQrCode;
+import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
 import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 

@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.pix.service.qrcode.generate;
 
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
-import com.rayllanderson.raybank.pix.model.PixQrCode;
+import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

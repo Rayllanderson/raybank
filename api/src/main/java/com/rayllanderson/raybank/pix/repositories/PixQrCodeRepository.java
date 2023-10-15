@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.pix.repositories;
 
-import com.rayllanderson.raybank.pix.model.PixQrCode;
+import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

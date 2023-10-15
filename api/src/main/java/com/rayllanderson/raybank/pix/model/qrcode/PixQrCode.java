@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.pix.model;
+package com.rayllanderson.raybank.pix.model.qrcode;
 
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.util.PixQrCodeGenerator;

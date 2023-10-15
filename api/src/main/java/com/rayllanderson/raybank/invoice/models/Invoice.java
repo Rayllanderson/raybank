@@ -89,6 +89,10 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
         return isOpen() || status.equals(InvoiceStatus.NONE);
     }
 
+    public boolean hasRemainingBalance() {
+        return getTotal().compareTo(BigDecimal.ZERO) < 0;
+    }
+
     public static Invoice createOpenInvoice(LocalDate dueDate, String cardId) {
         final var invoice = create(dueDate, cardId);
         invoice.status = InvoiceStatus.OPEN;

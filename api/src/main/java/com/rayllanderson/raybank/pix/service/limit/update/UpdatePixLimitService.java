@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.pix.service.limit.update;
 
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
-import com.rayllanderson.raybank.pix.model.PixLimit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

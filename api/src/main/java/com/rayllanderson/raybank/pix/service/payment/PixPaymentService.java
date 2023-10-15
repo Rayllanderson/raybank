@@ -7,7 +7,7 @@ import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInp
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.Pix;
-import com.rayllanderson.raybank.pix.model.PixQrCode;
+import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.service.limit.CheckLimitService;
 import com.rayllanderson.raybank.transaction.models.Transaction;
