@@ -17,7 +17,6 @@ import java.util.List;
 public class CloseInvoiceService {
 
     private final InvoiceRepository invoiceRepository;
-    private final InvoiceClosedService invoiceClosedService;
 
     public void execute() {
         final var now = LocalDate.now();
@@ -26,7 +25,7 @@ public class CloseInvoiceService {
         invoicesToClose.forEach(invoiceToClose -> {
             try {
                 invoiceToClose.close();
-                invoiceClosedService.process(invoiceToClose);
+                invoiceRepository.saveAndFlush(invoiceToClose);
             } catch (final Exception e) {
                 log.error("Failed to close invoice {}", invoiceToClose.getId(), e);
             }
