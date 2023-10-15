@@ -8,6 +8,7 @@ import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
+import com.rayllanderson.raybank.pix.service.limit.CheckLimitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.math.BigDecimal;
 public class PixTransferService {
 
     private final PixGateway pixGateway;
+    private final CheckLimitService limitService;
     private final PixTransferMapper pixTransferMapper;
     private final DebitAccountFacade debitAccountFacade;
     private final CreditAccountFacade creditAccountFacade;
@@ -28,7 +30,7 @@ public class PixTransferService {
         final PixKey debitKey = pixGateway.findKeyByAccountId(transfer.getDebitAccountId());
         final PixKey creditKey = pixGateway.findKeyByKey(transfer.getCreditKey());
 
-        checkLimit(debitKey, transfer.getAmount());
+        limitService.checkLimit(debitKey, transfer.getAmount());
 
         final Pix pix = Pix.newTransfer(debitKey, creditKey, transfer.getAmount(), transfer.getMessage());
 
@@ -41,12 +43,5 @@ public class PixTransferService {
         pixGateway.save(pix);
 
         return pixTransferMapper.from(pix, debitTransaction.getId());
-    }
-
-    private void checkLimit(final PixKey debitKey, final BigDecimal transactionAmount) {
-        final var limit = pixGateway.findLimitByAccountId(debitKey.getAccountId());
-        if (!limit.hasLimitFor(transactionAmount)) {
-            throw UnprocessableEntityException.withFormatted("Limite insuficiente para transação. Seu limite disponível é de %s", limit.getLimit());
-        }
     }
 }

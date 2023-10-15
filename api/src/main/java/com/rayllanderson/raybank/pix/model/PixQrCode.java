@@ -51,8 +51,17 @@ public class PixQrCode {
     @Transient
     private static final LocalDateTime DEFAULT_EXPIRATION = LocalDateTime.now().plusDays(3);
 
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expiresIn);
+    }
+
     public static PixQrCode newQrCode(BigDecimal amount, PixKey credit, String description) {
         final var qrCode = PixQrCodeGenerator.generateQrCode(credit, amount);
         return new PixQrCode(UUID.randomUUID().toString(), qrCode, amount, PixQrCodeStatus.WAITING_PAYMENT, credit, DEFAULT_EXPIRATION, description);
+    }
+
+    public void paid() {
+        if (!isExpired())
+            this.status = PixQrCodeStatus.PAID;
     }
 }

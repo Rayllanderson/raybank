@@ -7,6 +7,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Pix {
 
@@ -36,6 +38,9 @@ public class Pix {
 
     private String message;
 
+    @OneToOne
+    private PixQrCode qrCode;
+
     private LocalDateTime occuredOn;
 
     public String getCreditName() {
@@ -52,6 +57,12 @@ public class Pix {
 
     public static Pix newTransfer(PixKey debit, PixKey credit, BigDecimal amount, String message) {
         final LocalDateTime occured = LocalDateTime.now();
-        return new Pix(E2EIdGenerator.generateE2E(occured), amount, PixType.TRANSFER, debit, credit, message, occured);
+        return new Pix(E2EIdGenerator.generateE2E(occured), amount, PixType.TRANSFER, debit, credit, message, null, occured);
+    }
+
+    public static Pix newPayment(PixQrCode qrCode, PixKey debit) {
+        final LocalDateTime occured = LocalDateTime.now();
+        qrCode.paid();
+        return new Pix(E2EIdGenerator.generateE2E(occured), qrCode.getAmount(), PixType.PAYMENT, debit, qrCode.getCredit(), qrCode.getDescription(), qrCode, occured);
     }
 }

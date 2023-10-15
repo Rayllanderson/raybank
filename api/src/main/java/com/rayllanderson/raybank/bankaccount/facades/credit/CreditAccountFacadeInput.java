@@ -51,4 +51,9 @@ public class CreditAccountFacadeInput {
         final var origin = new Origin(pix.getId(), Type.PIX, originalTransactionId);
         return new CreditAccountFacadeInput(pix.getCreditAccountId(), pix.getAmount(), origin, TransactionType.TRANSFER, TransactionMethod.PIX);
     }
+
+    public static CreditAccountFacadeInput credit(final Pix pix, final String originalTransactionId) {
+        final var origin = new Origin(pix.getId(), Type.PIX, originalTransactionId);
+        return new CreditAccountFacadeInput(pix.getCreditAccountId(), pix.getAmount(), origin, TransactionType.DEPOSIT, TransactionMethod.PIX);
+    }
 }

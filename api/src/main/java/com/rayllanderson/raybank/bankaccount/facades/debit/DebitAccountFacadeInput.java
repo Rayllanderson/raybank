@@ -70,4 +70,10 @@ public class DebitAccountFacadeInput {
         final var debitTransaction = DebitTransaction.from(TransactionType.TRANSFER, TransactionMethod.PIX);
         return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), pix.getMessage(), debitTransaction, destination);
     }
+
+    public static DebitAccountFacadeInput pay(final Pix pix) {
+        final Destination destination = new Destination(pix.getId(), Type.PIX);
+        final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.PIX);
+        return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), pix.getMessage(), debitTransaction, destination);
+    }
 }
