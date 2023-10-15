@@ -1,5 +1,7 @@
-package com.rayllanderson.raybank.pix.controllers.qrcode.find;
+package com.rayllanderson.raybank.pix.controllers.find;
 
+import com.rayllanderson.raybank.pix.service.find.FindPixMapper;
+import com.rayllanderson.raybank.pix.service.find.FindPixService;
 import com.rayllanderson.raybank.pix.service.qrcode.find.FindQrCodeMapper;
 import com.rayllanderson.raybank.pix.service.qrcode.find.FindQrCodeService;
 import lombok.RequiredArgsConstructor;
@@ -13,17 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/external/pix/qrcode")
+@RequestMapping("api/v1/external/pix")
 @RequiredArgsConstructor
-public class FindQrCodeController {
+public class FindPixController {
 
-    private final FindQrCodeMapper mapper;
-    private final FindQrCodeService qrCodeService;
+    private final FindPixMapper mapper;
+    private final FindPixService service;
 
-    @GetMapping("/{idOrCode}")
-    public ResponseEntity<?> findById(@PathVariable String idOrCode, @AuthenticationPrincipal Jwt jwt) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable String id, @AuthenticationPrincipal Jwt jwt) {
 
-        final var response = qrCodeService.findByIdOrCode(idOrCode);
+        final var response = service.findById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(mapper.from(response));
     }
