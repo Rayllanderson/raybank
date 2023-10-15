@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixLimit;
 import com.rayllanderson.raybank.pix.model.PixQrCode;
+import com.rayllanderson.raybank.pix.model.PixQrCodeStatus;
 import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.repositories.PixKeyRepository;
@@ -85,12 +86,23 @@ public class PixPostgresGateway implements PixGateway {
 
     @Override
     public PixQrCode findQrCodeByQrCode(String qrCode) {
-        return qrCodeRepository.findByCode(qrCode).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
+        final PixQrCode pixQrCode = qrCodeRepository.findByCode(qrCode).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
+        expireQrcodeIfPossible(pixQrCode);
+        return pixQrCode;
     }
 
     @Override
     public PixQrCode findQrCodeById(String id) {
-        return qrCodeRepository.findById(id).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
+        final PixQrCode pixQrCode = qrCodeRepository.findById(id).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
+        expireQrcodeIfPossible(pixQrCode);
+        return pixQrCode;
+    }
+
+    private void expireQrcodeIfPossible(PixQrCode pixQrCode) {
+        if (pixQrCode.isExpired() && pixQrCode.getStatus().equals(PixQrCodeStatus.WAITING_PAYMENT)) {
+            pixQrCode.expire();
+            this.save(pixQrCode);
+        }
     }
 
     @Override

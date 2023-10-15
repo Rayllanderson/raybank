@@ -1,9 +1,7 @@
 package com.rayllanderson.raybank.pix.service.qrcode.find;
 
 import com.rayllanderson.raybank.pix.controllers.qrcode.find.QrCodeResponse;
-import com.rayllanderson.raybank.pix.controllers.qrcode.generate.GenerateQrCodeResponse;
 import com.rayllanderson.raybank.pix.model.PixQrCode;
-import com.rayllanderson.raybank.pix.service.qrcode.generate.GenerateQrCodeOutput;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

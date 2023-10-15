@@ -64,4 +64,9 @@ public class PixQrCode {
         if (!isExpired())
             this.status = PixQrCodeStatus.PAID;
     }
+
+    public void expire() {
+        if (isExpired())
+            this.status = PixQrCodeStatus.EXPIRED;
+    }
 }
