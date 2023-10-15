@@ -23,7 +23,7 @@ public class GenerateQrCodeController {
     private final GenerateQrCodeService service;
 
     @PostMapping
-    public ResponseEntity<GenerateQrCodeResponse> transfer(@RequestBody @Valid GenerateQrCodeRequest request,
+    public ResponseEntity<GenerateQrCodeResponse> generate(@RequestBody @Valid GenerateQrCodeRequest request,
                                                            @AuthenticationPrincipal Jwt jwt) {
 
         final var qrCodeInput = new GenerateQrCodeInput(request.getAmount(), request.getCreditKey(), request.getDescription());

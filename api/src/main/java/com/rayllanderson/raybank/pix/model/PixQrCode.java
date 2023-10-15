@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
@@ -25,6 +26,9 @@ import java.time.LocalDateTime;
 public class PixQrCode {
 
     @Id
+    private String id;
+
+    @NotNull
     private String code;
 
     @NotNull
@@ -49,6 +53,6 @@ public class PixQrCode {
 
     public static PixQrCode newQrCode(BigDecimal amount, PixKey credit, String description) {
         final var qrCode = PixQrCodeGenerator.generateQrCode(credit, amount);
-        return new PixQrCode(qrCode, amount, PixQrCodeStatus.WAITING_PAYMENT, credit, DEFAULT_EXPIRATION, description);
+        return new PixQrCode(UUID.randomUUID().toString(), qrCode, amount, PixQrCodeStatus.WAITING_PAYMENT, credit, DEFAULT_EXPIRATION, description);
     }
 }

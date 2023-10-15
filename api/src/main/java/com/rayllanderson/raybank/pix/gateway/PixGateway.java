@@ -31,6 +31,8 @@ public interface PixGateway {
 
     PixQrCode findQrCodeByQrCode(String qrCode);
 
+    PixQrCode findQrCodeById(String id);
+
     PixKey findKeyByAccountId(String accountId);
 
     int countKeysByAccountId(String accountId);

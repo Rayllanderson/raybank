@@ -77,7 +77,12 @@ public class PixPostgresGateway implements PixGateway {
 
     @Override
     public PixQrCode findQrCodeByQrCode(String qrCode) {
-        return qrCodeRepository.findById(qrCode).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
+        return qrCodeRepository.findByCode(qrCode).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
+    }
+
+    @Override
+    public PixQrCode findQrCodeById(String id) {
+        return qrCodeRepository.findById(id).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
     }
 
     @Override

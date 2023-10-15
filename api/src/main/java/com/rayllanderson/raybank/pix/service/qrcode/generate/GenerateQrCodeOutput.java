@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class GenerateQrCodeOutput {
+    private String id;
     private String code;
     private BigDecimal amount;
     private LocalDateTime expiresIn;
