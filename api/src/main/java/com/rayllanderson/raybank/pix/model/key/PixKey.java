@@ -46,4 +46,8 @@ public class PixKey {
     public String getName() {
         return this.bankAccount.getUser().getName();
     }
+
+    public boolean sameAccount(final PixKey key) {
+        return this.getAccountId().equals(key.getAccountId());
+    }
 }

@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.pix.model;
 
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.util.E2EIdGenerator;
 import jakarta.persistence.Entity;
@@ -57,6 +58,10 @@ public class Pix {
 
     public static Pix newTransfer(PixKey debit, PixKey credit, BigDecimal amount, String message) {
         final LocalDateTime occured = LocalDateTime.now();
+
+        if (debit.sameAccount(credit))
+            throw UnprocessableEntityException.with("Não é possível transferir PIX para si mesmo");
+
         return new Pix(E2EIdGenerator.generateE2E(occured), amount, PixType.TRANSFER, debit, credit, message, null, occured);
     }
 
