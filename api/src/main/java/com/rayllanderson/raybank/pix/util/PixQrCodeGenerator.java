@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.pix.util;
 
-import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,6 +11,7 @@ import java.math.BigDecimal;
 public class PixQrCodeGenerator {
 
     private static final EMV PAYLOAD_FORMAT_INDICATOR = new EMV("00", "02");
+    private static final EMV MERCHANT_ACCOUNT_INFORMATION_CARD = new EMV("04", "14");
     private static final EMV MERCHANT_ACCOUNT_INFORMATION = new EMV("26", "58", "BR.GOV.BCB.PIX");
     private static final EMV MERCHANT_CATEGORY_CODE = new EMV("52", "04", "0000");
     private static final EMV TRANSACTION_CURRENCY = new EMV("53", "03", "986");
@@ -22,15 +22,15 @@ public class PixQrCodeGenerator {
     private static final EMV POSTAL_CODE = new EMV("61", "08", "05031***");
     private static final EMV CRC16_CCITT = new EMV("63", "04", "D417");
 
-    public static String generateQrCode(final Pix pix) {
-        return String.valueOf(
-                payloadFormatIndicator()) +
-                merchantAccountInformation(pix.getCredit()) +
+    public static String generateQrCode(PixKey credit, BigDecimal amount) {
+        return payloadFormatIndicator() +
+                MERCHANT_ACCOUNT_INFORMATION_CARD.getFormated() +
+                merchantAccountInformation(credit) +
                 merchantCategoryCode() +
                 transactionCurrency() +
-                transactionAmount(pix.getAmount()) +
+                transactionAmount(amount) +
                 countryCode() +
-                merchantName(pix.getCreditName()) +
+                merchantName(credit.getName()) +
                 merchantCity() +
                 postalCode() +
                 crc16Ccit();

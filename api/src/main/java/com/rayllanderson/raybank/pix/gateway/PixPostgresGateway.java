@@ -3,9 +3,11 @@ package com.rayllanderson.raybank.pix.gateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixLimit;
+import com.rayllanderson.raybank.pix.model.PixQrCode;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.repositories.PixKeyRepository;
 import com.rayllanderson.raybank.pix.repositories.PixLimitRepository;
+import com.rayllanderson.raybank.pix.repositories.PixQrCodeRepository;
 import com.rayllanderson.raybank.pix.repositories.PixRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,7 @@ public class PixPostgresGateway implements PixGateway {
     private final PixRepository pixRepository;
     private final PixLimitRepository limitRepository;
     private final PixKeyRepository keyRepository;
+    private final PixQrCodeRepository qrCodeRepository;
 
     @Override
     public void save(Pix pix) {
@@ -33,6 +36,11 @@ public class PixPostgresGateway implements PixGateway {
     @Override
     public void save(PixLimit pixLimit) {
         limitRepository.save(pixLimit);
+    }
+
+    @Override
+    public void save(PixQrCode pixQrCode) {
+        qrCodeRepository.save(pixQrCode);
     }
 
     @Override
@@ -65,6 +73,11 @@ public class PixPostgresGateway implements PixGateway {
     public PixKey findByKey(String key) {
         return keyRepository.findById(key)
                 .orElseThrow(() -> NotFoundException.formatted("Chave %s não encontrada", key));
+    }
+
+    @Override
+    public PixQrCode findQrCodeByQrCode(String qrCode) {
+        return qrCodeRepository.findById(qrCode).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
     }
 
     @Override
