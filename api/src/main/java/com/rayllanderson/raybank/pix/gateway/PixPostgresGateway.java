@@ -70,7 +70,7 @@ public class PixPostgresGateway implements PixGateway {
     }
 
     @Override
-    public PixKey findByKey(String key) {
+    public PixKey findKeyByKey(String key) {
         return keyRepository.findById(key)
                 .orElseThrow(() -> NotFoundException.formatted("Chave %s não encontrada", key));
     }

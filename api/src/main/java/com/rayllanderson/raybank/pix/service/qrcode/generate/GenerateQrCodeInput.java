@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.pix.service.qrcode;
+package com.rayllanderson.raybank.pix.service.qrcode.generate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +11,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class GenerateQrCodeInput {
     private BigDecimal amount;
-    private String creditAccountId;
+    private String creditKey;
     private String description;
 }

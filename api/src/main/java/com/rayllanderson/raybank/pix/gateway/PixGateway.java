@@ -27,7 +27,7 @@ public interface PixGateway {
 
     List<PixKey> findAllKeysByAccountId(String accountId);
 
-    PixKey findByKey(String key);
+    PixKey findKeyByKey(String key);
 
     PixQrCode findQrCodeByQrCode(String qrCode);
 

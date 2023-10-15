@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.pix.service.qrcode;
+package com.rayllanderson.raybank.pix.service.qrcode.generate;
 
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.PixQrCode;
@@ -14,8 +14,8 @@ public class GenerateQrCodeService {
     private final GenerateQrCodeMapper mapper;
 
     @Transactional
-    public GenerateQrCodeOutput generate(GenerateQrCodeInput qrCodeInput) {
-        final var creditKey = pixGateway.findKeyByAccountId(qrCodeInput.getCreditAccountId());
+    public GenerateQrCodeOutput generate(final GenerateQrCodeInput qrCodeInput) {
+        final var creditKey = pixGateway.findKeyByKey(qrCodeInput.getCreditKey());
 
         final var qrCode = PixQrCode.newQrCode(qrCodeInput.getAmount(), creditKey, qrCodeInput.getDescription());
         pixGateway.save(qrCode);

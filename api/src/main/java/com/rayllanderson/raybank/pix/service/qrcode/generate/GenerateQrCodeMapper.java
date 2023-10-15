@@ -1,6 +1,6 @@
-package com.rayllanderson.raybank.pix.service.qrcode;
+package com.rayllanderson.raybank.pix.service.qrcode.generate;
 
-import com.rayllanderson.raybank.pix.controllers.qrcode.GenerateQrCodeResponse;
+import com.rayllanderson.raybank.pix.controllers.qrcode.generate.GenerateQrCodeResponse;
 import com.rayllanderson.raybank.pix.model.PixQrCode;
 import org.mapstruct.Mapper;
 

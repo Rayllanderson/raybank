@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.pix.controllers.qrcode;
+package com.rayllanderson.raybank.pix.service.qrcode.generate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class GenerateQrCodeResponse {
+public class GenerateQrCodeOutput {
     private String code;
     private BigDecimal amount;
     private LocalDateTime expiresIn;

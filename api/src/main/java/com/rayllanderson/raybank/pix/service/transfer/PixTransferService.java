@@ -26,7 +26,7 @@ public class PixTransferService {
     @Transactional
     public PixTransferOutput transfer(PixTransferInput transfer) {
         final PixKey debitKey = pixGateway.findKeyByAccountId(transfer.getDebitAccountId());
-        final PixKey creditKey = pixGateway.findByKey(transfer.getCreditKey());
+        final PixKey creditKey = pixGateway.findKeyByKey(transfer.getCreditKey());
 
         checkLimit(debitKey, transfer.getAmount());
 
