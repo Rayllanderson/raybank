@@ -71,7 +71,7 @@ public class Installment {
     }
 
     public boolean shouldCountAsDebit() {
-        return isOpen() || isOverdue() || isPaid();
+        return isOpen() || isOverdue() || isPaid() || isRefunded();
     }
 
     public boolean isOverdue() {

@@ -2,8 +2,6 @@ package com.rayllanderson.raybank.integrations;
 
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
-import com.rayllanderson.raybank.pix.controllers.requests.PixPostDto;
-import com.rayllanderson.raybank.pix.controllers.responses.PixPostResponse;
 import com.rayllanderson.raybank.card.controllers.external.PaymentCardRequest;
 import com.rayllanderson.raybank.card.controllers.external.PaymentTypeRequest;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
@@ -91,11 +89,5 @@ public class BaseBankOperation extends BaseApiTest {
      */
     protected void buy500WithCreditCard(){
         buyWithCreditCard(new BigDecimal("500.00"));
-    }
-
-
-    protected PixPostResponse registerAPix(){
-        PixPostDto pixToBeSaved = PixCreator.createPixPixPostDto();
-        return post("/api/v1/users/authenticated/pix", pixToBeSaved, PixPostResponse.class).getBody();
     }
 }

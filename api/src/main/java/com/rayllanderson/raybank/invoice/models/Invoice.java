@@ -22,6 +22,7 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -82,6 +83,11 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     public void addInstallment(final Installment installment) {
         if (!canAddInstallment())
             throw new UnprocessableEntityException("Fatura atual não está aberta");
+
+        if (hasRemainingBalance()) {
+            installment.pay(this.getTotal().abs());
+        }
+
         this.installments.add(installment);
     }
 
@@ -91,6 +97,14 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     public boolean hasRemainingBalance() {
         return getTotal().compareTo(BigDecimal.ZERO) < 0;
+    }
+
+    public void transferRemaingBalanceTo(Invoice newInvoice) {
+        if (hasRemainingBalance()) {
+            this.total = getTotal();
+            newInvoice.processCredit(new ProcessInvoiceCredit(total.abs(), InvoiceCreditType.REMAINING, "Crédito da fatura anterior", null, LocalDateTime.now()));
+            this.processCredit(new ProcessInvoiceCredit(total, InvoiceCreditType.REMAINING, "Crédito para proxima fatura", null, LocalDateTime.now()));
+        }
     }
 
     public static Invoice createOpenInvoice(LocalDate dueDate, String cardId) {
@@ -150,9 +164,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     }
 
     public void processCredit(final ProcessInvoiceCredit credit) {
-        if (InvoiceCreditType.INVOICE_PAYMENT.equals(credit.getType())) {
-            pay(credit.getAmount());
-        }
+        pay(credit.getAmount());
         this.getCredits().add(InvoiceCredit.from(credit, this));
     }
 
