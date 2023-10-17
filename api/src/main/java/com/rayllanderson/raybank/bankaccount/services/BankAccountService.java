@@ -1,19 +1,18 @@
 package com.rayllanderson.raybank.bankaccount.services;
 
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
+import com.rayllanderson.raybank.bankaccount.controllers.reponses.ContactResponseDto;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankPaymentDto;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
-import com.rayllanderson.raybank.bankaccount.controllers.reponses.BankAccountDto;
-import com.rayllanderson.raybank.bankaccount.controllers.reponses.ContactResponseDto;
-import com.rayllanderson.raybank.bankaccount.model.BankAccountType;
-import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.users.model.User;
-import com.rayllanderson.raybank.statement.models.TransferStatement;
+import com.rayllanderson.raybank.bankaccount.model.BankAccountType;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
+import com.rayllanderson.raybank.statement.models.BankStatement;
+import com.rayllanderson.raybank.statement.models.TransferStatement;
 import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
-import com.rayllanderson.raybank.users.services.find.UserFinderService;
+import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,6 @@ public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
     private final BankStatementRepository bankStatementRepository;
-    private final UserFinderService userFinderService;
 
     /**
      * Cria e salva uma nova conta bancária junta de um cartão de crédito.
