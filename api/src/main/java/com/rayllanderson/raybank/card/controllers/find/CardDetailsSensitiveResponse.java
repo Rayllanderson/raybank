@@ -16,7 +16,8 @@ public class CardDetailsSensitiveResponse {
     private Integer securityCode;
     private YearMonth expiryDate;
     private BigDecimal limit;
-    private BigDecimal balance;
+    private BigDecimal usedLimit;
+    private BigDecimal availableLimit;
 
     public static CardDetailsSensitiveResponse from(CardDetailsOutput c){
         return new ModelMapper().map(c, CardDetailsSensitiveResponse.class);

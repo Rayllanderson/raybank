@@ -16,9 +16,13 @@ public class CardDetailsOutput {
     private Integer securityCode;
     private YearMonth expiryDate;
     private BigDecimal limit;
-    private BigDecimal balance;
+    private BigDecimal usedLimit;
+    private BigDecimal availableLimit;
 
-    public static CardDetailsOutput fromCreditCard(Card c){
-        return new ModelMapper().map(c, CardDetailsOutput.class);
+    public static CardDetailsOutput fromCreditCard(final Card c, final BigDecimal usedLimit, final BigDecimal availableLimit) {
+        CardDetailsOutput cardDetailsOutput = new ModelMapper().map(c, CardDetailsOutput.class);
+        cardDetailsOutput.usedLimit = usedLimit;
+        cardDetailsOutput.availableLimit = availableLimit;
+        return cardDetailsOutput;
     }
 }

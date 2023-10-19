@@ -12,7 +12,8 @@ import java.math.BigDecimal;
 public class CardDetailsResponse {
     private String id;
     private BigDecimal limit;
-    private BigDecimal balance;
+    private BigDecimal usedLimit;
+    private BigDecimal availableLimit;
 
     public static CardDetailsResponse from(CardDetailsOutput c){
         return new ModelMapper().map(c, CardDetailsResponse.class);
