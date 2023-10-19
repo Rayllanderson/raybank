@@ -2,8 +2,10 @@ package com.rayllanderson.raybank.card.services.payment.strategies;
 
 import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.models.Card;
+import com.rayllanderson.raybank.card.services.limit.FindCardLimitService;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
 import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.shared.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanMapper;
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanService;
@@ -19,6 +21,7 @@ public class CreditCardPaymentStrategy implements CardPaymentStrategy {
 
     private final IntegrationEventPublisher eventPublisher;
     private final TransactionRepository transactionRepository;
+    private final FindCardLimitService cardLimitService;
     private final CreateInstallmentPlanMapper planMapper;
     private final CreateInstallmentPlanService createInstallmentPlanService;
 
@@ -27,7 +30,10 @@ public class CreditCardPaymentStrategy implements CardPaymentStrategy {
     public Transaction pay(final PaymentCardInput payment, final Card card) {
         final var transaction = transactionRepository.save(CardCreditPaymentTransaction.from(payment, card));
 
-        card.pay(payment.toCreditCardPayment());
+        final boolean hasAvailableLimit = cardLimitService.hasAvailableLimit(card, payment.getAmount());
+        if (!hasAvailableLimit) {
+            throw new UnprocessableEntityException("Seu cartão não possui limite suficiente para esta compra.");
+        }
 
         final var createPlanInput = planMapper.from(transaction);
         final var installmentPlan = createInstallmentPlanService.create(createPlanInput);

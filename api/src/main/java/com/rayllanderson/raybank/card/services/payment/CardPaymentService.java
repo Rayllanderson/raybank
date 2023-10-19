@@ -20,13 +20,13 @@ public class CardPaymentService {
     private final BankAccountRepository bankAccountRepository;
     private final CardRepository cardRepository;
     private final CardPaymentStrategyFactory cardPaymentStrategyFactory;
-
+//todo::retry
     @Transactional
     public Transaction pay(final PaymentCardInput payment) {
         final Card card = cardRepository.findByNumber(payment.getCardNumber())
                 .orElseThrow(() -> new NotFoundException("Cartão de crédito inexistente"));
 
-        validateCvvAndExpiryDate(payment, card);
+        validate(payment, card);
 
         final var establishmentAccount = getEstablishmentAccount(payment);
         if (establishmentAccount.sameCard(card)) {
@@ -38,17 +38,23 @@ public class CardPaymentService {
     }
 
     private BankAccount getEstablishmentAccount(final PaymentCardInput payment) {
+        final var invalidEstablishmentException = new UnprocessableEntityException("Estabelecimento não pode receber pagamentos");
+
         final var establishment = bankAccountRepository.findById(payment.getEstablishmentId())
-                .orElseThrow(() -> new UnprocessableEntityException("Estabelecimento não pode receber pagamentos"));
+                .orElseThrow(() -> invalidEstablishmentException);
 
         if (!establishment.isEstablishment()) {
-            throw new UnprocessableEntityException("Estabelecimento não pode receber pagamentos");
+            throw invalidEstablishmentException;
+        }
+
+        if (!establishment.isActive()) {
+            throw invalidEstablishmentException;
         }
 
         return establishment;
     }
 
-    private static void validateCvvAndExpiryDate(PaymentCardInput payment, Card card) {
+    private static void validate(PaymentCardInput payment, Card card) {
         if (!card.isValidSecurityCode(payment.getCardSecurityCode())) {
             throw new UnprocessableEntityException("Código de Segurança Inválido");
         }
@@ -57,5 +63,8 @@ public class CardPaymentService {
         }
         if (card.isExpired())
             throw UnprocessableEntityException.with("Cartão está expirado");
+        if (!card.isActive()) {
+            throw new UnprocessableEntityException("Cartão não está ativo para compras");
+        }
     }
 }
