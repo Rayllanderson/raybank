@@ -47,6 +47,11 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     }
 
     @Override
+    public List<Invoice> findAllPresentAndFutureByCardId(String cardId) {
+        return this.invoiceRepository.findAllByCard_IdAndStatusIn(cardId, List.of(InvoiceStatus.OPEN, InvoiceStatus.NONE, InvoiceStatus.CLOSED, InvoiceStatus.OVERDUE));
+    }
+
+    @Override
     public Integer getDayOfDueDateByCardId(final String cardId) {
         return cardRepository.findById(cardId)
                 .orElseThrow(() -> new NotFoundException(String.format("Card %s not found", cardId)))
