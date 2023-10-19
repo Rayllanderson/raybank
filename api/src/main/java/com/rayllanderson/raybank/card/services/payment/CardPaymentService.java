@@ -10,6 +10,8 @@ import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +22,12 @@ public class CardPaymentService {
     private final BankAccountRepository bankAccountRepository;
     private final CardRepository cardRepository;
     private final CardPaymentStrategyFactory cardPaymentStrategyFactory;
-//todo::retry
+
     @Transactional
+    @Retryable(
+            noRetryFor = {NotFoundException.class, UnprocessableEntityException.class},
+            maxAttemptsExpression = "${retry.card.payment.maxAttempts}",
+            backoff = @Backoff(delayExpression = "${retry.card.payment.maxDelay}"))
     public Transaction pay(final PaymentCardInput payment) {
         final Card card = cardRepository.findByNumber(payment.getCardNumber())
                 .orElseThrow(() -> new NotFoundException("Cartão de crédito inexistente"));
