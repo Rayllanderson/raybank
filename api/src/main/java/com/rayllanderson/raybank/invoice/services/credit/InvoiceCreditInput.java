@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.invoice.services.payment;
+package com.rayllanderson.raybank.invoice.services.credit;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InvoicePaymentInput {
+public class InvoiceCreditInput {
     private BigDecimal amount;
     private String accountId;
     private String cardId;

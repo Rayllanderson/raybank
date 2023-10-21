@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.invoice.controllers.payment;
+package com.rayllanderson.raybank.invoice.controllers.credit;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Setter
 @Getter
-public class InvoicePaymentInternalRequest {
+public class InvoiceCreditRequest {
     @NotNull
     @DecimalMin(value = "0.01")
     private BigDecimal amount;

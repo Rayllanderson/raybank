@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.invoice.controllers.payment;
+package com.rayllanderson.raybank.invoice.controllers.credit;
 
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-public class InvoicePaymentInternalResponse {
+public class InvoiceCreditResponse {
     private final String transactionId;
     private final LocalDateTime moment;
     private final BigDecimal amount;
@@ -33,12 +33,12 @@ public class InvoicePaymentInternalResponse {
         private final String type;
     }
 
-    public static InvoicePaymentInternalResponse fromTransaction(final Transaction transaction) {
+    public static InvoiceCreditResponse fromTransaction(final Transaction transaction) {
         final var amount = transaction.getAmount().abs();
 
         final var payment = new Payment(transaction.getType().name(), transaction.getDebit().getOrigin().name());
         final var destination = new Destination(transaction.getCredit().getId(), transaction.getCredit().getDestination().name());
 
-        return new InvoicePaymentInternalResponse(transaction.getId(), transaction.getMoment(), amount, payment, destination);
+        return new InvoiceCreditResponse(transaction.getId(), transaction.getMoment(), amount, payment, destination);
     }
 }

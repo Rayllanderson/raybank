@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.invoice.services.payment;
+package com.rayllanderson.raybank.invoice.services.credit;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,5 +11,5 @@ public class InvoiceReceiveCreditInput {
     private final String invoiceId;
     private final BigDecimal amount;
     private final String description;
-    private final String transactionId;
+    private final String debitTransactionId;
 }

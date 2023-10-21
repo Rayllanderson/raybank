@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.invoice.services.payment;
+package com.rayllanderson.raybank.invoice.services.credit;
 
 import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacade;
 import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInput;
@@ -21,7 +21,7 @@ import static com.rayllanderson.raybank.invoice.constants.InvoiceCreditDescripti
 
 @Service
 @RequiredArgsConstructor
-public class InvoicePaymentService {
+public class InvoiceCreditService {
 
     private final InvoiceGateway invoiceGateway;
     private final TransactionGateway transactionGateway;
@@ -29,7 +29,7 @@ public class InvoicePaymentService {
     private final IntegrationEventPublisher eventPublisher;
 
     @Transactional
-    public Transaction payCurrent(final InvoicePaymentInput input) {
+    public Transaction creditCurrent(final InvoiceCreditInput input) {
         final var currentInvoice = invoiceGateway.findCurrentByCardId(input.getCardId());
         input.setInvoiceId(currentInvoice.getId());
 
@@ -40,7 +40,7 @@ public class InvoicePaymentService {
     }
 
     @Transactional
-    public Transaction payById(final InvoicePaymentInput input) {
+    public Transaction creditById(final InvoiceCreditInput input) {
         final Invoice invoiceToPay = invoiceGateway.findById(input.getInvoiceId());
 
         final var debit = DebitAccountFacadeInput.from(input);
@@ -50,8 +50,8 @@ public class InvoicePaymentService {
     }
 
     @Transactional
-    public void receiveCredit(final InvoiceReceiveCreditInput creditInput) {
-        final var debitTransaction = transactionGateway.findById(creditInput.getTransactionId());
+    public void credit(final InvoiceReceiveCreditInput creditInput) {
+        final var debitTransaction = transactionGateway.findById(creditInput.getDebitTransactionId());
 
         final Invoice invoiceToPay = invoiceGateway.findById(creditInput.getInvoiceId());
 
