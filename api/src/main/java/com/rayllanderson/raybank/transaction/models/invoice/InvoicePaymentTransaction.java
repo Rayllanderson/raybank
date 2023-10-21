@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.transaction.models.invoice;
 
-import com.rayllanderson.raybank.invoice.services.payment.InvoicePaymentInput;
+import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditInput;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
@@ -33,7 +33,7 @@ public class InvoicePaymentTransaction extends Transaction {
         @Enumerated(EnumType.STRING)
         private PaymentMethodType methodType;
 
-        private static Payment from(final InvoicePaymentInput payment) {
+        private static Payment from(final InvoiceCreditInput payment) {
             final var p = new Payment();
             p.identifier = payment.getAccountId();
             p.methodType = PaymentMethodType.BANK_ACCOUNT;
@@ -41,7 +41,7 @@ public class InvoicePaymentTransaction extends Transaction {
         }
     }
 
-    public static InvoicePaymentTransaction from(final InvoicePaymentInput payment) {
+    public static InvoicePaymentTransaction from(final InvoiceCreditInput payment) {
         return InvoicePaymentTransaction.builder()
                 .moment(LocalDateTime.now())
                 .amount(payment.getAmount())

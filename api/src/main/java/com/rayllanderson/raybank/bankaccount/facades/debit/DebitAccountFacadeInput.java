@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.bankaccount.facades.debit;
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
-import com.rayllanderson.raybank.invoice.services.payment.InvoicePaymentInput;
+import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditInput;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.shared.dtos.Destination;
@@ -42,7 +42,7 @@ public class DebitAccountFacadeInput {
         }
     }
 
-    public static DebitAccountFacadeInput from(final InvoicePaymentInput input) {
+    public static DebitAccountFacadeInput from(final InvoiceCreditInput input) {
         final var destination = new Destination(input.getInvoiceId(), Type.INVOICE);
         final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.ACCOUNT);
         return new DebitAccountFacadeInput(input.getAccountId(), input.getAmount(), debitTransaction, destination);

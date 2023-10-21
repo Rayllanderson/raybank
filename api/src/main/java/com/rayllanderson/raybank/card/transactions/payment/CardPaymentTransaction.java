@@ -22,7 +22,7 @@ public class CardPaymentTransaction extends Transaction {
 //todo:: kill
     public static CardPaymentTransaction from(PaymentCardInput paymentCardInput, Card card) {
         final var credit = new Credit(paymentCardInput.getEstablishmentId(), Credit.Destination.ESTABLISHMENT_ACCOUNT);
-        final var debit = new Debit(card.getId(), Debit.Origin.CARD);
+        final var debit = new Debit(card.getId(), Debit.Origin.CREDIT_CARD);
 
         return CardPaymentTransaction.builder()
                 .amount(paymentCardInput.getAmount())

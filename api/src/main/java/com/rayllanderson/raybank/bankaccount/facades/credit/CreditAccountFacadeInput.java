@@ -8,7 +8,6 @@ import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.shared.dtos.Origin;
 import com.rayllanderson.raybank.shared.dtos.Type;
-import com.rayllanderson.raybank.transaction.models.FinancialMovement;
 import com.rayllanderson.raybank.transaction.models.TransactionMethod;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
 import lombok.AllArgsConstructor;
@@ -34,7 +33,7 @@ public class CreditAccountFacadeInput {
     }
 
     public static CreditAccountFacadeInput createFromCardPayment(CardCreditPaymentCompletedEvent event) {
-        final var origin = new Origin(event.getCardId(), Type.CARD, event.getTransactionId());
+        final var origin = new Origin(event.getCardId(), Type.CREDIT_CARD, event.getTransactionId());
         return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
     }
 

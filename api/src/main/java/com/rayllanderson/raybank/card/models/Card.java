@@ -3,8 +3,6 @@ package com.rayllanderson.raybank.card.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.events.CreditCardCreatedEvent;
-import com.rayllanderson.raybank.card.models.inputs.CreditCardPayment;
-import com.rayllanderson.raybank.card.models.inputs.CreditInput;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +35,6 @@ public class Card extends AbstractAggregateRoot<Card> {
     private YearMonth expiryDate;
     @Column(name = "a_limit")
     private BigDecimal limit;
-    private BigDecimal balance;
     private Integer dayOfDueDate;
     private CardStatus status;
     @JsonIgnore
@@ -50,7 +47,6 @@ public class Card extends AbstractAggregateRoot<Card> {
                 .number(number)
                 .bankAccount(bankAccount)
                 .limit(limit)
-                .balance(limit)
                 .securityCode(securityCode)
                 .expiryDate(expiryDate)
                 .dayOfDueDate(dueDate)
@@ -64,43 +60,12 @@ public class Card extends AbstractAggregateRoot<Card> {
         return Card.builder().id(cardId).build();
     }
 
-    public void credit(final CreditInput creditInput) {
-        this.balance = balance.add(creditInput.getAmount());
-    }
-
-    public void pay(final CreditCardPayment payment) throws UnprocessableEntityException {
-        if (!isActive()) {
-            throw new UnprocessableEntityException("Cartão não está ativo para compras");
-        }
-
-        if (this.isExpired())
-            throw UnprocessableEntityException.with("Cartão está expirado");
-
-        if (!this.hasLimit()) {
-            throw new UnprocessableEntityException("Seu cartão não possui saldo suficiente para esta compra.");
-        }
-
-        if (isAmountGreaterThanBalance(payment.getTotal())) {
-            throw new UnprocessableEntityException("Falha na transação. O valor da compra é maior que seu saldo disponível no cartão.");
-        }
-
-        balance = balance.subtract(payment.getTotal());
-    }
-
     public boolean isValidSecurityCode(final Integer securityCode) {
         return Objects.equals(this.securityCode, securityCode);
     }
 
     public boolean isValidExpiryDate(final YearMonth expiryDate) {
         return Objects.equals(this.expiryDate, expiryDate);
-    }
-
-    public boolean isAmountGreaterThanBalance(BigDecimal amount) {
-        return amount.compareTo(balance) > 0;
-    }
-
-    public boolean hasLimit() {
-        return !(balance.equals(BigDecimal.ZERO) || balance.equals(new BigDecimal("0.00")));
     }
 
     public boolean isExpired() {
@@ -117,5 +82,9 @@ public class Card extends AbstractAggregateRoot<Card> {
 
     public boolean isActive() {
         return CardStatus.ACTIVE.equals(status);
+    }
+
+    public void changeLimit(final BigDecimal newLimit) {
+        this.limit = newLimit;
     }
 }

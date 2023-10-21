@@ -26,7 +26,7 @@ public class CardCreditPaymentTransaction extends Transaction {
 
     public static CardCreditPaymentTransaction from(final PaymentCardInput paymentCardInput, Card card) {
         final var credit = new Credit(paymentCardInput.getEstablishmentId(), Credit.Destination.ESTABLISHMENT_ACCOUNT);
-        final var debit = new Debit(card.getId(), Debit.Origin.CARD);
+        final var debit = new Debit(card.getId(), Debit.Origin.CREDIT_CARD);
 
         return CardCreditPaymentTransaction.builder()
                 .amount(paymentCardInput.getAmount())

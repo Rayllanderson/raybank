@@ -32,6 +32,6 @@ public class ChangeCardLimitController {
 
         limitService.change(new ChangeCardLimitInput(cardId, request.getNewLimit()));
 
-        return ResponseEntity.ok(Map.of("newLimit", request.getNewLimit()));
+        return ResponseEntity.ok(Map.of("new_limit", request.getNewLimit()));
     }
 }
