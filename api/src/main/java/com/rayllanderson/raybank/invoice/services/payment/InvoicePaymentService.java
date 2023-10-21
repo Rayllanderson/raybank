@@ -64,6 +64,9 @@ public class InvoicePaymentService {
 
         eventPublisher.publish(new InvoicePaidEvent(invoiceToPay, debitTransaction));
 
+        final Transaction creditInvoiceTransaction = Transaction.creditInvoice(amount, invoiceToPay.getCard().getAccountId(), debitTransaction);
+        transactionGateway.save(creditInvoiceTransaction);
+
         return debitTransaction;
     }
 }

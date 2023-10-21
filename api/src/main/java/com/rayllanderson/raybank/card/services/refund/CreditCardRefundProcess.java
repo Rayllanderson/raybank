@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 class CreditCardRefundProcess implements RefundCardProcess {
 
