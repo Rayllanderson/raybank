@@ -93,8 +93,8 @@ public class BankAccount {
         this.setBalance(this.getBalance().subtract(amountToBeTransferred));
     }
 
-    public void pay (BigDecimal amount) throws UnprocessableEntityException{
-        if (this.hasAvailableBalance(amount)){
+    public void debit(BigDecimal amount) throws UnprocessableEntityException {
+        if (this.hasAvailableBalance(amount)) {
             this.balance = this.balance.subtract(amount);
         } else throw new UnprocessableEntityException("Sua conta não tem saldo disponível");
     }
@@ -166,5 +166,21 @@ public class BankAccount {
 
     public boolean isInactive() {
         return BankAccountStatus.INACTIVE.equals(this.status);
+    }
+
+    public boolean sameAccount(String idOrNumber) {
+        return sameId(idOrNumber) || sameNumber(idOrNumber);
+    }
+
+    private boolean sameId(String id) {
+        return this.id.equals(id);
+    }
+
+    private boolean sameNumber(String number) {
+        try {
+            return this.number.equals(Integer.parseInt(number));
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

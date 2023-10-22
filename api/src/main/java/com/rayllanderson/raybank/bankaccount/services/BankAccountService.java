@@ -6,14 +6,12 @@ import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankPaymentDto;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.bankaccount.model.BankAccountType;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.statement.models.TransferStatement;
 import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
 import com.rayllanderson.raybank.users.model.User;
-import com.rayllanderson.raybank.utils.NumberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,7 +77,7 @@ public class BankAccountService {
         if(ownerId == null) throw new BadRequestException("Owner must be set before send");
         BankAccount bankAccount = bankAccountRepository.findAccountByUserId(ownerId);
         var amountToBePaid = paymentDto.getAmount();
-        bankAccount.pay(amountToBePaid);
+        bankAccount.debit(amountToBePaid);
         BankStatement bankStatement = bankStatementRepository.save(BankStatement.createBoletoPaymentBankStatement(amountToBePaid, bankAccount));
 //        bankAccount.getBankStatements().add(bankStatement);
         this.bankAccountRepository.save(bankAccount);

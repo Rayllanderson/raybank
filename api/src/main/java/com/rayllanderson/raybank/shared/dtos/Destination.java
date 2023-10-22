@@ -10,4 +10,8 @@ import lombok.Setter;
 public class Destination {
     private String identifier;
     private Type type;
+
+    public boolean isAccount() {
+        return Type.ACCOUNT.equals(this.type);
+    }
 }
