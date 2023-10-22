@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.bankaccount.facades.debit;
 
+import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountMapper;
 import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountService;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;

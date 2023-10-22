@@ -1,9 +1,10 @@
 package com.rayllanderson.raybank.bankaccount.services.credit;
 
+import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.bankaccount.transactions.CreditAccountTransaction;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
+import com.rayllanderson.raybank.shared.dtos.Origin;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +15,28 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreditAccountService {
 
-    private final BankAccountRepository accountRepository;
+    private final BankAccountGateway accountGateway;
+    private final CreditAccountMapper creditMapper;
     private final TransactionRepository transactionRepository;
 
     @Transactional
     public Transaction credit(final CreditAccountInput creditInput) {
-        final BankAccount bankAccount = accountRepository.findById(creditInput.getAccountId())
-                .orElseThrow(() -> new NotFoundException(String.format("bank account %s was not found", creditInput.getAccountId())));
+        final BankAccount bankAccount = accountGateway.findById(creditInput.getAccountId());
 
-        final Transaction originalTransaction = getReferenceTransaction(creditInput);
+        return processCredit(creditInput, bankAccount);
+    }
+
+    @Transactional
+    public Transaction creditByAccountNumber(final CreditAccountByNumberInput creditByNumberInput) {
+        final BankAccount bankAccount = accountGateway.findByNumber(creditByNumberInput.getNumber());
+
+        final CreditAccountInput creditInput = creditMapper.from(creditByNumberInput, bankAccount.getId());
+
+        return processCredit(creditInput, bankAccount);
+    }
+
+    private Transaction processCredit(CreditAccountInput creditInput, BankAccount bankAccount) {
+        final Transaction originalTransaction = getReferenceTransaction(creditInput.getOrigin());
 
         bankAccount.credit(creditInput.getAmount());
 
@@ -30,10 +44,9 @@ public class CreditAccountService {
         return transactionRepository.save(transaction);
     }
 
-    private Transaction getReferenceTransaction(final CreditAccountInput accountInput) {
-        final String referenceTransactionId = accountInput.getOrigin().getReferenceTransactionId();
+    private Transaction getReferenceTransaction(final Origin origin) {
+        final String referenceTransactionId = origin.getReferenceTransactionId();
         return transactionRepository.findById(referenceTransactionId)
-                .orElseThrow(() -> new NotFoundException(String.format("No Reference Transaction with id %s were found to account %s",
-                        referenceTransactionId, accountInput.getAccountId())));
+                .orElseThrow(() -> new NotFoundException(String.format("No Reference Transaction with id %s were found", referenceTransactionId)));
     }
 }

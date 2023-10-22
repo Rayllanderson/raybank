@@ -8,4 +8,6 @@ public interface BankAccountGateway {
     BankAccount findById(final String id);
 
     boolean existsByNumber(int number);
+
+    BankAccount findByNumber(int number);
 }

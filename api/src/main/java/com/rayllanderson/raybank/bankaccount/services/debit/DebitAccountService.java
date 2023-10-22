@@ -19,7 +19,6 @@ public class DebitAccountService {
     private final BankAccountRepository bankAccountRepository;
     private final TransactionGateway transactionGateway;
 
-    //todo:: temporario
     @Transactional
     public Transaction debit(final DebitAccountInput debitInput) {
         final BankAccount bankAccount = bankAccountRepository.findById(debitInput.getAccountId())

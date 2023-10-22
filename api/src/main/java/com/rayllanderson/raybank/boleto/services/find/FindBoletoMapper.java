@@ -30,7 +30,6 @@ public interface FindBoletoMapper {
 
     BoletoDetailsOutput.Invoice mapInvoice(Invoice invoice);
 
-    @Mapping(target = "number", source = "accountNumber")
     @Mapping(target = "name", source = "user.name")
     BoletoDetailsOutput.Account mapAccount(BankAccount bankAccount);
 
