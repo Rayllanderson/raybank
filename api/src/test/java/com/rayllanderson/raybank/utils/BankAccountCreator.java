@@ -3,7 +3,6 @@ package com.rayllanderson.raybank.utils;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 
 public class BankAccountCreator {
 
@@ -22,7 +21,7 @@ public class BankAccountCreator {
     public static BankAccount createAnotherBankAccountSaved(){
         return BankAccount.builder()
                 .id("2")
-                .accountNumber(999999999)
+                .number(999999999)
                 .balance(new BigDecimal(500))
                 .user(UserCreator.createUserWithId())
                 .card(CreditCardCreator.createCreditCardSaved())
@@ -31,7 +30,7 @@ public class BankAccountCreator {
 
     public static BankAccount createBankAccountToBeSavedWithoutCreditCard(){
         return BankAccount.builder()
-                .accountNumber(999999999)
+                .number(999999999)
                 .user(UserCreator.createUserWithId())
                 .balance(new BigDecimal(500))
                 .build();
@@ -40,7 +39,7 @@ public class BankAccountCreator {
     public static BankAccount createBankAccountToBeSavedWithoutCreditCardAndWithoutUser(){
         BankAccount account = new BankAccount();
         account.setBalance(BigDecimal.valueOf(800));
-        account.setAccountNumber(999889999);
+        account.setNumber(999889999);
         return account;
     }
 }

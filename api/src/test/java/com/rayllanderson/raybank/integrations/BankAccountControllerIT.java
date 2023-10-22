@@ -39,7 +39,7 @@ class BankAccountControllerIT extends BaseBankOperation {
         Assertions.assertThat(response.getBody()).isNotNull();
         Assertions.assertThat(response.getBody().getId()).isNotNull();
         //numero da conta tem que ter 9 dígitos
-        Assertions.assertThat(response.getBody().getAccountNumber().toString().length()).isEqualTo(9);
+        Assertions.assertThat(response.getBody().getNumber().toString().length()).isEqualTo(9);
     }
 
     @Test
@@ -75,7 +75,7 @@ class BankAccountControllerIT extends BaseBankOperation {
         BigDecimal toTransfer = BigDecimal.valueOf(300.00);
 
         BankTransferDto bankStatement = BankTransferCreator.createBankTransferDto(toTransfer,
-                secondUserAccount.getAccountNumber().toString());
+                secondUserAccount.getNumber().toString());
         ResponseEntity<Void> response = super.post(API_URL + "/transfer", bankStatement, Void.class);
 
         Assertions.assertThat(response).isNotNull();
@@ -119,7 +119,7 @@ class BankAccountControllerIT extends BaseBankOperation {
 
     @Test
     void transfer_Returns400_WhenUserTransferZero() {
-        String receiverAccount = secondUserAccount.getAccountNumber().toString();
+        String receiverAccount = secondUserAccount.getNumber().toString();
         BankTransferDto bankStatement = BankTransferCreator.createBankTransferDto(BigDecimal.ZERO, receiverAccount);
         ResponseEntity<Void> response = super.post(API_URL + "/transfer", bankStatement, Void.class);
 

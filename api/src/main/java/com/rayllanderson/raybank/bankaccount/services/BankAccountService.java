@@ -39,7 +39,7 @@ public class BankAccountService {
         int accountNumber = this.generateAccountNumber();
         var bankAccountToBeSaved = BankAccount.builder()
                 .id(savedUser.getId())
-                .accountNumber(accountNumber)
+                .number(accountNumber)
                 .balance(BigDecimal.ZERO)
                 .type(savedUser.isEstablishment() ? BankAccountType.ESTABLISHMENT : BankAccountType.NORMAL)
                 .user(savedUser).build();
@@ -157,7 +157,7 @@ public class BankAccountService {
         final int NUMBER_OF_DIGITS = 9;
         do {
             generatedNumber = Integer.parseInt(Long.toString(NumberUtil.generateRandom(NUMBER_OF_DIGITS)));
-            isAccountNumberInvalid = bankAccountRepository.existsByAccountNumber(generatedNumber)
+            isAccountNumberInvalid = bankAccountRepository.existsByNumber(generatedNumber)
                     && (Integer.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
         } while (isAccountNumberInvalid);
         return generatedNumber;

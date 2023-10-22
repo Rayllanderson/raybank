@@ -10,7 +10,7 @@ public class BankTransferCreator {
        return BankTransferDto.builder()
                 .amount(new BigDecimal(400))
                 .message("Hey, take this!")
-                .to(UserCreator.createAnotherUserSavedWithAccount().getBankAccount().getAccountNumber().toString())
+                .to(UserCreator.createAnotherUserSavedWithAccount().getBankAccount().getNumber().toString())
                 .senderId(UserCreator.createUserSavedWithAccount().getId())
                 .build();
     }

@@ -3,13 +3,10 @@ package com.rayllanderson.raybank.integrations;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
 import com.rayllanderson.raybank.card.controllers.external.PaymentCardRequest;
-import com.rayllanderson.raybank.card.controllers.external.PaymentTypeRequest;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
 import com.rayllanderson.raybank.utils.BankTransferCreator;
-import com.rayllanderson.raybank.utils.PixCreator;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public class BaseBankOperation extends BaseApiTest {
 
@@ -36,7 +33,7 @@ public class BaseBankOperation extends BaseApiTest {
     }
 
     protected void transfer(BigDecimal toTransfer){
-        BankTransferDto bankStatement = BankTransferCreator.createBankTransferDto(toTransfer, secondUserAccount.getAccountNumber().toString());
+        BankTransferDto bankStatement = BankTransferCreator.createBankTransferDto(toTransfer, secondUserAccount.getNumber().toString());
         post("/api/v1/users/authenticated/bank-account/transfer", bankStatement, Void.class);
     }
 

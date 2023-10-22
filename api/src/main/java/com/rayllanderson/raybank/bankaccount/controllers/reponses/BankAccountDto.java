@@ -18,7 +18,7 @@ import java.util.Optional;
 public class BankAccountDto {
     private String id;
     private String userName;
-    private Integer accountNumber;
+    private Integer number;
     private BigDecimal balance;
     private String cardId;
 //    private CreditCardDto creditCardDto; //todo:: criar novo dto para cartao

@@ -13,7 +13,17 @@ public class BankAccountPostgresGateway implements BankAccountGateway {
     private final BankAccountRepository bankAccountRepository;
 
     @Override
+    public void save(BankAccount bankAccount) {
+        this.bankAccountRepository.save(bankAccount);
+    }
+
+    @Override
     public BankAccount findById(final String id) {
         return bankAccountRepository.findById(id).orElseThrow(() -> new NotFoundException("Conta bancária não existe"));
+    }
+
+    @Override
+    public boolean existsByNumber(int number) {
+        return bankAccountRepository.existsByNumber(number);
     }
 }

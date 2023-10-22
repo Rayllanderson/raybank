@@ -8,7 +8,7 @@ import java.util.Optional;
 
 
 public interface BankAccountRepository extends JpaRepository<BankAccount, String> {
-    boolean existsByAccountNumber(Integer accountNumber);
+    boolean existsByNumber(Integer accountNumber);
 
     BankAccount findAccountByUserId(String userId);
 
@@ -16,4 +16,6 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, String
 
     @EntityGraph(attributePaths = {"contacts"})
     BankAccount findAccountWithContactsByUserId(String userId);
+
+    boolean existsBankAccountByNumber(int number);
 }

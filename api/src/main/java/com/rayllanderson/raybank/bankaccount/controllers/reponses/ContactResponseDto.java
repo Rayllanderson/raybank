@@ -20,7 +20,7 @@ public class ContactResponseDto {
     public static ContactResponseDto fromBankAccount(BankAccount bankAccount){
         var user = bankAccount.getUser();
         return ContactResponseDto.builder()
-                .accountNumber(bankAccount.getAccountNumber())
+                .accountNumber(bankAccount.getNumber())
                 .id(bankAccount.getId())
                 .name(user.getName())
                 .username(user.getUsername())

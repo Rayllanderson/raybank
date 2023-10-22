@@ -1,9 +1,9 @@
 package com.rayllanderson.raybank.bankaccount.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.users.model.User;
+import com.rayllanderson.raybank.users.model.UserType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,20 +33,53 @@ public class BankAccount {
 
     @Id
     private String id;
-    private Integer accountNumber;
+
+    private Integer number;
+
     private BigDecimal balance;
+
     @Enumerated(EnumType.STRING)
     private BankAccountType type;
+
     @Enumerated(EnumType.STRING)
     private BankAccountStatus status;
+
+    private LocalDateTime createAt;
+
     @OneToOne(orphanRemoval = true)
     private Card card;
-    @JsonIgnore
+
     @OneToOne
     private User user;
-    @JsonIgnore
+
     @ManyToMany
-    private Set<BankAccount> contacts = new HashSet<>();
+    private Set<BankAccount> contacts;
+
+    public static BankAccount create(int number, BankAccountType type, String userId) {
+        return BankAccount.builder()
+                .id(userId)
+                .number(number)
+                .balance(BigDecimal.ZERO)
+                .createAt(LocalDateTime.now())
+                .contacts(new HashSet<>())
+                .type(type)
+                .status(BankAccountStatus.ACTIVE)
+                .user(User.fromId(userId)).build();
+    }
+
+    public static BankAccount createFromUserType(int number, UserType userType, String userId) {
+        return UserType.USER.equals(userType) ?
+                createNormal(number, userId) :
+                createEstablishment(number, userId);
+    }
+
+    public static BankAccount createEstablishment(int number, String userId) {
+        return create(number, BankAccountType.ESTABLISHMENT, userId);
+    }
+
+    public static BankAccount createNormal(int number, String userId) {
+        return create(number, BankAccountType.NORMAL, userId);
+    }
 
     /**
      * Realiza a ação de transferir. Será reduzido o valor de transferência dessa conta e será adicionado

@@ -57,7 +57,7 @@ class UserRepositoryTest {
         userToBeSaved.setBankAccount(bankAccount);
         User userSaved = userRepository.save(userToBeSaved);
 
-        Integer expectedBankAccountNumber = bankAccount.getAccountNumber();
+        Integer expectedBankAccountNumber = bankAccount.getNumber();
         String expectedBankAccountNumberAsPixKey = expectedBankAccountNumber.toString();
 
         Assertions.assertThat(userSaved).isNotNull();
@@ -81,7 +81,7 @@ class UserRepositoryTest {
         userToBeSaved.setBankAccount(bankAccount);
         User userSaved = userRepository.save(userToBeSaved);
 
-        Integer expectedBankAccountNumber = bankAccount.getAccountNumber();
+        Integer expectedBankAccountNumber = bankAccount.getNumber();
         String expectedBankAccountNumberAsPixKey = expectedBankAccountNumber.toString();
 
 //        Optional<User> userToBeFound = userRepository
