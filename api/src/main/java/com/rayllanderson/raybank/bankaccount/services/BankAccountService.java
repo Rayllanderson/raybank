@@ -29,23 +29,6 @@ public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
     private final BankStatementRepository bankStatementRepository;
 
-    /**
-     * Cria e salva uma nova conta bancária junta de um cartão de crédito.
-     *
-     * @param savedUser usuário a receber nova conta. Este, por sua vez, necessita estar salvo no banco dados
-     */
-    @Transactional
-    public BankAccount createAccountBank(User savedUser) {
-        int accountNumber = this.generateAccountNumber();
-        var bankAccountToBeSaved = BankAccount.builder()
-                .id(savedUser.getId())
-                .number(accountNumber)
-                .balance(BigDecimal.ZERO)
-                .type(savedUser.isEstablishment() ? BankAccountType.ESTABLISHMENT : BankAccountType.NORMAL)
-                .user(savedUser).build();
-        bankAccountToBeSaved = bankAccountRepository.save(bankAccountToBeSaved);
-        return bankAccountRepository.save(bankAccountToBeSaved);
-    }
 
     /**
      * Realiza transferência de uma conta para outra.
@@ -149,17 +132,5 @@ public class BankAccountService {
         return null;
 //        return userFinderService.findByPixOrAccountNumber(recipientPixKey, recipientAccountNumber);
 
-    }
-
-    private int generateAccountNumber() {
-        boolean isAccountNumberInvalid;
-        int generatedNumber;
-        final int NUMBER_OF_DIGITS = 9;
-        do {
-            generatedNumber = Integer.parseInt(Long.toString(NumberUtil.generateRandom(NUMBER_OF_DIGITS)));
-            isAccountNumberInvalid = bankAccountRepository.existsByNumber(generatedNumber)
-                    && (Integer.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
-        } while (isAccountNumberInvalid);
-        return generatedNumber;
     }
 }

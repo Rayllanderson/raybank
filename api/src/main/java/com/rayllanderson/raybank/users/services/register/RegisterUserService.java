@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.users.services.register;
 
-import com.rayllanderson.raybank.bankaccount.services.BankAccountService;
+import com.rayllanderson.raybank.bankaccount.services.create.CreateBankAccountService;
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.core.security.keycloak.KeycloakProvider;
 import com.rayllanderson.raybank.users.constants.Groups;
@@ -27,7 +27,7 @@ import static com.rayllanderson.raybank.users.services.register.RegisterUtils.ge
 public class RegisterUserService {
 
     private final UserRepository userRepository;
-    private final BankAccountService bankAccountService;
+    private final CreateBankAccountService createBankAccountService;
     private final KeycloakProvider keycloakProvider;
 
     @Transactional
@@ -69,7 +69,9 @@ public class RegisterUserService {
 
         userToBeSaved = userRepository.save(userToBeSaved);
 
-        userToBeSaved.setBankAccount(bankAccountService.createAccountBank(userToBeSaved));
+        final var bankAccount = createBankAccountService.create(userId);
+        userToBeSaved.addBankAccount(bankAccount.getId());
+
         userRepository.flush();
     }
 

@@ -17,7 +17,7 @@ public class CreateBankAccountService {
     private final BankAccountNumberGenerator accountNumberGenerator;
 
     @Transactional
-    public CreateBankAccountOutput create(CreateBankAccountInput input) {
+    public CreateBankAccountOutput create(final CreateBankAccountInput input) {
         final User user = userGateway.findById(input.getUserId());
 
         final var accountNumber = accountNumberGenerator.generate();
@@ -26,5 +26,10 @@ public class CreateBankAccountService {
         accountGateway.save(bankAccountToBeSaved);
 
         return CreateBankAccountOutput.from(bankAccountToBeSaved);
+    }
+
+    @Transactional
+    public CreateBankAccountOutput create(final String userId) {
+        return create(new CreateBankAccountInput(userId));
     }
 }

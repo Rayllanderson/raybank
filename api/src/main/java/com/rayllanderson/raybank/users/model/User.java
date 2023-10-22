@@ -56,4 +56,8 @@ public class User {
     public static User fromId(final String id) {
         return User.builder().id(id).build();
     }
+
+    public void addBankAccount(String bankAccountId) {
+        setBankAccount(BankAccount.withId(bankAccountId));
+    }
 }
