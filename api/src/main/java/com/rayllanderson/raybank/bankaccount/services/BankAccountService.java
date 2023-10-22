@@ -48,7 +48,7 @@ public class BankAccountService {
         BigDecimal amountToBeTransferred = transferDto.getAmount();
         if(senderAccount.hasAvailableBalance(amountToBeTransferred)) {
             User recipient = this.findUserByPixOrAccountNumber(transferDto);
-            BankAccount recipientAccount = recipient.getBankAccount();
+            BankAccount recipientAccount = null; //recipient.getBankAccount();
             if(senderAccount.equals(recipientAccount)) throw new BadRequestException("Você não pode transferir dinheiro pra você mesmo");
             senderAccount.transferTo(recipientAccount, amountToBeTransferred);
 
@@ -104,7 +104,7 @@ public class BankAccountService {
 
     @Transactional(readOnly = true)
     public BankAccountDto findByUser(User user){
-        return BankAccountDto.fromBankAccount(user.getBankAccount());
+        return BankAccountDto.fromBankAccount(null);
     }
 
 

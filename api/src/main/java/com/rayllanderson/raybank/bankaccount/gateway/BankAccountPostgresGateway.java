@@ -13,8 +13,8 @@ public class BankAccountPostgresGateway implements BankAccountGateway {
     private final BankAccountRepository bankAccountRepository;
 
     @Override
-    public void save(BankAccount bankAccount) {
-        this.bankAccountRepository.save(bankAccount);
+    public BankAccount save(BankAccount bankAccount) {
+        return this.bankAccountRepository.save(bankAccount);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.users.model;
 
-import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.pix.model.Pix;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +7,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,8 +35,9 @@ public class User {
     private String authorities;
     @Enumerated(EnumType.STRING)
     private UserType type;
-    @OneToOne(orphanRemoval = true)
-    private BankAccount bankAccount;
+
+    private String bankAccountId;
+
     @OneToMany(orphanRemoval = true)
     private Set<Pix> pixKeys = new HashSet<>();
 
@@ -58,6 +57,6 @@ public class User {
     }
 
     public void addBankAccount(String bankAccountId) {
-        setBankAccount(BankAccount.withId(bankAccountId));
+        this.bankAccountId = bankAccountId;
     }
 }

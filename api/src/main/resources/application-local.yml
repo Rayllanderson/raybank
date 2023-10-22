@@ -30,4 +30,4 @@ keycloak:
   server-url: http://localhost:8443
   credentials:
     client-secret: FNWh2lMeyqJgzDmpqnIvkIcReFepEiMP
-    client-id: raybank-backend-generate-user
+    client-id: raybank-backend-create-user
