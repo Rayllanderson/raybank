@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class TransactionFinderService {
 
-    private static final List<TransactionType> CREDIT_CARD_TRANSACTIONS = List.of(TransactionType.CREDIT_CARD_PAYMENT, TransactionType.INVOICE_PAYMENT_RECEIPT);
+    private static final List<TransactionType> CREDIT_CARD_TRANSACTIONS = null; //List.of(TransactionType.CREDIT_CARD_PAYMENT, TransactionType.INVOICE_PAYMENT_RECEIPT);
     private final TransactionRepository transactionRepository;
 
     @Transactional(readOnly = true)
