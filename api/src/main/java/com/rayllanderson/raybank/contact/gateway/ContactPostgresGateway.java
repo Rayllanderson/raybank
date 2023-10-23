@@ -30,7 +30,12 @@ public class ContactPostgresGateway implements ContactGateway {
     }
 
     @Override
-    public boolean existsByContactAccountId(String accountId) {
-        return contactRepository.existsContactByAccount_Id(accountId);
+    public boolean existsByContactAccountIdAndOwnerId(String accountId, String ownerId) {
+        return contactRepository.existsContactByAccount_IdAndOwnerId(accountId, ownerId);
+    }
+
+    @Override
+    public boolean existsByContactIdAndOwnerId(String contactId, String ownerId) {
+        return contactRepository.existsContactByIdAndOwnerId(contactId, ownerId);
     }
 }

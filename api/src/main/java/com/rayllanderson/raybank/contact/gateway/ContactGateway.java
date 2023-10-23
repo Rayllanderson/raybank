@@ -8,5 +8,6 @@ public interface ContactGateway {
     void save(Contact c);
     Contact findById(String id);
     List<Contact> findAllByOnwerId(String onwerId);
-    boolean existsByContactAccountId(String accountId);
+    boolean existsByContactAccountIdAndOwnerId(String accountId, String ownerId);
+    boolean existsByContactIdAndOwnerId(String contactId, String ownerId);
 }

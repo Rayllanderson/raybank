@@ -21,7 +21,7 @@ public class AddContactService {
     public void add(final AddContactInput input) {
         final BankAccount bankAccount = accountFactory.find(input.getContactId(), input.getTransactionMethod());
 
-        final boolean contactAlreadyExists = contactGateway.existsByContactAccountId(bankAccount.getId());
+        final boolean contactAlreadyExists = contactGateway.existsByContactAccountIdAndOwnerId(bankAccount.getId(), input.getOnwerId());
         if(contactAlreadyExists)
             return;
 
