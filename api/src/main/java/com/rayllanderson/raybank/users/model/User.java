@@ -1,21 +1,16 @@
 package com.rayllanderson.raybank.users.model;
 
-import com.rayllanderson.raybank.pix.model.Pix;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -35,11 +30,7 @@ public class User {
     private String authorities;
     @Enumerated(EnumType.STRING)
     private UserType type;
-
     private String bankAccountId;
-
-    @OneToMany(orphanRemoval = true)
-    private Set<Pix> pixKeys = new HashSet<>();
 
     public User(String id, String name, String username, String authorities) {
         this.id = id;

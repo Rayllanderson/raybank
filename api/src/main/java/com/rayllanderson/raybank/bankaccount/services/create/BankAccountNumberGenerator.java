@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.bankaccount.services.create;
 
 import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
-import com.rayllanderson.raybank.utils.NumberUtil;
+import com.rayllanderson.raybank.utils.RandomUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class BankAccountNumberGenerator {
         int generatedNumber;
         final int NUMBER_OF_DIGITS = 9;
         do {
-            generatedNumber = Integer.parseInt(Long.toString(NumberUtil.generateRandom(NUMBER_OF_DIGITS)));
+            generatedNumber = Integer.parseInt(Long.toString(RandomUtils.generate(NUMBER_OF_DIGITS)));
             isAccountNumberInvalid = bankAccountGateway.existsByNumber(generatedNumber)
                     && (Integer.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
         } while (isAccountNumberInvalid);

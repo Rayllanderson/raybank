@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.boleto;
 
 import com.rayllanderson.raybank.utils.DateManagerUtil;
-import com.rayllanderson.raybank.utils.NumberUtil;
+import com.rayllanderson.raybank.utils.RandomUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class BoletoUtil {
 
     public static String generateBarCode(BigDecimal boletoValue) {
-        final var randomNumbers = String.valueOf(NumberUtil.generateRandom(15)) + NumberUtil.generateRandom(18);
+        final var randomNumbers = String.valueOf(RandomUtils.generate(15)) + RandomUtils.generate(18);
         return String.format("%s%s%010d",BoletoConstant.PAYMENT_INSTITUTION_CODE, randomNumbers, boletoValue.intValue());
     }
 
