@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountMapper
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountService;
 import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountMapper;
 import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountService;
+import com.rayllanderson.raybank.contact.aop.AddCreditAccountAsContact;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class BankAccountTransferService {
     private final CreditAccountService creditService;
 
     @Transactional
+    @AddCreditAccountAsContact
     public Transaction transfer(final BankAccountTransferInput input) {
         final var debit = debitMapper.from(input);
         final var debitTransaction = debitService.debit(debit);

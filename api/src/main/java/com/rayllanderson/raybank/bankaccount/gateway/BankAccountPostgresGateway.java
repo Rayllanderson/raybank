@@ -23,6 +23,15 @@ public class BankAccountPostgresGateway implements BankAccountGateway {
     }
 
     @Override
+    public BankAccount findByIdOrNumber(String idOrNumber) {
+        try {
+            return findByNumber(Integer.parseInt(idOrNumber));
+        } catch (NumberFormatException e) {
+            return findById(idOrNumber);
+        }
+    }
+
+    @Override
     public boolean existsByNumber(int number) {
         return bankAccountRepository.existsByNumber(number);
     }

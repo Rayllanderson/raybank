@@ -8,6 +8,7 @@ import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ public class CreateInvoicePaymentStatementService implements CreateStatementServ
 
     @Override
     @Transactional
+    @Async
     public void process(final Transaction transaction) {
         final String invoiceId = null;
         final var invoice = invoiceRepository.findById(invoiceId)
