@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.transaction.models;
 
-import com.rayllanderson.raybank.invoice.models.Invoice;
+import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
+import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountInput;
 import com.rayllanderson.raybank.invoice.util.InvoiceCreditDescriptionUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -69,6 +70,42 @@ public class Transaction {
         if (Objects.isNull(this.id)) {
             this.id = UUID.randomUUID().toString();
         }
+    }
+
+    public static Transaction creditAccount(final CreditAccountInput input, final String referenceId, final String description) {
+        final var credit = new Credit(input.getAccountId(), Credit.Destination.ACCOUNT);
+        final var debit = new Debit(input.getOrigin().getIdentifier(), Debit.Origin.valueOf(input.getOrigin().getType().name()));
+
+        return Transaction.builder()
+                .amount(input.getAmount())
+                .method(input.getTransactionMethod())
+                .financialMovement(FinancialMovement.CREDIT)
+                .moment(LocalDateTime.now())
+                .description(description)
+                .debit(debit)
+                .credit(credit)
+                .type(input.getTransactionType())
+                .referenceId(referenceId)
+                .accountId(input.getAccountId())
+                .build();
+    }
+
+    public static Transaction debitAccount(final DebitAccountInput input, String referenceTransactionId) {
+        final var credit = new Credit(input.getDestination().getIdentifier(), Credit.Destination.valueOf(input.getDestination().getType().name()));
+        final var debit = new Debit(input.getAccountId(), Debit.Origin.ACCOUNT);
+
+        return Transaction.builder()
+                .type(input.getTransaction().getTransactionType())
+                .method(input.getTransaction().getTransactionMethod())
+                .referenceId(referenceTransactionId)
+                .financialMovement(FinancialMovement.DEBIT)
+                .amount(input.getAmount())
+                .moment(LocalDateTime.now())
+                .description(input.getDescription())
+                .accountId(input.getAccountId())
+                .credit(credit)
+                .debit(debit)
+                .build();
     }
 
     public static Transaction creditInvoice(BigDecimal amount, String accountId, Transaction debitTransaction) {

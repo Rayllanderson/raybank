@@ -2,7 +2,6 @@ package com.rayllanderson.raybank.bankaccount.services.debit;
 
 import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.bankaccount.transactions.DebitAccountTransaction;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.shared.dtos.Destination;
 import com.rayllanderson.raybank.transaction.gateway.TransactionGateway;
@@ -33,7 +32,7 @@ public class DebitAccountService {
 
         this.bankAccountGateway.save(bankAccount);
 
-        return transactionGateway.save(DebitAccountTransaction.from(debitInput, referenceTransactionId));
+        return transactionGateway.save(Transaction.debitAccount(debitInput, referenceTransactionId));
     }
 
     private void validateIfIsSameAccount(final BankAccount bankAccount, final Destination destination) {

@@ -2,7 +2,6 @@ package com.rayllanderson.raybank.bankaccount.services.credit;
 
 import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.bankaccount.transactions.CreditAccountTransaction;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.shared.dtos.Origin;
 import com.rayllanderson.raybank.transaction.models.Transaction;
@@ -40,7 +39,7 @@ public class CreditAccountService {
 
         bankAccount.credit(creditInput.getAmount());
 
-        final Transaction transaction = CreditAccountTransaction.from(creditInput, originalTransaction.getId(), originalTransaction.getDescription());
+        final Transaction transaction = Transaction.creditAccount(creditInput, originalTransaction.getId(), originalTransaction.getDescription());
         return transactionRepository.save(transaction);
     }
 
