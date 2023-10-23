@@ -52,16 +52,12 @@ public class BankAccount {
     @OneToOne
     private User user;
 
-    @ManyToMany
-    private Set<BankAccount> contacts;
-
     public static BankAccount create(int number, BankAccountType type, String userId) {
         return BankAccount.builder()
                 .id(userId)
                 .number(number)
                 .balance(BigDecimal.ZERO)
                 .createAt(LocalDateTime.now())
-                .contacts(new HashSet<>())
                 .type(type)
                 .status(BankAccountStatus.ACTIVE)
                 .user(User.fromId(userId)).build();
@@ -121,10 +117,6 @@ public class BankAccount {
      */
     public boolean hasAvailableBalance(BigDecimal amount){
         return this.getBalance().compareTo(amount) >= 0;
-    }
-
-    public void addContact(BankAccount contact) {
-        this.contacts.add(contact);
     }
 
     @Override

@@ -61,8 +61,8 @@ public class BankAccountService {
 //            senderAccount.getBankStatements().add(senderBankStatement);
 
             //adicionando ambos aos contatos
-            senderAccount.addContact(recipientAccount);
-            recipientAccount.addContact(senderAccount);
+//            senderAccount.addContact(recipientAccount);
+//            recipientAccount.addContact(senderAccount);
 
             //salvando
             bankAccountRepository.save(senderAccount);
@@ -106,18 +106,18 @@ public class BankAccountService {
     }
 
 
-    @Transactional(readOnly = true)
-    public List<ContactResponseDto> findAllContactsUserId(String userId){
-        var account = bankAccountRepository.findAccountWithContactsByUserId(userId);
-        return account.getContacts().stream().map(ContactResponseDto::fromBankAccount).collect(Collectors.toList());
-    }
+//    @Transactional(readOnly = true)
+//    public List<ContactResponseDto> findAllContactsUserId(String userId){
+//        var account = bankAccountRepository.findAccountWithContactsByUserId(userId);
+//        return account.getContacts().stream().map(ContactResponseDto::fromBankAccount).collect(Collectors.toList());
+//    }
 
-    @Transactional(readOnly = true)
-    public ContactResponseDto findContactById(Long id, String userId){
-        var accounts = this.findAllContactsUserId(userId);
-        return accounts.stream().filter(contact -> contact.getId().equals(id)).findFirst()
-                .orElseThrow(() -> new BadRequestException("Contato não encontrado"));
-    }
+//    @Transactional(readOnly = true)
+//    public ContactResponseDto findContactById(Long id, String userId){
+//        var accounts = this.findAllContactsUserId(userId);
+//        return accounts.stream().filter(contact -> contact.getId().equals(id)).findFirst()
+//                .orElseThrow(() -> new BadRequestException("Contato não encontrado"));
+//    }
 
     private User findUserByPixOrAccountNumber(BankTransferDto bankStatement) {
         String recipientPixKey = bankStatement.getTo();

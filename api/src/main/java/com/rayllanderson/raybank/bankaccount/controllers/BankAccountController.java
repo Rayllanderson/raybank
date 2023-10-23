@@ -55,16 +55,16 @@ public class BankAccountController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/contacts")
-    public ResponseEntity<List<ContactResponseDto>> findAllContacts(@AuthenticationPrincipal Jwt jwt) {
-        var authenticatedUser = userRepository.findById(JwtUtils.getUserIdFrom(jwt))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-        return ResponseEntity.ok(bankAccountService.findAllContactsUserId(authenticatedUser.getId()));
-    }
-
-    @GetMapping("/contacts/{id}")
-    public ResponseEntity<ContactResponseDto> findContactById(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
-
-        return ResponseEntity.ok(bankAccountService.findContactById(id, JwtUtils.getUserIdFrom(jwt)));
-    }
+//    @GetMapping("/contacts")
+//    public ResponseEntity<List<ContactResponseDto>> findAllContacts(@AuthenticationPrincipal Jwt jwt) {
+//        var authenticatedUser = userRepository.findById(JwtUtils.getUserIdFrom(jwt))
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+//        return ResponseEntity.ok(bankAccountService.findAllContactsUserId(authenticatedUser.getId()));
+//    }
+//
+//    @GetMapping("/contacts/{id}")
+//    public ResponseEntity<ContactResponseDto> findContactById(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+//
+//        return ResponseEntity.ok(bankAccountService.findContactById(id, JwtUtils.getUserIdFrom(jwt)));
+//    }
 }
