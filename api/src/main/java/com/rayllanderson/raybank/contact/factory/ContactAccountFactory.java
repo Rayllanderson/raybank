@@ -1,9 +1,7 @@
 package com.rayllanderson.raybank.contact.factory;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.contact.service.ContactAccountType;
 import com.rayllanderson.raybank.transaction.models.TransactionMethod;
-import com.rayllanderson.raybank.transaction.models.TransactionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

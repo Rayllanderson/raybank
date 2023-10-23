@@ -1,12 +1,9 @@
 package com.rayllanderson.raybank.contact.aop;
 
-import com.rayllanderson.raybank.contact.service.AddContactInput;
-import com.rayllanderson.raybank.contact.service.AddContactService;
-import com.rayllanderson.raybank.contact.service.ContactAccountType;
-import com.rayllanderson.raybank.statement.services.create.CreateStatementServiceFactory;
+import com.rayllanderson.raybank.contact.service.add.AddContactInput;
+import com.rayllanderson.raybank.contact.service.add.AddContactService;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Configuration;

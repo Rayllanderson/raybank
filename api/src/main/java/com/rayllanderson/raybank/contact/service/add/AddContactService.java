@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.contact.service;
+package com.rayllanderson.raybank.contact.service.add;
 
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.contact.factory.ContactAccountFactory;
