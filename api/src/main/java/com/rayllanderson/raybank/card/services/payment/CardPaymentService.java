@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.services.payment;
 
+import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.card.services.payment.strategies.CardPaymentStrategy;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CardPaymentService {
 
-    private final BankAccountRepository bankAccountRepository;
+    private final BankAccountGateway bankAccountGateway;
     private final CardRepository cardRepository;
     private final CardPaymentStrategyFactory cardPaymentStrategyFactory;
 
@@ -46,8 +46,7 @@ public class CardPaymentService {
     private BankAccount getEstablishmentAccount(final PaymentCardInput payment) {
         final var invalidEstablishmentException = new UnprocessableEntityException("Estabelecimento não pode receber pagamentos");
 
-        final var establishment = bankAccountRepository.findById(payment.getEstablishmentId())
-                .orElseThrow(() -> invalidEstablishmentException);
+        final var establishment = bankAccountGateway.findById(payment.getEstablishmentId());
 
         if (!establishment.isEstablishment()) {
             throw invalidEstablishmentException;

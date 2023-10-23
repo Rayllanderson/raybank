@@ -1,9 +1,8 @@
 package com.rayllanderson.raybank.bankaccount.services.debit;
 
+import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
-import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.bankaccount.transactions.DebitAccountTransaction;
-import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.shared.dtos.Destination;
 import com.rayllanderson.raybank.transaction.gateway.TransactionGateway;
@@ -18,13 +17,12 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class DebitAccountService {
-    private final BankAccountRepository bankAccountRepository;
+    private final BankAccountGateway bankAccountGateway;
     private final TransactionGateway transactionGateway;
 
     @Transactional
     public Transaction debit(final DebitAccountInput debitInput) {
-        final BankAccount bankAccount = bankAccountRepository.findById(debitInput.getAccountId())
-                .orElseThrow(() -> new NotFoundException("Conta bancária não existe"));
+        final BankAccount bankAccount = bankAccountGateway.findById(debitInput.getAccountId());
 
         validateIfIsSameAccount(bankAccount, debitInput.getDestination());
 
@@ -33,7 +31,7 @@ public class DebitAccountService {
         var amountToBePaid = debitInput.getAmount();
         bankAccount.debit(amountToBePaid);
 
-        this.bankAccountRepository.save(bankAccount);
+        this.bankAccountGateway.save(bankAccount);
 
         return transactionGateway.save(DebitAccountTransaction.from(debitInput, referenceTransactionId));
     }

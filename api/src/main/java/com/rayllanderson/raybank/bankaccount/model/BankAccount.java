@@ -8,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,10 +17,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Builder
 @Getter
@@ -77,30 +74,10 @@ public class BankAccount {
         return create(number, BankAccountType.NORMAL, userId);
     }
 
-    /**
-     * Realiza a ação de transferir. Será reduzido o valor de transferência dessa conta e será adicionado
-     * na conta de destino.
-     *
-     * @param recipient Conta a receber a transferência.
-     * @param amountToBeTransferred Quantidade a ser transferida.
-     */
-    public void transferTo(BankAccount recipient, BigDecimal amountToBeTransferred){
-        recipient.setBalance(recipient.getBalance().add(amountToBeTransferred));
-        this.setBalance(this.getBalance().subtract(amountToBeTransferred));
-    }
-
     public void debit(BigDecimal amount) throws UnprocessableEntityException {
         if (this.hasAvailableBalance(amount)) {
             this.balance = this.balance.subtract(amount);
         } else throw new UnprocessableEntityException("Sua conta não tem saldo disponível");
-    }
-
-    /**
-     * Realiza a ação de depositar. Soma e adiciona o valor a conta
-     * @param amount Será adicionada essa quantia no saldo da conta.
-     */
-    public void deposit(BigDecimal amount){
-        this.setBalance(this.getBalance().add(amount));
     }
 
     public void credit(final BigDecimal amount) {
@@ -108,13 +85,6 @@ public class BankAccount {
         this.balance = balance.add(amount);
     }
 
-    /**
-     * Compara e verifica se a conta atual tem saldo disponível
-     *
-     * @param amount quantia a ser comparada com o saldo da conta
-     *
-     * @return true se a conta atual tiver saldo disponível. False se não.
-     */
     public boolean hasAvailableBalance(BigDecimal amount){
         return this.getBalance().compareTo(amount) >= 0;
     }
