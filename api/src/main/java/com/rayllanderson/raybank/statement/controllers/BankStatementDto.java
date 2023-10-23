@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.statement.controllers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rayllanderson.raybank.bankaccount.controllers.reponses.IdentificationType;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.statement.models.BankStatement;
 import com.rayllanderson.raybank.statement.models.BankStatementType;
@@ -30,7 +29,7 @@ public class BankStatementDto {
     private BankStatementType bankStatementType;
     private BigDecimal amount;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private IdentificationType identificationType;
+//    private IdentificationType identificationType;
 
     public static BankStatementDto fromBankStatement(BankStatement bankStatement) {
         BankStatementDto dto = new ModelMapper().map(bankStatement, BankStatementDto.class);
@@ -43,10 +42,10 @@ public class BankStatementDto {
         boolean isTransfer = bankStatement.getType().equals(BankStatementType.TRANSFER);
         if (isTransfer) {
             if(isAmountPositive) {
-                dto.setIdentificationType(IdentificationType.RECEIVER);
+//                dto.setIdentificationType(IdentificationType.RECEIVER);
                 dto.setFrom(identificationName);
             } else {
-                dto.setIdentificationType(IdentificationType.SENDER);
+//                dto.setIdentificationType(IdentificationType.SENDER);
                 dto.setTo(identificationName);
             }
         }
