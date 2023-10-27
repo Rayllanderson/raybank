@@ -20,7 +20,7 @@ import java.net.URI;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/external/boletos")
+@RequestMapping("/api/v1/internal/boletos")
 public class GenerateBoletoController {
 
     private final GenerateBoletoService generateBoletoService;

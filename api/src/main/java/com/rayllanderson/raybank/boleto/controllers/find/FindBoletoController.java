@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/external/boletos")
+@RequestMapping("/api/v1/internal/boletos")
 public class FindBoletoController {
 
     private final FindBoletoMapper mapper;
