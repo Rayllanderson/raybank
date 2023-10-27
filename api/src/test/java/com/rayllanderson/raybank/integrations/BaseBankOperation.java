@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.integrations;
 
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankDepositDto;
 import com.rayllanderson.raybank.bankaccount.controllers.requests.BankTransferDto;
-import com.rayllanderson.raybank.card.controllers.external.PaymentCardRequest;
+import com.rayllanderson.raybank.card.controllers.payment.PaymentCardRequest;
 import com.rayllanderson.raybank.utils.BankDepositCreator;
 import com.rayllanderson.raybank.utils.BankTransferCreator;
 

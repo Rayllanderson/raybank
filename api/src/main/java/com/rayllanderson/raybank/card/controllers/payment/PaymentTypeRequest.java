@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.controllers.external;
+package com.rayllanderson.raybank.card.controllers.payment;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;

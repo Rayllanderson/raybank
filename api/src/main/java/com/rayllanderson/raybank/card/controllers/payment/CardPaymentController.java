@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.controllers.external;
+package com.rayllanderson.raybank.card.controllers.payment;
 
 import com.rayllanderson.raybank.card.services.payment.CardPaymentService;
 import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/external/payments")
+@RequestMapping("/api/v1/external/cards/payment")
 @RequiredArgsConstructor
 public class CardPaymentController {
 
     private final CardPaymentService cardPaymentService;
 
-    @PostMapping("/card")
+    @PostMapping
     public ResponseEntity<CardPaymentResponse> pay(@Valid @RequestBody PaymentCardRequest request,
                                                    @AuthenticationPrincipal Jwt jwt) {
         final var input = PaymentCardInput.fromRequest(request);

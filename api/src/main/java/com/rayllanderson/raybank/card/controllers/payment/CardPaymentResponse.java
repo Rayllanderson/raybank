@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.controllers.external;
+package com.rayllanderson.raybank.card.controllers.payment;
 
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.external.card.payment;
 
-import com.rayllanderson.raybank.card.controllers.external.PaymentCardRequest;
-import com.rayllanderson.raybank.card.controllers.external.PaymentTypeRequest;
+import com.rayllanderson.raybank.card.controllers.payment.PaymentCardRequest;
 import com.rayllanderson.raybank.integrations.BaseBankOperation;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
-import java.time.YearMonth;
 
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
