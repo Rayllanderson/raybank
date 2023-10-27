@@ -1,8 +1,10 @@
 package com.rayllanderson.raybank.card.services.create;
 
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Getter
 public enum DueDays {
@@ -20,7 +22,7 @@ public enum DueDays {
             if (value.day.equals(o))
                 return value;
         }
-        final var availableDays = Arrays.stream(DueDays.values()).map(DueDays::getDay).toString();
-        throw new IllegalArgumentException("Dia de vencimento inválido. Por favor, selecione um dos seguintes dias: " + availableDays);
+        final var availableDays = Arrays.stream(DueDays.values()).map(DueDays::getDay).collect(Collectors.toList());
+        throw new BadRequestException("Dia de vencimento inválido. Por favor, selecione um dos seguintes dias: " + availableDays);
     }
 }

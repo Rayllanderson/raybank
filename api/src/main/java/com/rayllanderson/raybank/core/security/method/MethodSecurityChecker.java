@@ -1,10 +1,9 @@
 package com.rayllanderson.raybank.core.security.method;
 
+import com.rayllanderson.raybank.card.gateway.CardGateway;
 import com.rayllanderson.raybank.card.models.Card;
-import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.contact.gateway.ContactGateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
-import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
@@ -20,7 +19,7 @@ import static com.rayllanderson.raybank.core.security.keycloak.JwtUtils.getAccou
 @RequiredArgsConstructor
 public class MethodSecurityChecker {
 
-    private final CardRepository cardRepository;
+    private final CardGateway cardGateway;
     private final BankStatementGateway bankStatementGateway;
     private final ContactGateway contactGateway;
     private final PixGateway pixGateway;
@@ -36,17 +35,15 @@ public class MethodSecurityChecker {
     }
 
     public boolean checkCard(String cardId, Jwt jwt) {
-        if (cardId == null || jwt == null) return false;
-
         final var accountId = getAccountIdFrom(jwt);
-        if (accountId == null) return false;
 
-        final Card authenticatedUserCard = cardRepository.findByBankAccountId(accountId).orElse(null);
+        if (cardId == null || accountId == null) return false;
 
-        if (authenticatedUserCard == null)
-            return false;
+        final Card authenticatedUserCard = cardGateway.findById(cardId);
 
-        return authenticatedUserCard.getId().equals(cardId);
+        if (authenticatedUserCard.getAccountId().equals(accountId))
+            return true;
+        throw NotFoundException.formatted("Cartão não encontrado");
     }
 
     public boolean checkContact(String contactId, Jwt jwt) {

@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.controllers.find;
 
 import com.rayllanderson.raybank.card.services.find.CardFinderService;
-import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +19,7 @@ public class FindCardController {
 
     private final CardFinderService cardFinderService;
 
-    @RequiredAccountOwner
+    @RequiredAccountAndCardOwner
     @GetMapping("/{cardId}")
     public ResponseEntity<?> find(@PathVariable String accountId,
                                   @PathVariable String cardId,
