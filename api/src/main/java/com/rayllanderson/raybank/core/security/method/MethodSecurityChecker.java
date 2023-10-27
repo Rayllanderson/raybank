@@ -4,21 +4,23 @@ import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.contact.gateway.ContactGateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
+//import com.rayllanderson.raybank.statement.models.BankStatement;
+//import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
+import com.rayllanderson.raybank.statement.gateway.BankStatementGateway;
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
+import com.rayllanderson.raybank.statement.repositories.BankStatementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 import static com.rayllanderson.raybank.core.security.keycloak.JwtUtils.getAccountIdFrom;
-import static com.rayllanderson.raybank.core.security.keycloak.JwtUtils.getUserIdFrom;
 
 @Component
 @RequiredArgsConstructor
 public class MethodSecurityChecker {
 
     private final CardRepository cardRepository;
-    private final BankStatementRepository bankStatementRepository;
+    private final BankStatementGateway bankStatementGateway;
     private final ContactGateway contactGateway;
 
     public boolean checkAccount(String accountId, Jwt jwt) {
@@ -59,14 +61,17 @@ public class MethodSecurityChecker {
     public boolean checkStatement(String statementId, Jwt jwt) {
         if (statementId == null || jwt == null) return false;
 
-        final BankStatement statement = bankStatementRepository.findById(statementId).orElse(null);
+        final BankStatement statement = bankStatementGateway.findById(statementId);
 
         if (statement == null) return false;
 
-        final var userId = getUserIdFrom(jwt);
-        if (userId == null) return false;
+        final var accountId = getAccountIdFrom(jwt);
+        if (accountId == null) return false;
 
-        return statement.getUserId().equals(userId);
+        if (statement.getAccountId().equals(accountId)) {
+            return true;
+        }
+        throw NotFoundException.formatted("Extrato não encontrado");
     }
 
     public boolean checkAccountAndCard(String accountId, String cardId, Jwt jwt) {
