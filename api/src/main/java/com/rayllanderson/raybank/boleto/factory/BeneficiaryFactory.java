@@ -32,6 +32,10 @@ public class BeneficiaryFactory {
         return getBeneficiaryTypeService(type).find(id);
     }
 
+    public String getBeneficiaryName(final String id, final BeneficiaryType type){
+        return getBeneficiaryTypeService(type).getName(id);
+    }
+
     public void receiveCredit(final BoletoCreditInput credit) {
         getBeneficiaryTypeService(BeneficiaryType.valueOf(credit.getBeneficiaryType()))
                 .receiveCredit(credit);

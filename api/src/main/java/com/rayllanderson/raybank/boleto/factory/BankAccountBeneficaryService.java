@@ -26,6 +26,11 @@ class BankAccountBeneficaryService implements BeneficiaryTypeService {
     }
 
     @Override
+    public String getName(final String id) {
+        return bankAccountGateway.findByIdOrNumber(id).getAccountName();
+    }
+
+    @Override
     public void validate(final Beneficiary beneficiary) {
         final var account = (BankAccount) beneficiary.getData();
 

@@ -7,6 +7,7 @@ import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
 interface BeneficiaryTypeService {
 
     Beneficiary find(final String id);
+    String getName(final String id);
     void validate(final Beneficiary beneficiary);
     void receiveCredit(final BoletoCreditInput input);
     boolean supports(final BeneficiaryType type);

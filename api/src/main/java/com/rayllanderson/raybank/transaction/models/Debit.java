@@ -21,6 +21,6 @@ public class Debit {
     private Origin origin;
 
     public enum Origin {
-        INVOICE, CREDIT_CARD, ACCOUNT, REFUND, BOLETO, PIX, ESTABLISHMENT_ACCOUNT
+        INVOICE, CREDIT_CARD, ACCOUNT, BOLETO, PIX, ESTABLISHMENT_ACCOUNT
     }
 }

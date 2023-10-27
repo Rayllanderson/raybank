@@ -145,4 +145,8 @@ public class BankAccount {
             return false;
         }
     }
+
+    public String getAccountName() {
+        return this.user.getName();
+    }
 }

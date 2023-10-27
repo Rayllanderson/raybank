@@ -11,7 +11,6 @@ import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPl
 import com.rayllanderson.raybank.shared.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.transaction.gateway.TransactionGateway;
 import com.rayllanderson.raybank.transaction.models.Transaction;
-import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

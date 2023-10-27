@@ -27,6 +27,11 @@ class InvoiceBeneficaryService implements BeneficiaryTypeService {
     }
 
     @Override
+    public String getName(String id) {
+        return "Fatura";
+    }
+
+    @Override
     public void validate(final Beneficiary beneficiary) {
         final Invoice invoice = (Invoice) beneficiary.getData();
 
