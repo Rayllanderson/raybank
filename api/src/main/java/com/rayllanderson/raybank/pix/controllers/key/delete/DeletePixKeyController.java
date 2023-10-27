@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.pix.controllers.key.delete;
 
-import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
+import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.core.security.method.RequiredPixKeyOwner;
 import com.rayllanderson.raybank.pix.service.key.delete.DeletePixKeyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/internal/accounts/{accountId}/pix/keys")
+@RequestMapping("api/v1/internal/pix/keys")
 @RequiredArgsConstructor
 public class DeletePixKeyController {
 
     private final DeletePixKeyService service;
 
-    @RequiredAccountOwner
+    @RequiredPixKeyOwner
     @DeleteMapping("/{key}")
-    public ResponseEntity<?> deleteByKey(@PathVariable String accountId,
-                                         @PathVariable String key,
+    public ResponseEntity<?> deleteByKey(@PathVariable String key,
                                          @AuthenticationPrincipal Jwt jwt) {
+
+        final var accountId = JwtUtils.getAccountIdFrom(jwt);
 
         service.deleteByKeyAndAccount(key, accountId);
 

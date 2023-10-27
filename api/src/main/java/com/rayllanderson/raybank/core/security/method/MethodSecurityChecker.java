@@ -4,11 +4,11 @@ import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.contact.gateway.ContactGateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
-//import com.rayllanderson.raybank.statement.models.BankStatement;
-//import com.rayllanderson.raybank.statement.repository.BankStatementRepository;
+import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.pix.gateway.PixGateway;
+import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.statement.gateway.BankStatementGateway;
 import com.rayllanderson.raybank.statement.models.BankStatement;
-import com.rayllanderson.raybank.statement.repositories.BankStatementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
@@ -22,6 +22,7 @@ public class MethodSecurityChecker {
     private final CardRepository cardRepository;
     private final BankStatementGateway bankStatementGateway;
     private final ContactGateway contactGateway;
+    private final PixGateway pixGateway;
 
     public boolean checkAccount(String accountId, Jwt jwt) {
         if (accountId == null || jwt == null) return false;
@@ -80,5 +81,17 @@ public class MethodSecurityChecker {
 
     public boolean checkAccountAndContact(String accountId, String contactId, Jwt jwt) {
         return this.checkAccount(accountId, jwt) && this.checkContact(contactId, jwt);
+    }
+
+    public boolean checkPixKey(String key, Jwt jwt) {
+        final var accountIdFromJwt = getAccountIdFrom(jwt);
+        if (accountIdFromJwt == null) return false;
+
+        PixKey pixKey = pixGateway.findKeyByKey(key);
+
+        if (pixKey.sameAccount(accountIdFromJwt))
+            return true;
+        else
+            throw NotFoundException.formatted("Chave Pix %s não encontrada", key);
     }
 }

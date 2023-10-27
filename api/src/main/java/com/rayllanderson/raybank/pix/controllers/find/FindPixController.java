@@ -2,8 +2,6 @@ package com.rayllanderson.raybank.pix.controllers.find;
 
 import com.rayllanderson.raybank.pix.service.find.FindPixMapper;
 import com.rayllanderson.raybank.pix.service.find.FindPixService;
-import com.rayllanderson.raybank.pix.service.qrcode.find.FindQrCodeMapper;
-import com.rayllanderson.raybank.pix.service.qrcode.find.FindQrCodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

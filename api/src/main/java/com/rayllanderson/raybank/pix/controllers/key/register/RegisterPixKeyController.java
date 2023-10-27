@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.pix.controllers.key.register;
 
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;
-import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
+import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.pix.model.key.PixKeyType;
 import com.rayllanderson.raybank.pix.service.key.register.RegisterPixKeyInput;
 import com.rayllanderson.raybank.pix.service.key.register.RegisterPixKeyService;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,17 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 
 @RestController
-@RequestMapping("api/v1/internal/accounts/{accountId}/pix/keys")
+@RequestMapping("api/v1/internal/pix/keys")
 @RequiredArgsConstructor
 public class RegisterPixKeyController {
 
     private final RegisterPixKeyService registerKeyService;
 
     @PostMapping
-    @RequiredAccountOwner
-    public ResponseEntity<RegisterPixResponse> register(@RequestBody @Valid RegisterPixKeyRequest request,
-                                                @PathVariable String accountId,
-                                                @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<RegisterPixResponse> register(@RequestBody @Valid RegisterPixKeyRequest request, @AuthenticationPrincipal Jwt jwt) {
+        final var accountId = JwtUtils.getAccountIdFrom(jwt);
 
         final var key = new RegisterPixKeyInput(request.getKey(), getKeytype(request.getType()), accountId);
         final var registeredKey = registerKeyService.register(key);

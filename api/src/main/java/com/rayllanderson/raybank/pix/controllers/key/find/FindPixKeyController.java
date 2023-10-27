@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.pix.controllers.key.find;
 
-import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
+import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.core.security.method.RequiredPixKeyOwner;
 import com.rayllanderson.raybank.pix.service.key.find.FindPixKeyMapper;
 import com.rayllanderson.raybank.pix.service.key.find.FindPixKeyOutput;
 import com.rayllanderson.raybank.pix.service.key.find.FindPixKeyService;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/internal/accounts/{accountId}/pix/keys")
+@RequestMapping("api/v1/internal/pix/keys")
 @RequiredArgsConstructor
 public class FindPixKeyController {
 
@@ -22,19 +23,18 @@ public class FindPixKeyController {
     private final FindPixKeyService service;
 
     @GetMapping
-    @RequiredAccountOwner
-    public ResponseEntity<FindListPixKeyResponse> findAllByAccountId(@PathVariable String accountId, @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<FindListPixKeyResponse> findAllByAccountId(@AuthenticationPrincipal Jwt jwt) {
+        final var accountId = JwtUtils.getAccountIdFrom(jwt);
 
         final var keys = service.findAllByAccountId(accountId);
 
         return ResponseEntity.ok().body(FindListPixKeyResponse.from(mapper.from(keys)));
     }
 
+    @RequiredPixKeyOwner
     @GetMapping("/{key}")
-    @RequiredAccountOwner
-    public ResponseEntity<FindPixKeyResponse> findByKey(@PathVariable String accountId,
-                                                        @PathVariable String key,
-                                                        @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<FindPixKeyResponse> findByKey(@PathVariable String key, @AuthenticationPrincipal Jwt jwt) {
+        final var accountId = JwtUtils.getAccountIdFrom(jwt);
 
         final FindPixKeyOutput pixKey = service.findByKeyAndAccountId(key, accountId);
 
