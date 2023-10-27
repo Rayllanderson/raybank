@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.card.controllers.payment;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -25,7 +26,7 @@ public class PaymentCardRequest {
     private PaymentTypeRequest paymentType;
 
     @NotNull
-    @Min(1)
+    @Min(1) @Max(72)
     private Integer installments;
 
     @NotNull
