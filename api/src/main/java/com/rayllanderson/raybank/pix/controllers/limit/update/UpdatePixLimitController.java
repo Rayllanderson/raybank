@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.pix.controllers.limit.update;
 
-import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
+import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.pix.service.limit.update.UpdatePixLimitService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/internal/accounts/{accountId}/pix/limits")
+@RequestMapping("api/v1/internal/pix/limits")
 @RequiredArgsConstructor
 public class UpdatePixLimitController {
 
@@ -24,10 +23,8 @@ public class UpdatePixLimitController {
 
 
     @PatchMapping
-    @RequiredAccountOwner
-    public ResponseEntity<?> update(@Valid @RequestBody UpdatePixLimitRequest request,
-                                                        @PathVariable String accountId,
-                                                        @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<?> update(@Valid @RequestBody UpdatePixLimitRequest request, @AuthenticationPrincipal Jwt jwt) {
+        final var accountId = JwtUtils.getAccountIdFrom(jwt);
 
         service.update(request.getNewLimit(), accountId);
 
