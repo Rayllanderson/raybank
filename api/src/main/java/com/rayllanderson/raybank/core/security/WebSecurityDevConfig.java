@@ -14,18 +14,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
-@Profile("prod")
+@Profile("!prod")
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfig {
+public class WebSecurityDevConfig {
 
     private static final String ROLE_USER = "USER";
     private static final String ROLE_ESTABLISMENT = "ESTABLISMENT";
@@ -47,8 +54,8 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/establishments/register")).hasRole(ROLE_ESTABLISMENT_REGISTER)
                         .requestMatchers(antMatcher("/api/v1/internal/**")).hasRole(ROLE_USER)
                         .requestMatchers(antMatcher("/api/v1/external/**")).hasRole(ROLE_ESTABLISMENT)
-                        .requestMatchers(antMatcher("/swagger-ui/*")).denyAll()
-                        .requestMatchers(antMatcher("/v3/api-docs/**")).denyAll()
+                        .requestMatchers(antMatcher("/swagger-ui/**")).permitAll()
+                        .requestMatchers(antMatcher("/v3/api-docs/**")).permitAll()
                         .anyRequest().authenticated())
                 .headers(headers ->
                         headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
