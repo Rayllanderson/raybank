@@ -23,6 +23,10 @@ raybank:
     postBackUrl: ${RAYBANK_BOLETO_POSTBACK_URL:http://localhost:8080/api/}
 
 retry:
+  statement:
+    create:
+      maxAttempts: 5
+      maxDelay: 5000
   card:
     payment:
       maxAttempts: 3
