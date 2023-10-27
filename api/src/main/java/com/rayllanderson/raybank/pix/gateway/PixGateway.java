@@ -41,6 +41,7 @@ public interface PixGateway {
     Pix findPixById(String pixId);
 
     List<PixReturn> findAllPixReturnByPixId(String pixId);
+    PixReturn findPixReturnById(String pixReturnId);
 
     int countKeysByAccountId(String accountId);
 }

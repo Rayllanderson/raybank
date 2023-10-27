@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.pix.model.qrcode;
 
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.util.PixQrCodeGenerator;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -29,6 +30,7 @@ public class PixQrCode {
     private String id;
 
     @NotNull
+    @Column(unique = true)
     private String code;
 
     @NotNull

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PixQrCodeGenerator {
@@ -20,7 +21,7 @@ public class PixQrCodeGenerator {
     private static final EMV MERCHANT_NAME = new EMV("59", "17");
     private static final EMV MERCHANT_CITY = new EMV("60", "08", "SAO PAULO");
     private static final EMV POSTAL_CODE = new EMV("61", "08", "05031***");
-    private static final EMV CRC16_CCITT = new EMV("63", "04", "D417");
+    private static final EMV CRC16_CCITT = new EMV("63", "04");
 
     public static String generateQrCode(PixKey credit, BigDecimal amount) {
         return payloadFormatIndicator() +
@@ -91,7 +92,7 @@ public class PixQrCodeGenerator {
     private static StringBuilder crc16Ccit() {
         return new StringBuilder()
                 .append(CRC16_CCITT.getFormated())
-                .append(CRC16_CCITT.defaultValue);
+                .append(UUID.randomUUID().toString().split("-")[0].toUpperCase());
     }
 
     @AllArgsConstructor

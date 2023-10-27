@@ -123,6 +123,12 @@ public class PixPostgresGateway implements PixGateway {
     }
 
     @Override
+    public PixReturn findPixReturnById(String pixReturnId) {
+        return returnRepository.findById(pixReturnId)
+                .orElseThrow(() -> NotFoundException.formatted("Devolução Pix '%s' não encontrada", pixReturnId));
+    }
+
+    @Override
     public int countKeysByAccountId(String accountId) {
         return keyRepository.countByBankAccountId(accountId);
     }
