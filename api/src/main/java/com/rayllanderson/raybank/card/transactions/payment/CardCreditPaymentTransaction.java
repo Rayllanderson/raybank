@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Getter
@@ -29,6 +31,7 @@ public class CardCreditPaymentTransaction extends Transaction {
         final var debit = new Debit(card.getId(), Debit.Origin.CREDIT_CARD);
 
         return CardCreditPaymentTransaction.builder()
+                .id(UUID.randomUUID().toString())
                 .amount(paymentCardInput.getAmount())
                 .moment(paymentCardInput.getOcurredOn())
                 .description(paymentCardInput.getDescription())
