@@ -51,7 +51,7 @@ public class DebitAccountFacadeInput {
     public static DebitAccountFacadeInput from(final PaymentCardInput input, final Card card) {
         final var destination = new Destination(input.getEstablishmentId(), Type.ACCOUNT);
         final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.DEBIT_CARD);
-        return new DebitAccountFacadeInput(card.getAccountId(), input.getAmount(), debitTransaction, destination);
+        return new DebitAccountFacadeInput(card.getAccountId(), input.getAmount(), input.getDescription(), debitTransaction, destination);
     }
 
     public static DebitAccountFacadeInput fromRefundCardCredit(Transaction transaction, BigDecimal amount) {

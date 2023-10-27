@@ -19,7 +19,7 @@ public class DebitCardPaymentStrategy implements CardPaymentStrategy {
     @Transactional
     public Transaction pay(final PaymentCardInput payment, final Card card) {
 
-        final var debit = DebitAccountFacadeInput.from(payment, card); //todo::description indo null
+        final var debit = DebitAccountFacadeInput.from(payment, card);
         return debitAccountFacade.process(debit);
     }
 
