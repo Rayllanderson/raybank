@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.card.controllers.limit;
 import com.rayllanderson.raybank.card.services.limit.ChangeCardLimitInput;
 import com.rayllanderson.raybank.card.services.limit.ChangeCardLimitService;
 import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Tag(name = "cards")
 @RestController
 @RequestMapping("api/v1/internal/accounts/{accountId}/cards/{cardId}/limit")
 @RequiredArgsConstructor

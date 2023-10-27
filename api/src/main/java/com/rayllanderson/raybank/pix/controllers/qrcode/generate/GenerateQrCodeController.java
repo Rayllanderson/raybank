@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.pix.controllers.qrcode.generate;
 import com.rayllanderson.raybank.pix.service.qrcode.generate.GenerateQrCodeInput;
 import com.rayllanderson.raybank.pix.service.qrcode.generate.GenerateQrCodeMapper;
 import com.rayllanderson.raybank.pix.service.qrcode.generate.GenerateQrCodeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "pix")
 @RestController
 @RequestMapping("api/v1/internal/pix/qrcode")
 @RequiredArgsConstructor

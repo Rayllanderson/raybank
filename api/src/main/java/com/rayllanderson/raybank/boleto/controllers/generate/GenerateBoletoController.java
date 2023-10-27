@@ -3,9 +3,9 @@ package com.rayllanderson.raybank.boleto.controllers.generate;
 import com.rayllanderson.raybank.boleto.services.generate.GenerateBoletoInput;
 import com.rayllanderson.raybank.boleto.services.generate.GenerateBoletoOutput;
 import com.rayllanderson.raybank.boleto.services.generate.GenerateBoletoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-@Slf4j
+@Tag(name = "boletos")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/internal/boletos")

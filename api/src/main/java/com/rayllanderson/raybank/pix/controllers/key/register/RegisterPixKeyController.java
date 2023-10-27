@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.pix.model.key.PixKeyType;
 import com.rayllanderson.raybank.pix.service.key.register.RegisterPixKeyInput;
 import com.rayllanderson.raybank.pix.service.key.register.RegisterPixKeyService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 
+@Tag(name = "pix")
 @RestController
 @RequestMapping("api/v1/internal/pix/keys")
 @RequiredArgsConstructor

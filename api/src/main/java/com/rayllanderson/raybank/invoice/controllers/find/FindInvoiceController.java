@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.invoice.controllers.find;
 import com.rayllanderson.raybank.invoice.services.find.FindInvoiceMapper;
 import com.rayllanderson.raybank.invoice.services.find.FindInvoiceService;
 import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "invoices")
 @RestController
 @RequestMapping("api/v1/internal/accounts/{accountId}/cards/{cardId}")
 @RequiredArgsConstructor

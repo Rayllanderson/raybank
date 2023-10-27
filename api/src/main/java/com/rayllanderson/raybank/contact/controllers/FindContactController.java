@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.contact.service.find.FindContactMapper;
 import com.rayllanderson.raybank.contact.service.find.FindContactService;
 import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
 import com.rayllanderson.raybank.core.security.method.RequiredContactOwner;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "contacts")
 @RestController
 @RequestMapping("api/v1/internal/accounts/{accountId}/contacts")
 @RequiredArgsConstructor

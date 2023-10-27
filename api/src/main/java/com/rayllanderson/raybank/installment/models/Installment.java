@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+//todo::criar controller
 @NoArgsConstructor
 @Getter
 @Entity

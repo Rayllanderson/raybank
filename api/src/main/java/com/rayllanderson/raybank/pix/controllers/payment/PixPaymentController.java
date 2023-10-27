@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.pix.service.payment.PixPaymentInput;
 import com.rayllanderson.raybank.pix.service.payment.PixPaymentMapper;
 import com.rayllanderson.raybank.pix.service.payment.PixPaymentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "pix")
 @RestController
 @RequestMapping("api/v1/internal/pix/payment")
 @RequiredArgsConstructor

@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.pix.controllers.limit.update;
 
 import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
 import com.rayllanderson.raybank.pix.service.limit.update.UpdatePixLimitService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Tag(name = "pix")
 @RestController
 @RequestMapping("api/v1/internal/pix/limits")
 @RequiredArgsConstructor

@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.bankaccount.services.transfer.BankAccountTransf
 import com.rayllanderson.raybank.bankaccount.services.transfer.BankAccountTransferService;
 import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
 import com.rayllanderson.raybank.transaction.models.Transaction;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "accounts")
 @RestController
 @RequestMapping("api/v1/internal/accounts")
 @RequiredArgsConstructor
