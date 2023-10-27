@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice //todo::ajustar handler
 public class RestExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
