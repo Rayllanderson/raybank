@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.invoice.controllers.credit;
 
+import com.rayllanderson.raybank.core.security.method.RequiredInvoiceOwner;
 import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditInput;
 import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditService;
 import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
@@ -33,7 +34,7 @@ public class InvoiceCreditController {
         return ResponseEntity.ok().body(InvoiceCreditResponse.fromTransaction(transaction));
     }
 
-    @RequiredAccountAndCardOwner
+    @RequiredInvoiceOwner
     @PostMapping("/invoices/{invoiceId}/pay")
     public ResponseEntity<InvoiceCreditResponse> payInvoiceById(@RequestBody @Valid InvoiceCreditRequest request,
                                                                 @PathVariable String accountId,

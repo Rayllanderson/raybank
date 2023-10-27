@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.contact.gateway.ContactGateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.statement.gateway.BankStatementGateway;
@@ -23,6 +24,7 @@ public class MethodSecurityChecker {
     private final BankStatementGateway bankStatementGateway;
     private final ContactGateway contactGateway;
     private final PixGateway pixGateway;
+    private final InvoiceGateway invoiceGateway;
 
     public boolean checkAccount(String accountId, Jwt jwt) {
         if (accountId == null || jwt == null) return false;
@@ -91,7 +93,17 @@ public class MethodSecurityChecker {
 
         if (pixKey.sameAccount(accountIdFromJwt))
             return true;
-        else
-            throw NotFoundException.formatted("Chave Pix %s não encontrada", key);
+        throw NotFoundException.formatted("Chave Pix %s não encontrada", key);
+    }
+
+    public boolean checkInvoice(String accountId, String cardId, String invoiceId, Jwt jwt) {
+        return checkAccountAndCard(accountId, cardId, jwt) && checkInvoice(cardId, invoiceId);
+    }
+
+    private boolean checkInvoice(String cardId, String invoiceId) {
+        final var invoice = invoiceGateway.findById(invoiceId);
+        if (invoice.getCardId().equals(cardId))
+            return true;
+        throw NotFoundException.formatted("Fatura não encontrada");
     }
 }
