@@ -4,6 +4,10 @@ import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
 import com.rayllanderson.raybank.core.security.method.RequiredStatementOwner;
 import com.rayllanderson.raybank.statement.services.find.BankStatementFinderService;
 import com.rayllanderson.raybank.statement.services.find.BankStatementMapper;
+import com.rayllanderson.raybank.statement.services.find.BankStatementOutput;
+import io.github.rayexpresslibraries.ddd.domain.pagination.Pagination;
+import io.github.rayexpresslibraries.ddd.domain.pagination.query.Search;
+import io.github.rayexpresslibraries.ddd.domain.pagination.query.SearchQuery;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,16 +27,21 @@ public class FindStatementController {
 
     private final BankStatementMapper mapper;
     private final BankStatementFinderService bankStatementFinderService;
-//todo:: paginacao
+
     @GetMapping
     @RequiredAccountOwner
     public ResponseEntity<?> findAllStatements(@AuthenticationPrincipal Jwt jwt,
                                                @PathVariable String accountId,
-                                               @RequestParam(required = false, defaultValue = "all") StatementTypeParam type) {
+                                               @RequestParam(required = false, defaultValue = "all") StatementTypeParam type,
+                                               @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+                                               @RequestParam(name = "size", required = false, defaultValue = "50") Integer size,
+                                               @RequestParam(name = "sort", required = false, defaultValue = "moment,desc") String[] sort) {
 
-        final var statements = type.find(bankStatementFinderService, accountId);
+        final var query = SearchQuery.from(page, size, null, sort, StatementProperty.class);
 
-        return ResponseEntity.ok(mapper.toResponse(statements));
+        final Pagination<BankStatementOutput> statements = type.find(bankStatementFinderService, accountId, query);
+
+        return ResponseEntity.ok(statements.map(mapper::toResponse));
     }
 
     @RequiredStatementOwner
