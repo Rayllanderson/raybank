@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.card.gateway;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.RaybankException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +42,7 @@ public class CardPostgresGateway implements CardGateway {
         return cardRepository.existsByNumber(number);
     }
 
-    private static Supplier<NotFoundException> notFoundException() {
+    private static Supplier<? extends RaybankException> notFoundException() {
         return () -> NotFoundException.with(CARD_NOT_FOUND, "Cartão não encontrado");
     }
 }

@@ -57,7 +57,7 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     @Override
     public Integer getDayOfDueDateByCardId(final String cardId) {
         return cardRepository.findById(cardId)
-                .orElseThrow(() -> NotFoundException.formatted(CARD_NOT_FOUND, "Card %s not found", cardId))
+                .orElseThrow(() -> NotFoundException.withFormatted(CARD_NOT_FOUND, "Card %s not found", cardId))
                 .getDayOfDueDate();
     }
 

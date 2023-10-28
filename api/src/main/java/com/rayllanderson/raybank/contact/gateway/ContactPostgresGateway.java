@@ -23,7 +23,7 @@ public class ContactPostgresGateway implements ContactGateway {
 
     @Override
     public Contact findById(String id) {
-        return contactRepository.findById(id).orElseThrow(() -> NotFoundException.formatted(CONTACT_NOT_FOUND, "Contato não encontrado"));
+        return contactRepository.findById(id).orElseThrow(() -> NotFoundException.withFormatted(CONTACT_NOT_FOUND, "Contato não encontrado"));
     }
 
     @Override

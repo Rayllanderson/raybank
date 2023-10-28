@@ -4,15 +4,15 @@ import org.springframework.http.HttpStatus;
 
 public class NotFoundException extends RaybankException {
 
-    private NotFoundException(RaybankExceptionReason reason, String message, HttpStatus status) {
-        super(reason, message, status);
+    protected NotFoundException(RaybankExceptionReason reason, String message) {
+        super(reason, message, HttpStatus.NOT_FOUND);
     }
 
-    public static NotFoundException with(RaybankExceptionReason reason, String s) {
-        return new NotFoundException(reason, s, HttpStatus.NOT_FOUND);
+    public static RaybankException with(RaybankExceptionReason reason, String s) {
+        return new NotFoundException(reason, s);
     }
-    
-    public static NotFoundException formatted(RaybankExceptionReason reason, String s, Object ... args) {
-        return NotFoundException.with(reason, String.format(s, args));
+
+    public static RaybankException withFormatted(RaybankExceptionReason reason, String s, Object ... args) {
+        return NotFoundException.with(reason, java.lang.String.format(s, args));
     }
 }

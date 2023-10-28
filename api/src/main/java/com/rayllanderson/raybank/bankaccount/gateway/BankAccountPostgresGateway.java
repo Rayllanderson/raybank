@@ -45,6 +45,6 @@ public class BankAccountPostgresGateway implements BankAccountGateway {
 
     @Override
     public BankAccount findByNumber(int accountNumber) {
-        return bankAccountRepository.findByNumber(accountNumber).orElseThrow(() -> NotFoundException.formatted(ACCOUNT_NOT_FOUND, "Conta bancária '%s' não existe", accountNumber));
+        return bankAccountRepository.findByNumber(accountNumber).orElseThrow(() -> NotFoundException.withFormatted(ACCOUNT_NOT_FOUND, "Conta bancária '%s' não existe", accountNumber));
     }
 }

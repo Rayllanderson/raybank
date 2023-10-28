@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.services.payment;
 
-import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.card.controllers.payment.PaymentCardRequest;
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -9,6 +9,9 @@ import org.modelmapper.ModelMapper;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_NUMBER_BADLY_FORMATTED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_SECURITYCODE_BADLY_FORMATTED;
 
 @Getter
 @Setter
@@ -38,7 +41,7 @@ public class PaymentCardInput {
         try {
             return Long.valueOf(this.card.number);
         } catch (NumberFormatException e) {
-            throw new BadRequestException(String.format("Numero de Cartão [ %s ] inválido", this.card.number));
+            throw BadRequestException.withFormatted(CARD_NUMBER_BADLY_FORMATTED, "Numero de Cartão [ %s ] inválido", this.card.number);
         }
     }
 
@@ -46,7 +49,7 @@ public class PaymentCardInput {
         try {
             return Integer.valueOf(this.card.securityCode);
         } catch (NumberFormatException e) {
-            throw new BadRequestException(String.format("Código de Segurança [ %s ] inválido", this.card.securityCode));
+            throw BadRequestException.withFormatted(CARD_SECURITYCODE_BADLY_FORMATTED, "Código de Segurança [ %s ] inválido", this.card.securityCode);
         }
     }
 

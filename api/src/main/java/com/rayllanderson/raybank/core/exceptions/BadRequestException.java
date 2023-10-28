@@ -1,12 +1,18 @@
 package com.rayllanderson.raybank.core.exceptions;
 
-public class BadRequestException extends RuntimeException{
+import org.springframework.http.HttpStatus;
 
-    public BadRequestException(String message) {
-        super(message);
+public class BadRequestException extends RaybankException {
+
+    protected BadRequestException(RaybankExceptionReason reason, String message) {
+        super(reason, message, HttpStatus.BAD_REQUEST);
     }
 
-    public static BadRequestException formatted(String s, Object ... args) {
-        return new BadRequestException(String.format(s, args));
+    public static RaybankException with(RaybankExceptionReason reason, String s) {
+        return new BadRequestException(reason, s);
+    }
+
+    public static RaybankException withFormatted(RaybankExceptionReason reason, String s, Object ... args) {
+        return BadRequestException.with(reason, java.lang.String.format(s, args));
     }
 }

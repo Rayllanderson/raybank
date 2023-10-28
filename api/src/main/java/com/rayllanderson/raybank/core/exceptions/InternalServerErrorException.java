@@ -4,11 +4,15 @@ import org.springframework.http.HttpStatus;
 
 public class InternalServerErrorException extends RaybankException {
 
-    private InternalServerErrorException(RaybankExceptionReason reason, String message, HttpStatus status) {
-        super(reason, message, status);
+    protected InternalServerErrorException(RaybankExceptionReason reason, String message) {
+        super(reason, message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public static InternalServerErrorException with(RaybankExceptionReason reason, String s) {
-        return new InternalServerErrorException(reason, s, HttpStatus.INTERNAL_SERVER_ERROR);
+    public static RaybankException with(RaybankExceptionReason reason, String s) {
+        return new InternalServerErrorException(reason, s);
+    }
+
+    public static RaybankException withFormatted(RaybankExceptionReason reason, String s, Object ... args) {
+        return InternalServerErrorException.with(reason, java.lang.String.format(s, args));
     }
 }

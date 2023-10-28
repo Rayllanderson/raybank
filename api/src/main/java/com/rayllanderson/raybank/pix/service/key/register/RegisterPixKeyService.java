@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_BADLY_FORMATTED;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_EXCEEDED;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_REGISTERED;
 
@@ -29,7 +30,7 @@ public class RegisterPixKeyService {
 
         boolean isKeyValid = keyType.isValid(key);
         if (!isKeyValid) {
-            throw BadRequestException.formatted("Chave Pix %s não é valida", key);
+            throw BadRequestException.withFormatted(PIX_KEY_BADLY_FORMATTED, "Chave Pix %s não é valida", key);
         }
 
         validateNumberOfKeyInAccount(keyInput.getBankAccountId());

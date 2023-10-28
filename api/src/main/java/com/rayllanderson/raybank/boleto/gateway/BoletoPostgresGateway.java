@@ -32,7 +32,7 @@ public class BoletoPostgresGateway implements BoletoGateway {
     @Override
     public Boleto findByBarCode(String barCode) {
         return boletoRepository.findByBarCode(barCode)
-                .orElseThrow(() -> NotFoundException.formatted(BOLETO_NOT_FOUND, "Boleto %s não encontrado", barCode));
+                .orElseThrow(() -> NotFoundException.withFormatted(BOLETO_NOT_FOUND, "Boleto %s não encontrado", barCode));
     }
 
     @Override

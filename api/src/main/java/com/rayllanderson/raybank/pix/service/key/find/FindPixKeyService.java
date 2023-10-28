@@ -30,7 +30,7 @@ public class FindPixKeyService {
         final PixKey pixKey = allKeysByAccountId.stream()
                 .filter(k -> k.getKey().equals(key))
                 .findFirst()
-                .orElseThrow(() -> NotFoundException.formatted(PIX_KEY_NOT_FOUND, "Chave %s não encontrada", key));
+                .orElseThrow(() -> NotFoundException.withFormatted(PIX_KEY_NOT_FOUND, "Chave %s não encontrada", key));
 
         return mapper.from(pixKey);
     }

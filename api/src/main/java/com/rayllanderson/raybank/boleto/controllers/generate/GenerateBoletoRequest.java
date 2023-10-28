@@ -12,6 +12,8 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.BOLETO_BENEFICIARY_TYPE_BADLY_FORMATTED;
+
 @Getter
 @Setter
 public class GenerateBoletoRequest {
@@ -40,7 +42,7 @@ public class GenerateBoletoRequest {
                 try {
                     return BeneficiaryType.valueOf(type.toUpperCase());
                 } catch (final Exception e) {
-                    throw new BadRequestException(String.format("Invalid type. Availables Types are %s", Arrays.toString(values())));
+                    throw BadRequestException.withFormatted(BOLETO_BENEFICIARY_TYPE_BADLY_FORMATTED, "Invalid type. Availables Types are %s", Arrays.toString(values()));
                 }
             }
         }

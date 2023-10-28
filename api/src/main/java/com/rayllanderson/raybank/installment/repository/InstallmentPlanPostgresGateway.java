@@ -16,6 +16,6 @@ public class InstallmentPlanPostgresGateway implements InstallmentPlanGateway {
     @Override
     public InstallmentPlan findById(String id) {
         return installmentPlanRepository.findById(id)
-                .orElseThrow(() -> NotFoundException.formatted(INSTALLMENTPLAN_NOT_FOUND, "Installment plan %s was not found", id));
+                .orElseThrow(() -> NotFoundException.withFormatted(INSTALLMENTPLAN_NOT_FOUND, "Installment plan %s was not found", id));
     }
 }

@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.transaction.gateway;
 
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
-import com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason;
 import com.rayllanderson.raybank.transaction.models.Credit;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.models.TransactionMethod;
@@ -23,7 +22,7 @@ public class TransactionPostegresGateway implements TransactionGateway {
     @Override
     public Transaction findById(String id) {
         return transactionRepository.findById(id)
-                .orElseThrow(() -> NotFoundException.formatted(TRANSACTION_NOT_FOUND,"No Transaction with id %s were found", id));
+                .orElseThrow(() -> NotFoundException.withFormatted(TRANSACTION_NOT_FOUND,"No Transaction with id %s were found", id));
     }
 
     @Override
@@ -34,7 +33,7 @@ public class TransactionPostegresGateway implements TransactionGateway {
     @Override
     public Transaction findByCreditId(String creditId) {
         return transactionRepository.findByCreditId(creditId)
-                .orElseThrow(() -> NotFoundException.formatted(TRANSACTION_NOT_FOUND, "No Transaction with credit id %s were found", creditId));
+                .orElseThrow(() -> NotFoundException.withFormatted(TRANSACTION_NOT_FOUND, "No Transaction with credit id %s were found", creditId));
     }
 
     @Override

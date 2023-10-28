@@ -31,7 +31,7 @@ public class CreditCardCreatedEventHandler {
         log.info("Handling CreditCardCreatedEvent={}", event.id());
 
         final Card card = cardRepository.findById(event.id())
-                .orElseThrow(() -> NotFoundException.formatted(CARD_NOT_FOUND, "Cartão %s não encontrado", event.id()));
+                .orElseThrow(() -> NotFoundException.withFormatted(CARD_NOT_FOUND, "Cartão %s não encontrado", event.id()));
 
         final var firstInvoice = Invoice.createOpenInvoice(plusOneMonthOf(card.getDayOfDueDate()), card.getId());
         invoiceRepository.save(firstInvoice);

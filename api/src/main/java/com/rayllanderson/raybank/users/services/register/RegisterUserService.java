@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.users.services.register;
 
 import com.rayllanderson.raybank.bankaccount.services.create.CreateBankAccountService;
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.core.security.keycloak.KeycloakProvider;
 import com.rayllanderson.raybank.users.constants.Groups;
 import com.rayllanderson.raybank.users.model.User;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.USERNAME_TAKEN;
 import static com.rayllanderson.raybank.users.services.register.RegisterUtils.getGroupsByRegisterType;
 import static com.rayllanderson.raybank.users.services.register.RegisterUtils.getIdFromHeader;
 
@@ -94,7 +96,7 @@ public class RegisterUserService {
         final boolean hasAlredyRegistered = response.getStatus() == HttpStatus.CONFLICT.value();
         if (hasAlredyRegistered) {
             log.warn("User '{}' is already registered in keycloak but not in local database", user.getUsername());
-            return new BadRequestException("Username já está em uso. Tente outro.");
+            return UnprocessableEntityException.with(USERNAME_TAKEN, "Username já está em uso. Tente outro.");
         }
         log.warn("Error to register user '{}' in keycloak. Response status = '{}'", user.getUsername(), response.getStatus());
         return new FailedToRegisterException("Erro ao registrar usuário. Tente mais tarde");
@@ -103,7 +105,7 @@ public class RegisterUserService {
     public void assertThatUsernameNotExists(final String username) throws BadRequestException {
         boolean usernameExists = userRepository.existsByUsername(username);
         if (usernameExists) {
-            throw new BadRequestException("Username já está em uso. Tente outro.");
+            throw UnprocessableEntityException.with(USERNAME_TAKEN, "Username já está em uso. Tente outro.");
         }
     }
 

@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.core.exceptions;
 
 import lombok.Getter;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 
 @Getter
@@ -9,7 +10,7 @@ public class RaybankException extends RuntimeException {
     private final HttpStatus status;
     private final RaybankExceptionReason reason;
 
-    public RaybankException(RaybankExceptionReason reason, String message, HttpStatus status) {
+    protected RaybankException(RaybankExceptionReason reason, String message, HttpStatus status) {
         super(reason.getDescription());
         this.reason = reason;
         this.message = message;

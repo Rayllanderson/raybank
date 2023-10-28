@@ -5,6 +5,8 @@ import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 
 import java.util.Arrays;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INVALID_PAYMENT_TYPE;
+
 public enum PaymentTypeRequest {
     CREDIT, DEBIT;
 
@@ -14,7 +16,7 @@ public enum PaymentTypeRequest {
             return PaymentTypeRequest.valueOf(value.toUpperCase());
         } catch (Exception e) {
             var message =  "Payment type=" + value + " is invalid. Available: " + Arrays.toString(PaymentTypeRequest.values());
-            throw new BadRequestException(message);
+            throw BadRequestException.with(INVALID_PAYMENT_TYPE, message);
         }
     }
 }

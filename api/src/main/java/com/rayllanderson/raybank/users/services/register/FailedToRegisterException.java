@@ -1,7 +1,10 @@
 package com.rayllanderson.raybank.users.services.register;
 
-public class FailedToRegisterException extends RuntimeException {
+import com.rayllanderson.raybank.core.exceptions.InternalServerErrorException;
+import com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason;
+
+public class FailedToRegisterException extends InternalServerErrorException {
     public FailedToRegisterException(String s) {
-        super(s);
+        super(RaybankExceptionReason.INTERNAL_SERVER_ERROR, s);
     }
 }

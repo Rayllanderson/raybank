@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_TYPE_INVALID;
+
 @Tag(name = "pix")
 @RestController
 @RequestMapping("api/v1/internal/pix/keys")
@@ -42,7 +44,7 @@ public class RegisterPixKeyController {
         try {
             return PixKeyType.valueOf(keyType.toUpperCase());
         } catch (Exception e) {
-            throw new BadRequestException("Tipo de chave inválido. Tipos permitidos são: " + Arrays.toString(PixKeyType.values()));
+            throw BadRequestException.with(PIX_KEY_TYPE_INVALID, "Tipo de chave inválido. Tipos permitidos são: " + Arrays.toString(PixKeyType.values()));
         }
     }
 }
