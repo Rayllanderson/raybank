@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.REFUND_AMOUNT_INVALID;
+
 @Service
 @RequiredArgsConstructor
 public class ProceessRefundService {
@@ -31,7 +33,7 @@ public class ProceessRefundService {
 
     private void validate(final ProcessRefundInput refund, final Transaction transaction) {
         if (refund.getAmount().compareTo(transaction.getAmount()) > 0) {
-            throw new UnprocessableEntityException("Valor do reembolso maior do que o da transação");
+            throw UnprocessableEntityException.with(REFUND_AMOUNT_INVALID, "Valor do reembolso maior do que o da transação");
         }
     }
 }

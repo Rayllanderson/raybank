@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.transaction.gateway;
 
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason;
 import com.rayllanderson.raybank.transaction.models.Credit;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.models.TransactionMethod;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.TRANSACTION_NOT_FOUND;
+
 @Component
 @RequiredArgsConstructor
 public class TransactionPostegresGateway implements TransactionGateway {
@@ -20,7 +23,7 @@ public class TransactionPostegresGateway implements TransactionGateway {
     @Override
     public Transaction findById(String id) {
         return transactionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("No Transaction with id %s were found", id)));
+                .orElseThrow(() -> NotFoundException.formatted(TRANSACTION_NOT_FOUND,"No Transaction with id %s were found", id));
     }
 
     @Override
@@ -31,7 +34,7 @@ public class TransactionPostegresGateway implements TransactionGateway {
     @Override
     public Transaction findByCreditId(String creditId) {
         return transactionRepository.findByCreditId(creditId)
-                .orElseThrow(() -> new NotFoundException(String.format("No Transaction with credit id %s were found", creditId)));
+                .orElseThrow(() -> NotFoundException.formatted(TRANSACTION_NOT_FOUND, "No Transaction with credit id %s were found", creditId));
     }
 
     @Override

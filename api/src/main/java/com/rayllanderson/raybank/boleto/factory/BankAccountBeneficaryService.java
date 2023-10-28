@@ -11,6 +11,8 @@ import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.ACCOUNT_INACTAVED;
+
 @Component
 @RequiredArgsConstructor
 class BankAccountBeneficaryService implements BeneficiaryTypeService {
@@ -35,7 +37,7 @@ class BankAccountBeneficaryService implements BeneficiaryTypeService {
         final var account = (BankAccount) beneficiary.getData();
 
         if (!account.isActive()) {
-            throw UnprocessableEntityException.with("Não é possível gerar boletos para conta bancária inativa");
+            throw UnprocessableEntityException.with(ACCOUNT_INACTAVED, "Não é possível gerar boletos para conta bancária inativa");
         }
     }
 

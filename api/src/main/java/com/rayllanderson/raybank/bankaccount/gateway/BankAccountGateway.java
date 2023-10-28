@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 
 public interface BankAccountGateway {
     BankAccount save(BankAccount bankAccount);
+    void flush();
 
     BankAccount findById(final String id);
 

@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INVOICE_NOT_FOUND;
+
 @Component
 @RequiredArgsConstructor
 public class InvoicePostgresGateway implements InvoiceGateway {
@@ -38,7 +41,7 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     @Override
     public Invoice findById(final String id) {
         return invoiceRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Fatura não encontrada"));
+                .orElseThrow(() -> NotFoundException.with(INVOICE_NOT_FOUND, "Fatura não encontrada"));
     }
 
     @Override
@@ -54,7 +57,7 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     @Override
     public Integer getDayOfDueDateByCardId(final String cardId) {
         return cardRepository.findById(cardId)
-                .orElseThrow(() -> new NotFoundException(String.format("Card %s not found", cardId)))
+                .orElseThrow(() -> NotFoundException.formatted(CARD_NOT_FOUND, "Card %s not found", cardId))
                 .getDayOfDueDate();
     }
 

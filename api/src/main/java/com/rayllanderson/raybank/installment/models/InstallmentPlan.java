@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.installment.models;
 
+import com.rayllanderson.raybank.core.exceptions.InternalServerErrorException;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.utils.InstallmentUtil;
@@ -24,6 +25,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_PARTIAL_REFUNDED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_PARTIAL_REFUND_EXCEEDED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_REFUNDED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INTERNAL_SERVER_ERROR;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -75,10 +81,10 @@ public class InstallmentPlan {
 
     public void fullRefund() {
         if (this.hasRefunded())
-            throw new UnprocessableEntityException("Plan is already refunded");
+            throw UnprocessableEntityException.with(INSTALLMENTPLAN_REFUNDED, "Plan is already refunded");
 
         if (hasPartialRefund())
-            throw new UnprocessableEntityException("Plan cannot be fully refunded. There's already a partial refund for this plan");
+            throw UnprocessableEntityException.with(INSTALLMENTPLAN_PARTIAL_REFUNDED, "Plan cannot be fully refunded. There's already a partial refund for this plan");
 
         refundInstallmentsPaid();
         cancelOpenInstallments();
@@ -93,7 +99,7 @@ public class InstallmentPlan {
     public void partialRefund(final BigDecimal value) {
         final BigDecimal availableToRefund = this.total.subtract(this.refunded);
         if (value.compareTo(availableToRefund) > 0) {
-            throw new UnprocessableEntityException("Available balance to refund is less than amount to refund");
+            throw UnprocessableEntityException.with(INSTALLMENTPLAN_PARTIAL_REFUND_EXCEEDED, "Available balance to refund is less than amount to refund");
         }
 
         this.refunded = this.refunded.add(value);
@@ -144,7 +150,7 @@ public class InstallmentPlan {
     public void checkIfInstallmentsHasInvoice() {
         Optional<Installment> any = this.installments.stream().filter(i -> Objects.isNull(i.getInvoice())).findAny();
         any.ifPresent(i -> {
-            throw new UnprocessableEntityException(String.format("Installment %s has no invoice", i.getId()));
+            throw InternalServerErrorException.with(INTERNAL_SERVER_ERROR, String.format("Installment %s has no invoice", i.getId()));
         });
     }
 }

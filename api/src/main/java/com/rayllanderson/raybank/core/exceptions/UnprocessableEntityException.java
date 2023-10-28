@@ -1,16 +1,18 @@
 package com.rayllanderson.raybank.core.exceptions;
 
-public class UnprocessableEntityException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    public UnprocessableEntityException(String message) {
-        super(message);
+public class UnprocessableEntityException extends RaybankException {
+
+    private UnprocessableEntityException(RaybankExceptionReason reason, String message, HttpStatus status) {
+        super(reason, message, status);
     }
 
-    public static UnprocessableEntityException with(String s) {
-        return new UnprocessableEntityException(s);
+    public static UnprocessableEntityException with(RaybankExceptionReason reason, String s) {
+        return new UnprocessableEntityException(reason, s, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    public static UnprocessableEntityException withFormatted(String s, Object... args) {
-        return new UnprocessableEntityException(String.format(s, args));
+    public static UnprocessableEntityException withFormatted(RaybankExceptionReason reason, String s, Object... args) {
+        return UnprocessableEntityException.with(reason, String.format(s, args));
     }
 }

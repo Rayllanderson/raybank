@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_LIMIT_INSUFFICIENT;
+
 @Service
 @RequiredArgsConstructor
 public class CheckLimitService {
@@ -17,7 +19,7 @@ public class CheckLimitService {
     public void checkLimit(final PixKey debitKey, final BigDecimal transactionAmount) {
         final var limit = pixGateway.findLimitByAccountId(debitKey.getAccountId());
         if (!limit.hasLimitFor(transactionAmount)) {
-            throw UnprocessableEntityException.withFormatted("Limite insuficiente para transação. Seu limite disponível é de %s", limit.getLimit());
+            throw UnprocessableEntityException.withFormatted(PIX_LIMIT_INSUFFICIENT, "Limite insuficiente para transação. Seu limite disponível é de %s", limit.getLimit());
         }
     }
 }

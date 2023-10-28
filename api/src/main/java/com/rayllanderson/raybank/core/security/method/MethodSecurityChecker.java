@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.card.gateway.CardGateway;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.contact.gateway.ContactGateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
@@ -13,6 +14,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CONTACT_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INVOICE_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_REGISTERED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.STATAMENT_NOT_FOUND;
 import static com.rayllanderson.raybank.core.security.keycloak.JwtUtils.getAccountIdFrom;
 
 @Component
@@ -43,7 +50,7 @@ public class MethodSecurityChecker {
 
         if (authenticatedUserCard.getAccountId().equals(accountId))
             return true;
-        throw NotFoundException.formatted("Cartão não encontrado");
+        throw NotFoundException.formatted(CARD_NOT_FOUND, "Cartão não encontrado");
     }
 
     public boolean checkContact(String contactId, Jwt jwt) {
@@ -53,7 +60,7 @@ public class MethodSecurityChecker {
         if (accountId == null) return false;
 
         if (!contactGateway.existsByContactIdAndOwnerId(contactId, accountId))
-            throw NotFoundException.formatted("Contato não encontrado");
+            throw NotFoundException.formatted(CONTACT_NOT_FOUND, "Contato não encontrado");
 
         return true;
     }
@@ -71,7 +78,7 @@ public class MethodSecurityChecker {
         if (statement.getAccountId().equals(accountId)) {
             return true;
         }
-        throw NotFoundException.formatted("Extrato não encontrado");
+        throw NotFoundException.formatted(STATAMENT_NOT_FOUND, "Extrato não encontrado");
     }
 
     public boolean checkAccountAndCard(String accountId, String cardId, Jwt jwt) {
@@ -90,7 +97,7 @@ public class MethodSecurityChecker {
 
         if (pixKey.sameAccount(accountIdFromJwt))
             return true;
-        throw NotFoundException.formatted("Chave Pix %s não encontrada", key);
+        throw NotFoundException.formatted(PIX_KEY_NOT_FOUND, "Chave Pix %s não encontrada", key);
     }
 
     public boolean checkInvoice(String accountId, String cardId, String invoiceId, Jwt jwt) {
@@ -101,6 +108,6 @@ public class MethodSecurityChecker {
         final var invoice = invoiceGateway.findById(invoiceId);
         if (invoice.getCardId().equals(cardId))
             return true;
-        throw NotFoundException.formatted("Fatura não encontrada");
+        throw NotFoundException.formatted(INVOICE_NOT_FOUND, "Fatura não encontrada");
     }
 }

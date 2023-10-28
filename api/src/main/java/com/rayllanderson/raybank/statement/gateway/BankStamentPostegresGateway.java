@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.STATAMENT_NOT_FOUND;
+
 @Component
 @RequiredArgsConstructor
 public class BankStamentPostegresGateway implements BankStatementGateway {
@@ -20,7 +22,7 @@ public class BankStamentPostegresGateway implements BankStatementGateway {
     @Override
     public BankStatement findById(String id) {
         return bankStatementRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Nenhum extrato foi encontrado"));
+                .orElseThrow(() -> NotFoundException.with(STATAMENT_NOT_FOUND, "Nenhum extrato foi encontrado"));
     }
 
     @Override

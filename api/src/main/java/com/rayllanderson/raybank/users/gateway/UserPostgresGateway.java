@@ -6,6 +6,8 @@ import com.rayllanderson.raybank.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.USER_NOT_FOUND;
+
 @Component
 @RequiredArgsConstructor
 public class UserPostgresGateway implements UserGateway {
@@ -14,6 +16,6 @@ public class UserPostgresGateway implements UserGateway {
 
     @Override
     public User findById(final String id) {
-        return userRepository.findById(id).orElseThrow(() -> NotFoundException.formatted("Usuário não encontrado"));
+        return userRepository.findById(id).orElseThrow(() -> NotFoundException.formatted(USER_NOT_FOUND, "Usuário não encontrado"));
     }
 }

@@ -18,6 +18,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.DEBIT_SAME_ACCOUNT;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -65,7 +67,7 @@ public class Pix {
         final LocalDateTime occured = LocalDateTime.now();
 
         if (debit.sameAccount(credit))
-            throw UnprocessableEntityException.with("Não é possível transferir PIX para si mesmo");
+            throw UnprocessableEntityException.with(DEBIT_SAME_ACCOUNT, "Não é possível transferir PIX para si mesmo");
 
         return new Pix(E2EIdGenerator.generateE2E(occured), amount, PixType.TRANSFER, debit, credit, message, null, occured);
     }

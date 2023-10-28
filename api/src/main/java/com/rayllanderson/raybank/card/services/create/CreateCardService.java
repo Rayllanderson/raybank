@@ -1,10 +1,9 @@
 package com.rayllanderson.raybank.card.services.create;
 
-import com.rayllanderson.raybank.core.exceptions.BadRequestException;
-import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
+import com.rayllanderson.raybank.card.gateway.CardGateway;
 import com.rayllanderson.raybank.card.models.Card;
-import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
-import com.rayllanderson.raybank.card.repository.CardRepository;
+import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.utils.RandomUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,20 +11,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.YearMonth;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_ALREADY_REGISTERED;
+
 @RequiredArgsConstructor
 @Service
 public class CreateCardService {
 
-    private final CardRepository cardRepository;
-    private final BankAccountRepository bankAccountRepository;
+    private final CardGateway cardGateway;
+    private final BankAccountGateway bankAccountGateway;
 
     @Transactional
     public Card createCreditCard(final CreateCreditCardInput input){
-        final var bankAccount = bankAccountRepository.findById(input.getAccountId())
-                .orElseThrow(() -> new BadRequestException("Conta bancária não disponível"));
+        final var bankAccount = bankAccountGateway.findById(input.getAccountId());
 
-        if (cardRepository.existsByBankAccountId(bankAccount.getId()))
-            throw new UnprocessableEntityException("Já existe um cartão para o usuário");
+        if (cardGateway.existsByBankAccountId(bankAccount.getId()))
+            throw UnprocessableEntityException.with(CARD_ALREADY_REGISTERED, "Já existe um cartão para o usuário");
 
         var creditCardToBeSaved = Card.create(this.generateCreditCardNumber(),
                 input.getLimit(),
@@ -33,10 +33,10 @@ public class CreateCardService {
                 generateExpiryDate(),
                 input.getDueDay().getDay(),
                 bankAccount);
-        creditCardToBeSaved = cardRepository.save(creditCardToBeSaved);
+        creditCardToBeSaved = cardGateway.save(creditCardToBeSaved);
 
         bankAccount.setCard(creditCardToBeSaved);
-        bankAccountRepository.flush();
+        bankAccountGateway.flush();
 
         return creditCardToBeSaved;
     }
@@ -47,7 +47,7 @@ public class CreateCardService {
         final int NUMBER_OF_DIGITS = 16;
         do {
             generatedNumber = RandomUtils.generate(NUMBER_OF_DIGITS);
-            isCardNumberInvalid = cardRepository.existsByNumber(generatedNumber) && (Long.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
+            isCardNumberInvalid = cardGateway.existsByNumber(generatedNumber) && (Long.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
         } while (isCardNumberInvalid);
         return generatedNumber;
     }

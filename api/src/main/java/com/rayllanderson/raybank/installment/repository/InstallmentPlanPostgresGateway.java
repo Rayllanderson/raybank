@@ -5,6 +5,8 @@ import com.rayllanderson.raybank.installment.models.InstallmentPlan;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_NOT_FOUND;
+
 @Component
 @RequiredArgsConstructor
 public class InstallmentPlanPostgresGateway implements InstallmentPlanGateway {
@@ -14,6 +16,6 @@ public class InstallmentPlanPostgresGateway implements InstallmentPlanGateway {
     @Override
     public InstallmentPlan findById(String id) {
         return installmentPlanRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Installment plan %s was not found", id)));
+                .orElseThrow(() -> NotFoundException.formatted(INSTALLMENTPLAN_NOT_FOUND, "Installment plan %s was not found", id));
     }
 }

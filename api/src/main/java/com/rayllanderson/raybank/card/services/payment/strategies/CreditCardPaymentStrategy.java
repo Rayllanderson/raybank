@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSUFFICIENT_CARD_LIMIT;
+
 @Service
 @RequiredArgsConstructor
 public class CreditCardPaymentStrategy implements CardPaymentStrategy {
@@ -32,7 +34,7 @@ public class CreditCardPaymentStrategy implements CardPaymentStrategy {
 
         final boolean hasAvailableLimit = cardLimitService.hasAvailableLimit(card, payment.getAmount());
         if (!hasAvailableLimit) {
-            throw new UnprocessableEntityException("Seu cartão não possui limite suficiente para esta compra.");
+            throw UnprocessableEntityException.with(INSUFFICIENT_CARD_LIMIT, "Seu cartão não possui limite suficiente para esta compra.");
         }
 
         final var createPlanInput = planMapper.from(transaction);

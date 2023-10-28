@@ -11,6 +11,8 @@ import com.rayllanderson.raybank.invoice.models.Invoice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INVOICE_NOT_PAYABLE;
+
 @Component
 @RequiredArgsConstructor
 class InvoiceBeneficaryService implements BeneficiaryTypeService {
@@ -36,7 +38,7 @@ class InvoiceBeneficaryService implements BeneficiaryTypeService {
         final Invoice invoice = (Invoice) beneficiary.getData();
 
         if (invoice.cannotReceivePayment()) {
-            throw UnprocessableEntityException.with("Não é possível gerar boleto para fatura, pois fatura não pode receber pagamentos");
+            throw UnprocessableEntityException.with(INVOICE_NOT_PAYABLE, "Não é possível gerar boleto para fatura, pois fatura não pode receber pagamentos");
         }
     }
 

@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_EXCEEDED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_REGISTERED;
+
 @Service
 @RequiredArgsConstructor
 public class RegisterPixKeyService {
@@ -32,7 +35,7 @@ public class RegisterPixKeyService {
         validateNumberOfKeyInAccount(keyInput.getBankAccountId());
 
         if (pixGateway.existsByKey(key)) {
-            throw UnprocessableEntityException.withFormatted("Chave Pix %s já cadastrada", key);
+            throw UnprocessableEntityException.withFormatted(PIX_KEY_REGISTERED, "Chave Pix %s já cadastrada", key);
         }
 
         final PixKey pixKey = PixKey.from(key, keyType, keyInput.getBankAccountId());
@@ -68,7 +71,7 @@ public class RegisterPixKeyService {
     private void validateNumberOfKeyInAccount(String accountId) {
         int numberKeysInAccount = pixGateway.countKeysByAccountId(accountId);
         if (numberKeysInAccount == MAX_NUMBER_KEYS_PER_ACCOUNT) {
-            throw UnprocessableEntityException.withFormatted("Número máximo (%s) de chaves excedido.", MAX_NUMBER_KEYS_PER_ACCOUNT);
+            throw UnprocessableEntityException.withFormatted(PIX_KEY_EXCEEDED, "Número máximo (%s) de chaves excedido.", MAX_NUMBER_KEYS_PER_ACCOUNT);
         }
     }
 }

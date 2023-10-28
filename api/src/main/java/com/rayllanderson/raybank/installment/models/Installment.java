@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.installment.models;
 
-import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.core.exceptions.InternalServerErrorException;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.Column;
@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
+
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INTERNAL_SERVER_ERROR;
 
 //todo::criar controller
 @NoArgsConstructor
@@ -91,7 +93,7 @@ public class Installment {
 
     public void addInvoice(final Invoice invoice) {
         if (Objects.nonNull(this.invoice)) {
-            throw new UnprocessableEntityException("Invoice already existis to this installment");
+            throw InternalServerErrorException.with(INTERNAL_SERVER_ERROR, "Invoice already existis to this installment");
         }
         this.invoice = invoice;
     }

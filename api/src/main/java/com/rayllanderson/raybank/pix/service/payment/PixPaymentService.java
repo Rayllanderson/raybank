@@ -7,13 +7,15 @@ import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInp
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.Pix;
-import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
+import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
 import com.rayllanderson.raybank.pix.service.limit.CheckLimitService;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.QR_CODE_EXPIRED;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class PixPaymentService {
         final PixQrCode qrCode = pixGateway.findQrCodeByQrCode(paymentInput.getQrCode());
 
         if (qrCode.isExpired()) {
-            throw UnprocessableEntityException.with("Qr Code expirado");
+            throw UnprocessableEntityException.with(QR_CODE_EXPIRED, "Qr Code expirado");
         }
 
         final PixKey debitKey = pixGateway.findKeyByAccountId(paymentInput.getDebitAccountId());

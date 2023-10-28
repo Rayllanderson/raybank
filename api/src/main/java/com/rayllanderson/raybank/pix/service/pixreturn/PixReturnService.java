@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.DEBIT_ORIGIN_DIFFERENT;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_RETURN_EXCEEDED;
+
 @Service
 @RequiredArgsConstructor
 public class PixReturnService {
@@ -32,7 +35,7 @@ public class PixReturnService {
 
         final boolean debitOriginDifferent = !(pix.getCredit().sameAccount(pixReturnInput.getReturningAccountId()));
         if(debitOriginDifferent) {
-            throw UnprocessableEntityException.with("Não é possível devolver Pix de outra pessoa");
+            throw UnprocessableEntityException.with(DEBIT_ORIGIN_DIFFERENT, "Não é possível devolver Pix de outra pessoa");
         }
 
         validateAmount(pixReturnInput, pix);
@@ -53,7 +56,7 @@ public class PixReturnService {
 
         if (amountReturned.add(pixReturnInput.getAmount()).compareTo(pix.getAmount()) > 0) {
             throw UnprocessableEntityException
-                    .withFormatted("Valor a devolver é maior que a Transação Pix. Valor já devolvido R$ %s. Valor do Pix %s", amountReturned, pix.getAmount());
+                    .withFormatted(PIX_RETURN_EXCEEDED, "Valor a devolver é maior que a Transação Pix. Valor já devolvido R$ %s. Valor do Pix %s", amountReturned, pix.getAmount());
         }
     }
 

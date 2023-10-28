@@ -3,10 +3,10 @@ package com.rayllanderson.raybank.pix.gateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixLimit;
-import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
-import com.rayllanderson.raybank.pix.model.qrcode.PixQrCodeStatus;
 import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
+import com.rayllanderson.raybank.pix.model.qrcode.PixQrCode;
+import com.rayllanderson.raybank.pix.model.qrcode.PixQrCodeStatus;
 import com.rayllanderson.raybank.pix.repositories.PixKeyRepository;
 import com.rayllanderson.raybank.pix.repositories.PixLimitRepository;
 import com.rayllanderson.raybank.pix.repositories.PixQrCodeRepository;
@@ -16,6 +16,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.function.Supplier;
+
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_LIMIT_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_RETURN_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.QR_CODE_NOT_FOUND;
 
 @Component
 @RequiredArgsConstructor
@@ -55,7 +62,7 @@ public class PixPostgresGateway implements PixGateway {
     @Override
     public PixLimit findLimitByAccountId(String accountId) {
         return limitRepository.findByBankAccountId(accountId)
-                .orElseThrow(() -> NotFoundException.formatted("Limit was not found for account id %s", accountId));
+                .orElseThrow(() -> NotFoundException.formatted(PIX_LIMIT_NOT_FOUND, "Limit was not found for account id %s", accountId));
     }
 
     @Override
@@ -81,19 +88,24 @@ public class PixPostgresGateway implements PixGateway {
     @Override
     public PixKey findKeyByKey(String key) {
         return keyRepository.findById(key)
-                .orElseThrow(() -> NotFoundException.formatted("Chave %s não encontrada", key));
+                .orElseThrow(() -> NotFoundException.formatted(PIX_KEY_NOT_FOUND, "Chave %s não encontrada", key));
     }
 
     @Override
     public PixQrCode findQrCodeByQrCode(String qrCode) {
-        final PixQrCode pixQrCode = qrCodeRepository.findByCode(qrCode).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
+        final PixQrCode pixQrCode = qrCodeRepository.findByCode(qrCode)
+                .orElseThrow(qrCodeNotFoundException());
         expireQrcodeIfPossible(pixQrCode);
         return pixQrCode;
     }
 
+    private static Supplier<NotFoundException> qrCodeNotFoundException() {
+        return () -> NotFoundException.formatted(QR_CODE_NOT_FOUND, "Qr Code não encontrado");
+    }
+
     @Override
     public PixQrCode findQrCodeById(String id) {
-        final PixQrCode pixQrCode = qrCodeRepository.findById(id).orElseThrow(() -> NotFoundException.formatted("Qr Code não encontrado"));
+        final PixQrCode pixQrCode = qrCodeRepository.findById(id).orElseThrow(qrCodeNotFoundException());
         expireQrcodeIfPossible(pixQrCode);
         return pixQrCode;
     }
@@ -108,13 +120,13 @@ public class PixPostgresGateway implements PixGateway {
     @Override
     public PixKey findKeyByAccountId(String accountId) {
         return keyRepository.findAllByBankAccountId(accountId).stream().findFirst()
-                .orElseThrow(() -> NotFoundException.formatted("Nenhuma chave Pix encontrada para conta %s", accountId));
+                .orElseThrow(() -> NotFoundException.formatted(PIX_KEY_NOT_FOUND, "Nenhuma chave Pix encontrada para conta %s", accountId));
     }
 
     @Override
     public Pix findPixById(String pixId) {
         return pixRepository.findById(pixId)
-                .orElseThrow(() -> NotFoundException.formatted("Pix %s não encontrado", pixId));
+                .orElseThrow(() -> NotFoundException.formatted(PIX_NOT_FOUND, "Pix %s não encontrado", pixId));
     }
 
     @Override
@@ -125,7 +137,7 @@ public class PixPostgresGateway implements PixGateway {
     @Override
     public PixReturn findPixReturnById(String pixReturnId) {
         return returnRepository.findById(pixReturnId)
-                .orElseThrow(() -> NotFoundException.formatted("Devolução Pix '%s' não encontrada", pixReturnId));
+                .orElseThrow(() -> NotFoundException.formatted(PIX_RETURN_NOT_FOUND,"Devolução Pix '%s' não encontrada", pixReturnId));
     }
 
     @Override

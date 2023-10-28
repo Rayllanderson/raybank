@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_NOT_FOUND;
 import static com.rayllanderson.raybank.utils.DateManagerUtil.plusOneMonthOf;
 
 @Slf4j
@@ -30,7 +31,7 @@ public class CreditCardCreatedEventHandler {
         log.info("Handling CreditCardCreatedEvent={}", event.id());
 
         final Card card = cardRepository.findById(event.id())
-                .orElseThrow(() -> new NotFoundException(String.format("Card %s was not found", event.id())));
+                .orElseThrow(() -> NotFoundException.formatted(CARD_NOT_FOUND, "Cartão %s não encontrado", event.id()));
 
         final var firstInvoice = Invoice.createOpenInvoice(plusOneMonthOf(card.getDayOfDueDate()), card.getId());
         invoiceRepository.save(firstInvoice);

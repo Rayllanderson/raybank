@@ -1,12 +1,14 @@
 package com.rayllanderson.raybank.contact.gateway;
 
-import com.rayllanderson.raybank.contact.repository.ContactRepository;
 import com.rayllanderson.raybank.contact.model.Contact;
+import com.rayllanderson.raybank.contact.repository.ContactRepository;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CONTACT_NOT_FOUND;
 
 @Component
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class ContactPostgresGateway implements ContactGateway {
 
     @Override
     public Contact findById(String id) {
-        return contactRepository.findById(id).orElseThrow(() -> NotFoundException.formatted("Contato não encontrado"));
+        return contactRepository.findById(id).orElseThrow(() -> NotFoundException.formatted(CONTACT_NOT_FOUND, "Contato não encontrado"));
     }
 
     @Override

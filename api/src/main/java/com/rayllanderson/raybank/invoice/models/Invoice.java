@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INVOICE_NOT_PAYABLE;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INVOICE_PAID;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INVOICE_PARTIAL_PAYMENT_NOT_AVAILABLE;
 import static com.rayllanderson.raybank.utils.DateManagerUtil.getNextWorkingDayOf;
 import static com.rayllanderson.raybank.utils.DateManagerUtil.isAfterOrEquals;
 import static com.rayllanderson.raybank.utils.DateManagerUtil.isBeforeOrEquals;
@@ -82,7 +85,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     public void addInstallment(final Installment installment) {
         if (!canAddInstallment())
-            throw new UnprocessableEntityException("Fatura atual não está aberta");
+            throw UnprocessableEntityException.with(INVOICE_NOT_PAYABLE, "Fatura atual não está aberta");
 
         if (hasRemainingBalance()) {
             installment.pay(this.getTotal().abs());
@@ -170,16 +173,16 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     private void pay(final BigDecimal amount) {
         if (isPaid())
-            throw new UnprocessableEntityException("Não é possível receber pagamento para fatura já paga.");
+            throw UnprocessableEntityException.with(INVOICE_PAID, "Não é possível receber pagamento para fatura já paga.");
 
         if (cannotReceivePayment())
-            throw new UnprocessableEntityException("Não é possível receber pagamento para essa fatura.");
+            throw UnprocessableEntityException.with(INVOICE_NOT_PAYABLE, "Não é possível receber pagamento para essa fatura.");
 
         this.total = getTotal();
 
         if (isPaymentDate() || isOverdue()) {
             if (isPartialPayment(amount)) {
-                throw new UnprocessableEntityException("Não é possível receber pagamento parcial para fatura fechada ou vencida. Total da fatura: " + this.total);
+                throw UnprocessableEntityException.with(INVOICE_PARTIAL_PAYMENT_NOT_AVAILABLE, "Não é possível receber pagamento parcial para fatura fechada ou vencida. Total da fatura: " + this.total);
             }
             this.status = InvoiceStatus.PAID;
         }
@@ -189,7 +192,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
 
     private void processInstallmentsPayment(final BigDecimal amount) {
         if (installments.isEmpty())
-            throw new UnprocessableEntityException("Fatura não pode receber pagamentos sem parcelas.");
+            throw UnprocessableEntityException.with(INVOICE_NOT_PAYABLE, "Fatura não pode receber pagamentos sem parcelas.");
 
         var openInstallments = getOpenInstallments();
 

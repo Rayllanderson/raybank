@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSUFFICIENT_ACCOUNT_BALANCE;
+
 @Builder
 @Getter
 @Setter
@@ -77,7 +79,7 @@ public class BankAccount {
     public void debit(BigDecimal amount) throws UnprocessableEntityException {
         if (this.hasAvailableBalance(amount)) {
             this.balance = this.balance.subtract(amount);
-        } else throw new UnprocessableEntityException("Sua conta não tem saldo disponível");
+        } else throw UnprocessableEntityException.with(INSUFFICIENT_ACCOUNT_BALANCE, "Sua conta não tem saldo disponível");
     }
 
     public void credit(final BigDecimal amount) {

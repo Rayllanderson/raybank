@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.TRANSACTION_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class CreditAccountService {
@@ -46,6 +48,6 @@ public class CreditAccountService {
     private Transaction getReferenceTransaction(final Origin origin) {
         final String referenceTransactionId = origin.getReferenceTransactionId();
         return transactionRepository.findById(referenceTransactionId)
-                .orElseThrow(() -> new NotFoundException(String.format("No Reference Transaction with id %s were found", referenceTransactionId)));
+                .orElseThrow(() -> NotFoundException.with(TRANSACTION_NOT_FOUND, String.format("No Reference Transaction with id %s were found", referenceTransactionId)));
     }
 }

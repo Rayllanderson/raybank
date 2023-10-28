@@ -25,6 +25,10 @@ import static com.rayllanderson.raybank.boleto.models.BoletoStatus.PROCESSING;
 import static com.rayllanderson.raybank.boleto.models.BoletoStatus.PROCESSING_FAILURE;
 import static com.rayllanderson.raybank.boleto.models.BoletoStatus.REFUNDED;
 import static com.rayllanderson.raybank.boleto.models.BoletoStatus.WAITING_PAYMENT;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.BOLETO_EXPIRED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.BOLETO_LIQUIDATED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.BOLETO_NOT_LIQUIDATED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.BOLETO_PAID;
 
 @Getter
 @Entity
@@ -91,7 +95,7 @@ public class Boleto {
         if (isLiquidated())
             this.status = PAID;
         else
-            throw new UnprocessableEntityException("Boleto is not liquidated");
+            throw UnprocessableEntityException.with(BOLETO_NOT_LIQUIDATED, "Boleto is not liquidated");
     }
 
     public boolean isLiquidated() {
@@ -105,11 +109,11 @@ public class Boleto {
 
     public void validateIfCanReceivePayment() {
         if (isPaid())
-            throw UnprocessableEntityException.with("Boleto já pago");
+            throw UnprocessableEntityException.with(BOLETO_PAID, "Boleto já pago");
         if (isExpired())
-            throw UnprocessableEntityException.with("Boleto expirado");
+            throw UnprocessableEntityException.with(BOLETO_EXPIRED, "Boleto expirado");
         if (isLiquidated())
-            throw UnprocessableEntityException.with("Boleto está sendo processado");
+            throw UnprocessableEntityException.with(BOLETO_LIQUIDATED, "Boleto está sendo processado");
     }
 
     public String getPayerId() {

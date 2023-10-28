@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.DEBIT_SAME_ACCOUNT;
+
 @Service
 @RequiredArgsConstructor
 public class DebitAccountService {
@@ -40,7 +42,7 @@ public class DebitAccountService {
             return;
         }
         if (bankAccount.sameAccount(destination.getIdentifier())) {
-            throw UnprocessableEntityException.with("Não é possível realizar essa operação. Conta a debitar é igual à Conta de destino");
+            throw UnprocessableEntityException.with(DEBIT_SAME_ACCOUNT, "Não é possível realizar essa operação. Conta a debitar é igual à Conta de destino");
         }
     }
 

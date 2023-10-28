@@ -16,9 +16,9 @@ public class OpenApiConfig {
                 .addSecurityItem(new SecurityRequirement()
                         .addList("Bearer Authentication"))
                         .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
-                .info(new Info().title("SpringDoc example")
-                .description("SpringDoc application")
-                .version("v0.0.1"));
+                .info(new Info().title("RayBank API Doc")
+                .description("Raybank application")
+                .version("v2.0"));
     }
 
     private SecurityScheme createAPIKeyScheme() {

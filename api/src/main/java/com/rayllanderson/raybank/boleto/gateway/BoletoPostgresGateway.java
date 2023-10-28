@@ -1,8 +1,8 @@
 package com.rayllanderson.raybank.boleto.gateway;
 
-import com.rayllanderson.raybank.boleto.repositories.BoletoRepository;
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.models.BoletoStatus;
+import com.rayllanderson.raybank.boleto.repositories.BoletoRepository;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.BOLETO_NOT_FOUND;
 
 @Component
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class BoletoPostgresGateway implements BoletoGateway {
     @Override
     public Boleto findByBarCode(String barCode) {
         return boletoRepository.findByBarCode(barCode)
-                .orElseThrow(() -> new NotFoundException(String.format("Boleto %s was not found", barCode)));
+                .orElseThrow(() -> NotFoundException.formatted(BOLETO_NOT_FOUND, "Boleto %s não encontrado", barCode));
     }
 
     @Override

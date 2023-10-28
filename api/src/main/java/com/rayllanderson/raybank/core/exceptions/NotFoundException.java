@@ -1,12 +1,18 @@
 package com.rayllanderson.raybank.core.exceptions;
 
-public class NotFoundException extends RuntimeException{
+import org.springframework.http.HttpStatus;
 
-    public NotFoundException(String message) {
-        super(message);
+public class NotFoundException extends RaybankException {
+
+    private NotFoundException(RaybankExceptionReason reason, String message, HttpStatus status) {
+        super(reason, message, status);
     }
 
-    public static NotFoundException formatted(String s, Object ... args) {
-        return new NotFoundException(String.format(s, args));
+    public static NotFoundException with(RaybankExceptionReason reason, String s) {
+        return new NotFoundException(reason, s, HttpStatus.NOT_FOUND);
+    }
+    
+    public static NotFoundException formatted(RaybankExceptionReason reason, String s, Object ... args) {
+        return NotFoundException.with(reason, String.format(s, args));
     }
 }

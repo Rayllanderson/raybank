@@ -2,8 +2,8 @@ package com.rayllanderson.raybank.card.services.payment;
 
 import com.rayllanderson.raybank.bankaccount.gateway.BankAccountGateway;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
+import com.rayllanderson.raybank.card.gateway.CardGateway;
 import com.rayllanderson.raybank.card.models.Card;
-import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.card.services.payment.strategies.CardPaymentStrategy;
 import com.rayllanderson.raybank.card.services.payment.strategies.CardPaymentStrategyFactory;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
@@ -15,12 +15,20 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_EXPIRED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_INACTAVED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_INVALID_EXPIRY_DATE;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_INVALID_SECURITY_CODE;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.ESTABLISHMENT_INVALID;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.ESTABLISHMENT_NOT_ACTIVE;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.ESTABLISHMENT_WITH_SAME_CARD;
+
 @Service
 @RequiredArgsConstructor
 public class CardPaymentService {
 
+    private final CardGateway cardGateway;
     private final BankAccountGateway bankAccountGateway;
-    private final CardRepository cardRepository;
     private final CardPaymentStrategyFactory cardPaymentStrategyFactory;
 
     @Transactional
@@ -29,14 +37,13 @@ public class CardPaymentService {
             maxAttemptsExpression = "${retry.card.payment.maxAttempts}",
             backoff = @Backoff(delayExpression = "${retry.card.payment.maxDelay}"))
     public Transaction pay(final PaymentCardInput payment) {
-        final Card card = cardRepository.findByNumber(payment.getCardNumber())
-                .orElseThrow(() -> new NotFoundException("Cartão de crédito inexistente"));
+        final Card card = cardGateway.findByNumber(payment.getCardNumber());
 
         validate(payment, card);
 
         final var establishmentAccount = getEstablishmentAccount(payment);
         if (establishmentAccount.sameCard(card)) {
-            throw new UnprocessableEntityException("Estabelecimento não pode receber pagamentos desse cartão");
+            throw UnprocessableEntityException.with(ESTABLISHMENT_WITH_SAME_CARD,"Estabelecimento não pode receber pagamentos desse cartão");
         }
 
         final CardPaymentStrategy cardPaymentService = cardPaymentStrategyFactory.getStrategyBy(payment.getPaymentType());
@@ -44,16 +51,14 @@ public class CardPaymentService {
     }
 
     private BankAccount getEstablishmentAccount(final PaymentCardInput payment) {
-        final var invalidEstablishmentException = new UnprocessableEntityException("Estabelecimento não pode receber pagamentos");
-
         final var establishment = bankAccountGateway.findById(payment.getEstablishmentId());
 
         if (!establishment.isEstablishment()) {
-            throw invalidEstablishmentException;
+            throw UnprocessableEntityException.with(ESTABLISHMENT_INVALID, "Estabelecimento não pode receber pagamentos");
         }
 
         if (!establishment.isActive()) {
-            throw invalidEstablishmentException;
+            throw UnprocessableEntityException.with(ESTABLISHMENT_NOT_ACTIVE, "Estabelecimento não pode receber pagamentos");
         }
 
         return establishment;
@@ -61,15 +66,15 @@ public class CardPaymentService {
 
     private static void validate(PaymentCardInput payment, Card card) {
         if (!card.isValidSecurityCode(payment.getCardSecurityCode())) {
-            throw new UnprocessableEntityException("Código de Segurança Inválido");
+            throw UnprocessableEntityException.with(CARD_INVALID_SECURITY_CODE, "Código de Segurança Inválido");
         }
         if (!card.isValidExpiryDate(payment.getCardExpiryDate())) {
-            throw new UnprocessableEntityException("Data de Vencimento Inválida");
+            throw UnprocessableEntityException.with(CARD_INVALID_EXPIRY_DATE, "Data de Vencimento Inválida");
         }
         if (card.isExpired())
-            throw UnprocessableEntityException.with("Cartão está expirado");
+            throw UnprocessableEntityException.with(CARD_EXPIRED, "Cartão está expirado");
         if (!card.isActive()) {
-            throw new UnprocessableEntityException("Cartão não está ativo para compras");
+            throw UnprocessableEntityException.with(CARD_INACTAVED, "Cartão não está ativo para compras");
         }
     }
 }
