@@ -14,14 +14,14 @@ public enum RaybankExceptionReason {
     CARD_INVALID_SECURITY_CODE("The security code is invalid", "CIS422"),
     CARD_ALREADY_REGISTERED("Card is alterady registered", "CAR422"),
     CARD_NUMBER_BADLY_FORMATTED("Card number is badly formatted", "CBF400"),
-    CARD_SECURITYCODE_BADLY_FORMATTED("Card Security Code is badly formatted", "CBF400"),
-    INVALID_PAYMENT_TYPE("The payment Type is not valid", "IPM400"),
+    CARD_SECURITYCODE_BADLY_FORMATTED("Card Security Code is badly formatted", "SBF400"),
+    INVALID_PAYMENT_TYPE("The payment Type is not valid", "IPT400"),
     INVALID_DUE_DATE("The Due Date selected is not available", "IDD400"),
     INSUFFICIENT_CARD_LIMIT("Card has no available limit", "ICL422"),
     INSUFFICIENT_ACCOUNT_BALANCE("Client has no available balance", "IAB422"),
     ACCOUNT_NOT_FOUND("Account not found", "ANF404"),
     ACCOUNT_INACTAVED("Account is inactivated", "ANA422"),
-    CONTACT_NOT_FOUND("Contact is not found", "CNF404"),
+    CONTACT_NOT_FOUND("Contact is not found", "CTF404"),
     STATAMENT_NOT_FOUND("Bank Statement is not found", "SNF404"),
     DEBIT_SAME_ACCOUNT("The debit account is equals to Credit account", "DSA422"),
     DEBIT_ORIGIN_DIFFERENT("The debit origin is different", "DOD422"),
@@ -61,5 +61,5 @@ public enum RaybankExceptionReason {
     REFUND_AMOUNT_INVALID("The refund amount is higher than transaction amount", "RAI422");
 
     private final String description;
-    private final String rayBankCode;
+    private final String code;
 }

@@ -1,17 +1,17 @@
 package com.rayllanderson.raybank.card.services.payment;
 
-import com.rayllanderson.raybank.card.controllers.payment.PaymentCardRequest;
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import lombok.Getter;
 import lombok.Setter;
-import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.Arrays;
 
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_NUMBER_BADLY_FORMATTED;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_SECURITYCODE_BADLY_FORMATTED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INVALID_PAYMENT_TYPE;
 
 @Getter
 @Setter
@@ -57,11 +57,15 @@ public class PaymentCardInput {
         return this.card.getExpiryDate();
     }
 
-    public static PaymentCardInput fromRequest(PaymentCardRequest request) {
-        return new ModelMapper().map(request, PaymentCardInput.class);
-    }
-
     public enum PaymentType {
-        CREDIT, DEBIT
+        CREDIT, DEBIT;
+
+        public static PaymentType from(String v) {
+            try {
+                return PaymentType.valueOf(v.toUpperCase());
+            } catch (Exception e) {
+                throw BadRequestException.withFormatted(INVALID_PAYMENT_TYPE, "Payment type '%s' is invalid. Available are=%s ", v, Arrays.toString(PaymentType.values()));
+            }
+        }
     }
 }

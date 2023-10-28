@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CardPaymentController {
 
     private final CardPaymentService cardPaymentService;
+    private final PaymentCardMapper mapper;
 
     @PostMapping
     public ResponseEntity<CardPaymentResponse> pay(@Valid @RequestBody PaymentCardRequest request,
                                                    @AuthenticationPrincipal Jwt jwt) {
-        final var input = PaymentCardInput.fromRequest(request);
-        input.setEstablishmentId(JwtUtils.getUserIdFrom(jwt));
+        final PaymentCardInput input = mapper.from(request, JwtUtils.getUserIdFrom(jwt));
 
         final var transaction = cardPaymentService.pay(input);
 

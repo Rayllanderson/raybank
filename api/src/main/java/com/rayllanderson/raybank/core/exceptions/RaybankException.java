@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.core.exceptions;
 
 import lombok.Getter;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 
 @Getter
