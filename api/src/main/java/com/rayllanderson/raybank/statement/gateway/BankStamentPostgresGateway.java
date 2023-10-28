@@ -21,7 +21,7 @@ import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.S
 
 @Component
 @RequiredArgsConstructor
-public class BankStamentPostegresGateway implements BankStatementGateway {
+public class BankStamentPostgresGateway implements BankStatementGateway {
     private final BankStatementRepository bankStatementRepository;
 
     @Override

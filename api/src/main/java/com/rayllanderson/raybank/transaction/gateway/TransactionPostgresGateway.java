@@ -16,7 +16,7 @@ import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.T
 
 @Component
 @RequiredArgsConstructor
-public class TransactionPostegresGateway implements TransactionGateway {
+public class TransactionPostgresGateway implements TransactionGateway {
     private final TransactionRepository transactionRepository;
 
     @Override
