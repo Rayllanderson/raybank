@@ -14,7 +14,7 @@
     <name>raybank</name>
     <description>Api for Raybank</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     </properties>
     <dependencies>
@@ -35,6 +35,11 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.rayexpress-libraries</groupId>
+            <artifactId>ddd</artifactId>
+            <version>1.0.10</version>
         </dependency>
 
         <dependency>
