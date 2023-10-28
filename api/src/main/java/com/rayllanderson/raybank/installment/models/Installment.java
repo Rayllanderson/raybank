@@ -21,7 +21,6 @@ import java.util.UUID;
 
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INTERNAL_SERVER_ERROR;
 
-//todo::criar controller
 @NoArgsConstructor
 @Getter
 @Entity

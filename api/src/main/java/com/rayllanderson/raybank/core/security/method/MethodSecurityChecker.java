@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.card.gateway.CardGateway;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.contact.gateway.ContactGateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
+import com.rayllanderson.raybank.installment.repository.InstallmentPlanGateway;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CARD_NOT_FOUND;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CONTACT_NOT_FOUND;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_NOT_FOUND;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INVOICE_NOT_FOUND;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_KEY_NOT_FOUND;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.STATAMENT_NOT_FOUND;
@@ -29,6 +31,7 @@ public class MethodSecurityChecker {
     private final ContactGateway contactGateway;
     private final PixGateway pixGateway;
     private final InvoiceGateway invoiceGateway;
+    private final InstallmentPlanGateway planGateway;
 
     public boolean checkAccount(String accountId, Jwt jwt) {
         if (accountId == null || jwt == null) return false;
@@ -107,5 +110,17 @@ public class MethodSecurityChecker {
         if (invoice.getCardId().equals(cardId))
             return true;
         throw NotFoundException.withFormatted(INVOICE_NOT_FOUND, "Fatura não encontrada");
+    }
+
+    public boolean checkPlan(String planId, Jwt jwt) {
+        final var accountId = getAccountIdFrom(jwt);
+
+        if (planId == null || accountId == null) return false;
+
+        final var plan = planGateway.findById(planId);
+
+        if (accountId.equals(plan.getAccountId()))
+            return true;
+        throw NotFoundException.withFormatted(INSTALLMENTPLAN_NOT_FOUND, "Parcelamento %s não encontrado", planId);
     }
 }

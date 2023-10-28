@@ -23,7 +23,7 @@ public class FindStatementController {
 
     private final BankStatementMapper mapper;
     private final BankStatementFinderService bankStatementFinderService;
-
+//todo:: paginacao
     @GetMapping
     @RequiredAccountOwner
     public ResponseEntity<?> findAllStatements(@AuthenticationPrincipal Jwt jwt,

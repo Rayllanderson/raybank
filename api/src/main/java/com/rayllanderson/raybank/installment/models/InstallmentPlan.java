@@ -40,6 +40,7 @@ public class InstallmentPlan {
     @Id
     private String id;
     private String transactionId;
+    private String accountId;
     private String originalInvoiceId;
     private String establishmentId;
     private Integer installmentCount;
@@ -54,6 +55,7 @@ public class InstallmentPlan {
     private Set<Installment> installments;
 
     public static InstallmentPlan create(String transactionId,
+                                         String accountId,
                                          String invoiceId,
                                          String establishmentId,
                                          Integer numberOfInstallments,
@@ -62,7 +64,7 @@ public class InstallmentPlan {
 
         final int installmentCount = numberOfInstallments == null || numberOfInstallments == 0 ? 1 : numberOfInstallments;
         return new InstallmentPlan(UUID.randomUUID().toString(),
-                transactionId,
+                transactionId, accountId,
                 invoiceId,
                 establishmentId,
                 installmentCount,

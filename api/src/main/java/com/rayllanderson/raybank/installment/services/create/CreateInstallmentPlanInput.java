@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class CreateInstallmentPlanInput {
     private final String transactionId;
+    private final String accountId;
     private final String invoiceId;
     private final String establishmentId;
     private final Integer installmentCount;

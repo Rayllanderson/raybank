@@ -20,6 +20,7 @@ public class CreateInstallmentPlanService {
     @Transactional(propagation = Propagation.REQUIRED)
     public CreateInstallmentPlanOutput create(final CreateInstallmentPlanInput input) {
         final InstallmentPlan installmentPlan = InstallmentPlan.create(input.getTransactionId(),
+                input.getAccountId(),
                 input.getInvoiceId(),
                 input.getEstablishmentId(),
                 input.getInstallmentCount(),
