@@ -8,6 +8,7 @@ import com.rayllanderson.raybank.transaction.models.FinancialMovement;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.models.TransactionMethod;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
+import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,7 @@ public class CardCreditPaymentTransaction extends Transaction {
 
         return CardCreditPaymentTransaction.builder()
                 .id(UUID.randomUUID().toString())
-                .amount(paymentCardInput.getAmount())
+                .amount(MoneyUtils.from(paymentCardInput.getAmount()))
                 .moment(paymentCardInput.getOcurredOn())
                 .description(paymentCardInput.getDescription())
                 .accountId(card.getAccountId())

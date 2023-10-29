@@ -1,6 +1,11 @@
 package com.rayllanderson.raybank.e2e.containers.postgres;
 
+import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
+import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.e2e.HttpPeform;
+import com.rayllanderson.raybank.e2e.helpers.AccountHelper;
+import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
+import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -10,6 +15,16 @@ public abstract class E2eApiTest implements HttpPeform {
 
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    protected BankAccountRepository bankAccountRepository;
+    @Autowired
+    protected CardRepository cardRepository;
+    @Autowired
+    protected InvoiceRepository invoiceRepository;
+    @Autowired
+    protected TransactionRepository transactionRepository;
+    @Autowired
+    protected AccountHelper accountHelper;
 
     @Override
     public MockMvc mvc() {

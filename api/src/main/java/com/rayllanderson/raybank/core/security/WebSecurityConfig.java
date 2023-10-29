@@ -28,8 +28,8 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 public class WebSecurityConfig {
 
     private static final String ROLE_USER = "USER";
-    private static final String ROLE_ESTABLISMENT = "ESTABLISMENT";
-    private static final String ROLE_ESTABLISMENT_REGISTER = "ESTABLISMENT_REGISTER";
+    private static final String ROLE_ESTABLISMENT = "ESTABLISHMENT";
+    private static final String ROLE_ESTABLISMENT_REGISTER = "ESTABLISHMENT_REGISTER";
     private static final String ROLE_USER_REGISTER = "USER_REGISTER";
 
     @Bean

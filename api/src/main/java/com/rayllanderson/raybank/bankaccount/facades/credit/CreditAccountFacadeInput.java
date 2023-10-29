@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
 import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
+import com.rayllanderson.raybank.card.events.CardDebitPaymentCompletedEvent;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.shared.dtos.Origin;
@@ -33,6 +34,11 @@ public class CreditAccountFacadeInput {
     }
 
     public static CreditAccountFacadeInput createFromCardPayment(CardCreditPaymentCompletedEvent event) {
+        final var origin = new Origin(event.getCardId(), Type.CREDIT_CARD, event.getTransactionId());
+        return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
+    }
+
+    public static CreditAccountFacadeInput createFromCardPayment(CardDebitPaymentCompletedEvent event) {
         final var origin = new Origin(event.getCardId(), Type.CREDIT_CARD, event.getTransactionId());
         return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
     }

@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.transaction.models;
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
 import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountInput;
 import com.rayllanderson.raybank.invoice.util.InvoiceCreditDescriptionUtil;
+import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -77,7 +78,7 @@ public class Transaction {
         final var debit = new Debit(input.getOrigin().getIdentifier(), Debit.Origin.valueOf(input.getOrigin().getType().name()));
 
         return Transaction.builder()
-                .amount(input.getAmount())
+                .amount(MoneyUtils.from(input.getAmount()))
                 .method(input.getTransactionMethod())
                 .financialMovement(FinancialMovement.CREDIT)
                 .moment(LocalDateTime.now())
@@ -99,7 +100,7 @@ public class Transaction {
                 .method(input.getTransaction().getTransactionMethod())
                 .referenceId(referenceTransactionId)
                 .financialMovement(FinancialMovement.DEBIT)
-                .amount(input.getAmount())
+                .amount(MoneyUtils.from(input.getAmount()))
                 .moment(LocalDateTime.now())
                 .description(input.getDescription())
                 .accountId(input.getAccountId())
@@ -112,7 +113,7 @@ public class Transaction {
         final var credit = debitTransaction.getCredit();
         final var debit = debitTransaction.getDebit();
         return Transaction.builder()
-                .amount(amount)
+                .amount(MoneyUtils.from(amount))
                 .moment(LocalDateTime.now())
                 .description(INVOICE_PAYMENT_DESCRIPTION)
                 .financialMovement(FinancialMovement.CREDIT)
