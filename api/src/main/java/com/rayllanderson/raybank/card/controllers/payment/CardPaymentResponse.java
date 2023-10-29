@@ -18,6 +18,6 @@ public class CardPaymentResponse {
     private final BigDecimal amount;
 
     public static CardPaymentResponse fromTransaction(final Transaction transaction) {
-        return new CardPaymentResponse(transaction.getId(), transaction.getMoment(), transaction.getType().name(), transaction.getAmount());
+        return new CardPaymentResponse(transaction.getId(), transaction.getMoment(), transaction.getMethod().name(), transaction.getAmount());
     }
 }

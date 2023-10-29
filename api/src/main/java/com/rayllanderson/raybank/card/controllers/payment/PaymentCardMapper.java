@@ -8,5 +8,5 @@ import org.mapstruct.Mapping;
 public interface PaymentCardMapper {
 
     @Mapping(target = "paymentType", expression = "java(PaymentCardInput.PaymentType.from(request.getPaymentType()))")
-    PaymentCardInput from(PaymentCardRequest request, String establishmentId);
+    PaymentCardInput from(CardPaymentRequest request, String establishmentId);
 }

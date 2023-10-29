@@ -24,7 +24,7 @@ public class CardPaymentController {
     private final PaymentCardMapper mapper;
 
     @PostMapping
-    public ResponseEntity<CardPaymentResponse> pay(@Valid @RequestBody PaymentCardRequest request,
+    public ResponseEntity<CardPaymentResponse> pay(@Valid @RequestBody CardPaymentRequest request,
                                                    @AuthenticationPrincipal Jwt jwt) {
         final PaymentCardInput input = mapper.from(request, JwtUtils.getUserIdFrom(jwt));
 

@@ -17,7 +17,7 @@ import java.time.YearMonth;
 
 @Getter
 @Setter
-public class PaymentCardRequest {
+public class CardPaymentRequest {
 
     @NotNull
     @DecimalMin(value = "0.01")
