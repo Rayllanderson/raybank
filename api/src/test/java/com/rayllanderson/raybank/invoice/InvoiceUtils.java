@@ -45,7 +45,7 @@ public class InvoiceUtils {
     }
 
     public static InstallmentPlan createPlan(BigDecimal total, BigDecimal installmentValue, Installment... installments) {
-        final var plan = new InstallmentPlan("planId", "", "", "", 3, installmentValue, total, BigDecimal.ZERO, "", LocalDateTime.now(), InstallmentPlanStatus.OPEN, new HashSet<>());
+        final var plan = new InstallmentPlan("planId", "", "", "", "",3, installmentValue, total, BigDecimal.ZERO, "", LocalDateTime.now(), InstallmentPlanStatus.OPEN, new HashSet<>());
 
         Arrays.stream(installments).forEach(i -> {
             plan.addInstallment(new Installment(UUID.randomUUID().toString(), "", installmentValue, i.getDueDate(), InstallmentStatus.OPEN, plan));

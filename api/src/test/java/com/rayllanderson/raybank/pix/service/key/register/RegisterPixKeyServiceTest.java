@@ -1,9 +1,11 @@
 package com.rayllanderson.raybank.pix.service.key.register;
 
+import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.model.key.PixKeyType;
+import com.rayllanderson.raybank.pix.service.limit.generate.GeneratePixLimitService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +27,8 @@ class RegisterPixKeyServiceTest {
 
     @Mock
     private PixGateway pixGateway;
+    @Mock
+    private GeneratePixLimitService pixLimitService;
 
     @InjectMocks
     private RegisterPixKeyService service;
@@ -44,6 +48,7 @@ class RegisterPixKeyServiceTest {
         service.register(key);
 
         verify(pixGateway).existsByKey(expectedUnformatted);
+        verify(pixLimitService).generate(anyString());
         verify(pixGateway).save(any(PixKey.class));
     }
 
@@ -60,6 +65,7 @@ class RegisterPixKeyServiceTest {
         service.register(key);
 
         verify(pixGateway).existsByKey(expectedUnformatted);
+        verify(pixLimitService).generate(anyString());
         verify(pixGateway).save(any(PixKey.class));
     }
 
@@ -72,6 +78,7 @@ class RegisterPixKeyServiceTest {
         service.register(key);
 
         verify(pixGateway).existsByKey("kaguya@sama.com");
+        verify(pixLimitService).generate(anyString());
         verify(pixGateway).save(any(PixKey.class));
     }
 
@@ -84,6 +91,7 @@ class RegisterPixKeyServiceTest {
         service.register(key);
 
         verify(pixGateway).existsByKey(argThat(randomKey -> randomKey.length() == 36));
+        verify(pixLimitService).generate(anyString());
         verify(pixGateway).save(any(PixKey.class));
     }
 
@@ -97,6 +105,7 @@ class RegisterPixKeyServiceTest {
         service.register(key);
 
         verify(pixGateway).existsByKey(argThat(randomKey -> !randomKey.equals("fc10b881-d9a0-4ab1-a6fd-a102db188f49")));
+        verify(pixLimitService).generate(anyString());
         verify(pixGateway).save(any(PixKey.class));
     }
 
@@ -111,6 +120,7 @@ class RegisterPixKeyServiceTest {
                 .withMessage("Chave Pix kaguya@sama.com já cadastrada");
 
         verify(pixGateway).existsByKey(anyString());
+        verify(pixLimitService, never()).generate(anyString());
         verify(pixGateway, never()).save(any(PixKey.class));
     }
 
@@ -118,11 +128,12 @@ class RegisterPixKeyServiceTest {
     void shouldThrowUnprocessableEntityExceptionWhenKeyIsInvalid() {
         final var key = new RegisterPixKeyInput("kaguya@sama", PixKeyType.EMAIL, "bkId");
 
-        assertThatExceptionOfType(UnprocessableEntityException.class)
+        assertThatExceptionOfType(BadRequestException.class)
                 .isThrownBy(() -> service.register(key))
                 .withMessage("Chave Pix kaguya@sama não é valida");
 
         verify(pixGateway, never()).existsByKey(anyString());
+        verify(pixLimitService, never()).generate(anyString());
         verify(pixGateway, never()).save(any(PixKey.class));
     }
 
@@ -136,6 +147,7 @@ class RegisterPixKeyServiceTest {
                 .withMessage("Número máximo (5) de chaves excedido.");
 
         verify(pixGateway, never()).existsByKey(anyString());
+        verify(pixLimitService, never()).generate(anyString());
         verify(pixGateway, never()).save(any(PixKey.class));
     }
 }

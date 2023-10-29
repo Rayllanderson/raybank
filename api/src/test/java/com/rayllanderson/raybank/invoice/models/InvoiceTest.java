@@ -171,7 +171,7 @@ class InvoiceTest {
 
     @Test
     void shouldReceiveCreditRefund() {
-        final var dueDate = LocalDate.now();
+        final var dueDate = LocalDate.now().plusDays(10);
         Invoice invoice = create(dueDate, OPEN, installment(bigDecimalOf(50)));
         final var creditInput = new ProcessInvoiceCredit(bigDecimalOf(25), InvoiceCreditType.REFUND, "", "tId", LocalDateTime.now());
 
