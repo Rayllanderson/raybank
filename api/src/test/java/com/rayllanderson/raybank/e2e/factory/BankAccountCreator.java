@@ -7,8 +7,12 @@ import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.users.model.User;
 import com.rayllanderson.raybank.users.model.UserType;
 import com.rayllanderson.raybank.users.repository.UserRepository;
+import com.rayllanderson.raybank.utils.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.UUID;
 
 import static com.rayllanderson.raybank.e2e.constants.Constants.ESTABLISHMENT_ID;
 
@@ -21,9 +25,27 @@ public class BankAccountCreator {
     private UserRepository userRepository;
 
     public BankAccount newNormalBankAccount() {
-        User user = user("kaguyaId", "kaguya", UserType.USER);
+        return newNormalBankAccount("kaguyaId", "kaguya", BigDecimal.ZERO);
+    }
+
+    public BankAccount newNormalBankAccount(String id) {
+        return newNormalBankAccount(id, UUID.randomUUID().toString(), BigDecimal.ZERO);
+    }
+
+    public BankAccount newNormalBankAccountWithBalance(String id, BigDecimal balance) {
+        return newNormalBankAccount(id, UUID.randomUUID().toString(), balance);
+    }
+
+    public BankAccount newNormalBankAccountWithBalance(String id, String balance) {
+        return newNormalBankAccount(id, UUID.randomUUID().toString(), new BigDecimal(balance));
+    }
+
+    public BankAccount newNormalBankAccount(String id, String username, BigDecimal balance) {
+        User user = user(id, username, UserType.USER);
         userRepository.save(user);
-        final var bankAccount = bankAccountRepository.save(BankAccount.create(123456, BankAccountType.NORMAL, "kaguyaId"));
+        BankAccount entity = BankAccount.create(Math.toIntExact(RandomUtils.generate(6)), BankAccountType.NORMAL, id);
+        entity.setBalance(balance);
+        final var bankAccount = bankAccountRepository.save(entity);
         user.addBankAccount(bankAccount.getId());
         userRepository.save(user);
         return bankAccount;
@@ -40,7 +62,7 @@ public class BankAccountCreator {
     public BankAccount newEstablishmentBankAccount(String id, BankAccountStatus status) {
         User user = user(id, "amazon", UserType.ESTABLISHMENT);
         userRepository.save(user);
-        final var bankAccount = bankAccountRepository.save(BankAccount.create(678910, BankAccountType.ESTABLISHMENT, id));
+        final var bankAccount = bankAccountRepository.save(BankAccount.create(Math.toIntExact(RandomUtils.generate(6)), BankAccountType.ESTABLISHMENT, id));
         bankAccount.setStatus(status);
         bankAccountRepository.save(bankAccount);
         user.addBankAccount(bankAccount.getId());

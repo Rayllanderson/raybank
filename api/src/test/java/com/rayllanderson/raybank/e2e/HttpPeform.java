@@ -27,6 +27,14 @@ public interface HttpPeform {
         return perform(request);
     }
 
+    default ResultActions post(final String url, final String id, final String endPathUrl, final Object body) {
+        final var request = MockMvcRequestBuilders.post(concatAsPathUrl(url, id, endPathUrl))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.toJson(body));
+
+        return perform(request);
+    }
+
     @NotNull
     private ResultActions perform(MockHttpServletRequestBuilder request) {
         try {

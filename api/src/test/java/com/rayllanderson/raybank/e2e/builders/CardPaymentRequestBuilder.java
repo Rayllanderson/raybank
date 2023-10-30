@@ -1,5 +1,6 @@
-package com.rayllanderson.raybank.card.controllers.payment;
+package com.rayllanderson.raybank.e2e.builders;
 
+import com.rayllanderson.raybank.card.controllers.payment.CardPaymentRequest;
 import com.rayllanderson.raybank.card.models.Card;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -16,8 +16,8 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 
 import java.math.BigDecimal;
 
-import static com.rayllanderson.raybank.card.controllers.payment.CardPaymentRequestBuilder.cardPaymentRequest;
-import static com.rayllanderson.raybank.card.controllers.payment.CardPaymentRequestBuilder.cardRequestFrom;
+import static com.rayllanderson.raybank.e2e.builders.CardPaymentRequestBuilder.cardPaymentRequest;
+import static com.rayllanderson.raybank.e2e.builders.CardPaymentRequestBuilder.cardRequestFrom;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.ESTABLISHMENT_NOT_ACTIVE;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSUFFICIENT_ACCOUNT_BALANCE;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSUFFICIENT_CARD_LIMIT;

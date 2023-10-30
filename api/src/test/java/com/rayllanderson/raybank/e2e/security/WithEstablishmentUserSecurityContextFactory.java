@@ -10,7 +10,7 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 
 import java.util.List;
 
-public class WithMockCustomUserSecurityContextFactory implements WithSecurityContextFactory<WithEstablishmentUser> {
+public class WithEstablishmentUserSecurityContextFactory implements WithSecurityContextFactory<WithEstablishmentUser> {
 
     @Override
     public SecurityContext createSecurityContext(WithEstablishmentUser customUser) {
@@ -21,7 +21,7 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
                 .claim("sub", customUser.id())
                 .build();
 
-        Authentication auth = UsernamePasswordAuthenticationToken.authenticated(principal, "password", List.of(new SimpleGrantedAuthority("ROLE_ESTABLISHMENT")));
+        Authentication auth = UsernamePasswordAuthenticationToken.authenticated(principal, "password", List.of(new SimpleGrantedAuthority("ROLE_ESTABLISHMENT"), new SimpleGrantedAuthority("ROLE_USER")));
 
         context.setAuthentication(auth);
 
