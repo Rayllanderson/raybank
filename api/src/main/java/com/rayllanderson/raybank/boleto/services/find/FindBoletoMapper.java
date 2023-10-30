@@ -10,12 +10,15 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface FindBoletoMapper {
 
     @Mapping(target = "institutionIssuing", expression = " java(new BoletoDetailsOutput.InstitutionIssuing())")
     BoletoDetailsOutput from(Boleto boleto, Object beneficiaryData);
     BoletoDetailsOutput.BoletoData mapFrom(Boleto boleto);
+    List<BoletoDetailsOutput.BoletoData> mapFrom(List<Boleto> boletos);
 
     @AfterMapping
     default void afterMapping(@MappingTarget BoletoDetailsOutput boletoDetailsOutput, Boleto boleto, Object beneficiaryData) {
@@ -34,4 +37,5 @@ public interface FindBoletoMapper {
     BoletoDetailsOutput.Account mapAccount(BankAccount bankAccount);
 
     BoletoDetailsResponse from(BoletoDetailsOutput boleto);
+    List<BoletoDetailsResponse.BoletoResponse> from(List<BoletoDetailsOutput.BoletoData> boletos);
 }

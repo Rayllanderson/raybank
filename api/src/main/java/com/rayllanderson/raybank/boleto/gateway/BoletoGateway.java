@@ -12,6 +12,8 @@ public interface BoletoGateway {
     void saveAll(final Collection<Boleto> boletos);
     Boleto findByBarCode(final String barCode);
     List<Boleto> findAllByStatus(final BoletoStatus boletoStatus);
+    List<Boleto> findAllAccountId(final String accountId);
+    List<Boleto> findAllAccountIdAndStatus(final String accountId, BoletoStatus status);
     List<Boleto> findAllByExpirationDateAndStatus(final LocalDate expiryDate, final BoletoStatus boletoStatus);
 
 }
