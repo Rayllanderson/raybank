@@ -12,5 +12,7 @@ public interface PixTransferMapper {
 
     @Mapping(target = "e2eId", source = "pix.id")
     PixTransferOutput from(Pix pix, String transactionId);
+
+    @Mapping(target = "transactionType", constant = "PIX")
     PixTransferResponse from(PixTransferOutput pix);
 }

@@ -33,6 +33,6 @@ public class PixTransferController {
 
         final var response = pixTransferService.transfer(transfer);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.from(response));
+        return ResponseEntity.ok().body(mapper.from(response));
     }
 }

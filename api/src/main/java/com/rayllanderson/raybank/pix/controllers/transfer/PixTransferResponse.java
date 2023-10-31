@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class PixTransferResponse {
     private String e2eId;
     private String transactionId;
+    private String transactionType;
     private BigDecimal amount;
     private LocalDateTime occuredOn;
     private String message;

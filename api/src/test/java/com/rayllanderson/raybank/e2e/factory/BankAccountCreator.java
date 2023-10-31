@@ -29,15 +29,15 @@ public class BankAccountCreator {
     }
 
     public BankAccount newNormalBankAccount(String id) {
-        return newNormalBankAccount(id, UUID.randomUUID().toString(), BigDecimal.ZERO);
+        return newNormalBankAccount(id, id, BigDecimal.ZERO);
     }
 
     public BankAccount newNormalBankAccountWithBalance(String id, BigDecimal balance) {
-        return newNormalBankAccount(id, UUID.randomUUID().toString(), balance);
+        return newNormalBankAccount(id, id, balance);
     }
 
     public BankAccount newNormalBankAccountWithBalance(String id, String balance) {
-        return newNormalBankAccount(id, UUID.randomUUID().toString(), new BigDecimal(balance));
+        return newNormalBankAccount(id, id, new BigDecimal(balance));
     }
 
     public BankAccount newNormalBankAccount(String id, String username, BigDecimal balance) {

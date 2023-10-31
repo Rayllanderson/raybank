@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.card.repository.CardRepository;
 import com.rayllanderson.raybank.e2e.HttpPeform;
 import com.rayllanderson.raybank.e2e.factory.BankAccountCreator;
+import com.rayllanderson.raybank.e2e.factory.PixKeyCreator;
 import com.rayllanderson.raybank.e2e.helpers.AccountHelper;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
@@ -30,6 +31,8 @@ public abstract class E2eApiTest implements HttpPeform {
     protected AccountHelper accountHelper;
     @Autowired
     protected BankAccountCreator accountCreator;
+    @Autowired
+    protected PixKeyCreator pixKeyCreator;
 
     @Override
     public MockMvc mvc() {
