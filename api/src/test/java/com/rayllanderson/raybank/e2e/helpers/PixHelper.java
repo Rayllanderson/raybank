@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.e2e.helpers;
 
-import com.rayllanderson.raybank.e2e.builders.GenerateQrCodeInputBuilder;
+import com.rayllanderson.raybank.e2e.builders.GenerateQrCodeBuilder;
 import com.rayllanderson.raybank.pix.service.qrcode.generate.GenerateQrCodeOutput;
 import com.rayllanderson.raybank.pix.service.qrcode.generate.GenerateQrCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class PixHelper {
     private GenerateQrCodeService qrCodeService;
 
     public GenerateQrCodeOutput generateQrCode(BigDecimal amount, String creditKey, String description) {
-        final var input = GenerateQrCodeInputBuilder.build(amount, creditKey, description);
+        final var input = GenerateQrCodeBuilder.build(amount, creditKey, description);
         return qrCodeService.generate(input);
     }
 }

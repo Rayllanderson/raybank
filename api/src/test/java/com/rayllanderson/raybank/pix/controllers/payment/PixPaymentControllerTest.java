@@ -6,10 +6,10 @@ import com.rayllanderson.raybank.e2e.builders.PixPaymentRequestBuilder;
 import com.rayllanderson.raybank.e2e.containers.postgres.E2eApiTest;
 import com.rayllanderson.raybank.e2e.helpers.PixHelper;
 import com.rayllanderson.raybank.e2e.security.WithNormalUser;
-import com.rayllanderson.raybank.pix.controllers.qrcode.generate.GenerateQrCodeResponse;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 
 import java.math.BigDecimal;
 
@@ -56,4 +56,11 @@ class PixPaymentControllerTest extends E2eApiTest {
         assertThat(frierenTransactions).hasSize(1);
     }
 
+    @Test
+    @WithAnonymousUser
+    void shouldReturn401WhenAnonymousUserTryToAccessEndpoint() throws Exception {
+
+        post(URL, null)
+                .andExpect(status().isUnauthorized());
+    }
 }

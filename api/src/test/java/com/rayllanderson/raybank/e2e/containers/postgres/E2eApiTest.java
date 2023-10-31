@@ -7,7 +7,6 @@ import com.rayllanderson.raybank.e2e.factory.BankAccountCreator;
 import com.rayllanderson.raybank.e2e.factory.PixKeyCreator;
 import com.rayllanderson.raybank.e2e.helpers.AccountHelper;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
-import com.rayllanderson.raybank.pix.controllers.qrcode.generate.GenerateQrCodeResponse;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
