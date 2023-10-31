@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.pix.controllers.qrcode.generate;
 
+import com.rayllanderson.raybank.core.security.method.RequiredPixKeyOwner;
 import com.rayllanderson.raybank.pix.service.qrcode.generate.GenerateQrCodeInput;
 import com.rayllanderson.raybank.pix.service.qrcode.generate.GenerateQrCodeMapper;
 import com.rayllanderson.raybank.pix.service.qrcode.generate.GenerateQrCodeService;
@@ -25,6 +26,7 @@ public class GenerateQrCodeController {
     private final GenerateQrCodeService service;
 
     @PostMapping
+    @RequiredPixKeyOwner
     public ResponseEntity<GenerateQrCodeResponse> generate(@RequestBody @Valid GenerateQrCodeRequest request,
                                                            @AuthenticationPrincipal Jwt jwt) {
 

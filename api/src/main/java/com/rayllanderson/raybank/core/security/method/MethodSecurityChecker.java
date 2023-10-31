@@ -6,6 +6,7 @@ import com.rayllanderson.raybank.contact.gateway.ContactGateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.installment.repository.InstallmentPlanGateway;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
+import com.rayllanderson.raybank.pix.controllers.qrcode.generate.GenerateQrCodeRequest;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.statement.gateway.BankStatementGateway;
@@ -91,6 +92,7 @@ public class MethodSecurityChecker {
     }
 
     public boolean checkPixKey(String key, Jwt jwt) {
+        if(key == null) return false;
         final var accountIdFromJwt = getAccountIdFrom(jwt);
         if (accountIdFromJwt == null) return false;
 
@@ -99,6 +101,11 @@ public class MethodSecurityChecker {
         if (pixKey.sameAccount(accountIdFromJwt))
             return true;
         throw NotFoundException.withFormatted(PIX_KEY_NOT_FOUND, "Chave Pix %s não encontrada", key);
+    }
+
+    public boolean checkPixKey(GenerateQrCodeRequest request, Jwt jwt) {
+        if (request == null) return false;
+        return checkPixKey(request.getCreditKey(), jwt);
     }
 
     public boolean checkInvoice(String accountId, String cardId, String invoiceId, Jwt jwt) {

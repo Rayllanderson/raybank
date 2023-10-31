@@ -13,5 +13,6 @@ public interface PixPaymentMapper {
     @Mapping(target = "e2eId", source = "pix.id")
     PixPaymentOutput from(Pix pix, String transactionId);
 
+    @Mapping(target = "transactionType", constant = "PIX")
     PixPaymentResponse from(PixPaymentOutput pix);
 }

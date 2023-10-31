@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("@methodSecurityChecker.checkPixKey(#key,#jwt)")
+@PreAuthorize("@methodSecurityChecker.checkPixKey(#key,#jwt) || @methodSecurityChecker.checkPixKey(#request,#jwt)")
 public @interface RequiredPixKeyOwner {
 }
