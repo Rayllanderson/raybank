@@ -34,7 +34,7 @@ public class GenerateBoletoController {
         final GenerateBoletoInput generateBoletoInput = mapper.from(request);
         final GenerateBoletoOutput boletoOutput = generateBoletoService.generate(generateBoletoInput);
 
-        final URI uri = uriBuilder.path("/api/v1/external/boletos/{id}").build(boletoOutput.getBarCode());
+        final URI uri = uriBuilder.path("/api/v1/internal/boletos/{id}").build(boletoOutput.getBarCode());
         final GenerateBoletoResponse response = mapper.from(boletoOutput);
 
         return ResponseEntity.created(uri).body(response);

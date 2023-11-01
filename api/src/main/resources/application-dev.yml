@@ -20,3 +20,13 @@ keycloak:
   credentials:
     client-secret: FNWh2lMeyqJgzDmpqnIvkIcReFepEiMP
     client-id: raybank-backend-create-user
+
+#every 30s
+boleto:
+  lock:
+    atLeastFor: 29S
+    atMostFor: 29S
+  scheduler:
+    expirate: 30
+    process: 30
+    refund: 30

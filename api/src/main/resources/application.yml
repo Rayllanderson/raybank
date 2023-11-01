@@ -18,10 +18,6 @@ spring:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
       generate.statistics: false
 
-raybank:
-  boleto:
-    postBackUrl: ${RAYBANK_BOLETO_POSTBACK_URL:http://localhost:8080/api/}
-
 retry:
   statement:
     create:
@@ -33,3 +29,12 @@ retry:
       maxDelay: 500
   maxAttempts: 3
   maxDelay: 1000
+
+boleto:
+  lock:
+    atLeastFor: ${boleto.lock.atLeastFor}
+    atMostFor: ${boleto.lock.atMostFor}
+  scheduler:
+    expirate: ${boleto.scheduler.expirate}
+    process: ${boleto.scheduler.process}
+    refund: ${boleto.scheduler.refund}

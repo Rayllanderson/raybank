@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -22,8 +23,8 @@ public class BoletoExpirationSchedulerTask {
     private final BoletoExpirationService boletoExpirationService;
 
     @Async
-    @Scheduled(cron = ScheduleUtil.Cron.EVERY_MINUTE)
-    @SchedulerLock(name = "BoletoExpiration_ScheduleTask", lockAtLeastFor = "29S", lockAtMostFor = "30S")
+    @Scheduled(fixedDelayString = "${boleto.scheduler.expirate}", timeUnit = TimeUnit.SECONDS)
+    @SchedulerLock(name = "BoletoExpiration_ScheduleTask", lockAtLeastFor = "${boleto.lock.atLeastFor}", lockAtMostFor = "${boleto.lock.atMostFor}")
     public void process() {
         LockAssert.assertLocked();
 

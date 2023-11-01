@@ -5,3 +5,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+#every 5 hours
+boleto:
+  lock:
+    atLeastFor: 17990S
+    atMostFor: 17990S
+  scheduler:
+    expirate: 18000
+    process: 18000
+    refund: 18000
