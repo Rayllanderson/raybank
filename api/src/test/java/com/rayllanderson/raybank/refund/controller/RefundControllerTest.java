@@ -49,8 +49,8 @@ class RefundControllerTest extends E2eApiTest {
     void shouldFullRefundCardCreditTransaction() throws Exception {
         Card card = cardCreator.newCard();
         Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
-
         final var request = RefundRequestBuilder.build(cardCreditTransaction.getAmount(), "MD606");
+
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.transaction_id", notNullValue()))
@@ -106,8 +106,8 @@ class RefundControllerTest extends E2eApiTest {
     void shouldFullRefundCardCreditTransactionWithMultiplesInstallments() throws Exception {
         Card card = cardCreator.newCard();
         Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, 2, "amazon", card);
-
         final var request = RefundRequestBuilder.build(cardCreditTransaction.getAmount(), "MD606");
+
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.transaction_id", notNullValue()))
@@ -137,7 +137,6 @@ class RefundControllerTest extends E2eApiTest {
     void shouldPartialRefundCardCreditTransaction() throws Exception {
         Card card = cardCreator.newCard();
         Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
-
         final var request = RefundRequestBuilder.build(new BigDecimal(5), "MD606");
 
         post(URL, cardCreditTransaction.getId(), "/refund", request)
@@ -158,6 +157,38 @@ class RefundControllerTest extends E2eApiTest {
         assertThat(invoice.getTotal()).isEqualTo(new BigDecimal("5.00"));
         assertThat(invoice.getInstallments()).hasSize(1).allMatch(Installment::isOpen);
         assertThat(invoice.getCredits()).hasSize(1).allMatch(InvoiceCredit::isRefund);
+    }
+
+    @Test
+    @WithEstablishmentUser(id = "amazon")
+    @RegisterEstablishment(id = "amazon")
+    void shouldDo2PartialRefundCardCreditTransaction() throws Exception {
+        Card card = cardCreator.newCard();
+        Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
+        final var request = RefundRequestBuilder.build(new BigDecimal(5), "MD606");
+
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transaction_id", notNullValue()))
+                .andExpect(jsonPath("$.amount", equalTo(5)));
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transaction_id", notNullValue()))
+                .andExpect(jsonPath("$.amount", equalTo(5)));
+
+        await(2); // to handler async methods
+
+        final var establishmentAccount = bankAccountRepository.findById("amazon").get();
+        assertThat(establishmentAccount.getBalance()).isZero();
+        assertThatTransactionsFromAccount(establishmentAccount.getId()).hasSize(3);
+        assertThatStatementsFromAccount(establishmentAccount.getId()).hasSize(3);
+        assertThatTransactionsFromAccount(card.getAccountId()).hasSize(3);
+        assertThatStatementsFromAccount(card.getAccountId()).hasSize(3);
+        assertThatInvoicesFromCard(card.getId()).hasSize(1);
+        Invoice invoice = getCurrentInvoice(card.getId());
+        assertThat(invoice.getTotal()).isZero();
+        assertThat(invoice.getInstallments()).hasSize(1).allMatch(Installment::isPaid);
+        assertThat(invoice.getCredits()).hasSize(2).allMatch(InvoiceCredit::isRefund);
     }
 
     @Test
@@ -195,7 +226,6 @@ class RefundControllerTest extends E2eApiTest {
     void shouldThrowErrorWhenAmountToRefundIsHigherThanTransactionUsingCreditTransaction() throws Exception {
         Card card = cardCreator.newCard();
         Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
-
         final var request = RefundRequestBuilder.build(new BigDecimal(10000), "MD606");
 
         post(URL, cardCreditTransaction.getId(), "/refund", request)
@@ -309,6 +339,36 @@ class RefundControllerTest extends E2eApiTest {
         assertThat(userAccountUpdated.getBalance()).isEqualTo(new BigDecimal("5.00"));
         assertThatTransactionsFromAccount(card.getAccountId()).hasSize(2);
         assertThatStatementsFromAccount(card.getAccountId()).hasSize(2);
+    }
+
+    @Test
+    @WithEstablishmentUser(id = "amazon")
+    @RegisterEstablishment(id = "amazon")
+    void shouldDo2PartialRefundCardDebitTransaction() throws Exception {
+        Card card = cardCreator.newCard();
+        deposit("10", card.getAccountId());
+        Transaction cardCreditTransaction = cardHelper.doDebitPayment(BigDecimal.TEN, "amazon", card);
+        final var request = RefundRequestBuilder.build(new BigDecimal(5), "MD606");
+
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transaction_id", notNullValue()))
+                .andExpect(jsonPath("$.amount", equalTo(5)));
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transaction_id", notNullValue()))
+                .andExpect(jsonPath("$.amount", equalTo(5)));
+
+        await(2); // to handler async methods
+
+        final BankAccount establishmentAccount = bankAccountRepository.findById("amazon").get();
+        assertThat(establishmentAccount.getBalance()).isZero();
+        assertThatTransactionsFromAccount(establishmentAccount.getId()).hasSize(3);
+        assertThatStatementsFromAccount(establishmentAccount.getId()).hasSize(3);
+        final BankAccount userAccountUpdated = bankAccountRepository.findById(card.getAccountId()).get();
+        assertThat(userAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
+        assertThatTransactionsFromAccount(card.getAccountId()).hasSize(3);
+        assertThatStatementsFromAccount(card.getAccountId()).hasSize(3);
     }
 
     @Test
