@@ -20,7 +20,7 @@ public class CreditEstablishmentHandlerService implements CardPaymentHandlerServ
     }
 
     public void process(final CardDebitPaymentCompletedEvent event) {
-        final var credit = CreditAccountFacadeInput.createFromCardPayment(event);
+        final var credit = CreditAccountFacadeInput.createFromDebitCardPayment(event);
         creditAccountFacade.process(credit);
     }
 }

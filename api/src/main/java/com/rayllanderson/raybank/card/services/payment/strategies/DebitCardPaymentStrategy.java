@@ -22,7 +22,7 @@ public class DebitCardPaymentStrategy implements CardPaymentStrategy {
     @Transactional
     public Transaction pay(final CardPaymentInput payment, final Card card) {
 
-        final var debit = DebitAccountFacadeInput.from(payment, card);
+        final var debit = DebitAccountFacadeInput.debitCardPayment(payment, card);
         final var debitTransaction = debitAccountFacade.process(debit);
 
         eventPublisher.publish(new CardDebitPaymentCompletedEvent(debitTransaction));

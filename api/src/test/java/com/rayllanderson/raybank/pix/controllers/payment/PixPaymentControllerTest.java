@@ -13,6 +13,7 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 
 import java.math.BigDecimal;
 
+import static com.rayllanderson.raybank.utils.Await.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -46,14 +47,16 @@ class PixPaymentControllerTest extends E2eApiTest {
                 .andExpect(jsonPath("$.transaction_id", notNullValue()))
                 .andExpect(jsonPath("$.transaction_type", equalTo("PIX")));
 
-        BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaKey.getAccountId()).get();
+        await(2); //to process async methods
+
+        final BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaKey.getAccountId()).get();
         assertThat(kaguyaAccountUpdated.getBalance()).isZero();
-        final var kaguyaTransactions = transactionRepository.findAllByAccountId(kaguyaKey.getAccountId());
-        assertThat(kaguyaTransactions).hasSize(1);
-        BankAccount frierenAccountUpdated = bankAccountRepository.findById(frierenKey.getAccountId()).get();
+        assertThatTransactionsFromAccount(kaguyaKey.getAccountId()).hasSize(1);
+        assertThatStatementsFromAccount(kaguyaKey.getAccountId()).hasSize(1);
+        final BankAccount frierenAccountUpdated = bankAccountRepository.findById(frierenKey.getAccountId()).get();
         assertThat(frierenAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
-        final var frierenTransactions = transactionRepository.findAllByAccountId(frierenKey.getAccountId());
-        assertThat(frierenTransactions).hasSize(1);
+        assertThatTransactionsFromAccount(frierenKey.getAccountId()).hasSize(1);
+        assertThatStatementsFromAccount(frierenKey.getAccountId()).hasSize(1);
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.bankaccount.gateway;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
+import com.rayllanderson.raybank.core.exceptions.RaybankException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ public class BankAccountPostgresGateway implements BankAccountGateway {
 
     @Override
     public BankAccount findById(final String id) {
-        return bankAccountRepository.findById(id).orElseThrow(() -> NotFoundException.withFormatted(ACCOUNT_NOT_FOUND, "Conta bancária %s não existe", id));
+        return bankAccountRepository.findById(id).orElseThrow(() -> notFoundException(id));
     }
 
     @Override
@@ -45,6 +46,10 @@ public class BankAccountPostgresGateway implements BankAccountGateway {
 
     @Override
     public BankAccount findByNumber(int accountNumber) {
-        return bankAccountRepository.findByNumber(accountNumber).orElseThrow(() -> NotFoundException.withFormatted(ACCOUNT_NOT_FOUND, "Conta bancária '%s' não existe", accountNumber));
+        return bankAccountRepository.findByNumber(accountNumber).orElseThrow(() -> notFoundException(accountNumber));
+    }
+
+    private static RaybankException notFoundException(Object id) {
+        return NotFoundException.withFormatted(ACCOUNT_NOT_FOUND, "Conta bancária %s não encontrada", id);
     }
 }

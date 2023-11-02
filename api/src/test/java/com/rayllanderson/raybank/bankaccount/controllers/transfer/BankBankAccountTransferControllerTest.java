@@ -5,7 +5,6 @@ import com.rayllanderson.raybank.e2e.E2ETest;
 import com.rayllanderson.raybank.e2e.builders.BankAccountTransferRequestBuilder;
 import com.rayllanderson.raybank.e2e.containers.postgres.E2eApiTest;
 import com.rayllanderson.raybank.e2e.security.WithNormalUser;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 
@@ -37,17 +36,15 @@ class BankBankAccountTransferControllerTest extends E2eApiTest {
                 .andExpect(jsonPath("$.transaction.type", equalTo("TRANSFER")));
 
         BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaAccount.getId()).get();
-        Assertions.assertThat(kaguyaAccountUpdated.getBalance()).isZero();
-        final var kaguyaTransactions = transactionRepository.findAllByAccountId(kaguyaAccount.getId());
-        assertThat(kaguyaTransactions).hasSize(1);
-        final var kaguyaContacts = contactRepository.findAllByOwnerId(kaguyaAccount.getId());
-        assertThat(kaguyaContacts).hasSize(1);
+        assertThat(kaguyaAccountUpdated.getBalance()).isZero();
+        assertThatTransactionsFromAccount(kaguyaAccount.getId()).hasSize(1);
+        assertThatStatementsFromAccount(kaguyaAccount.getId()).hasSize(1);
+        assertThatContactsFromAccount(kaguyaAccount.getId()).hasSize(1);
         BankAccount frierenAccountUpdated = bankAccountRepository.findById(frierenAccount.getId()).get();
-        Assertions.assertThat(frierenAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
-        final var frierenTransactions = transactionRepository.findAllByAccountId(frierenAccount.getId());
-        assertThat(frierenTransactions).hasSize(1);
-        final var frierenContacts = contactRepository.findAllByOwnerId(frierenAccount.getId());
-        assertThat(frierenContacts).isEmpty();
+        assertThat(frierenAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
+        assertThatTransactionsFromAccount(frierenAccount.getId()).hasSize(1);
+        assertThatStatementsFromAccount(frierenAccount.getId()).hasSize(1);
+        assertThatContactsFromAccount(frierenAccount.getId()).isEmpty();
     }
 
     @Test
@@ -62,9 +59,9 @@ class BankBankAccountTransferControllerTest extends E2eApiTest {
                 .andExpect(jsonPath("$.ray_bank_error.code", equalTo(DEBIT_SAME_ACCOUNT.getCode())));
 
         BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaAccount.getId()).get();
-        Assertions.assertThat(kaguyaAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
-        final var transactions = transactionRepository.findAllByAccountId(kaguyaAccount.getId());
-        assertThat(transactions).isEmpty();
+        assertThat(kaguyaAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
+        assertThatTransactionsFromAccount(kaguyaAccount.getId()).isEmpty();
+        assertThatStatementsFromAccount(kaguyaAccount.getId()).isEmpty();
     }
 
     @Test

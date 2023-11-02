@@ -7,7 +7,12 @@ import com.rayllanderson.raybank.e2e.HttpPeform;
 import com.rayllanderson.raybank.e2e.factory.BankAccountCreator;
 import com.rayllanderson.raybank.e2e.factory.PixKeyCreator;
 import com.rayllanderson.raybank.e2e.helpers.AccountHelper;
+import com.rayllanderson.raybank.e2e.validator.ContactValidator;
+import com.rayllanderson.raybank.e2e.validator.InvoiceValidator;
+import com.rayllanderson.raybank.e2e.validator.StatementValidator;
+import com.rayllanderson.raybank.e2e.validator.TransactionValidator;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
+import com.rayllanderson.raybank.statement.repositories.BankStatementRepository;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -16,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 
-public abstract class E2eApiTest implements HttpPeform {
+public abstract class E2eApiTest implements HttpPeform, StatementValidator, ContactValidator, TransactionValidator, InvoiceValidator {
 
     @Autowired
     private MockMvc mvc;
@@ -36,6 +41,8 @@ public abstract class E2eApiTest implements HttpPeform {
     protected BankAccountCreator accountCreator;
     @Autowired
     protected PixKeyCreator pixKeyCreator;
+    @Autowired
+    protected BankStatementRepository bankStatementRepository;
 
     @Override
     public MockMvc mvc() {
@@ -50,5 +57,25 @@ public abstract class E2eApiTest implements HttpPeform {
 
     protected void deposit(String value, String accountId) {
         accountHelper.deposit(new BigDecimal(value), accountId);
+    }
+
+    @Override
+    public ContactRepository getContactRepository() {
+        return this.contactRepository;
+    }
+
+    @Override
+    public BankStatementRepository getBankSatatementRepository() {
+        return this.bankStatementRepository;
+    }
+
+    @Override
+    public TransactionRepository getTransactionRepository() {
+        return this.transactionRepository;
+    }
+
+    @Override
+    public InvoiceRepository getInvoiceRepository() {
+        return invoiceRepository;
     }
 }

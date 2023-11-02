@@ -54,14 +54,13 @@ class BoletoPaymentControllerTest extends E2eApiTest {
 
         BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaAccount.getId()).get();
         assertThat(kaguyaAccountUpdated.getBalance()).isZero();
-        final var kaguyaTransactions = transactionRepository.findAllByAccountId(kaguyaAccount.getId());
-        assertThat(kaguyaTransactions).hasSize(1);
-        //to process boleto payment
-        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
+        assertThatTransactionsFromAccount(kaguyaAccount.getId()).hasSize(1);
+        assertThatStatementsFromAccount(kaguyaAccountUpdated.getId()).hasSize(1);
+        Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> { //to process boleto payment
             BankAccount frierenAccountUpdated = bankAccountRepository.findById(frierenAccount.getId()).get();
             assertThat(frierenAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
-            final var frierenTransactions = transactionRepository.findAllByAccountId(frierenAccount.getId());
-            assertThat(frierenTransactions).hasSize(1);
+            assertThatTransactionsFromAccount(frierenAccountUpdated.getId()).hasSize(1);
+            assertThatStatementsFromAccount(frierenAccountUpdated.getId()).hasSize(1);
         });
     }
 
@@ -86,16 +85,16 @@ class BoletoPaymentControllerTest extends E2eApiTest {
 
         BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaAccount.getId()).get();
         assertThat(kaguyaAccountUpdated.getBalance()).isZero();
-        final var kaguyaTransactions = transactionRepository.findAllByAccountId(kaguyaAccount.getId());
-        assertThat(kaguyaTransactions).hasSize(1);
+        assertThatTransactionsFromAccount(kaguyaAccount.getId()).hasSize(1);
+        assertThatStatementsFromAccount(kaguyaAccountUpdated.getId()).hasSize(1);
         //to process boleto payment
         Awaitility.await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             final Invoice frierenInvoiceUpdated = getCurrentInvoice(frierenCard.getId());
             assertThat(frierenInvoiceUpdated.getTotal()).isZero();
             assertThat(frierenInvoiceUpdated.getInstallments()).hasSize(1);
             assertThat(frierenInvoiceUpdated.getCredits()).hasSize(1);
-            final var frierenTransactions = transactionRepository.findAllByAccountId(frierenCard.getAccountId());
-            assertThat(frierenTransactions).hasSize(2);
+            assertThatTransactionsFromAccount(frierenCard.getAccountId()).hasSize(2);
+            assertThatStatementsFromAccount(frierenCard.getAccountId()).hasSize(2);
         });
     }
 

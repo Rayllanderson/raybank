@@ -30,7 +30,7 @@ public class BankAccountBankStatementFinder implements BankStatementFinder {
 
     @Override
     public boolean supports(Origin debitOrigin) {
-        return Origin.ACCOUNT.equals(debitOrigin) || Origin.ESTABLISHMENT_ACCOUNT.equals(debitOrigin);
+        return Origin.ACCOUNT.equals(debitOrigin) || Origin.ESTABLISHMENT_ACCOUNT.equals(debitOrigin) || Origin.DEBIT_CARD.equals(debitOrigin);
     }
 
     @Override

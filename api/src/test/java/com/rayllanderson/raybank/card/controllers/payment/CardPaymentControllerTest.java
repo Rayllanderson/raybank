@@ -50,14 +50,13 @@ class CardPaymentControllerTest extends E2eApiTest {
         await(2); // to handler CardCreditPaymentCompletedEvent
 
         final var establishmentAccount = bankAccountRepository.findById(Constants.ESTABLISHMENT_ID).get();
-        final var establishmentTransactions = transactionRepository.findAllByAccountId(establishmentAccount.getId());
         assertThat(establishmentAccount.getBalance()).isEqualTo(new BigDecimal("1000.00"));
-        assertThat(establishmentTransactions).hasSize(1);
-        final var userTransactions = transactionRepository.findAllByAccountId(savedCard.getAccountId());
-        assertThat(userTransactions).hasSize(1);
-        final var userInvoices = invoiceRepository.findAllByCard_Id(savedCard.getId());
-        assertThat(userInvoices).hasSize(2);
-        assertThat(userInvoices.get(0).getTotal()).isEqualTo(new BigDecimal("500.00"));
+        assertThatTransactionsFromAccount(establishmentAccount.getId()).hasSize(1);
+        assertThatStatementsFromAccount(establishmentAccount.getId()).hasSize(1);
+        assertThatTransactionsFromAccount(savedCard.getAccountId()).hasSize(1);
+        assertThatStatementsFromAccount(savedCard.getAccountId()).hasSize(1);
+        assertThatInvoicesFromCard(savedCard.getId()).hasSize(2);
+        assertThatCurrentInvoiceTotalFromCard(savedCard.getId()).isEqualTo(new BigDecimal("500.00"));
     }
 
     @Test
@@ -77,13 +76,14 @@ class CardPaymentControllerTest extends E2eApiTest {
         await(2); // to handler CardDebitPaymentCompletedEvent
 
         BankAccount establishmentAccount = bankAccountRepository.findById(Constants.ESTABLISHMENT_ID).get();
-        final var establishmentTransactions = transactionRepository.findAllByAccountId(establishmentAccount.getId());
         assertThat(establishmentAccount.getBalance()).isEqualTo(new BigDecimal("1000.00"));
-        assertThat(establishmentTransactions).hasSize(1);
+        assertThatTransactionsFromAccount(establishmentAccount.getId()).hasSize(1);
+        assertThatStatementsFromAccount(establishmentAccount.getId()).hasSize(1);
         BankAccount userAccount = bankAccountRepository.findById(savedCard.getAccountId()).get();
         assertThat(userAccount.getBalance()).isZero();
-        final var userTransactions = transactionRepository.findAllByAccountId(savedCard.getAccountId());
-        assertThat(userTransactions).hasSize(1);
+        assertThatTransactionsFromAccount(savedCard.getAccountId()).hasSize(1);
+        assertThatStatementsFromAccount(userAccount.getId()).hasSize(1);
+        assertThatCurrentInvoiceTotalFromCard(savedCard.getId()).isZero();
     }
 
     @Test

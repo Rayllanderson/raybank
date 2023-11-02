@@ -48,7 +48,7 @@ public class DebitAccountFacadeInput {
         return new DebitAccountFacadeInput(input.getAccountId(), input.getAmount(), debitTransaction, destination);
     }
 
-    public static DebitAccountFacadeInput from(final CardPaymentInput input, final Card card) {
+    public static DebitAccountFacadeInput debitCardPayment(final CardPaymentInput input, final Card card) {
         final var destination = new Destination(input.getEstablishmentId(), Type.ACCOUNT);
         final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.DEBIT_CARD);
         return new DebitAccountFacadeInput(card.getAccountId(), input.getAmount(), input.getDescription(), debitTransaction, destination);

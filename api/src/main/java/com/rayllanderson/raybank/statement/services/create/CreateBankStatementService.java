@@ -24,8 +24,8 @@ public class CreateBankStatementService {
     @Transactional
     @Retryable(maxAttemptsExpression = "${retry.statement.create.maxAttempts}", backoff = @Backoff(maxDelayExpression = "${retry.statement.create.maxDelay}"))
     public void createFrom(Transaction transaction) {
-        final var debit = factory.getDebit(transaction);
-        final var credit = factory.getCredit(transaction);
+        final BankStatement.Debit debit = factory.getDebit(transaction);
+        final BankStatement.Credit credit = factory.getCredit(transaction);
 
         BankStatement bankStatement;
         if (transaction instanceof CardCreditPaymentTransaction) {

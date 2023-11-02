@@ -43,6 +43,11 @@ public class CreditAccountFacadeInput {
         return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
     }
 
+    public static CreditAccountFacadeInput createFromDebitCardPayment(CardDebitPaymentCompletedEvent event) {
+        final var origin = new Origin(event.getCardId(), Type.DEBIT_CARD, event.getTransactionId());
+        return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
+    }
+
     public static CreditAccountFacadeInput from(BoletoCreditInput boleto) {
         final var origin = new Origin(boleto.getBarCode(), Type.BOLETO, boleto.getOriginalTransactionId());
         return new CreditAccountFacadeInput(boleto.getBeneficiaryId(), boleto.getAmount(), origin, TransactionType.DEPOSIT, TransactionMethod.BOLETO);
