@@ -5,6 +5,8 @@ import com.rayllanderson.raybank.contact.factory.ContactAccountFactory;
 import com.rayllanderson.raybank.contact.gateway.ContactGateway;
 import com.rayllanderson.raybank.contact.model.Contact;
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ public class AddContactService {
 
     @Async
     @Transactional
+    @Retryable(maxAttemptsExpression = "${retry.statement.create.maxAttempts}", backoff = @Backoff(maxDelayExpression = "${retry.statement.create.maxDelay}"))
     public void add(final AddContactInput input) {
         final BankAccount bankAccount = accountFactory.find(input.getContactId(), input.getTransactionMethod());
 

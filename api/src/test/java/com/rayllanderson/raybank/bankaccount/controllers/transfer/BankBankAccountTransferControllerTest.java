@@ -40,10 +40,14 @@ class BankBankAccountTransferControllerTest extends E2eApiTest {
         Assertions.assertThat(kaguyaAccountUpdated.getBalance()).isZero();
         final var kaguyaTransactions = transactionRepository.findAllByAccountId(kaguyaAccount.getId());
         assertThat(kaguyaTransactions).hasSize(1);
+        final var kaguyaContacts = contactRepository.findAllByOwnerId(kaguyaAccount.getId());
+        assertThat(kaguyaContacts).hasSize(1);
         BankAccount frierenAccountUpdated = bankAccountRepository.findById(frierenAccount.getId()).get();
         Assertions.assertThat(frierenAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
         final var frierenTransactions = transactionRepository.findAllByAccountId(frierenAccount.getId());
         assertThat(frierenTransactions).hasSize(1);
+        final var frierenContacts = contactRepository.findAllByOwnerId(frierenAccount.getId());
+        assertThat(frierenContacts).isEmpty();
     }
 
     @Test

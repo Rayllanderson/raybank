@@ -3,7 +3,6 @@ package com.rayllanderson.raybank.boleto.controllers.payment;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.boleto.models.BeneficiaryType;
 import com.rayllanderson.raybank.card.models.Card;
-import com.rayllanderson.raybank.contact.repository.ContactRepository;
 import com.rayllanderson.raybank.e2e.E2ETest;
 import com.rayllanderson.raybank.e2e.builders.BoletoBuilder;
 import com.rayllanderson.raybank.e2e.containers.postgres.E2eApiTest;

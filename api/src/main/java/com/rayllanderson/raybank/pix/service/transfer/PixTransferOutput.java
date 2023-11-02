@@ -19,15 +19,25 @@ public class PixTransferOutput {
     private LocalDateTime occuredOn;
     private String message;
 
+    public String getDebitAccountId() {
+        return this.debit.getAccountId();
+    }
+
+    public String getCreditAccountId() {
+        return this.credit.getAccountId();
+    }
+
     @Getter
     @Setter
     protected static class Debit {
+        private String accountId;
         private String name;
     }
 
     @Getter
     @Setter
     protected static class Credit {
+        private String accountId;
         private String name;
         private String key;
     }

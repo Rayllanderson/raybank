@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.e2e.containers.postgres;
 
 import com.rayllanderson.raybank.bankaccount.repository.BankAccountRepository;
 import com.rayllanderson.raybank.card.repository.CardRepository;
+import com.rayllanderson.raybank.contact.repository.ContactRepository;
 import com.rayllanderson.raybank.e2e.HttpPeform;
 import com.rayllanderson.raybank.e2e.factory.BankAccountCreator;
 import com.rayllanderson.raybank.e2e.factory.PixKeyCreator;
@@ -25,6 +26,8 @@ public abstract class E2eApiTest implements HttpPeform {
     protected CardRepository cardRepository;
     @Autowired
     protected InvoiceRepository invoiceRepository;
+    @Autowired
+    protected ContactRepository contactRepository;
     @Autowired
     protected TransactionRepository transactionRepository;
     @Autowired
