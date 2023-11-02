@@ -11,6 +11,7 @@ import com.rayllanderson.raybank.e2e.validator.ContactValidator;
 import com.rayllanderson.raybank.e2e.validator.InvoiceValidator;
 import com.rayllanderson.raybank.e2e.validator.StatementValidator;
 import com.rayllanderson.raybank.e2e.validator.TransactionValidator;
+import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.repository.InvoiceRepository;
 import com.rayllanderson.raybank.statement.repositories.BankStatementRepository;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
@@ -77,5 +78,9 @@ public abstract class E2eApiTest implements HttpPeform, StatementValidator, Cont
     @Override
     public InvoiceRepository getInvoiceRepository() {
         return invoiceRepository;
+    }
+
+    protected Invoice getCurrentInvoice(String cardId) {
+        return invoiceRepository.findAllByCard_Id(cardId).stream().findFirst().get();
     }
 }

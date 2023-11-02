@@ -105,8 +105,4 @@ class BoletoPaymentControllerTest extends E2eApiTest {
         post(URL, null)
                 .andExpect(status().isUnauthorized());
     }
-
-    private Invoice getCurrentInvoice(String cardId) {
-        return invoiceRepository.findAllByCard_Id(cardId).stream().findFirst().get();
-    }
 }

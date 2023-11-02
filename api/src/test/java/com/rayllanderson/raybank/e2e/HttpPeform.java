@@ -137,10 +137,10 @@ public interface HttpPeform {
     }
 
     private String concatAsPathUrl(String url, String id) {
-        return url + "/" + id;
+        return url + "/" + id.replace("/", "");
     }
 
     private String concatAsPathUrl(String url, String id, String endPartUrl) {
-        return concatAsPathUrl(url, id).concat("/").concat(endPartUrl);
+        return concatAsPathUrl(url, id).concat("/").concat(endPartUrl.replace("/", ""));
     }
 }

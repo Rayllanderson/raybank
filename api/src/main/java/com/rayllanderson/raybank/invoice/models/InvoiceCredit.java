@@ -45,4 +45,8 @@ public class InvoiceCredit {
     public boolean isRefund() {
         return InvoiceCreditType.REFUND.equals(this.type);
     }
+
+    public boolean isPayment() {
+        return InvoiceCreditType.INVOICE_PAYMENT.equals(this.type);
+    }
 }

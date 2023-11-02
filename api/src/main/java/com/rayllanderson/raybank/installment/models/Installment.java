@@ -67,6 +67,9 @@ public class Installment {
     public boolean isRefunded() {
         return this.status.equals(InstallmentStatus.REFUNDED);
     }
+    public boolean isCanceled() {
+        return this.status.equals(InstallmentStatus.CANCELED);
+    }
 
     public boolean isOpen() {
         return this.status.equals(InstallmentStatus.OPEN);
