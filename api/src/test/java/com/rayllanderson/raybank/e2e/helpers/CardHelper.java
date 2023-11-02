@@ -42,4 +42,17 @@ public class CardHelper {
                                        Card card) {
         return doPayment(amount, CardPaymentInput.PaymentType.CREDIT, 1, "Alibaba", establishmentId, card);
     }
+
+    public Transaction doCreditPayment(BigDecimal amount,
+                                       Integer installments,
+                                       String establishmentId,
+                                       Card card) {
+        return doPayment(amount, CardPaymentInput.PaymentType.CREDIT, installments, "Alibaba", establishmentId, card);
+    }
+
+    public Transaction doDebitPayment(BigDecimal amount,
+                                       String establishmentId,
+                                       Card card) {
+        return doPayment(amount, CardPaymentInput.PaymentType.DEBIT, 1, "Alibaba", establishmentId, card);
+    }
 }

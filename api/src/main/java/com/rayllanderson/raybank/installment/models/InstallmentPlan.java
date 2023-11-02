@@ -99,6 +99,9 @@ public class InstallmentPlan {
     }
 
     public void partialRefund(final BigDecimal value) {
+        if (this.hasRefunded())
+            throw UnprocessableEntityException.with(INSTALLMENTPLAN_REFUNDED, "Plan is already refunded");
+
         final BigDecimal availableToRefund = this.total.subtract(this.refunded);
         if (value.compareTo(availableToRefund) > 0) {
             throw UnprocessableEntityException.with(INSTALLMENTPLAN_PARTIAL_REFUND_EXCEEDED, "Available balance to refund is less than amount to refund");
