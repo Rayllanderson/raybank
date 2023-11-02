@@ -2,7 +2,6 @@ package com.rayllanderson.raybank.invoice.services.processinstallment;
 
 import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
 import com.rayllanderson.raybank.installment.repository.InstallmentPlanGateway;
-import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanOutput;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.transaction.gateway.TransactionGateway;
 import com.rayllanderson.raybank.transaction.models.Debit;
@@ -22,7 +21,6 @@ import static com.rayllanderson.raybank.invoice.InvoiceUtils.bigDecimalOf;
 import static com.rayllanderson.raybank.invoice.InvoiceUtils.create;
 import static com.rayllanderson.raybank.invoice.InvoiceUtils.createPlan;
 import static com.rayllanderson.raybank.invoice.InvoiceUtils.installment;
-import static com.rayllanderson.raybank.invoice.InvoiceUtils.parse;
 import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.NONE;
 import static com.rayllanderson.raybank.invoice.models.InvoiceStatus.OPEN;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,11 +47,11 @@ class ProcessInstallmentInInvoiceServiceTest {
         when(invoiceGateway.findAllByCardIdAndStatus(anyString(), any())).thenReturn(Collections.emptyList());
         final var expectedOutput = createPlan(bigDecimalOf(150),
                 bigDecimalOf(50),
-                installment(parse("2023-09-26")),
-                installment(parse("2023-10-26")),
-                installment(parse("2023-11-26")));
+                installment(LocalDate.now()),
+                installment(LocalDate.now().plusMonths(1)),
+                installment(LocalDate.now().plusMonths(2)));
         when(planGateway.findById(any())).thenReturn(expectedOutput);
-        when(transactionGateway.findById("transactionId")).thenReturn(createTransaction(LocalDateTime.parse("2023-09-01T18:40:00")));
+        when(transactionGateway.findById("transactionId")).thenReturn(createTransaction(LocalDateTime.now()));
         final var input = new ProcessInstallmentInvoiceInput("transactionId");
 
         final var invoices = processInstallmentInInvoiceService.processInvoice(input);
