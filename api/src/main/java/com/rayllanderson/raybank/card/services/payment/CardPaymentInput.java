@@ -15,7 +15,7 @@ import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.I
 
 @Getter
 @Setter
-public class PaymentCardInput {
+public class CardPaymentInput {
 
     private BigDecimal amount;
     private PaymentType paymentType;

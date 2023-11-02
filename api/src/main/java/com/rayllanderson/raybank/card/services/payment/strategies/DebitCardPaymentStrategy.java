@@ -2,10 +2,9 @@ package com.rayllanderson.raybank.card.services.payment.strategies;
 
 import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacade;
 import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInput;
-import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.events.CardDebitPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.models.Card;
-import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
+import com.rayllanderson.raybank.card.services.payment.CardPaymentInput;
 import com.rayllanderson.raybank.shared.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class DebitCardPaymentStrategy implements CardPaymentStrategy {
 
     @Override
     @Transactional
-    public Transaction pay(final PaymentCardInput payment, final Card card) {
+    public Transaction pay(final CardPaymentInput payment, final Card card) {
 
         final var debit = DebitAccountFacadeInput.from(payment, card);
         final var debitTransaction = debitAccountFacade.process(debit);
@@ -32,7 +31,7 @@ public class DebitCardPaymentStrategy implements CardPaymentStrategy {
     }
 
     @Override
-    public boolean supports(PaymentCardInput.PaymentType paymentType) {
-        return PaymentCardInput.PaymentType.DEBIT.equals(paymentType);
+    public boolean supports(CardPaymentInput.PaymentType paymentType) {
+        return CardPaymentInput.PaymentType.DEBIT.equals(paymentType);
     }
 }

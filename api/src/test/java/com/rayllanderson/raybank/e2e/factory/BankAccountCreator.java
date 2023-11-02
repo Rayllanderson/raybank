@@ -25,7 +25,7 @@ public class BankAccountCreator {
     private UserRepository userRepository;
 
     public BankAccount newNormalBankAccount() {
-        return newNormalBankAccount("kaguyaId", "kaguya", BigDecimal.ZERO);
+        return newNormalBankAccount(UUID.randomUUID().toString(), UUID.randomUUID().toString(), BigDecimal.ZERO);
     }
 
     public BankAccount newNormalBankAccount(String id) {

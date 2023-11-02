@@ -3,7 +3,7 @@ package com.rayllanderson.raybank.card.services.payment.strategies;
 import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.limit.FindCardLimitService;
-import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
+import com.rayllanderson.raybank.card.services.payment.CardPaymentInput;
 import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanMapper;
@@ -29,7 +29,7 @@ public class CreditCardPaymentStrategy implements CardPaymentStrategy {
 
     @Override
     @Transactional
-    public Transaction pay(final PaymentCardInput payment, final Card card) {
+    public Transaction pay(final CardPaymentInput payment, final Card card) {
         final var transaction = CardCreditPaymentTransaction.from(payment, card);
 
         final boolean hasAvailableLimit = cardLimitService.hasAvailableLimit(card, payment.getAmount());
@@ -48,7 +48,7 @@ public class CreditCardPaymentStrategy implements CardPaymentStrategy {
     }
 
     @Override
-    public boolean supports(PaymentCardInput.PaymentType paymentType) {
-        return PaymentCardInput.PaymentType.CREDIT.equals(paymentType);
+    public boolean supports(CardPaymentInput.PaymentType paymentType) {
+        return CardPaymentInput.PaymentType.CREDIT.equals(paymentType);
     }
 }

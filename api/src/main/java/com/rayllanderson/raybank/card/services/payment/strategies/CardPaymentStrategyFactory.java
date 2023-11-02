@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.card.services.payment.strategies;
 
-import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
+import com.rayllanderson.raybank.card.services.payment.CardPaymentInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ public class CardPaymentStrategyFactory {
 
     private final List<CardPaymentStrategy> strategies;
 
-    public CardPaymentStrategy getStrategyBy(PaymentCardInput.PaymentType paymentType) {
+    public CardPaymentStrategy getStrategyBy(CardPaymentInput.PaymentType paymentType) {
         return strategies
                 .stream()
                 .filter(strategy -> strategy.supports(paymentType))

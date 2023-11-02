@@ -36,7 +36,7 @@ public class CardPaymentService {
             noRetryFor = {NotFoundException.class, UnprocessableEntityException.class},
             maxAttemptsExpression = "${retry.card.payment.maxAttempts}",
             backoff = @Backoff(delayExpression = "${retry.card.payment.maxDelay}"))
-    public Transaction pay(final PaymentCardInput payment) {
+    public Transaction pay(final CardPaymentInput payment) {
         final Card card = cardGateway.findByNumber(payment.getCardNumber());
 
         validate(payment, card);
@@ -50,7 +50,7 @@ public class CardPaymentService {
         return cardPaymentService.pay(payment, card);
     }
 
-    private BankAccount getEstablishmentAccount(final PaymentCardInput payment) {
+    private BankAccount getEstablishmentAccount(final CardPaymentInput payment) {
         final var establishment = bankAccountGateway.findById(payment.getEstablishmentId());
 
         if (!establishment.isEstablishment()) {
@@ -64,7 +64,7 @@ public class CardPaymentService {
         return establishment;
     }
 
-    private static void validate(PaymentCardInput payment, Card card) {
+    private static void validate(CardPaymentInput payment, Card card) {
         if (!card.isValidSecurityCode(payment.getCardSecurityCode())) {
             throw UnprocessableEntityException.with(CARD_INVALID_SECURITY_CODE, "Código de Segurança Inválido");
         }

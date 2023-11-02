@@ -1,12 +1,12 @@
 package com.rayllanderson.raybank.card.controllers.payment;
 
-import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
+import com.rayllanderson.raybank.card.services.payment.CardPaymentInput;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", imports = PaymentCardInput.PaymentType.class)
+@Mapper(componentModel = "spring", imports = CardPaymentInput.PaymentType.class)
 public interface PaymentCardMapper {
 
-    @Mapping(target = "paymentType", expression = "java(PaymentCardInput.PaymentType.from(request.getPaymentType()))")
-    PaymentCardInput from(CardPaymentRequest request, String establishmentId);
+    @Mapping(target = "paymentType", expression = "java(CardPaymentInput.PaymentType.from(request.getPaymentType()))")
+    CardPaymentInput from(CardPaymentRequest request, String establishmentId);
 }

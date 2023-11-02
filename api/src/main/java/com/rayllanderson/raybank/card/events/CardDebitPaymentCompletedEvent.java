@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.card.events;
 
-import com.rayllanderson.raybank.card.services.payment.PaymentCardInput;
-import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
+import com.rayllanderson.raybank.card.services.payment.CardPaymentInput;
 import com.rayllanderson.raybank.shared.event.Event;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.Getter;
@@ -27,7 +26,7 @@ public class CardDebitPaymentCompletedEvent implements Event {
         this.establishmentId = payment.getCredit().getId();
         this.ocurredOn = payment.getMoment();
         this.transactionId = payment.getId();
-        this.paymentType = PaymentCardInput.PaymentType.DEBIT.name();
+        this.paymentType = CardPaymentInput.PaymentType.DEBIT.name();
     }
 
     @Override
