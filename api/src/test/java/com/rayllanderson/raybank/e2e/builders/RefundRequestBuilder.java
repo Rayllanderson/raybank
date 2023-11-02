@@ -12,4 +12,11 @@ public class RefundRequestBuilder {
         refundRequest.setReason(reason);
         return refundRequest;
     }
+
+    public static RefundRequest build(double amount, String reason) {
+        RefundRequest refundRequest = new RefundRequest();
+        refundRequest.setAmount(BigDecimal.valueOf(amount));
+        refundRequest.setReason(reason);
+        return refundRequest;
+    }
 }

@@ -5,6 +5,7 @@ import com.rayllanderson.raybank.card.services.payment.CardPaymentInput;
 import com.rayllanderson.raybank.card.services.payment.CardPaymentService;
 import com.rayllanderson.raybank.e2e.builders.CardPaymentBuilder;
 import com.rayllanderson.raybank.transaction.models.Transaction;
+import com.rayllanderson.raybank.utils.Await;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,10 @@ public class CardHelper {
                                  String establishmentId,
                                  Card card) {
         CardPaymentInput paymentInput = CardPaymentBuilder.buildInput(amount, paymentType, installments, description, establishmentId, card);
-        return cardPaymentService.pay(paymentInput);
+
+        final var t = cardPaymentService.pay(paymentInput);
+        Await.await(2); //to handler async methods
+        return t;
     }
 
     public Transaction doCreditPayment(BigDecimal amount,

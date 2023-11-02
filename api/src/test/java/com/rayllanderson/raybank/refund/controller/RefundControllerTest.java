@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_PARTIAL_REFUNDED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_PARTIAL_REFUND_EXCEEDED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.REFUND_AMOUNT_INVALID;
 import static com.rayllanderson.raybank.utils.Await.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -44,7 +47,6 @@ class RefundControllerTest extends E2eApiTest {
         Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
 
         final var request = RefundRequestBuilder.build(cardCreditTransaction.getAmount(), "MD606");
-
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.transaction_id", notNullValue()))
@@ -72,7 +74,6 @@ class RefundControllerTest extends E2eApiTest {
         Card card = cardCreator.newCard();
         Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
         deposit("10", card.getAccountId());
-        await(2); // to handler async methods
         invoiceHelper.payCurrentInvoice(BigDecimal.TEN, card);
 
         final var request = RefundRequestBuilder.build(cardCreditTransaction.getAmount(), "MD606");
@@ -131,7 +132,6 @@ class RefundControllerTest extends E2eApiTest {
         Card card = cardCreator.newCard();
         Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
         deposit("10", card.getAccountId());
-        await(2); // to handler async methods
         invoiceHelper.payCurrentInvoice(BigDecimal.TEN, card);
 
         final var request = RefundRequestBuilder.build(new BigDecimal(5), "MD606");
@@ -152,5 +152,52 @@ class RefundControllerTest extends E2eApiTest {
         assertThat(invoice.getTotal()).isEqualTo(new BigDecimal("-5.00"));
         assertThat(invoice.getInstallments()).hasSize(1).allMatch(Installment::isPaid);
         assertThat(invoice.getCredits()).hasSize(2).anyMatch(InvoiceCredit::isRefund).anyMatch(InvoiceCredit::isPayment);
+    }
+
+    @Test
+    @WithEstablishmentUser(id = "amazon")
+    @RegisterEstablishment(id = "amazon")
+    void shouldThrowErrorWhenAmountToRefundIsHigherThanTransaction() throws Exception {
+        Card card = cardCreator.newCard();
+        Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
+
+        final var request = RefundRequestBuilder.build(new BigDecimal(10000), "MD606");
+
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(REFUND_AMOUNT_INVALID.getCode())));
+    }
+
+    @Test
+    @WithEstablishmentUser(id = "amazon")
+    @RegisterEstablishment(id = "amazon")
+    void shouldThrowErrorWhenTryFullRefundPlanWithPartialRefunds() throws Exception {
+        Card card = cardCreator.newCard();
+        Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
+        partialRefun(cardCreditTransaction.getId(), 5);
+        final var request = RefundRequestBuilder.build(BigDecimal.TEN, "MD606");
+
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INSTALLMENTPLAN_PARTIAL_REFUNDED.getCode())));
+    }
+
+    @Test
+    @WithEstablishmentUser(id = "amazon")
+    @RegisterEstablishment(id = "amazon")
+    void shouldThrowErrorWhenAmountToRefundIsHigherThanAvailableToRefund() throws Exception {
+        Card card = cardCreator.newCard();
+        Transaction cardCreditTransaction = cardHelper.doCreditPayment(BigDecimal.TEN, "amazon", card);
+        partialRefun(cardCreditTransaction.getId(), 5);
+        final var request = RefundRequestBuilder.build(7, "MD606"); // 7 + 5 = 12 - higher than total (10)
+
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INSTALLMENTPLAN_PARTIAL_REFUND_EXCEEDED.getCode())));
+    }
+
+    void partialRefun(String tId, double amount) throws Exception {
+        post(URL, tId, "/refund", RefundRequestBuilder.build(amount, "whatever"))
+                .andExpect(status().isOk());
     }
 }
