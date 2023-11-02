@@ -25,19 +25,19 @@ public class BankStatementFactory {
         return finders.stream()
                 .filter(f -> f.supports(transaction.getDebit().getOrigin()))
                 .findFirst()
-                .orElseThrow(BankStatementFinderNotFoundException::new);
+                .orElseThrow(() -> new BankStatementFinderNotFoundException(transaction.getDebit().getOrigin().name()));
     }
 
     private BankStatementFinder getCreditFinder(Transaction transaction) {
         return finders.stream()
                 .filter(f -> f.supports(transaction.getCredit().getDestination()))
                 .findFirst()
-                .orElseThrow(BankStatementFinderNotFoundException::new);
+                .orElseThrow(() -> new BankStatementFinderNotFoundException(transaction.getCredit().getDestination().name()));
     }
 
     private static class BankStatementFinderNotFoundException extends RuntimeException {
-        public BankStatementFinderNotFoundException() {
-            super("No strategies were found for Bank Statement Finder");
+        public BankStatementFinderNotFoundException(String s) {
+            super("No strategies were found for Bank Statement Finder for " + s);
         }
     }
 }

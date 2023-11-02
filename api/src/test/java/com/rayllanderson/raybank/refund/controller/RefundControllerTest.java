@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.refund.controller;
 
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.e2e.E2ETest;
 import com.rayllanderson.raybank.e2e.builders.RefundRequestBuilder;
@@ -22,6 +23,7 @@ import java.math.BigDecimal;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_PARTIAL_REFUNDED;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_PARTIAL_REFUND_EXCEEDED;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.INSTALLMENTPLAN_REFUNDED;
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.REFUND_AMOUNT_HIGHER;
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.REFUND_AMOUNT_INVALID;
 import static com.rayllanderson.raybank.utils.Await.await;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -255,6 +257,88 @@ class RefundControllerTest extends E2eApiTest {
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INSTALLMENTPLAN_PARTIAL_REFUND_EXCEEDED.getCode())));
+    }
+
+    @Test
+    @WithEstablishmentUser(id = "amazon")
+    @RegisterEstablishment(id = "amazon")
+    void shouldFullRefundCardDebitTransaction() throws Exception {
+        Card card = cardCreator.newCard();
+        deposit("10", card.getAccountId());
+        Transaction cardCreditTransaction = cardHelper.doDebitPayment(BigDecimal.TEN, "amazon", card);
+        final var request = RefundRequestBuilder.build(cardCreditTransaction.getAmount(), "MD606");
+
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transaction_id", notNullValue()))
+                .andExpect(jsonPath("$.amount", equalTo(10.0)));
+
+        await(2); // to handler async methods
+
+        final var establishmentAccount = bankAccountRepository.findById("amazon").get();
+        assertThat(establishmentAccount.getBalance()).isZero();
+        assertThatTransactionsFromAccount(establishmentAccount.getId()).hasSize(2);
+        assertThatStatementsFromAccount(establishmentAccount.getId()).hasSize(2);
+        final BankAccount userAccountUpdated = bankAccountRepository.findById(card.getAccountId()).get();
+        assertThat(userAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
+        assertThatTransactionsFromAccount(card.getAccountId()).hasSize(2);
+        assertThatStatementsFromAccount(card.getAccountId()).hasSize(2);
+    }
+
+    @Test
+    @WithEstablishmentUser(id = "amazon")
+    @RegisterEstablishment(id = "amazon")
+    void shouldPartialRefundCardDebitTransaction() throws Exception {
+        Card card = cardCreator.newCard();
+        deposit("10", card.getAccountId());
+        Transaction cardCreditTransaction = cardHelper.doDebitPayment(BigDecimal.TEN, "amazon", card);
+        final var request = RefundRequestBuilder.build(new BigDecimal(5), "MD606");
+
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transaction_id", notNullValue()))
+                .andExpect(jsonPath("$.amount", equalTo(5)));
+
+        await(2); // to handler async methods
+
+        final BankAccount establishmentAccount = bankAccountRepository.findById("amazon").get();
+        assertThat(establishmentAccount.getBalance()).isEqualTo(new BigDecimal("5.00"));
+        assertThatTransactionsFromAccount(establishmentAccount.getId()).hasSize(2);
+        assertThatStatementsFromAccount(establishmentAccount.getId()).hasSize(2);
+        final BankAccount userAccountUpdated = bankAccountRepository.findById(card.getAccountId()).get();
+        assertThat(userAccountUpdated.getBalance()).isEqualTo(new BigDecimal("5.00"));
+        assertThatTransactionsFromAccount(card.getAccountId()).hasSize(2);
+        assertThatStatementsFromAccount(card.getAccountId()).hasSize(2);
+    }
+
+    @Test
+    @WithEstablishmentUser(id = "amazon")
+    @RegisterEstablishment(id = "amazon")
+    void shouldThrowErrorWhenTryFullRefundDebitTransactionWithPartialRefunds() throws Exception {
+        Card card = cardCreator.newCard();
+        deposit("10", card.getAccountId());
+        Transaction cardCreditTransaction = cardHelper.doDebitPayment(BigDecimal.TEN, "amazon", card);
+        doRefund(cardCreditTransaction.getId(), 5);
+        final var request = RefundRequestBuilder.build(BigDecimal.TEN, "MD606");
+
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(REFUND_AMOUNT_HIGHER.getCode())));
+    }
+
+    @Test
+    @WithEstablishmentUser(id = "amazon")
+    @RegisterEstablishment(id = "amazon")
+    void shouldThrowErrorWhenDebitTransactionIsAlreadyRefundedAndTryFullRefund() throws Exception {
+        Card card = cardCreator.newCard();
+        deposit("10", card.getAccountId());
+        Transaction cardCreditTransaction = cardHelper.doDebitPayment(BigDecimal.TEN, "amazon", card);
+        doRefund(cardCreditTransaction.getId(), cardCreditTransaction.getAmount()); //full refund
+        final var request = RefundRequestBuilder.build(10, "MD606");
+
+        post(URL, cardCreditTransaction.getId(), "/refund", request)
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(REFUND_AMOUNT_HIGHER.getCode())));
     }
 
     void doRefund(String tId, BigDecimal amount) throws Exception {

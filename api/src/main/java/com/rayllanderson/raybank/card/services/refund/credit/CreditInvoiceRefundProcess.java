@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.services.refund;
+package com.rayllanderson.raybank.card.services.refund.credit;
 
 import com.rayllanderson.raybank.invoice.facade.CreditInvoiceFacade;
 import com.rayllanderson.raybank.invoice.facade.CreditInvoiceFacadeInputMapper;

@@ -58,7 +58,8 @@ public enum RaybankExceptionReason {
     USER_NOT_FOUND("User not found", "UNF404"),
     USERNAME_TAKEN("Username is already taken", "UET422"),
     TRANSACTION_NOT_FOUND("Transaction not found", "TNF404"),
-    REFUND_AMOUNT_INVALID("The refund amount is higher than transaction amount", "RAI422");
+    REFUND_AMOUNT_INVALID("The refund amount is higher than transaction amount", "RAI422"),
+    REFUND_AMOUNT_HIGHER("The refund amount sum is higher than amount refunded", "RAH422");
 
     private final String description;
     private final String code;

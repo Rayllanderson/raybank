@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.services.refund;
+package com.rayllanderson.raybank.card.services.refund.credit;
 
 import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacade;
 import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInput;
@@ -16,7 +16,7 @@ class DebitEstablishmentRefundProcess implements RefundCardProcess {
 
     @Override
     public void refund(Transaction transaction, BigDecimal amount) {
-        final var debitEstablishmentInput = DebitAccountFacadeInput.fromRefundCardCredit(transaction, amount);
+        final var debitEstablishmentInput = DebitAccountFacadeInput.refundCardPayment(transaction, amount);
         debitAccountFacade.process(debitEstablishmentInput);
     }
 }

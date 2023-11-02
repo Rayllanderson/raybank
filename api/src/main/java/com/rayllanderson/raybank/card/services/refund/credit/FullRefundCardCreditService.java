@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.card.services.refund;
+package com.rayllanderson.raybank.card.services.refund.credit;
 
 import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
 import com.rayllanderson.raybank.installment.services.refund.FullRefundInsallmentService;

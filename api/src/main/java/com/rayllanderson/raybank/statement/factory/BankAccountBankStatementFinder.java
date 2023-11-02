@@ -35,6 +35,6 @@ public class BankAccountBankStatementFinder implements BankStatementFinder {
 
     @Override
     public boolean supports(Destination destination) {
-        return Destination.ACCOUNT.equals(destination) || Destination.ESTABLISHMENT_ACCOUNT.equals(destination);
+        return Destination.ACCOUNT.equals(destination) || Destination.ESTABLISHMENT_ACCOUNT.equals(destination) || Destination.DEBIT_CARD.equals(destination);
     }
 }

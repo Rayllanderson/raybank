@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.refund.controller;
 
 import com.rayllanderson.raybank.refund.service.ProcessRefundInput;
 import com.rayllanderson.raybank.refund.service.ProceessRefundService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,9 +21,9 @@ public class RefundController {
     private final ProceessRefundService refundPaymentService;
 
     @PostMapping("/{transactionId}/refund")
-    public ResponseEntity<RefundResponse> find(@AuthenticationPrincipal Jwt jwt,
-                                  @PathVariable String transactionId,
-                                  @RequestBody RefundRequest request) {
+    public ResponseEntity<RefundResponse> find(@Valid @RequestBody RefundRequest request,
+                                               @PathVariable String transactionId,
+                                               @AuthenticationPrincipal Jwt jwt) {
 
         final var input = new ProcessRefundInput(transactionId, request.getAmount(), request.getReason());
         final var output = refundPaymentService.process(input);

@@ -49,14 +49,14 @@ public class DebitAccountFacadeInput {
     }
 
     public static DebitAccountFacadeInput debitCardPayment(final CardPaymentInput input, final Card card) {
-        final var destination = new Destination(input.getEstablishmentId(), Type.ACCOUNT);
+        final var destination = new Destination(input.getEstablishmentId(), Type.ESTABLISHMENT_ACCOUNT);
         final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.DEBIT_CARD);
         return new DebitAccountFacadeInput(card.getAccountId(), input.getAmount(), input.getDescription(), debitTransaction, destination);
     }
 
-    public static DebitAccountFacadeInput fromRefundCardCredit(Transaction transaction, BigDecimal amount) {
-        final var destination = new Destination(transaction.getDebit().getId(), Type.CREDIT_CARD);
-        final var debitTransaction = new DebitTransaction(transaction.getId(), TransactionType.REFUND, TransactionMethod.CREDIT_CARD);
+    public static DebitAccountFacadeInput refundCardPayment(Transaction transaction, BigDecimal amount) {
+        final var destination = new Destination(transaction.getDebit().getId(), Type.valueOf(transaction.getMethod().name()));
+        final var debitTransaction = new DebitTransaction(transaction.getId(), TransactionType.REFUND, transaction.getMethod());
         return new DebitAccountFacadeInput(transaction.getCredit().getId(), amount, debitTransaction, destination);
     }
 

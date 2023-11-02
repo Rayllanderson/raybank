@@ -14,6 +14,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
     Optional<Transaction> findByIdAndAccountId(String id, String accountId);
     Optional<Transaction> findByReferenceIdAndAccountId(String referenceId, String accountId);
     List<Transaction> findAllByAccountId(String accountId);
+    List<Transaction> findAllByReferenceId(String referenceId);
+    List<Transaction> findAllByReferenceIdAndType(String referenceId, TransactionType type);
     List<Transaction> findAllByAccountIdAndMethodIn(String accountId, List<TransactionMethod> methods);
     List<Transaction> findAllByAccountIdAndMethodNotIn(String accountId, List<TransactionMethod> methods);
     List<Transaction> findAllByAccountIdAndCreditDestinationAndType(String accountId, Credit.Destination destination, TransactionType type);

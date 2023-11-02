@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.bankaccount.facades.credit;
 
+import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInput;
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
@@ -7,8 +8,10 @@ import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.events.CardDebitPaymentCompletedEvent;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixReturn;
+import com.rayllanderson.raybank.shared.dtos.Destination;
 import com.rayllanderson.raybank.shared.dtos.Origin;
 import com.rayllanderson.raybank.shared.dtos.Type;
+import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.models.TransactionMethod;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
 import lombok.AllArgsConstructor;
@@ -46,6 +49,11 @@ public class CreditAccountFacadeInput {
     public static CreditAccountFacadeInput createFromDebitCardPayment(CardDebitPaymentCompletedEvent event) {
         final var origin = new Origin(event.getCardId(), Type.DEBIT_CARD, event.getTransactionId());
         return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
+    }
+
+    public static CreditAccountFacadeInput refundCardPayment(Transaction transaction, String debitTransactionId, BigDecimal amount) {
+        final var origin = new Origin(transaction.getCredit().getId(), Type.ESTABLISHMENT_ACCOUNT, debitTransactionId);
+        return new CreditAccountFacadeInput(transaction.getDebit().getId(), amount, origin, TransactionType.REFUND, TransactionMethod.DEBIT_CARD);
     }
 
     public static CreditAccountFacadeInput from(BoletoCreditInput boleto) {

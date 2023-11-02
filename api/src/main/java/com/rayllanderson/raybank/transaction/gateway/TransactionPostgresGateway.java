@@ -47,6 +47,16 @@ public class TransactionPostgresGateway implements TransactionGateway {
     }
 
     @Override
+    public List<Transaction> findAllByReferenceId(String referenceId) {
+        return transactionRepository.findAllByReferenceId(referenceId);
+    }
+
+    @Override
+    public List<Transaction> findAllByReferenceIdAndType(String referenceId, TransactionType type) {
+        return transactionRepository.findAllByReferenceIdAndType(referenceId, type);
+    }
+
+    @Override
     public List<Transaction> findAllByAccountIdAndMethodNotIn(String accountId, List<TransactionMethod> methods) {
         return transactionRepository.findAllByAccountIdAndMethodNotIn(accountId, methods);
     }
