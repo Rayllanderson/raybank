@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 public class PixReturnResponse {
     private String transactionId;
+    private String transactionType;
     private String e2eId;
     private String originalE2eId;
     private Debit debit;

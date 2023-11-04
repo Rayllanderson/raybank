@@ -6,8 +6,10 @@ import com.rayllanderson.raybank.contact.gateway.ContactGateway;
 import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.installment.repository.InstallmentPlanGateway;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
+import com.rayllanderson.raybank.pix.controllers.pixreturn.PixReturnRequest;
 import com.rayllanderson.raybank.pix.controllers.qrcode.generate.GenerateQrCodeRequest;
 import com.rayllanderson.raybank.pix.gateway.PixGateway;
+import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.statement.gateway.BankStatementGateway;
 import com.rayllanderson.raybank.statement.models.BankStatement;
@@ -129,5 +131,18 @@ public class MethodSecurityChecker {
         if (accountId.equals(plan.getAccountId()))
             return true;
         throw NotFoundException.withFormatted(INSTALLMENTPLAN_NOT_FOUND, "Parcelamento %s não encontrado", planId);
+    }
+
+    public boolean checkPixReturn(PixReturnRequest request, Jwt jwt) {
+        final var accountId = getAccountIdFrom(jwt);
+
+        if (request == null || accountId == null) return false;
+
+        try {
+            Pix pix = pixGateway.findPixById(request.getPixId());
+            return pix.getCredit().sameAccount(accountId);
+        } catch (final NotFoundException e) {
+            return false;
+        }
     }
 }

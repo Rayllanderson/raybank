@@ -1,6 +1,8 @@
 package com.rayllanderson.raybank.pix.controllers.pixreturn;
 
 import com.rayllanderson.raybank.core.security.keycloak.JwtUtils;
+import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredPixOwner;
 import com.rayllanderson.raybank.pix.service.pixreturn.PixReturnMapper;
 import com.rayllanderson.raybank.pix.service.pixreturn.PixReturnService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,12 +27,13 @@ public class PixReturnController {
     private final PixReturnService service;
 
     @PostMapping
+    @RequiredPixOwner
     public ResponseEntity<PixReturnResponse> doReturn(@RequestBody @Valid PixReturnRequest request,
                                                       @AuthenticationPrincipal Jwt jwt) {
         final var accountId = JwtUtils.getAccountIdFrom(jwt);
 
         final var response = service.doReturn(mapper.from(request, accountId));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.from(response));
+        return ResponseEntity.ok().body(mapper.from(response));
     }
 }

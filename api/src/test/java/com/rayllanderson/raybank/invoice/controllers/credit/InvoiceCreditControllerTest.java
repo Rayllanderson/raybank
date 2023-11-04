@@ -12,6 +12,7 @@ import com.rayllanderson.raybank.invoice.helper.InvoiceListHelper;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -104,6 +105,14 @@ class InvoiceCreditControllerTest extends E2eApiTest {
         post(String.format(URL, card.getAccountId(), card.getId(), cardInvoice.getId()), request)
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INVOICE_NOT_PAYABLE.getCode())));
+    }
+
+    @Test
+    @WithAnonymousUser
+    void shouldReturn401WhenAnonymousUserTryToAccessEndpoint() throws Exception {
+
+        post(String.format(URL, 123, 123, 123), null)
+                .andExpect(status().isUnauthorized());
     }
 
     private Invoice getSeccondInvoice(String cardId) {

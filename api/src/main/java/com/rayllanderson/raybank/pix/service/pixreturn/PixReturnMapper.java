@@ -22,5 +22,6 @@ public interface PixReturnMapper {
 
     PixReturnInput from(PixReturnRequest request, String returningAccountId);
 
+    @Mapping(target = "transactionType", constant = "PIX RETURN")
     PixReturnResponse from(PixReturnOutput pixReturnOutput);
 }
