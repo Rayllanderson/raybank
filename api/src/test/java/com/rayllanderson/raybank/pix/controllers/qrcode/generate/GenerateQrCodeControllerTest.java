@@ -44,7 +44,7 @@ class GenerateQrCodeControllerTest extends E2eApiTest {
 
         post(URL, request)
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(RaybankExceptionReason.PIX_KEY_NOT_FOUND.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(RaybankExceptionReason.PIX_KEY_NOT_FOUND.getCode())));
     }
 
     @Test

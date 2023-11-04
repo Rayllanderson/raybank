@@ -95,7 +95,7 @@ class CardPaymentControllerTest extends E2eApiTest {
 
         post("/api/v1/external/cards/payment", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INSUFFICIENT_CARD_LIMIT.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(INSUFFICIENT_CARD_LIMIT.getCode())));
 
         BankAccount establishmentAccount = bankAccountRepository.findById(Constants.ESTABLISHMENT_ID).get();
         assertThat(establishmentAccount.getBalance()).isZero();
@@ -110,7 +110,7 @@ class CardPaymentControllerTest extends E2eApiTest {
 
         post("/api/v1/external/cards/payment", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INSUFFICIENT_ACCOUNT_BALANCE.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(INSUFFICIENT_ACCOUNT_BALANCE.getCode())));
 
         BankAccount establishmentAccount = bankAccountRepository.findById(Constants.ESTABLISHMENT_ID).get();
         assertThat(establishmentAccount.getBalance()).isZero();
@@ -125,7 +125,7 @@ class CardPaymentControllerTest extends E2eApiTest {
 
         post("/api/v1/external/cards/payment", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(ESTABLISHMENT_NOT_ACTIVE.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(ESTABLISHMENT_NOT_ACTIVE.getCode())));
 
         BankAccount establishmentAccount = bankAccountRepository.findById(Constants.ESTABLISHMENT_ID).get();
         assertThat(establishmentAccount.getBalance()).isZero();

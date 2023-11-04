@@ -15,6 +15,7 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 
 import java.math.BigDecimal;
 
+import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.PIX_RETURN_EXCEEDED;
 import static com.rayllanderson.raybank.utils.Await.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -95,6 +96,34 @@ class PixReturnControllerTest extends E2eApiTest {
     }
 
     @Test
+    @WithNormalUser(id = "frieren")
+    void shouldThrowErrorWhenTryToReturnAmountHigherThanPixTransaction() throws Exception {
+        final PixKey kaguyaKey = pixKeyCreator.newRandomKeyAndCreateAccountAndDeposit("kaguya", "10");
+        final PixKey frierenKey = pixKeyCreator.newRandomKeyAndCreateAccount("frieren");
+        PixTransferOutput kaguyaPixTransfer = pixHelper.doTransfer(kaguyaKey, frierenKey, 10, "Toma ae");
+        final var request = PixReturnRequestBuilder.build(kaguyaPixTransfer.getE2eId(), 1000, "nao quero mais");
+
+        post(URL, request)
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(PIX_RETURN_EXCEEDED.getCode())));
+    }
+
+    @Test
+    @WithNormalUser(id = "frieren")
+    void shouldThrowErrorWhenTotalReturnExceedsTotal() throws Exception {
+        final PixKey kaguyaKey = pixKeyCreator.newRandomKeyAndCreateAccountAndDeposit("kaguya", "10");
+        final PixKey frierenKey = pixKeyCreator.newRandomKeyAndCreateAccount("frieren");
+        PixTransferOutput kaguyaPixTransfer = pixHelper.doTransfer(kaguyaKey, frierenKey, 10, "Toma ae");
+        doReturn(kaguyaPixTransfer.getE2eId(), 5);
+        doReturn(kaguyaPixTransfer.getE2eId(), 4);
+        final var request = PixReturnRequestBuilder.build(kaguyaPixTransfer.getE2eId(), 10, "nao quero mais");
+
+        post(URL, request)
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(PIX_RETURN_EXCEEDED.getCode())));
+    }
+
+    @Test
     @WithNormalUser(id = "kaguya")
     void shouldThrowErrorWhenTryingToReturnSomeoneElsesPix() throws Exception {
         final PixKey kaguyaKey = pixKeyCreator.newRandomKeyAndCreateAccountAndDeposit("kaguya", "10");
@@ -122,5 +151,12 @@ class PixReturnControllerTest extends E2eApiTest {
 
         post(URL, null)
                 .andExpect(status().isUnauthorized());
+    }
+
+    private void doReturn(String e2eId, double amount) throws Exception {
+        final var request = PixReturnRequestBuilder.build(e2eId, amount, "nao quero mais");
+
+        post(URL, request)
+                .andExpect(status().isOk());
     }
 }

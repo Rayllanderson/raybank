@@ -56,7 +56,7 @@ class BankBankAccountTransferControllerTest extends E2eApiTest {
 
         post("/api/v1/internal/accounts", kaguyaAccount.getId(), "transfer", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(DEBIT_SAME_ACCOUNT.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(DEBIT_SAME_ACCOUNT.getCode())));
 
         BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaAccount.getId()).get();
         assertThat(kaguyaAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));

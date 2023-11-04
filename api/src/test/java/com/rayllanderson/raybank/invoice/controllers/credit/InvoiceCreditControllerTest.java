@@ -104,7 +104,7 @@ class InvoiceCreditControllerTest extends E2eApiTest {
 
         post(String.format(URL, card.getAccountId(), card.getId(), cardInvoice.getId()), request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INVOICE_NOT_PAYABLE.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(INVOICE_NOT_PAYABLE.getCode())));
     }
 
     @Test

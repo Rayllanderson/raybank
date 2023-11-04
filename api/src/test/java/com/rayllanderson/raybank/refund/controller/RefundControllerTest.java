@@ -232,7 +232,7 @@ class RefundControllerTest extends E2eApiTest {
 
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(REFUND_AMOUNT_INVALID.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(REFUND_AMOUNT_INVALID.getCode())));
     }
 
     @Test
@@ -246,7 +246,7 @@ class RefundControllerTest extends E2eApiTest {
 
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INSTALLMENTPLAN_REFUNDED.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(INSTALLMENTPLAN_REFUNDED.getCode())));
     }
 
     @Test
@@ -260,7 +260,7 @@ class RefundControllerTest extends E2eApiTest {
 
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INSTALLMENTPLAN_REFUNDED.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(INSTALLMENTPLAN_REFUNDED.getCode())));
     }
 
     @Test
@@ -274,7 +274,7 @@ class RefundControllerTest extends E2eApiTest {
 
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INSTALLMENTPLAN_PARTIAL_REFUNDED.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(INSTALLMENTPLAN_PARTIAL_REFUNDED.getCode())));
     }
 
     @Test
@@ -288,7 +288,7 @@ class RefundControllerTest extends E2eApiTest {
 
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(INSTALLMENTPLAN_PARTIAL_REFUND_EXCEEDED.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(INSTALLMENTPLAN_PARTIAL_REFUND_EXCEEDED.getCode())));
     }
 
     @Test
@@ -385,7 +385,7 @@ class RefundControllerTest extends E2eApiTest {
 
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(REFUND_AMOUNT_HIGHER.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(REFUND_AMOUNT_HIGHER.getCode())));
     }
 
     @Test
@@ -400,7 +400,7 @@ class RefundControllerTest extends E2eApiTest {
 
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(REFUND_AMOUNT_HIGHER.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(REFUND_AMOUNT_HIGHER.getCode())));
     }
 
 

@@ -67,7 +67,7 @@ class PixTransferControllerTest extends E2eApiTest {
 
         post(URL, request)
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.ray_bank_error.code", equalTo(DEBIT_SAME_ACCOUNT.getCode())));
+                .andExpect(jsonPath("$.raybank_error.code", equalTo(DEBIT_SAME_ACCOUNT.getCode())));
 
         BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaKey.getAccountId()).get();
         assertThat(kaguyaAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));

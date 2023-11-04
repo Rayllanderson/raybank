@@ -22,7 +22,7 @@ public class StandardError {
     protected String title;
     protected Integer status;
     protected String message;
-    protected RayBankError rayBankError;
+    protected RayBankError raybankError;
     protected LocalDateTime timestamp;
     protected String path;
     protected List<FieldError> fieldErrors;
