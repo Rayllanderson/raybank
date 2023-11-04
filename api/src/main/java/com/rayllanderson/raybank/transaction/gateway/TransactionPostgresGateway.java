@@ -6,7 +6,9 @@ import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.models.TransactionMethod;
 import com.rayllanderson.raybank.transaction.models.TransactionType;
 import com.rayllanderson.raybank.transaction.repositories.TransactionRepository;
+import io.github.rayexpresslibraries.ddd.domain.pagination.Pagination;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,6 +30,12 @@ public class TransactionPostgresGateway implements TransactionGateway {
     @Override
     public List<Transaction> findAllByAccountId(String accountId) {
         return transactionRepository.findAllByAccountId(accountId);
+    }
+
+    @Override
+    public Pagination<Transaction> findAllByAccountId(String accountId, Pageable pageable) {
+        final var page = transactionRepository.findAllByAccountId(accountId, pageable);
+        return new Pagination<>(page.getNumber(), page.getSize(), page.getTotalElements(), page.getContent());
     }
 
     @Override

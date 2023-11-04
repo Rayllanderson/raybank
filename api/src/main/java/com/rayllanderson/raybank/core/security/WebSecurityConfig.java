@@ -29,6 +29,7 @@ public class WebSecurityConfig {
 
     private static final String ROLE_USER = "USER";
     private static final String ROLE_ESTABLISMENT = "ESTABLISHMENT";
+    private static final String ROLE_ADMIN = "ADMIN";
     private static final String ROLE_ESTABLISMENT_REGISTER = "ESTABLISHMENT_REGISTER";
     private static final String ROLE_USER_REGISTER = "USER_REGISTER";
 
@@ -47,6 +48,7 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/establishments/register")).hasRole(ROLE_ESTABLISMENT_REGISTER)
                         .requestMatchers(antMatcher("/api/v1/internal/**")).hasRole(ROLE_USER)
                         .requestMatchers(antMatcher("/api/v1/external/**")).hasRole(ROLE_ESTABLISMENT)
+                        .requestMatchers(antMatcher("/api/v1/admin/**")).hasRole(ROLE_ADMIN)
                         .requestMatchers(antMatcher("/swagger-ui/*")).denyAll()
                         .requestMatchers(antMatcher("/v3/api-docs/**")).denyAll()
                         .anyRequest().authenticated())

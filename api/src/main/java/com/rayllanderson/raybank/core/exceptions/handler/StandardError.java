@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,6 +49,10 @@ public class StandardError {
 
     public static StandardError from(HttpRequestMethodNotSupportedException e, String path) {
         HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
+        return new StandardError(status.name(), status.value(), e.getMessage(), null, LocalDateTime.now(), path, emptyList());
+    }
+
+    public static StandardError from(Exception e, HttpStatus status, String path) {
         return new StandardError(status.name(), status.value(), e.getMessage(), null, LocalDateTime.now(), path, emptyList());
     }
 
