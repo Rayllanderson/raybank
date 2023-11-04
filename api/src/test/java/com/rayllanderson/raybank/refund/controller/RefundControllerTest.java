@@ -10,6 +10,7 @@ import com.rayllanderson.raybank.e2e.helpers.CardHelper;
 import com.rayllanderson.raybank.e2e.helpers.InvoiceHelper;
 import com.rayllanderson.raybank.e2e.register.RegisterEstablishment;
 import com.rayllanderson.raybank.e2e.security.WithEstablishmentUser;
+import com.rayllanderson.raybank.e2e.security.WithNormalUser;
 import com.rayllanderson.raybank.installment.models.Installment;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.models.InvoiceCredit;
@@ -17,6 +18,7 @@ import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 
 import java.math.BigDecimal;
 
@@ -399,6 +401,23 @@ class RefundControllerTest extends E2eApiTest {
         post(URL, cardCreditTransaction.getId(), "/refund", request)
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.ray_bank_error.code", equalTo(REFUND_AMOUNT_HIGHER.getCode())));
+    }
+
+
+    @Test
+    @WithNormalUser
+    void shouldReturn403WhenNormalUserTryToAccessRefundEndpoint() throws Exception {
+
+        post(URL, null)
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithAnonymousUser
+    void shouldReturn401WhenAnonymousUserTryToAccessRefundEndpoint() throws Exception {
+
+        post(URL, null)
+                .andExpect(status().isUnauthorized());
     }
 
     void doRefund(String tId, BigDecimal amount) throws Exception {

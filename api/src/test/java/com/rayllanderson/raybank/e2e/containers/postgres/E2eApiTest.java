@@ -60,6 +60,10 @@ public abstract class E2eApiTest implements HttpPeform, StatementValidator, Cont
         accountHelper.deposit(new BigDecimal(value), accountId);
     }
 
+    protected void deposit(double value, String accountId) {
+        accountHelper.deposit(new BigDecimal(value), accountId);
+    }
+
     @Override
     public ContactRepository getContactRepository() {
         return this.contactRepository;
