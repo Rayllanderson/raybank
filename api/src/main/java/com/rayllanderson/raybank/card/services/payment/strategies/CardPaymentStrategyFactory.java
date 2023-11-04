@@ -19,4 +19,10 @@ public class CardPaymentStrategyFactory {
                 .findFirst()
                 .orElseThrow(CardPaymentStrategyNotFoundException::new);
     }
+
+    public static class CardPaymentStrategyNotFoundException extends RuntimeException {
+        public CardPaymentStrategyNotFoundException() {
+            super("No strategies were found for card payment");
+        }
+    }
 }

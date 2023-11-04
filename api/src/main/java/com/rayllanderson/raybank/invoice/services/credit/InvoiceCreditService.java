@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static com.rayllanderson.raybank.invoice.constants.InvoiceCreditDescriptionConstant.INVOICE_PAYMENT_DESCRIPTION;
+import static com.rayllanderson.raybank.shared.constants.DescriptionConstant.PAYMENT_DESCRIPTION;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +59,7 @@ public class InvoiceCreditService {
     }
 
     private Transaction processCredit(BigDecimal amount, final Invoice invoiceToPay, Transaction debitTransaction) {
-        final var creditInput = new ProcessInvoiceCredit(amount, InvoiceCreditType.INVOICE_PAYMENT, INVOICE_PAYMENT_DESCRIPTION, debitTransaction.getId(), LocalDateTime.now());
+        final var creditInput = new ProcessInvoiceCredit(amount, InvoiceCreditType.INVOICE_PAYMENT, PAYMENT_DESCRIPTION, debitTransaction.getId(), LocalDateTime.now());
         invoiceToPay.processCredit(creditInput);
 
         eventPublisher.publish(new InvoicePaidEvent(invoiceToPay, debitTransaction));

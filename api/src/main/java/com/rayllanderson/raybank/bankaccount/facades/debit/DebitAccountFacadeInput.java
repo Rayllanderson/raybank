@@ -4,6 +4,7 @@ import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.card.models.Card;
 import com.rayllanderson.raybank.card.services.payment.CardPaymentInput;
 import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditInput;
+import com.rayllanderson.raybank.refund.util.RefundDescriptionUtil;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixReturn;
 import com.rayllanderson.raybank.shared.dtos.Destination;
@@ -57,7 +58,7 @@ public class DebitAccountFacadeInput {
     public static DebitAccountFacadeInput refundCardPayment(Transaction transaction, BigDecimal amount) {
         final var destination = new Destination(transaction.getDebit().getId(), Type.valueOf(transaction.getMethod().name()));
         final var debitTransaction = new DebitTransaction(transaction.getId(), TransactionType.REFUND, transaction.getMethod());
-        return new DebitAccountFacadeInput(transaction.getCredit().getId(), amount, debitTransaction, destination);
+        return new DebitAccountFacadeInput(transaction.getCredit().getId(), amount, RefundDescriptionUtil.fromOriginalTransaction(transaction.getDescription()), debitTransaction, destination);
     }
 
     public static DebitAccountFacadeInput from(String accountId, Boleto boleto) {

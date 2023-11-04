@@ -2,7 +2,7 @@ package com.rayllanderson.raybank.transaction.models;
 
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
 import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountInput;
-import com.rayllanderson.raybank.invoice.util.InvoiceCreditDescriptionUtil;
+import com.rayllanderson.raybank.refund.util.RefundDescriptionUtil;
 import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.rayllanderson.raybank.invoice.constants.InvoiceCreditDescriptionConstant.INVOICE_PAYMENT_DESCRIPTION;
+import static com.rayllanderson.raybank.shared.constants.DescriptionConstant.PAYMENT_DESCRIPTION;
 
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
@@ -115,7 +115,7 @@ public class Transaction {
         return Transaction.builder()
                 .amount(MoneyUtils.from(amount))
                 .moment(LocalDateTime.now())
-                .description(INVOICE_PAYMENT_DESCRIPTION)
+                .description(PAYMENT_DESCRIPTION)
                 .financialMovement(FinancialMovement.CREDIT)
                 .debit(debit)
                 .credit(credit)
@@ -132,7 +132,7 @@ public class Transaction {
         return Transaction.builder()
                 .amount(amount)
                 .moment(LocalDateTime.now())
-                .description(InvoiceCreditDescriptionUtil.fromRefund(debitTransaction.getDescription()))
+                .description(RefundDescriptionUtil.fromOriginalTransaction(debitTransaction.getDescription()))
                 .financialMovement(FinancialMovement.CREDIT)
                 .type(TransactionType.REFUND)
                 .debit(debit)
