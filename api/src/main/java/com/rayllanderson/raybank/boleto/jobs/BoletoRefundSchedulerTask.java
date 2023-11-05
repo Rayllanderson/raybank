@@ -23,7 +23,7 @@ public class BoletoRefundSchedulerTask {
     private final BoletoRefundService boletoRefundService;
 
     @Async
-    @Scheduled(fixedDelayString = "${boleto.scheduler.expirate}", timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedDelayString = "${boleto.scheduler.refund}", timeUnit = TimeUnit.SECONDS)
     @SchedulerLock(name = "BoletoRefund_ScheduleTask", lockAtLeastFor = "${boleto.lock.atLeastFor}", lockAtMostFor = "${boleto.lock.atMostFor}")
     public void process() {
         LockAssert.assertLocked();

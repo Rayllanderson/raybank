@@ -244,12 +244,10 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
     }
 
     public boolean isOpen() {
-        // || now().isBefore(closingDate)
         return this.status.equals(InvoiceStatus.OPEN);
     }
 
     protected boolean isClosed() {
-        // || isAfterOrEquals(now(), closingDate)
         return this.status.equals(InvoiceStatus.CLOSED);
     }
 

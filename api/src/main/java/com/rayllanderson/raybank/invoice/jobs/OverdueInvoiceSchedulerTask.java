@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.invoice.jobs;
 
-import com.rayllanderson.raybank.invoice.jobs.ScheduleUtil.Cron;
 import com.rayllanderson.raybank.invoice.services.scheduler.OverdueInvoiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +21,8 @@ public class OverdueInvoiceSchedulerTask {
     private final OverdueInvoiceService overdueInvoiceService;
 
     @Async
-    @Scheduled(cron = Cron.EVERY_MINUTE)
-    @SchedulerLock(name = "OverdueInvoice_ScheduleTask", lockAtLeastFor = "29S", lockAtMostFor = "30S")
+    @Scheduled(cron = "0 0 */2 * * ?") //every 2 hours starting at 00am, of every day
+    @SchedulerLock(name = "OverdueInvoice_ScheduleTask", lockAtLeastFor = "${invoice.lock.atLeastFor}", lockAtMostFor = "${invoice.lock.atMostFor}")
     public void process() {
         LockAssert.assertLocked();
 

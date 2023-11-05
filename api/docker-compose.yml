@@ -1,6 +1,30 @@
 version: '3.7'
 
 services:
+  raybank:
+    container_name: raybank
+    build:
+      dockerfile: Dockerfile
+      context: .
+    environment:
+      - SPRING_PROFILES_ACTIVE=hom
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_SCHEMA=raybank
+      - KEYCLOAK_REALM=raybank
+      - KEYCLOAK_SERVER-URL=http://keycloak:8080
+      - KEYCLOAK_CLIENT-ID=raybank-backend-create-user
+      - KEYCLOAK_CLIENT-SECRET=FNWh2lMeyqJgzDmpqnIvkIcReFepEiMP
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - raybank-network
+
   postgres:
     image: 'postgres:alpine'
     ports:
@@ -25,7 +49,7 @@ services:
       - raybank-network
 
   keycloak:
-    container_name: category_keycloak
+    container_name: keycloak
     image: quay.io/keycloak/keycloak:20.0.3
     environment:
       - KEYCLOAK_ADMIN=admin

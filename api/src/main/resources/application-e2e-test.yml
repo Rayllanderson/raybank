@@ -19,6 +19,11 @@ keycloak:
     client-secret: FNWh2lMeyqJgzDmpqnIvkIcReFepEiMP
     client-id: raybank-backend-create-user
 
+invoice:
+  lock:
+    atLeastFor: 1S
+    atMostFor: 1S
+
 #every 1 seccond
 boleto:
   lock:

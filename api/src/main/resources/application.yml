@@ -30,11 +30,14 @@ retry:
   maxAttempts: 3
   maxDelay: 1000
 
-boleto:
+invoice:
   lock:
-    atLeastFor: ${boleto.lock.atLeastFor}
-    atMostFor: ${boleto.lock.atMostFor}
-  scheduler:
-    expirate: ${boleto.scheduler.expirate}
-    process: ${boleto.scheduler.process}
-    refund: ${boleto.scheduler.refund}
+    atLeastFor: 1790S
+    atMostFor: 1790S
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.rayllanderson.raybank: ${LOGGING_LEVEL:INFO}
