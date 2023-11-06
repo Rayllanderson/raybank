@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.invoice.events.handler;
 
-import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.invoice.events.InvoiceClosedEvent;
 import com.rayllanderson.raybank.invoice.gateway.InvoiceGateway;
 import com.rayllanderson.raybank.invoice.helper.InvoiceListHelper;

@@ -5,8 +5,6 @@ import com.rayllanderson.raybank.statement.services.find.BankStatementOutput;
 import io.github.rayexpresslibraries.ddd.domain.pagination.Pagination;
 import io.github.rayexpresslibraries.ddd.domain.pagination.query.SearchQuery;
 
-import java.util.List;
-
 public enum StatementTypeParam {
     ALL{
         @Override

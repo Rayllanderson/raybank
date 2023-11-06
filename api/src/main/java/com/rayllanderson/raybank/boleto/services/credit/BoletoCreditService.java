@@ -6,7 +6,6 @@ import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.models.BoletoPaymentAttempt;
 import com.rayllanderson.raybank.boleto.models.BoletoStatus;
 import com.rayllanderson.raybank.boleto.repositories.BoletoPaymentAttemptRepository;
-import com.rayllanderson.raybank.boleto.repositories.BoletoRepository;
 import com.rayllanderson.raybank.transaction.gateway.TransactionGateway;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import lombok.RequiredArgsConstructor;

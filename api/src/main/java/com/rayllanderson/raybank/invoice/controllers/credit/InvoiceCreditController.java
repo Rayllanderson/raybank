@@ -1,9 +1,9 @@
 package com.rayllanderson.raybank.invoice.controllers.credit;
 
+import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
 import com.rayllanderson.raybank.core.security.method.RequiredInvoiceOwner;
 import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditInput;
 import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditService;
-import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

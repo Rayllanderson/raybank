@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.bankaccount.services.find;
 
 import com.rayllanderson.raybank.bankaccount.controllers.find.BankAccountDetailsResponse;
-import com.rayllanderson.raybank.bankaccount.controllers.transfer.BankAccountTransferResponse;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.invoice.events;
 
-import com.rayllanderson.raybank.shared.event.Event;
 import com.rayllanderson.raybank.invoice.models.Invoice;
+import com.rayllanderson.raybank.shared.event.Event;
 import lombok.Getter;
 
 import java.math.BigDecimal;

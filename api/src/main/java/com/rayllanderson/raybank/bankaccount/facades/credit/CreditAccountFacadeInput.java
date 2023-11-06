@@ -1,6 +1,5 @@
 package com.rayllanderson.raybank.bankaccount.facades.credit;
 
-import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInput;
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
@@ -8,7 +7,6 @@ import com.rayllanderson.raybank.card.events.CardCreditPaymentCompletedEvent;
 import com.rayllanderson.raybank.card.events.CardDebitPaymentCompletedEvent;
 import com.rayllanderson.raybank.pix.model.Pix;
 import com.rayllanderson.raybank.pix.model.PixReturn;
-import com.rayllanderson.raybank.shared.dtos.Destination;
 import com.rayllanderson.raybank.shared.dtos.Origin;
 import com.rayllanderson.raybank.shared.dtos.Type;
 import com.rayllanderson.raybank.transaction.models.Transaction;

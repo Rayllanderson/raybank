@@ -2,12 +2,8 @@ package com.rayllanderson.raybank.boleto.services.credit;
 
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.transaction.models.Transaction;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.math.BigDecimal;
 
 @Mapper(componentModel = "spring")
 public interface BoletoCreditMapper {

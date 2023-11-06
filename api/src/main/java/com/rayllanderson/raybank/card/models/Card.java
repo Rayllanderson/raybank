@@ -3,7 +3,6 @@ package com.rayllanderson.raybank.card.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import com.rayllanderson.raybank.card.events.CreditCardCreatedEvent;
-import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

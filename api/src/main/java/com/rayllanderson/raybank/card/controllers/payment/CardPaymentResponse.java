@@ -1,12 +1,10 @@
 package com.rayllanderson.raybank.card.controllers.payment;
 
 import com.rayllanderson.raybank.transaction.models.Transaction;
-import com.rayllanderson.raybank.utils.MoneyUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter

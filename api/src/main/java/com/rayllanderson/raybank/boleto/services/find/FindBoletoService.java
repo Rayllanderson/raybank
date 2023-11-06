@@ -4,7 +4,6 @@ import com.rayllanderson.raybank.boleto.factory.BeneficiaryFactory;
 import com.rayllanderson.raybank.boleto.gateway.BoletoGateway;
 import com.rayllanderson.raybank.boleto.models.Boleto;
 import com.rayllanderson.raybank.boleto.models.BoletoStatus;
-import com.rayllanderson.raybank.boleto.repositories.BoletoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

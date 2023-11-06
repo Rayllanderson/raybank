@@ -31,7 +31,6 @@ public class WebSecurityConfig {
     private static final String ROLE_ESTABLISMENT = "ESTABLISHMENT";
     private static final String ROLE_ADMIN = "ADMIN";
     private static final String ROLE_ESTABLISMENT_REGISTER = "ESTABLISHMENT_REGISTER";
-    private static final String ROLE_USER_REGISTER = "USER_REGISTER";
 
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
@@ -44,7 +43,7 @@ public class WebSecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .requestCache(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/users/register")).hasRole(ROLE_USER_REGISTER)
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/users/register")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/establishments/register")).hasRole(ROLE_ESTABLISMENT_REGISTER)
                         .requestMatchers(antMatcher("/api/v1/internal/**")).hasRole(ROLE_USER)
                         .requestMatchers(antMatcher("/api/v1/external/**")).hasRole(ROLE_ESTABLISMENT)

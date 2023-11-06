@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.boleto.jobs;
 
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditService;
-import com.rayllanderson.raybank.invoice.jobs.ScheduleUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.core.LockAssert;

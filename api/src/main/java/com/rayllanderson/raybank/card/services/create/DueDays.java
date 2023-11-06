@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.card.services.create;
 
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;
-import com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason;
 import lombok.Getter;
 
 import java.util.Arrays;

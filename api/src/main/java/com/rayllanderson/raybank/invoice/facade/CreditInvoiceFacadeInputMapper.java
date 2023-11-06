@@ -1,8 +1,8 @@
 package com.rayllanderson.raybank.invoice.facade;
 
 import com.rayllanderson.raybank.boleto.services.credit.BoletoCreditInput;
-import com.rayllanderson.raybank.shared.constants.DescriptionConstant;
 import com.rayllanderson.raybank.refund.util.RefundDescriptionUtil;
+import com.rayllanderson.raybank.shared.constants.DescriptionConstant;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

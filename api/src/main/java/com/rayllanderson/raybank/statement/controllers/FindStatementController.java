@@ -6,7 +6,6 @@ import com.rayllanderson.raybank.statement.services.find.BankStatementFinderServ
 import com.rayllanderson.raybank.statement.services.find.BankStatementMapper;
 import com.rayllanderson.raybank.statement.services.find.BankStatementOutput;
 import io.github.rayexpresslibraries.ddd.domain.pagination.Pagination;
-import io.github.rayexpresslibraries.ddd.domain.pagination.query.Search;
 import io.github.rayexpresslibraries.ddd.domain.pagination.query.SearchQuery;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

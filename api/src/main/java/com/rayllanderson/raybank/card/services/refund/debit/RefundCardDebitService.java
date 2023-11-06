@@ -5,7 +5,6 @@ import com.rayllanderson.raybank.bankaccount.facades.credit.CreditAccountFacadeI
 import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacade;
 import com.rayllanderson.raybank.bankaccount.facades.debit.DebitAccountFacadeInput;
 import com.rayllanderson.raybank.core.exceptions.InternalServerErrorException;
-import com.rayllanderson.raybank.core.exceptions.NotFoundException;
 import com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
 import com.rayllanderson.raybank.refund.service.RefundOutput;

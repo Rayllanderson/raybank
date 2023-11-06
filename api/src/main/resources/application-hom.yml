@@ -1,12 +1,3 @@
-spring:
-  jpa:
-    properties:
-      hibernate_format_sql: 'true'
-      hibernate_show_sql: 'true'
-    hibernate:
-      ddl-auto: update
-    show-sql: 'false'
-
 postgres:
   username: ${POSTGRES_USERNAME}
   password: ${POSTGRES_PASSWORD}
@@ -18,8 +9,8 @@ keycloak:
   realm: ${KEYCLOAK_REALM}
   server-url: ${KEYCLOAK_SERVER-URL}
   credentials:
-    client-secret: ${KEYCLOAK_CLIENT-ID}
-    client-id: ${KEYCLOAK_CLIENT-SECRET}
+    client-id: ${KEYCLOAK_CLIENT-ID}
+    client-secret: ${KEYCLOAK_CLIENT-SECRET}
 
 boleto:
   lock:

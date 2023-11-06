@@ -1,8 +1,8 @@
 package com.rayllanderson.raybank.invoice.events;
 
-import com.rayllanderson.raybank.shared.event.Event;
 import com.rayllanderson.raybank.invoice.models.Invoice;
 import com.rayllanderson.raybank.invoice.models.InvoiceStatus;
+import com.rayllanderson.raybank.shared.event.Event;
 import com.rayllanderson.raybank.transaction.models.Transaction;
 import com.rayllanderson.raybank.transaction.models.TransactionMethod;
 import com.rayllanderson.raybank.transaction.models.TransactionType;

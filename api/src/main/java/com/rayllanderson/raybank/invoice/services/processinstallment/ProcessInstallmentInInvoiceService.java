@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.rayllanderson.raybank.invoice.services.processinstallment.ProcessInvoiceHelper.createOpenInvoice;
@@ -77,7 +78,7 @@ public class ProcessInstallmentInInvoiceService {
                         .orElse(getSimulatedPreviousClosingDate(invoice.getOriginalDueDate(), invoiceList.getDayOfDueDate()));
 
                 final boolean isOnRange = isAfterOrEquals(installment.getDueDate(), previousInvoiceClosingDate) &&
-                        isAfterOrEquals(invoice.getClosingDate(), installment.getDueDate());
+                        installment.getDueDate().isBefore(invoice.getClosingDate());
                 if (isOnRange) {
                     invoice.addInstallment(installment);
                     installment.addInvoice(invoice);
