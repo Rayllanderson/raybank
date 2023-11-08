@@ -1,0 +1,35 @@
+spring:
+  jpa:
+    properties:
+      hibernate_format_sql: 'true'
+      hibernate_show_sql: 'true'
+    hibernate:
+      ddl-auto: create
+    show-sql: 'true'
+
+postgres:
+  username: postgres
+  password: 12345
+  schema: raybank
+
+keycloak:
+  realm: raybank
+  server-url: http://localhost:8443
+  credentials:
+    client-secret: FNWh2lMeyqJgzDmpqnIvkIcReFepEiMP
+    client-id: raybank-backend-create-user
+
+invoice:
+  lock:
+    atLeastFor: 1S
+    atMostFor: 1S
+
+#every 1 seccond
+boleto:
+  lock:
+    atLeastFor: 1S
+    atMostFor: 1S
+  scheduler:
+    expirate: 1
+    process: 1
+    refund: 1

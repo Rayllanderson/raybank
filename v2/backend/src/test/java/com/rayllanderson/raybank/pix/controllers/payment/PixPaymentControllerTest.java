@@ -1,0 +1,69 @@
+package com.rayllanderson.raybank.pix.controllers.payment;
+
+import com.rayllanderson.raybank.bankaccount.model.BankAccount;
+import com.rayllanderson.raybank.e2e.E2ETest;
+import com.rayllanderson.raybank.e2e.builders.PixPaymentRequestBuilder;
+import com.rayllanderson.raybank.e2e.containers.postgres.E2eApiTest;
+import com.rayllanderson.raybank.e2e.helpers.PixHelper;
+import com.rayllanderson.raybank.e2e.security.WithNormalUser;
+import com.rayllanderson.raybank.pix.model.key.PixKey;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+
+import java.math.BigDecimal;
+
+import static com.rayllanderson.raybank.utils.Await.await;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.startsWith;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@E2ETest
+class PixPaymentControllerTest extends E2eApiTest {
+
+    @Autowired
+    private PixHelper pixHelper;
+    private static final String URL = "/api/v1/internal/pix/payment";
+
+    @Test
+    @WithNormalUser(id = "kaguya")
+    void shouldPayUsingPixQrCode() throws Exception {
+        final PixKey kaguyaKey = pixKeyCreator.newRandomKeyAndCreateAccountAndDeposit("kaguya", "10");
+        final PixKey frierenKey = pixKeyCreator.newRandomKeyAndCreateAccount("frieren");
+        final var qrCodeOutput = pixHelper.generateQrCode(BigDecimal.TEN, frierenKey.getKey(), "tomae");
+        final var request = PixPaymentRequestBuilder.build(qrCodeOutput.getCode());
+
+        post(URL, request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.e2e_id", startsWith("E1397")))
+                .andExpect(jsonPath("$.amount", equalTo(10.0)))
+                .andExpect(jsonPath("$.debit.name", equalTo(kaguyaKey.getName())))
+                .andExpect(jsonPath("$.credit.name", equalTo(frierenKey.getName())))
+                .andExpect(jsonPath("$.credit.key", equalTo(frierenKey.getKey())))
+                .andExpect(jsonPath("$.message", equalTo("tomae")))
+                .andExpect(jsonPath("$.transaction_id", notNullValue()))
+                .andExpect(jsonPath("$.transaction_type", equalTo("PIX")));
+
+        await(2); //to process async methods
+
+        final BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaKey.getAccountId()).get();
+        assertThat(kaguyaAccountUpdated.getBalance()).isZero();
+        assertThatTransactionsFromAccount(kaguyaKey.getAccountId()).hasSize(1);
+        assertThatStatementsFromAccount(kaguyaKey.getAccountId()).hasSize(1);
+        final BankAccount frierenAccountUpdated = bankAccountRepository.findById(frierenKey.getAccountId()).get();
+        assertThat(frierenAccountUpdated.getBalance()).isEqualTo(new BigDecimal("10.00"));
+        assertThatTransactionsFromAccount(frierenKey.getAccountId()).hasSize(1);
+        assertThatStatementsFromAccount(frierenKey.getAccountId()).hasSize(1);
+    }
+
+    @Test
+    @WithAnonymousUser
+    void shouldReturn401WhenAnonymousUserTryToAccessEndpoint() throws Exception {
+
+        post(URL, null)
+                .andExpect(status().isUnauthorized());
+    }
+}
