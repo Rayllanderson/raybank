@@ -1,3 +1,0 @@
-enum PaymentType{
-  CREDIT_CARD, BRAZILIAN_BOLETO, INVOICE
-}

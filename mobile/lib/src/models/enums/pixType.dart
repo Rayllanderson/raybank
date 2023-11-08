@@ -1,3 +1,0 @@
-enum PixDetailsType{
-  EDIT, NEW
-}
