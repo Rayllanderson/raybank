@@ -4,7 +4,6 @@
 
 ## Documentation for API Endpoints
 
-
 | API                | Method                                                                            | HTTP request                                                                           |
 |--------------------|-----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
 | *Accounts*         | [**find account authenticated**](docs/Apis/AccountsApi.md#findauthenticated)      | **GET** /api/v1/internal/accounts/authenticated                                        |
@@ -32,6 +31,7 @@
 | *Boletos*          | [**generate boleto**](docs/Apis/BoletosApi.md#generateboleto)                     | **POST** /api/v1/internal/boletos                                                      |
 | *Boletos*          | [**find boleto**](docs/Apis/BoletosApi.md#find2)                                  | **GET** /api/v1/internal/boletos/{barCode}                                             |
 | *Boletos*          | [**pay with boleto**](docs/Apis/BoletosApi.md#pay)                                | **POST** /api/v1/internal/boletos/payment                                              |
+| *Boletos*          | [**find all boletos by account id**](docs/Apis/BoletosApi.md#findbyaccount)       | **GET** /api/v1/internal/boletos                                                       | 
 | -                  | -                                                                                 | -                                                                                      |
 | *InstallmentPlan*  | [**find installment plan**](docs/Apis/InstallmentPlanApi.md#find1)                | **GET** /api/v1/internal/installment-plans/{planId}                                    |
 | -                  | -                                                                                 | -                                                                                      |
@@ -50,6 +50,9 @@
 | -                  | -                                                                                 | -                                                                                      |
 | *BankStatements*   | [**find all bank statements**](docs/Apis/StatementsApi.md#findallstatements)      | **GET** /api/v1/internal/accounts/{accountId}/statements                               |
 | *BankStatements*   | [**find bank statement by id**](docs/Apis/StatementsApi.md#findbankstatementbyid) | **GET** /api/v1/internal/accounts/{accountId}/statements/{statementId}                 |
+| -                  | -                                                                                 | -                                                                                      |
+| *Transactions*     | [**find all transactions**](docs/Apis/FindTransactionControllerApi.md#findall2)   | **GET** /api/v1/admin/transactions                                                     |
+| *Transactions*     | [**find transaction by id**](docs/Apis/FindTransactionControllerApi.md#findbyid4) | **GET** /api/v1/admin/transactions/{tId}                                               |
 
 <a name="documentation-for-models"></a>
 
@@ -99,6 +102,7 @@
 - [RegisterPixResponse](docs/Models/RegisterPixResponse.md)
 - [RegisterUserRequest](docs/Models/RegisterUserRequest.md)
 - [UpdatePixLimitRequest](docs/Models/UpdatePixLimitRequest.md)
+- [Transaction](docs/Models/Transaction.md)
 
 <a name="documentation-for-authorization"></a>
 
