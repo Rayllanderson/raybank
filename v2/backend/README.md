@@ -8,7 +8,8 @@
 |--------------------|-----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
 | *Accounts*         | [**find account authenticated**](docs/Apis/AccountsApi.md#findauthenticated)      | **GET** /api/v1/internal/accounts/authenticated                                        |
 | *Accounts*         | [**find account by id**](docs/Apis/AccountsApi.md#findbyid1)                      | **GET** /api/v1/internal/accounts/{accountId}                                          |
-| *Accounts*         | [**transfer with account**](docs/Apis/AccountsApi.md#transfer2)                   | **POST** /api/v1/internal/accounts/{accountId}/transfer                                |
+| *Accounts*         | [**transfer with account**](docs/Apis/AccountsApi.md#transfer2)                   | **POST** /api/v1/internal/accounts/transfer                                            |
+| *Accounts*         | [**deposit with account**](docs/Apis/AccountsApi.md#deposit)                      | **POST** /api/v1/internal/accounts/deposit                                             |  |
 | -                  | -                                                                                 | -                                                                                      |
 | *Cards*            | [**create card**](docs/Apis/CardsApi.md#create)                                   | **POST** /api/v1/internal/accounts/{accountId}/cards                                   |
 | *Cards*            | [**pay with card**](docs/Apis/CardsApi.md#pay1)                                   | **POST** /api/v1/external/cards/payment                                                |

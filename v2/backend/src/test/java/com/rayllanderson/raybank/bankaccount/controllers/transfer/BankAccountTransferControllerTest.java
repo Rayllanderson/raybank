@@ -20,6 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @E2ETest
 class BankAccountTransferControllerTest extends E2eApiTest {
 
+    private static final String URL = "/api/v1/internal/accounts/transfer";
+
     @Test
     @WithNormalUser(id = "kaguya")
     void shouldTransferUsingAccount() throws Exception {
@@ -28,7 +30,7 @@ class BankAccountTransferControllerTest extends E2eApiTest {
 
         final var request = BankAccountTransferRequestBuilder.transferRequest(BigDecimal.TEN, "toma ae", frierenAccount.getNumber());
 
-        post("/api/v1/internal/accounts", kaguyaAccount.getId(), "transfer", request)
+        post(URL, request)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.to", equalTo(frierenAccount.getNumber())))
                 .andExpect(jsonPath("$.amount", equalTo(10.0)))
@@ -54,7 +56,7 @@ class BankAccountTransferControllerTest extends E2eApiTest {
 
         final var request = BankAccountTransferRequestBuilder.transferRequest(BigDecimal.TEN, "toma ae", kaguyaAccount.getNumber());
 
-        post("/api/v1/internal/accounts", kaguyaAccount.getId(), "transfer", request)
+        post(URL, request)
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.raybank_error.code", equalTo(DEBIT_SAME_ACCOUNT.getCode())));
 
@@ -68,7 +70,7 @@ class BankAccountTransferControllerTest extends E2eApiTest {
     @WithAnonymousUser
     void shouldReturn401WhenAnonymousUserTryToAccessEndpoint() throws Exception {
 
-        post("/api/v1/internal/accounts/123/transfer", null)
+        post(URL, null)
                 .andExpect(status().isUnauthorized());
     }
 }
