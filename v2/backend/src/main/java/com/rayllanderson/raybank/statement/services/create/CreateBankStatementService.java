@@ -24,6 +24,9 @@ public class CreateBankStatementService {
     @Transactional
     @Retryable(maxAttemptsExpression = "${retry.statement.create.maxAttempts}", backoff = @Backoff(maxDelayExpression = "${retry.statement.create.maxDelay}"))
     public void createFrom(Transaction transaction) {
+        if (!shouldGenerateStatement(transaction))
+            return;
+
         final BankStatement.Debit debit = factory.getDebit(transaction);
         final BankStatement.Credit credit = factory.getCredit(transaction);
 
@@ -37,4 +40,7 @@ public class CreateBankStatementService {
         gateway.save(bankStatement);
     }
 
+    private static boolean shouldGenerateStatement(Transaction transaction) {
+        return !transaction.isAccountDeposit();
+    }
 }

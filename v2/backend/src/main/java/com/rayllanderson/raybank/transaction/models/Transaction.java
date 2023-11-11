@@ -1,7 +1,9 @@
 package com.rayllanderson.raybank.transaction.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rayllanderson.raybank.bankaccount.services.credit.CreditAccountInput;
 import com.rayllanderson.raybank.bankaccount.services.debit.DebitAccountInput;
+import com.rayllanderson.raybank.bankaccount.services.deposit.DepositAccountInput;
 import com.rayllanderson.raybank.refund.util.RefundDescriptionUtil;
 import com.rayllanderson.raybank.utils.MoneyUtils;
 import jakarta.persistence.Column;
@@ -73,6 +75,11 @@ public class Transaction {
         }
     }
 
+    @JsonIgnore
+    public boolean isAccountDeposit() {
+        return TransactionType.DEPOSIT.equals(this.getType()) && Objects.isNull(this.getDebit());
+    }
+
     public static Transaction creditAccount(final CreditAccountInput input, final String referenceId, final String description) {
         final var credit = new Credit(input.getAccountId(), Credit.Destination.ACCOUNT);
         final var debit = new Debit(input.getOrigin().getIdentifier(), Debit.Origin.valueOf(input.getOrigin().getType().name()));
@@ -106,6 +113,20 @@ public class Transaction {
                 .accountId(input.getAccountId())
                 .credit(credit)
                 .debit(debit)
+                .build();
+    }
+
+    public static Transaction depositAccount(final DepositAccountInput input) {
+        final var credit = new Credit(input.accountId(), Credit.Destination.ACCOUNT);
+
+        return Transaction.builder()
+                .type(TransactionType.DEPOSIT)
+                .method(TransactionMethod.ACCOUNT)
+                .financialMovement(FinancialMovement.CREDIT)
+                .amount(MoneyUtils.from(input.amount()))
+                .moment(LocalDateTime.now())
+                .accountId(input.accountId())
+                .credit(credit)
                 .build();
     }
 
