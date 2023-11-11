@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/internal/accounts")
 @RequiredArgsConstructor
-public class BankBankAccountDepositController {
+public class BankAccountDepositController {
 
     private final DepositAccountService depositService;
 

@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @E2ETest
-class BankBankAccountTransferControllerTest extends E2eApiTest {
+class BankAccountTransferControllerTest extends E2eApiTest {
 
     @Test
     @WithNormalUser(id = "kaguya")

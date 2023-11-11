@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/internal/accounts")
 @RequiredArgsConstructor
-public class BankBankAccountTransferController {
+public class BankAccountTransferController {
 
     private final BankAccountTransferService transferService;
     private final BankAccountTransferMapper transferMapper;
