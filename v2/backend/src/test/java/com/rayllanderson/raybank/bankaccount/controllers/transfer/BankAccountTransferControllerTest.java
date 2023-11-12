@@ -5,12 +5,14 @@ import com.rayllanderson.raybank.e2e.E2ETest;
 import com.rayllanderson.raybank.e2e.builders.BankAccountTransferRequestBuilder;
 import com.rayllanderson.raybank.e2e.containers.postgres.E2eApiTest;
 import com.rayllanderson.raybank.e2e.security.WithNormalUser;
+import com.rayllanderson.raybank.utils.Await;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 
 import java.math.BigDecimal;
 
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.DEBIT_SAME_ACCOUNT;
+import static com.rayllanderson.raybank.utils.Await.await;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -36,6 +38,8 @@ class BankAccountTransferControllerTest extends E2eApiTest {
                 .andExpect(jsonPath("$.amount", equalTo(10.0)))
                 .andExpect(jsonPath("$.transaction.id", notNullValue()))
                 .andExpect(jsonPath("$.transaction.type", equalTo("TRANSFER")));
+
+        await(1);
 
         BankAccount kaguyaAccountUpdated = bankAccountRepository.findById(kaguyaAccount.getId()).get();
         assertThat(kaguyaAccountUpdated.getBalance()).isZero();
