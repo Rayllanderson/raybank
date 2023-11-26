@@ -8,7 +8,8 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    require('tailwind-scrollbar-hide')
   ],
   theme: {}
 }

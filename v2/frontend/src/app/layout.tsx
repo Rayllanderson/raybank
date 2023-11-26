@@ -21,7 +21,7 @@ export default function RootLayout({
       <head>
         <ThemeModeScript />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} scrollbar-hide `}>
         {children}
       </body>
 

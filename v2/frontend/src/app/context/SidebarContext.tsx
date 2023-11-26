@@ -34,9 +34,6 @@ export function SidebarProvider({
       if (isSmallScreen() && isClickInsideMain) {
         setOpen(false);
       }
-      if (!isSmallScreen()) {
-        setOpen(true)
-      }
     }
 
     document.addEventListener("mousedown", handleMobileTapInsideMain);
@@ -63,7 +60,7 @@ function isBrowser(): boolean {
 }
 
 function isSmallScreen(): boolean {
-  return isBrowser() && window.innerWidth < 768;
+  return isBrowser() && window.innerWidth <= 768;
 }
 
 export function useSidebarContext(): SidebarContextProps {
