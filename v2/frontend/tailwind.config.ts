@@ -11,6 +11,14 @@ const config: Config = {
     require('flowbite/plugin'),
     require('tailwind-scrollbar-hide')
   ],
-  theme: {}
+  theme: {
+    extend: {
+      colors: {
+        'primary-1': '#7E04B9',
+        'primary-2': '#830AD1',
+        'primary-3': '#9B3BDA',
+      }
+    }
+  }
 }
 export default config
