@@ -5,6 +5,7 @@ import { FaBarcode, FaEye, FaEyeSlash, FaMoneyBill, FaMoneyBillTransfer } from "
 import { Card } from 'flowbite-react';
 import { MiniCard } from './MiniCard';
 import Link from 'next/link';
+import CardMoney from './CardMoney';
 
 export default function BankAccountCard() {
   const [isEyeOpen, setEyeOpen] = useState(true)
@@ -21,7 +22,7 @@ export default function BankAccountCard() {
       </div>
 
       <div className='flex space-x-6'>
-        <p className="text-3xl font-mono font-bold dark:text-white"> {isEyeOpen ? 'R$ 892.337.21' : '********'} </p>
+        <CardMoney value={isEyeOpen ? '1525.2' : '********'} />
 
         <div className='flex justify-items-start w-[6.5rem]'>
           <button className='flex justify-center items-center transition-all'
