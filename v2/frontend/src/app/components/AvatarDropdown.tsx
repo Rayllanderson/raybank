@@ -8,7 +8,7 @@ export default function AvatarDropdown() {
             inline
             
             label={
-                <Avatar alt="User settings" img="https://pbs.twimg.com/profile_images/1722564609301696512/OkFZIAJz_400x400.jpg" rounded />
+                <Avatar alt="User settings" img="/avatar.png" rounded />
             } className='rounded-md'>
             <Dropdown.Header>
                 <span className="block text-sm">Bonnie Green</span>

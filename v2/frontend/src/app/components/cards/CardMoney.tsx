@@ -4,12 +4,15 @@ import React from 'react'
 interface CardMoneyProps {
   value: string | number;
   size?: string;
+  darkColor?: string;
   className?: string;
 }
 
-export const CardMoney: React.FC<CardMoneyProps> = ({ value, size, className }) => {
+const defaultTextSize = 'text-2xl md:text-3xl lg:text-3xl'
+
+export const CardMoney: React.FC<CardMoneyProps> = ({ value, size, className, darkColor }) => {
   return (
-    <p className={`${size === undefined ? 'text-3xl' : size} ${className} font-mono font-bold dark:text-white`}>
+    <p className={`${size === undefined ? defaultTextSize : size} ${className} font-mono font-bold ${darkColor === undefined ? 'dark:text-white' : darkColor}`}>
       {formatMoney(value)}
     </p>
 

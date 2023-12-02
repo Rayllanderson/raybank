@@ -2,11 +2,14 @@
 
 import React, { useState } from 'react';
 import { FaBarcode, FaEye, FaEyeSlash, FaMoneyBill, FaMoneyBillTransfer } from "react-icons/fa6";
-import { Card } from 'flowbite-react';
 import { MiniCard } from './MiniCard';
 import Link from 'next/link';
 import { CardMoney } from './CardMoney';
 import CardHeader from './CardHeader';
+import { Card } from './Card';
+
+
+
 
 export default function BankAccountCard() {
   const [isEyeOpen, setEyeOpen] = useState(true)
@@ -15,7 +18,7 @@ export default function BankAccountCard() {
   };
 
   return (
-    <Card className="p-3">
+    <Card >
       <CardHeader title='Saldo Atual' linkHref='/accounts' linkObject={'Ver extrato'} />
 
       <div className='flex space-x-6'>
@@ -35,7 +38,7 @@ export default function BankAccountCard() {
         </div>
       </div>
 
-      <div className='flex justify-between mt-5'>
+      <div className='flex justify-between mt-5 sm:space-x-1'>
 
         <MiniCard title={'Transferir'} icon={FaMoneyBillTransfer} />
         <MiniCard title={'Pagar'} icon={FaBarcode} />

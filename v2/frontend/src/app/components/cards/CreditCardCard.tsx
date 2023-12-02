@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function CreditCardCard() {
   return (
-    <Card className="p-3">
+    <Card className="sm:p-2 md:p-3 lg:p-3">
 
       <CardHeader title='Cartão de Crédito' linkHref='/cards' linkObject={(
         <FaAngleRight className="w-6 h-6 hover:scale-105 text-primary-2" />)} />

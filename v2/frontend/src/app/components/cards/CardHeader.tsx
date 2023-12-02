@@ -3,7 +3,7 @@ import React from 'react'
 
 interface CardHeaderProps {
     title: string,
-    linkObject: any
+    linkObject?: any
     linkHref: string
 }
 
