@@ -6,6 +6,9 @@ import Header from './components/Header';
 import SideBar from './components/SideBar';
 import { AcademicCapIcon } from '@heroicons/react/24/solid';
 import BankAccountCard from './components/cards/BankAccountCard';
+import { Card } from 'flowbite-react';
+import { FaAngleRight } from 'react-icons/fa6';
+import CardHeader from './components/cards/CardHeader';
 
 export default function page() {
   return (
@@ -22,6 +25,18 @@ export default function page() {
             <div className="flex flex-col h-screen space-y-10">
               <BankAccountCard />
 
+              <Card className="p-3">
+
+                <CardHeader title='Cartão de Crédito' linkHref='/cards' linkObject={(
+                  <FaAngleRight className="w-6 h-6 hover:scale-105 text-primary-2" />)
+                } />
+
+
+                <div className="flex mt-5">
+                  Fatural Atual
+                </div>
+
+              </Card>
             </div>
 
           </div>

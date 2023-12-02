@@ -6,6 +6,7 @@ import { Card } from 'flowbite-react';
 import { MiniCard } from './MiniCard';
 import Link from 'next/link';
 import CardMoney from './CardMoney';
+import CardHeader from './CardHeader';
 
 export default function BankAccountCard() {
   const [isEyeOpen, setEyeOpen] = useState(true)
@@ -15,12 +16,8 @@ export default function BankAccountCard() {
 
   return (
     <Card className="p-3">
-      <div className="flex justify-between mt-3">
-        <p className="text-lg font-mono font-semibold dark:text-white">Saldo Atual</p>
-        <Link href={'/accounts'} className="text-lg font-mono font-bold text-primary-2 hover:text-primary-1">Ver extrato</Link>
-
-      </div>
-
+      <CardHeader title='Saldo Atual' linkHref='/accounts' linkObject={'Ver extrato'} />
+    
       <div className='flex space-x-6'>
         <CardMoney value={isEyeOpen ? '1525.2' : '********'} />
 
