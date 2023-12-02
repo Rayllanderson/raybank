@@ -9,6 +9,8 @@ import BankAccountCard from './components/cards/BankAccountCard';
 import { Card } from 'flowbite-react';
 import { FaAngleRight } from 'react-icons/fa6';
 import CardHeader from './components/cards/CardHeader';
+import { CardMoney } from './components/cards/CardMoney';
+import Link from 'next/link';
 
 export default function page() {
   return (
@@ -31,11 +33,23 @@ export default function page() {
                   <FaAngleRight className="w-6 h-6 hover:scale-105 text-primary-2" />)
                 } />
 
+                <div className='mt-5 flex flex-col gap-2'>
 
-                <div className="flex mt-5">
-                  Fatural Atual
+                  <div className="flex">
+                    <p className="text-lg font-mono dark:text-white">Fatura Atual</p>
+                  </div>
+
+                  <Link href={"/cards"} className="space-y-1">
+                    <div>
+                      <CardMoney value={1242.5} className='text-c-blue-1 dark:text-c-blue-1' />
+                    </div>
+                    <div className='flex items-center space-x-3'>
+                      <p className="text-md font-mono dark:text-white">Limite Disponível</p>
+                      <CardMoney size="text-md" value={5423} className='text-c-green-1 dark:text-c-green-1' />
+                    </div>
+                  </Link>
+
                 </div>
-
               </Card>
             </div>
 

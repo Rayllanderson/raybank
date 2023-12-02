@@ -17,6 +17,8 @@ const config: Config = {
         'primary-1': '#7E04B9',
         'primary-2': '#830AD1',
         'primary-3': '#9B3BDA',
+        'c-blue-1': '#279EE0',
+        'c-green-1': '#227B4D'
       }
     }
   }

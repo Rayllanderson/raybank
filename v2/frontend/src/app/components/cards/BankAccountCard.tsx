@@ -5,7 +5,7 @@ import { FaBarcode, FaEye, FaEyeSlash, FaMoneyBill, FaMoneyBillTransfer } from "
 import { Card } from 'flowbite-react';
 import { MiniCard } from './MiniCard';
 import Link from 'next/link';
-import CardMoney from './CardMoney';
+import { CardMoney } from './CardMoney';
 import CardHeader from './CardHeader';
 
 export default function BankAccountCard() {
@@ -17,7 +17,7 @@ export default function BankAccountCard() {
   return (
     <Card className="p-3">
       <CardHeader title='Saldo Atual' linkHref='/accounts' linkObject={'Ver extrato'} />
-    
+
       <div className='flex space-x-6'>
         <CardMoney value={isEyeOpen ? '1525.2' : '********'} />
 
