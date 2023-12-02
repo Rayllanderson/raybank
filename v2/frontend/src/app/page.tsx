@@ -8,8 +8,6 @@ import { AcademicCapIcon } from '@heroicons/react/24/solid';
 import BankAccountCard from './components/cards/BankAccountCard';
 
 export default function page() {
-
-
   return (
     <SidebarProvider>
       <Header />
