@@ -1,14 +1,11 @@
 'use client'
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaBarcode, FaEye, FaEyeSlash, FaMoneyBill, FaMoneyBillTransfer } from "react-icons/fa6";
-import { MiniCard } from './MiniCard';
-import Link from 'next/link';
-import { CardMoney } from './CardMoney';
-import CardHeader from './CardHeader';
 import { Card } from './Card';
-
-
+import CardHeader from './CardHeader';
+import { CardMoney } from './CardMoney';
+import { MiniCard } from './MiniCard';
 
 
 export default function BankAccountCard() {

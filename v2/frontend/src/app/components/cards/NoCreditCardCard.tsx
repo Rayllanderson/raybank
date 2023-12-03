@@ -1,11 +1,6 @@
-import React from 'react';
-import { FaAngleRight } from 'react-icons/fa6';
-import CardHeader from './CardHeader';
-import { CardMoney } from './CardMoney';
-import Link from 'next/link';
-import { Card } from './Card';
-import { Button } from 'flowbite-react';
 import LinkButton from '../Buttons/LinkButton';
+import { Card } from './Card';
+import CardHeader from './CardHeader';
 
 
 export default function NoCreditCardCard() {
