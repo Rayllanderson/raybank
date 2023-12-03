@@ -6,6 +6,7 @@ import Header from './components/Header';
 import SideBar from './components/SideBar';
 import BankAccountCard from './components/cards/BankAccountCard';
 import CreditCardCard from './components/cards/CreditCardCard';
+import NoCreditCardCard from './components/cards/NoCreditCardCard';
 import { Card } from 'flowbite-react';
 import CardHeader from './components/cards/CardHeader';
 import { MiniCard } from './components/cards/MiniCard';
@@ -13,7 +14,7 @@ import { FaPix } from 'react-icons/fa6';
 import { LiaBarcodeSolid } from "react-icons/lia";
 
 import { CiBarcode } from "react-icons/ci";
-import LinkButton from './components/Buttons/Button';
+import LinkButton from './components/Buttons/LinkButton';
 
 export default function page() {
 
@@ -31,7 +32,7 @@ export default function page() {
             <div className="flex flex-col h-screen space-y-10  max-w-full">
               <BankAccountCard />
 
-              <CreditCardCard />
+              <NoCreditCardCard />
 
               <div className='flex justify-between space-x-5'>
                 <Card className='p-3 w-[50%]'>
@@ -40,17 +41,17 @@ export default function page() {
                   </div>
                   <div className='flex flex-col justify-center items-center'>
                     <p className="text-lg text-center font-mono font-semibold dark:text-white">Pix</p>
-                    <LinkButton text='Acessar' href='/pix' gradientMonochrome='purple' />
+                    <LinkButton href='/pix' gradientMonochrome='purple'> Acessar </LinkButton>
                   </div>
                 </Card>
 
-                <Card className='w-[50%] '>
+                <Card className='p-3 w-[50%] '>
                   <div className='flex justify-center items-center'>
                     <LiaBarcodeSolid className='w-8 h-8 text-primary-2' />
                   </div>
                   <div className='flex flex-col justify-center items-center'>
                     <p className="text-lg text-center font-mono font-semibold dark:text-white">Boletos</p>
-                    <LinkButton text='Acessar' href='/boletos' gradientMonochrome='purple' />
+                    <LinkButton href='/boletos' gradientMonochrome='purple'> Acessar </LinkButton>
                   </div>
                 </Card>
               </div>

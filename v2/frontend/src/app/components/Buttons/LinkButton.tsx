@@ -4,9 +4,9 @@ import Link from 'next/link'
 
 
 interface ButtonProps {
-  text: string,
   href: string,
-  gradientMonochrome?: string
+  gradientMonochrome?: string,
+  children?: string
 }
 
 
@@ -17,13 +17,13 @@ const theme = {
 }
 
 
-export default function LinkButton({ text, href, gradientMonochrome }: ButtonProps) {
+export default function LinkButton({ children, href, gradientMonochrome }: ButtonProps) {
   return (
-    <Link href={href}>
+    <Link href={href} className=''>
       {gradientMonochrome === undefined ?
-        <FlowbiteButton>{text}</FlowbiteButton>
+        <FlowbiteButton>{children}</FlowbiteButton>
         :
-        <FlowbiteButton theme={theme} gradientMonochrome={gradientMonochrome} className='bg-size-200 '>{text}</FlowbiteButton>
+        <FlowbiteButton theme={theme} gradientMonochrome={gradientMonochrome} className='bg-size-200 w-full'>{children}</FlowbiteButton>
       }
     </Link>
   )
