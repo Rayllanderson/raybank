@@ -19,7 +19,7 @@ const theme = {
 
 export default function LinkButton({ children, href, gradientMonochrome }: ButtonProps) {
   return (
-    <Link href={href} className=''>
+    <Link href={href}>
       {gradientMonochrome === undefined ?
         <FlowbiteButton>{children}</FlowbiteButton>
         :

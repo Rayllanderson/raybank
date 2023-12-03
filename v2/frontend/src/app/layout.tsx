@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { ThemeModeScript } from 'flowbite-react'
+import { Flowbite, ThemeModeScript } from 'flowbite-react'
+import { twMerge } from "tailwind-merge";
+import { flowbiteTheme } from './theme';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,8 +23,8 @@ export default function RootLayout({
       <head>
         <ThemeModeScript />
       </head>
-      <body className={`${inter.className} scrollbar-hide `}>
-        {children}
+      <body className={twMerge("bg-gray-50 scrollbar-hide", inter.className)}>
+        <Flowbite theme={{ theme: flowbiteTheme }}>{children}</Flowbite>
       </body>
 
     </html>

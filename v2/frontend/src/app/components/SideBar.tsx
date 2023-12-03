@@ -10,9 +10,9 @@ const Sidebar: FC<PropsWithChildren<Record<string, unknown>>> = function ({
 }) {
     const { isOpenOnSmallScreens } = useSidebarContext();
     return (
-        <div className={`fixed overflow-auto top-12 h-screen z-10 xl:sticky xl:!block xl:translate-x-0 transition-all duration-500 transform'
+        <div className={`fixed overflow-auto top-12 h-screen xl:sticky xl:!block xl:translate-x-0 transition-all duration-500 transform'
                 ${isOpenOnSmallScreens ? "translate-x-0" : "-translate-x-full"}`}>
-            <FlowbiteSidebar>{children}</FlowbiteSidebar>
+            <FlowbiteSidebar className="z-50">{children}</FlowbiteSidebar>
         </div>
     );
 };

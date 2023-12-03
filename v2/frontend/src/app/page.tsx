@@ -1,20 +1,11 @@
-'use client'
-
-import React from 'react'
-import { SidebarProvider } from './context/SidebarContext';
+import { FaPix } from 'react-icons/fa6';
+import { LiaBarcodeSolid } from "react-icons/lia";
 import Header from './components/Header';
 import SideBar from './components/SideBar';
 import BankAccountCard from './components/cards/BankAccountCard';
 import CreditCardCard from './components/cards/CreditCardCard';
-import NoCreditCardCard from './components/cards/NoCreditCardCard';
-import { Card } from 'flowbite-react';
-import CardHeader from './components/cards/CardHeader';
-import { MiniCard } from './components/cards/MiniCard';
-import { FaPix } from 'react-icons/fa6';
-import { LiaBarcodeSolid } from "react-icons/lia";
+import { SidebarProvider } from './context/SidebarContext';
 
-import { CiBarcode } from "react-icons/ci";
-import LinkButton from './components/Buttons/LinkButton';
 import MediumCard from './components/cards/MediumCard';
 
 export default function page() {
@@ -23,7 +14,7 @@ export default function page() {
     <SidebarProvider>
       <Header />
       <div className="flex dark:bg-gray-900">
-        <div className='order-1 fixed'>
+        <div className='order-1 fixed z-50'>
           <SideBar />
         </div>
 
@@ -38,7 +29,7 @@ export default function page() {
               <div className='flex justify-between space-x-5'>
                 <MediumCard title='Pix'
                   icon={<FaPix className='w-6 h-6 text-primary-2' />} href='/pix' />
-                
+
                 <MediumCard title='Boletos'
                   icon={<LiaBarcodeSolid className='w-8 h-8 text-primary-2' />} href='/boletos' />
               </div>
