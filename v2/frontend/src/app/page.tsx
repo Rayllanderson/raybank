@@ -15,6 +15,7 @@ import { LiaBarcodeSolid } from "react-icons/lia";
 
 import { CiBarcode } from "react-icons/ci";
 import LinkButton from './components/Buttons/LinkButton';
+import MediumCard from './components/cards/MediumCard';
 
 export default function page() {
 
@@ -32,28 +33,14 @@ export default function page() {
             <div className="flex flex-col h-screen space-y-10  max-w-full">
               <BankAccountCard />
 
-              <NoCreditCardCard />
+              <CreditCardCard />
 
               <div className='flex justify-between space-x-5'>
-                <Card className='p-3 w-[50%]'>
-                  <div className='flex justify-center items-center'>
-                    <FaPix className='w-6 h-6 text-primary-2' />
-                  </div>
-                  <div className='flex flex-col justify-center items-center'>
-                    <p className="text-lg text-center font-mono font-semibold dark:text-white">Pix</p>
-                    <LinkButton href='/pix' gradientMonochrome='purple'> Acessar </LinkButton>
-                  </div>
-                </Card>
-
-                <Card className='p-3 w-[50%] '>
-                  <div className='flex justify-center items-center'>
-                    <LiaBarcodeSolid className='w-8 h-8 text-primary-2' />
-                  </div>
-                  <div className='flex flex-col justify-center items-center'>
-                    <p className="text-lg text-center font-mono font-semibold dark:text-white">Boletos</p>
-                    <LinkButton href='/boletos' gradientMonochrome='purple'> Acessar </LinkButton>
-                  </div>
-                </Card>
+                <MediumCard title='Pix'
+                  icon={<FaPix className='w-6 h-6 text-primary-2' />} href='/pix' />
+                
+                <MediumCard title='Boletos'
+                  icon={<LiaBarcodeSolid className='w-8 h-8 text-primary-2' />} href='/boletos' />
               </div>
             </div>
 
