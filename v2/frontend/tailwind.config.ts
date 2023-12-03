@@ -13,6 +13,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      backgroundSize: {
+        'size-200': '200% 200%',
+      },
+      backgroundPosition: {
+        'pos-0': '0% 0%',
+        'pos-100': '100% 100%',
+      },
       colors: {
         'primary-1': '#7E04B9',
         'primary-2': '#830AD1',

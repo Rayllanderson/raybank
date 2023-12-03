@@ -1,14 +1,14 @@
 import React from 'react';
-import { Card } from 'flowbite-react';
 import { FaAngleRight } from 'react-icons/fa6';
 import CardHeader from './CardHeader';
 import { CardMoney } from './CardMoney';
 import Link from 'next/link';
+import { Card } from './Card';
 
 
 export default function CreditCardCard() {
   return (
-    <Card className="sm:p-2 md:p-3 lg:p-3">
+    <Card>
 
       <CardHeader title='Cartão de Crédito' linkHref='/cards' linkObject={(
         <FaAngleRight className="w-6 h-6 hover:scale-105 text-primary-2" />)} />
