@@ -8,7 +8,6 @@ interface CardHeaderProps {
 }
 
 export default function CardHeader({ title, linkObject, linkHref }: CardHeaderProps) {
-    console.log(linkHref !== undefined)
     return (
         <div className="flex justify-between items-center mt-3">
             <p className="text-lg font-mono font-semibold dark:text-white">{title}</p>

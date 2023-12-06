@@ -18,7 +18,7 @@ export default function page() {
           <SideBar />
         </div>
 
-        <main className="mx-4 mt-4 mb-24 w-full h-full order-2 flex justify-center">
+        <main className="mx-4 mt-5 sm:mt-5 md:mt-8 lg:mt-8 mb-24 w-full h-full order-2 flex justify-center">
 
           <div className="cards flex w-full max-w-sm md:max-w-md lg:max-w-lg flex-col">
             <div className="flex flex-col h-screen space-y-10  max-w-full">

@@ -21,11 +21,11 @@ export default function WithCreditCardCard() {
 
         <Link href={"/cards"} className="space-y-1">
           <div>
-            <CardMoney value={1242.5} className='text-c-blue-1 dark:text-c-blue-1' />
+            <CardMoney value={1242.5} className='text-c-blue-1' darkColor='dark:text-c-blue-1' />
           </div>
           <div className='flex items-center space-x-3'>
             <p className="text-md font-mono dark:text-white">Limite Disponível</p>
-            <CardMoney size="text-md" value={5423} className='text-c-green-1 dark:text-c-green-1' />
+            <CardMoney size="text-md" value={5423} className='text-c-green-1 ' darkColor='dark:text-c-green-1'/>
           </div>
         </Link>
 
