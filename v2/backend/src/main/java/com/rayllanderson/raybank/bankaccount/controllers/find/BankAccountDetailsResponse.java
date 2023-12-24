@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class BankAccountDetailsResponse {
     private final UserResponse user;
     private final AccountResponse account;
-    private final CardResponse card;
 
     @Getter
     @RequiredArgsConstructor
@@ -25,6 +24,7 @@ public class BankAccountDetailsResponse {
         final String type;
         final String status;
         final LocalDateTime createAt;
+        private final CardResponse card;
     }
     @Getter
     @RequiredArgsConstructor
