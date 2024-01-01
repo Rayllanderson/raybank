@@ -10,8 +10,12 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
     },
 
     button: {
+        base: "active:scale-[.98] enabled:focus:ring-0 enabled:border-0 dark:enabled:border-0 dark:enabled:focus:ring-0 group flex items-stretch items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none transition duration-100 ease-out hover:ease-in",
+        color: {
+            primary: "text-white enabled:border-0 enabled:active:bg-primary-1-darken bg-primary-2 enabled:hover:bg-primary-1 dark:bg-primary-2 dark:text-white dark:border-primary-2 dark:enabled:hover:bg-primary-1 dark:enabled:active:bg-primary-1-darken "
+        },
         gradient: {
-            "purple": "bg-size-200 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 bg-pos-0 hover:bg-pos-100 transition-all",
+            "purple": "bg-size-200 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 bg-pos-0 hover:bg-pos-100 ",
         },
     },
 
