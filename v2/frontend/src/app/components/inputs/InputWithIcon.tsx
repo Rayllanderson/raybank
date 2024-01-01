@@ -39,7 +39,7 @@ export default function InputWithIcon({onChange, value, placeholder, icon: Icon,
                 ref={inputRef}
                 onBlur={handleInputBlur}
                 onFocus={() => setIsFocused(true)}
-                className="rounded-md w-full h-10 md:h-12 lg:h-14 border-0 pl-8 md:pl-9 lg:pl-11 bg-gray-50 dark:bg-black-3 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-1 text-md md:text-lg lg:text-xl"
+                className="rounded-md w-full h-10 md:h-12 lg:h-14 border-0 pl-8 md:pl-9 lg:pl-11 bg-gray-100 dark:bg-black-2 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-1 text-md md:text-lg lg:text-xl"
             />
         </div>
     )
