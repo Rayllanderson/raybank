@@ -45,7 +45,6 @@ export const LoginPage: React.FC = () => {
                 <AuthFooter text='Nao tem conta?'
                     linkText='Registrar'
                     href='/auth/register'
-                    icon={FiLogIn}
                     className={appearFromRight}
                 />
             </div>

@@ -48,11 +48,6 @@ export default function RegisterPage() {
 
                 <AuthFooter text='Já tem uma conta?'
                     linkText='Login' href='/auth/login'
-                    icon={() => {
-                        return (
-                            <FiLogIn className='transform scale-x-[-1]' />
-                        )
-                    }}
                     className={appearFromLeft} />
             </div>
         </div>
