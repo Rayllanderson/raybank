@@ -3,7 +3,7 @@ import Logo from '@/app/components/Logo';
 import InputWithIcon from '@/app/components/inputs/InputWithIcon';
 import { Button } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
-import { FiLock, FiLogIn, FiUser } from "react-icons/fi";
+import { FiLock, FiUser } from "react-icons/fi";
 import { AuthFooter } from '../../components/AuthFooter';
 
 export const LoginPage: React.FC = () => {

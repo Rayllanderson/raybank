@@ -13,7 +13,7 @@ export default function page() {
   return (
     <SidebarProvider>
       <Header />
-      <div className="flex dark:bg-black-1">
+      <div className="flex">
         <div className='order-1 fixed z-50'>
           <SideBar />
         </div>

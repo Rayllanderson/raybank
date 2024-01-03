@@ -24,7 +24,7 @@ const Header: FC<Record<string, never>> = function () {
                     )}
                 </button>
 
-                <Navbar.Brand as={Link} href="/auth/login">
+                <Navbar.Brand as={Link} href="/">
                     <Image
                         alt="Flowbite logo"
                         height="24"

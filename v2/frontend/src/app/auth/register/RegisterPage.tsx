@@ -1,11 +1,10 @@
 "use client";
 import { AuthFooter } from '@/app/components/AuthFooter';
 import Logo from '@/app/components/Logo';
-import { Card } from '@/app/components/cards/Card';
 import InputWithIcon from '@/app/components/inputs/InputWithIcon';
 import { Button } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
-import { FiLock, FiLogIn, FiUser } from "react-icons/fi";
+import { FiLock, FiUser } from "react-icons/fi";
 
 
 export default function RegisterPage() {
