@@ -8,7 +8,11 @@ import { CardMoney } from './CardMoney';
 import { MiniCard } from './MiniCard';
 
 
-export default function BankAccountCard() {
+type Props = {
+  withLinkHeader?: boolean
+}
+
+export default function BankAccountCard({ withLinkHeader = true }: Props) {
   const [isEyeOpen, setEyeOpen] = useState(true)
   const handleClick = () => {
     setEyeOpen(!isEyeOpen)
@@ -16,7 +20,11 @@ export default function BankAccountCard() {
 
   return (
     <Card >
-      <CardHeader title='Saldo Atual' linkHref='/accounts' linkObject={'Ver extrato'} />
+      {
+        withLinkHeader ?
+          <CardHeader title='Saldo Atual' linkHref='/accounts' linkObject={'Ver extrato'} /> :
+          <CardHeader title='Saldo Atual' />
+      }
 
       <div className='flex space-x-6'>
         <CardMoney value={isEyeOpen ? '1525.2' : '********'} />
@@ -25,11 +33,14 @@ export default function BankAccountCard() {
           <button className='flex justify-center items-center transition-all'
             onClick={handleClick}
           >
+
             {
-              isEyeOpen ?
+              withLinkHeader &&
+              (isEyeOpen ?
                 <FaEyeSlash className='text-primary-2 w-7 h-7 hover:text-primary-1' />
                 :
                 <FaEye className='text-primary-2 w-7 h-7 hover:text-primary-1' />
+              )
             }
           </button>
         </div>

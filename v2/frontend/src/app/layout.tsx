@@ -22,7 +22,7 @@ export default function RootLayout({
       <head>
         <ThemeModeScript />
       </head>
-      <body className={twMerge("bg-gray-50 scrollbar-hide dark:bg-black-1", inter.className)}>
+      <body className={twMerge("bg-gray-50 scrollbar-hide dark:bg-black-1 dark:text-white", inter.className)}>
         <Flowbite theme={{ theme: flowbiteTheme }}>{children}</Flowbite>
       </body>
 
