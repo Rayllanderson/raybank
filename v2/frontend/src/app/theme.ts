@@ -15,7 +15,7 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
             primary: "text-white enabled:border-0 enabled:active:bg-primary-1-darken bg-primary-2 enabled:hover:bg-primary-1 dark:bg-primary-2 dark:text-white dark:border-primary-2 dark:enabled:hover:bg-primary-1 dark:enabled:active:bg-primary-1-darken "
         },
         gradient: {
-            "purple": "bg-size-200 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 bg-pos-0 hover:bg-pos-100 ",
+            "purple": "text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 bg-pos-0 hover:bg-pos-100 bg-size-200",
         },
     },
 
@@ -31,5 +31,14 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
         root: {
             base: "bg-white px-2 py-2.5 dark:border-black-3 dark:bg-black-2 sm:px-4",
         }
+    },
+    select: {
+        field: {
+            select: {
+                colors: {
+                    default: 'bg-gray-50 border-gray-300 text-gray-900 focus:border-primary-1 focus:ring-primary-1 dark:border-gray-600 dark:bg-black-2 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-1 dark:focus:ring-primary-1',
+                },
+            },
+        },
     }
 };

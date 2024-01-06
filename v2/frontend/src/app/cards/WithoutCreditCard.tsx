@@ -39,7 +39,7 @@ export function WithoutCreditCard() {
                                 <Label htmlFor="dueDate" value="Dia do vencimento da fatura" className='text-lg' />
                             </div>
                             <div className="max-w-[30%] md:max-w-[20%]">
-                                <Select id="dueDate" required>
+                                <Select id="dueDate" required color='default'>
                                     <option>06</option>
                                     <option>12</option>
                                     <option>18</option>
@@ -54,7 +54,7 @@ export function WithoutCreditCard() {
                             <RangeSlider id="default-range" min="0" max="15000" value={limit} onChange={handleSliderChange} />
                         </div>
                     </div>
-                        <Button color="primary" className='mt-5'> Solicitar </Button>
+                        <Button gradientMonochrome={'purple'} className='mt-5'> Solicitar </Button>
                 </form>
             </Card>
         </Container>
