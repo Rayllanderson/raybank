@@ -26,8 +26,10 @@ export function WithCreditCard() {
             </div>
             <MiniCards />
         </Card>
-
-        <Statements type="card" />
+        
+        <div className="mt-8 p-1">
+            <Statements type="card" />
+        </div>
     </div>;
 }
 
@@ -36,48 +38,48 @@ export function MiniCards() {
     const [isAutoScrolling, setIsAutoScrolling] = useState(false);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (scrollableDivRef.current) {
-        const scrollableWidth = scrollableDivRef.current.offsetWidth;
-        const mousePosition = e.clientX - scrollableDivRef.current.getBoundingClientRect().left;
-  
-        const startScrollThreshold = 110;
-        const endScrollThreshold = scrollableWidth - 110;
-  
-        if (mousePosition < startScrollThreshold) {
-          setIsAutoScrolling(true);
-          autoScroll('left');
-        } else if (mousePosition > endScrollThreshold) {
-          setIsAutoScrolling(true);
-          autoScroll('right');
-        } else {
-          setIsAutoScrolling(false);
+        if (scrollableDivRef.current) {
+            const scrollableWidth = scrollableDivRef.current.offsetWidth;
+            const mousePosition = e.clientX - scrollableDivRef.current.getBoundingClientRect().left;
+
+            const startScrollThreshold = 110;
+            const endScrollThreshold = scrollableWidth - 110;
+
+            if (mousePosition < startScrollThreshold) {
+                setIsAutoScrolling(true);
+                autoScroll('left');
+            } else if (mousePosition > endScrollThreshold) {
+                setIsAutoScrolling(true);
+                autoScroll('right');
+            } else {
+                setIsAutoScrolling(false);
+            }
         }
-      }
     };
-  
+
     const autoScroll = (direction: 'left' | 'right') => {
-      if (scrollableDivRef.current && isAutoScrolling) {
-        const scrollStep = direction === 'left' ? -10 : 10;
-        scrollableDivRef.current.scrollLeft += scrollStep;
-        requestAnimationFrame(() => autoScroll(direction));
-      }
+        if (scrollableDivRef.current && isAutoScrolling) {
+            const scrollStep = direction === 'left' ? -10 : 10;
+            scrollableDivRef.current.scrollLeft += scrollStep;
+            requestAnimationFrame(() => autoScroll(direction));
+        }
     };
-  
+
     const handleMouseLeave = () => {
-      setIsAutoScrolling(false);
+        setIsAutoScrolling(false);
     };
-  
+
 
     return (
-        <div 
-        ref={scrollableDivRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className='flex justify-between p-2 pl-[0.15rem] space-x-2 sm:space-x-1 overflow-x-scroll scrollbar-hide '>
-        <MiniCard title={'Dados Cartão'} icon={FaCreditCard} />
-        <MiniCard title={'Pagar Fatura'} icon={FaBarcode} />
-        <MiniCard title={'Resumo Faturas'} icon={FaFileInvoiceDollar} />
-        <MiniCard title={'Ajustar Limite'} icon={FaListUl} />
-    </div>
+        <div
+            ref={scrollableDivRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className='flex justify-between p-2 pl-[0.15rem] space-x-2 sm:space-x-1 overflow-x-scroll scrollbar-hide '>
+            <MiniCard title={'Dados Cartão'} icon={FaCreditCard} />
+            <MiniCard title={'Pagar Fatura'} icon={FaBarcode} />
+            <MiniCard title={'Resumo Faturas'} icon={FaFileInvoiceDollar} />
+            <MiniCard title={'Ajustar Limite'} icon={FaListUl} />
+        </div>
     )
 }

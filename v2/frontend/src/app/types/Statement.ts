@@ -3,7 +3,7 @@ import { Debit } from "./Debit";
 
 export interface Statement {
     id: string;
-    title: string;
+    title: string | null;
     moment: string;
     amount: number;
     description: string;
@@ -13,6 +13,12 @@ export interface Statement {
     transactionId: string;
     debit: Debit;
     credit: Credit;
+    installmentPlan?: InstallmentPlan
+}
+
+export interface InstallmentPlan {
+    id: string;
+    installments: number
 }
 
 export enum StatementType {

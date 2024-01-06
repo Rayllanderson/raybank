@@ -2,8 +2,13 @@ import { FaCircleArrowDown, FaCircleArrowUp } from 'react-icons/fa6';
 import { formatDate } from '../utils/DateFormatter';
 import { isIncomming } from '../utils/StatementUtil';
 import { StatementProps } from './StatamentCard';
+import { Statement } from '../types/Statement';
 
-export default function StatementHeader({statement}: StatementProps) {
+type Props = {
+    statement: Statement,
+}
+
+export default function StatementHeader({statement}: Props) {
     return <div className='header flex justify-between items-center '>
 
         <div className='flex space-x-2 items-center text-lg'>
@@ -14,7 +19,7 @@ export default function StatementHeader({statement}: StatementProps) {
             }
 
             <div className='title font-semibold '>
-                {statement.title}
+                {statement.title == null ? statement.description : statement.title}
             </div>
         </div>
 

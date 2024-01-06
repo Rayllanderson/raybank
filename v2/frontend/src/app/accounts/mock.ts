@@ -12,7 +12,7 @@ export const statements: Statements = [
         id: "d06050b5-1364-47b6-ac7e-a3b652f3288a",
         moment: today.toString(),
         amount: 780.00,
-        description: "SEI LA alguem ai mandou e se for um texto grande demais what will happen?",
+        description: "SEI LA alguem ai mandou e se",
         title: "Depósito recebido",
         type: StatementType.DEPOSIT,
         method: "ACCOUNT",
