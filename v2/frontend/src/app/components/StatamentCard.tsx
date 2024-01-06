@@ -3,6 +3,7 @@ import { Statement } from '../types/Statement'
 import StatementHeader from './StatementHeader'
 import { StatementAccountBody } from './StatementAccountBody'
 import { StatementCreditCardBody } from './StatementCreditCardBody'
+import Separator from './Separator'
 
 export type StatementProps = {
     statement: Statement,
@@ -19,7 +20,7 @@ export default function StatamentCard({ statement, type }: StatementProps) {
                 <StatementCreditCardBody statement={statement} />
             }
             
-            <hr className='mt-1 border-separate border-gray-300 dark:border-gray-800' />
+            <Separator />
         </div>
     )
 }
