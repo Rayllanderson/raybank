@@ -46,7 +46,7 @@ export default function BankAccountCard({ withLinkHeader = true }: Props) {
         </div>
       </div>
 
-      <div className='flex justify-between mt-5 sm:space-x-1'>
+      <div className='flex justify-between mt-4 sm:space-x-1'>
 
         <MiniCard title={'Transferir'} icon={FaMoneyBillTransfer} />
         <MiniCard title={'Pagar'} icon={FaBarcode} />

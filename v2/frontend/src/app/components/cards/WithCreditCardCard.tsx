@@ -13,7 +13,7 @@ export default function WithCreditCardCard() {
       <CardHeader title='Cartão de Crédito' linkHref='/cards' linkObject={(
         <FaAngleRight className="w-6 h-6 hover:scale-105 text-primary-2" />)} />
 
-      <div className='mt-5 flex flex-col gap-2'>
+      <div className='mt-4 flex flex-col gap-2'>
 
         <div className="flex">
           <p className="text-lg font-mono dark:text-white">Fatura Atual</p>
