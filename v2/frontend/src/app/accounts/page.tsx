@@ -1,13 +1,10 @@
-'use client'
+'use client';
 import React from 'react'
 import BankAccountCard from '../components/cards/BankAccountCard'
 import InputWithIcon from '../components/inputs/InputWithIcon'
 import { FaSearch } from 'react-icons/fa'
-import { FaCircleArrowDown, FaCircleArrowUp } from 'react-icons/fa6'
 import { statements } from './mock'
-import { formatDate } from '../utils/DateFormatter'
-import { MoneyFormatter } from '../utils/MoneyFormatter'
-import { isIncomming } from '../utils/StatementUtil'
+import StatamentCard from '../components/StatamentCard';
 
 
 export default function page() {
@@ -22,67 +19,18 @@ export default function page() {
                     <InputWithIcon icon={FaSearch} type="text" placeholder='Buscar' />
                 </div>
 
-                <div className='mt-5'>
-                    <div className='space-y-2'>
-                        {
-                            statements.map(statement => {
-                                return (
-                                    <div key={statement.id} >
+                <div className='space-y-2 mt-5'>
+                    {statements.map(statement => {
+                        return (
+                            <StatamentCard statement={statement} key={statement.id}/>
+                        )
+                    })}
+                    
 
-                                        <div className='flex justify-between items-center' >
-
-                                            <div className='flex space-x-2 items-center'>
-                                                <div className=''>
-                                                    {isIncomming(statement.financialMovement) ?
-                                                        <FaCircleArrowUp className='text-green-600 w-6 h-6' />
-                                                        :
-                                                        <FaCircleArrowDown className='text-red-600 w-6 h-6' />
-                                                    }
-                                                </div>
-
-                                                <div className='title font-semibold text-xl '>
-                                                    {statement.title}
-                                                </div>
-                                            </div>
-                                            <div className='flex  justify-end'>
-                                                <div className='data  font-semibold'>
-                                                    {formatDate(statement.moment)}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='body p-1 ml-7'>
-                                            <div>
-                                                <div className='description text-start'>
-                                                    <p className='text-lg'>{statement.description}</p>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <div className='description text-start'>
-                                                    <p className='text-md'>{MoneyFormatter.format(statement.amount)}</p>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <div className='description text-start'>
-                                                    <p className='text-md'>{statement.method}</p>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-
-                                        <hr className='mt-1 border-separate border-gray-300 dark:border-gray-800'></hr>
-                                    </div>
-                                )
-                            })
-
-                        }
-
-                    </div>
                 </div>
             </div>
         </div>
     )
+
 }
+

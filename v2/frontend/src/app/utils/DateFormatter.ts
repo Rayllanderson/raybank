@@ -20,9 +20,9 @@ export const formatDate = (inputDate: string): string => {
         return 'Ontem';
     } else {
         const day = inputDateTime.getDate();
-        const month = inputDateTime.toLocaleString('default', { month: 'short' }).toUpperCase();
+        const month = inputDateTime.toLocaleString('PT-BR', { month: 'short' }).toUpperCase();
         const year = inputDateTime.getFullYear();
 
-        return `${day} ${month} ${!isSameYear && year}`.replace(".", "");
+        return `${day} ${month} ${isSameYear ? '' : year}`.replace(".", "");
     }
 };

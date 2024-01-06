@@ -4,6 +4,8 @@ import { FinancialMovementType, StatementType, Statements } from "../types/State
 const today = new Date();
 const yesterday = new Date();
 yesterday.setDate(today.getDate() - 1);
+const other = new Date(yesterday);
+other.setDate(yesterday.getDate() - 1);
 
 export const statements: Statements = [
     {
@@ -11,7 +13,7 @@ export const statements: Statements = [
         moment: today.toString(),
         amount: 780.00,
         description: "SEI LA alguem ai mandou e se for um texto grande demais what will happen?",
-        title: "Depósito Recebido",
+        title: "Depósito recebido",
         type: StatementType.DEPOSIT,
         method: "ACCOUNT",
         financialMovement: FinancialMovementType.CREDIT,
@@ -32,10 +34,10 @@ export const statements: Statements = [
         moment: yesterday.toString(),
         amount: 2310.120,
         description: "SEI LA",
-        title: "Depósito Recebido",
-        type: StatementType.DEPOSIT,
+        title: "Compra no débito",
+        type: StatementType.PAYMENT,
         method: "ACCOUNT",
-        financialMovement: FinancialMovementType.CREDIT,
+        financialMovement: FinancialMovementType.DEBIT,
         transactionId: "aac64110-59cb-4b05-beec-753364efa550",
         debit: {
             id: "1ec5f685-aea2-441a-a241-8090e3ddde3d",
@@ -50,8 +52,8 @@ export const statements: Statements = [
     },
     {
         id: "da6050b5-1364-47b6-ac7e-a3b652f3288a",
-        moment: "2023-11-11T14:01:06.657712",
-        title: "Depósito Recebido",
+        moment: new Date(new Date().setDate(yesterday.getDate() - 1)).toString(),
+        title: "Depósito recebido",
         amount: 22.00,
         description: "Transferencia via boleto",
         type: StatementType.DEPOSIT,
@@ -71,7 +73,7 @@ export const statements: Statements = [
     },
     {
         id: "3bf6cdd1-259e-4ecd-91f6-f4ad8c823eba",
-        moment: "2023-10-27T20:21:04.759255",
+        moment: new Date(new Date().setDate(yesterday.getDate() - 1)).toString(),
         title: "Compra no Débito",
         amount: 103.00,
         description: "aliabba",
@@ -92,7 +94,7 @@ export const statements: Statements = [
     },
     {
         id: "1bf6cdd1-259e-4ecd-91f6-f47d8c823eba",
-        moment: "2023-10-27T20:21:04.759255",
+        moment: new Date(new Date().setDate(yesterday.getDate() - 2)).toString(),
         amount: 10.00,
         title: "Transferencia enviada",
         description: "yo!",
@@ -112,8 +114,8 @@ export const statements: Statements = [
         }
     },
     {
-        id: "27cc4bbb-11cb-4e71-87d6-04a18ce6b586",
-        moment: "2023-10-27T14:28:45.704756",
+        id: "27cc4bbb-11cb-4e71-87d6-04a18ce67586",
+        moment: "2023-12-27T14:28:45.704756",
         amount: 5643.00,
         description: "nao quero mais",
         title: "Reembolso recebido",
@@ -133,11 +135,11 @@ export const statements: Statements = [
         }
     },
     {
-        id: "da6050b5-1364-47b6-ac7e-a3b652f3288a",
+        id: "da6050b5-1364-47b6-ac7e-a3b652f3238a",
         moment: "2023-11-11T14:01:06.657712",
         amount: 20.00,
         description: "SEI LA",
-        title: "Depósito Recebido",
+        title: "Depósito recebido",
         type: StatementType.DEPOSIT,
         method: "ACCOUNT",
         financialMovement: FinancialMovementType.CREDIT,
@@ -154,7 +156,7 @@ export const statements: Statements = [
         }
     },
     {
-        id: "37cc4bbb-11cb-4e71-87d6-04a28ce6b586",
+        id: "37cc4bbb-11cb-4e71-87d6-04a28ce6b546",
         moment: "2023-10-27T14:28:45.704756",
         amount: 10.00,
         description: "nao quero mais nao",
@@ -175,8 +177,8 @@ export const statements: Statements = [
         }
     },
     {
-        id: "8bf6cdd1-259e-4ecd-91f6-f47d8c823eba",
-        moment: "2023-10-27T20:21:04.759255",
+        id: "8bf6cdd1-259e-4ecd-91f6-f47d8c823e5a",
+        moment: "2023-09-09T20:21:04.759255",
         amount: 10.00,
         description: "aliabba",
         title: "Compra no débito",
@@ -196,8 +198,8 @@ export const statements: Statements = [
         }
     },
     {
-        id: "1bf6cdd1-2d9e-4ecd-91f6-f47d8c823eba",
-        moment: "2023-10-27T20:21:04.759255",
+        id: "1bf6cdd1-2d9e-4ecd-91f6-f47d8c823e8a",
+        moment: "2023-08-07T20:21:04.759255",
         amount: 10.00,
         description: "yo!",
         title: "Transferênvia enviada",
@@ -217,8 +219,8 @@ export const statements: Statements = [
         }
     },
     {
-        id: "27cc4bbb-11aab-4e71-87d6-04a28ce6b586",
-        moment: "2023-10-27T14:28:45.704756",
+        id: "27cc4bbb-11aab-4e71-87d6-04a28ce6b516",
+        moment: "2023-07-27T14:28:45.704756",
         amount: 10.00,
         title: "Reembolso recebido",
         description: "nao quero mais",
@@ -238,8 +240,8 @@ export const statements: Statements = [
         }
     },
     {
-        id: "1bf6cdd1-2d9e-4ecd-91f6-f47d8c823eba",
-        moment: "2023-10-27T20:21:04.759255",
+        id: "1bf6cdd1-2d9e-4ecd-91f6-f47d8c823e1a",
+        moment: "2023-06-01T20:21:04.759255",
         amount: 10.00,
         description: "yo!",
         title: "Transferênvia recebida",
