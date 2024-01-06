@@ -1,10 +1,15 @@
 import { WithCreditCard } from './WithCreditCard';
+import { WithoutCreditCard } from './WithoutCreditCard';
 
-const hasCreditCard: boolean = true
+const hasCreditCard: boolean = false
 
 export default function page() {
-    return (
-        <WithCreditCard />
+    return (<>
+        {hasCreditCard ?
+            <WithCreditCard /> :
+            <WithoutCreditCard />
+        }
+    </>
     )
 }
 

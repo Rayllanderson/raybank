@@ -8,7 +8,7 @@ import NoCreditCardCard from './NoCreditCardCard';
 import WithCreditCardCard from './WithCreditCardCard';
 
 
-const hasCreditCard: boolean = true
+const hasCreditCard: boolean = false
 
 export default function CreditCardCard() {
   return (

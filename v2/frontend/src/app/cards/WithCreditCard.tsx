@@ -4,7 +4,7 @@ import { CardMoney } from '../components/cards/CardMoney';
 import { Statements } from '../components/Statements';
 import React, { useRef, useState } from 'react'
 import { MiniCard } from '../components/cards/MiniCard';
-import { FaBarcode, FaCreditCard, FaFileInvoiceDollar, FaListUl } from 'react-icons/fa6';
+import { FaBarcode, FaCreditCard, FaFileInvoiceDollar, FaListUl, FaSliders } from 'react-icons/fa6';
 
 export function WithCreditCard() {
     return <div className="cards flex w-full max-w-sm md:max-w-md lg:max-w-lg flex-col">
@@ -79,7 +79,7 @@ export function MiniCards() {
             <MiniCard title={'Dados Cartão'} icon={FaCreditCard} />
             <MiniCard title={'Pagar Fatura'} icon={FaBarcode} />
             <MiniCard title={'Resumo Faturas'} icon={FaFileInvoiceDollar} />
-            <MiniCard title={'Ajustar Limite'} icon={FaListUl} />
+            <MiniCard title={'Ajustar Limite'} icon={FaSliders} />
         </div>
     )
 }
