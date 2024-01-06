@@ -1,7 +1,7 @@
 import { WithCreditCard } from './WithCreditCard';
 import { WithoutCreditCard } from './WithoutCreditCard';
 
-const hasCreditCard: boolean = false
+const hasCreditCard: boolean = true
 
 export default function page() {
     return (<>

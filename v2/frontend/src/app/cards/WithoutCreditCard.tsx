@@ -1,14 +1,9 @@
 'use client';
 import { Card } from '../components/cards/Card';
-import { CardMoney } from '../components/cards/CardMoney';
-import { Statements } from '../components/Statements';
 import React, { useRef, useState } from 'react'
-import { MiniCard } from '../components/cards/MiniCard';
-import { FaBarcode, FaCcMastercard, FaCreditCard, FaFileInvoiceDollar, FaListUl } from 'react-icons/fa6';
 import { Container } from '../components/Container';
 import { Button, Label, RangeSlider, Select } from 'flowbite-react';
 import { MoneyFormatter } from '../utils/MoneyFormatter';
-import CardHeader from '../components/cards/CardHeader';
 
 export function WithoutCreditCard() {
     const [limit, setLimit] = useState(7500);

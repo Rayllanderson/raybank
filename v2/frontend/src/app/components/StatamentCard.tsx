@@ -12,10 +12,10 @@ export type StatementProps = {
 export default function StatamentCard({ statement, type }: StatementProps) {
     return (
         <div className="p-1">
-            <StatementHeader statement={statement}/>
+            <StatementHeader statement={statement}  type={type} />
             {
                 type == 'account' ?
-                <StatementAccountBody statement={statement} /> :
+                <StatementAccountBody statement={statement}/> :
                 <StatementCreditCardBody statement={statement} />
             }
             
