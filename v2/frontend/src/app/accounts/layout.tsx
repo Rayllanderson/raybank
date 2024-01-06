@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SidebarProvider>
             <Header />
             <div className="flex">
-                <div className='order-1 fixed'>
+                <div className='order-1 fixed z-50'>
                     <SideBar />
                 </div>
 
