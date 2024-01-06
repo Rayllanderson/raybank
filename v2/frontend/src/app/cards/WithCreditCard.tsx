@@ -7,7 +7,7 @@ import { MiniCard } from '../components/cards/MiniCard';
 import { FaBarcode, FaCreditCard, FaFileInvoiceDollar, FaListUl, FaSliders } from 'react-icons/fa6';
 
 export function WithCreditCard() {
-    return <div className="cards flex w-full max-w-sm md:max-w-md lg:max-w-lg flex-col">
+    return <div className="cards flex w-full max-w-[23rem] md:max-w-md lg:max-w-lg flex-col">
         <Card>
             <div className='flex flex-col gap-2'>
                 <div className="flex">

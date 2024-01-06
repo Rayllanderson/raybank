@@ -1,6 +1,6 @@
 'use client'
 
-import { DarkThemeToggle, Navbar, NavbarLink } from "flowbite-react";
+import { DarkThemeToggle , Navbar, NavbarLink } from "flowbite-react";
 import Image from "next/image";
 import { FC } from "react";
 import { useSidebarContext } from "../context/SidebarContext";
