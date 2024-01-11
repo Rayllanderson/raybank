@@ -1,4 +1,4 @@
-import { maxTransactionValue } from '@/app/constants/CurrencyConstans';
+import { maxTransactionValue } from '@/app/constants/CurrencyConstants';
 import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
 import { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
 
