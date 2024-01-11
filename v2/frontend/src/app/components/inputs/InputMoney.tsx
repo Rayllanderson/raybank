@@ -1,13 +1,16 @@
 import { maxTransactionValue } from '@/app/constants/CurrencyConstans';
 import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
-import { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
+import React, { ChangeEvent, InputHTMLAttributes, LegacyRef, useEffect, useState } from 'react';
 
 interface CurrencyInputProps extends InputHTMLAttributes<HTMLInputElement> {
   value: number;
+  ref: LegacyRef<HTMLInputElement>,
   onValueChange: (value: number) => void;
 }
 
-export const CurrencyInput: React.FC<CurrencyInputProps> = ({ value, onValueChange, ...props }) => {
+export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>((props, ref) => {
+  const { value, onValueChange, ...restProps } = props;
+
   const formatter = MoneyFormatter.format
   const [inputValue, setInputValue] = useState<string>(formatter(value));
 
@@ -23,12 +26,16 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({ value, onValueChan
 
   return (
     <input
-      {...props}
+      {...restProps}
       type="text"
-      className='rounded-md w-full h-10 md:h-12 pl-2 lg:h-14 border-0 bg-gray-100 dark:bg-black-3 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-1 text-md md:text-lg lg:text-xl'
+      className='rounded-md w-full h-12 md:h-14 pl-2 lg:h-16 border-0 bg-gray-100 dark:bg-black-3 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-1 text-lg md:text-lg lg:text-xl'
       value={inputValue}
       onChange={handleInputChange}
       placeholder="R$ 0,00"
+      ref={ref}
+      inputMode="numeric" pattern="[0-9]*"
     />
   );
-};
+});
+
+CurrencyInput.displayName = 'CurrencyInput';

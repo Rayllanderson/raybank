@@ -2,42 +2,59 @@
 import { Container } from '@/app/components/Container';
 import { Card } from '@/app/components/cards/Card';
 import { CurrencyInput } from '@/app/components/inputs/InputMoney';
+import { useTransferTransactionContext } from '@/app/context/TransferContext';
 import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
 import { Button, TextInput } from 'flowbite-react';
+import Link from 'next/link';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa6';
 
 const saldo = 542.89
 
 export default function TransferForm() {
+    const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        inputRef?.current?.focus();
+    }, []);
+
+    const { transaction, setAmount } = useTransferTransactionContext();
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-    const [amount, setAmount] = useState<number>(0);
 
     function onInputChange(value: any) {
         const inputNumber = parseFloat(value || '0');
-        setIsButtonDisabled(inputNumber === 0 || (inputNumber > saldo ) )
-        setAmount(value);
+        setIsButtonDisabled(inputNumber === 0 || (inputNumber > saldo))
+        setAmount(inputNumber)
     }
 
     return (
         <Container>
             <Card >
-            <header className="text-start">
-                <h1 className="text-2xl font-semibold font-mono">Qual é o valor da transferência?</h1>
-                <p className='font-semibold text-lg text-gray-600 dark:text-gray-200'>Saldo disponível em conta {MoneyFormatter.format(saldo)}</p>
-            </header>
+                <header className="text-start">
+                    <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">Qual é o valor da transferência?</h1>
+                    <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>Saldo disponível em conta {MoneyFormatter.format(saldo)}</p>
+                </header>
 
-            <div className="mt-4 flex flex-col gap-3">
-                <CurrencyInput value={amount} onValueChange={onInputChange} />
+                <div className="mt-4 flex flex-col gap-3">
+                    <CurrencyInput value={transaction.amount} onValueChange={onInputChange} ref={inputRef} />
 
-                <div className='flex justify-end'>
-                    <Button color='primary' disabled={isButtonDisabled}>
-                        <FaArrowRight className='w-6 h-6' />
-                    </Button>
+                    <div className='flex justify-end'>
+                        {isButtonDisabled ? (
+                            <NextButton isDisabled={isButtonDisabled} />
+                        ) : (
+                            <Link href='/accounts'>
+                                <NextButton isDisabled={isButtonDisabled} />
+                            </Link>
+                        )}
+                    </div>
                 </div>
-            </div>
             </Card>
         </Container>
     )
 }
 
+
+const NextButton = ({ isDisabled }: { isDisabled: boolean }) => (
+    <Button color='primary' disabled={isDisabled}>
+        <FaArrowRight className='w-6 h-6' />
+    </Button>
+);

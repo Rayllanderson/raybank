@@ -4,6 +4,7 @@ import './globals.css'
 import { Flowbite, ThemeModeScript } from 'flowbite-react'
 import { twMerge } from "tailwind-merge";
 import { flowbiteTheme } from './theme';
+import { Providers } from './providers/providers';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -23,7 +24,9 @@ export default function RootLayout({
         <ThemeModeScript />
       </head>
       <body className={twMerge("bg-gray-50 scrollbar-hide dark:bg-black-1 dark:text-white", inter.className)}>
-        <Flowbite theme={{ theme: flowbiteTheme }}>{children}</Flowbite>
+        <Providers>
+          <Flowbite theme={{ theme: flowbiteTheme }}>{children}</Flowbite>
+        </Providers>
       </body>
 
     </html>
