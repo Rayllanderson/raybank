@@ -1,4 +1,4 @@
-import { maxTransactionValue } from '@/app/constants/CurrencyConstants';
+import { maxTransactionValue } from '@/app/constants/CurrencyConstans';
 import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
 import { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
 
@@ -25,6 +25,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({ value, onValueChan
     <input
       {...props}
       type="text"
+      className='rounded-md w-full h-10 md:h-12 pl-2 lg:h-14 border-0 bg-gray-100 dark:bg-black-3 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-1 text-md md:text-lg lg:text-xl'
       value={inputValue}
       onChange={handleInputChange}
       placeholder="R$ 0,00"
