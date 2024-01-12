@@ -1,5 +1,6 @@
 'use client';
 import { Container } from '@/app/components/Container';
+import PreviousPageButton from '@/app/components/PreviousPage';
 import { Card } from '@/app/components/cards/Card';
 import { CurrencyInput } from '@/app/components/inputs/InputMoney';
 import { useTransferTransactionContext } from '@/app/context/TransferContext';
@@ -7,7 +8,7 @@ import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/app/utils/MoneyF
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react'
-import { FaArrowRight } from 'react-icons/fa6';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6';
 
 const saldo = 542.89
 
@@ -32,9 +33,14 @@ export default function TransferForm() {
     return (
         <Container>
             <Card >
-                <header className="text-start">
-                    <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">Qual é o valor da transferência?</h1>
-                    <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>Saldo disponível em conta {MoneyFormatter.format(saldo)}</p>
+                <header className="flex flex-col gap-3">
+                    <div>
+                        <PreviousPageButton />    
+                    </div>
+                    <div className="text-start">
+                        <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">Qual é o valor da transferência?</h1>
+                        <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>Saldo disponível em conta {MoneyFormatter.format(saldo)}</p>
+                    </div>
                 </header>
 
                 <div className="mt-4 flex flex-col gap-3">
