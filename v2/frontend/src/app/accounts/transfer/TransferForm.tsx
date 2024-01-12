@@ -3,18 +3,21 @@ import { Container } from '@/app/components/Container';
 import { Card } from '@/app/components/cards/Card';
 import { CurrencyInput } from '@/app/components/inputs/InputMoney';
 import { useTransferTransactionContext } from '@/app/context/TransferContext';
-import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
-import { Button, TextInput } from 'flowbite-react';
+import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/app/utils/MoneyFormatter';
+import { Button } from 'flowbite-react';
 import Link from 'next/link';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa6';
 
 const saldo = 542.89
 
 export default function TransferForm() {
     const inputRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
         inputRef?.current?.focus();
+        const value = getValueNumberFromMoneyInput(inputRef.current?.value)
+        setIsButtonDisabled(value > saldo || value === 0)
     }, []);
 
     const { transaction, setAmount } = useTransferTransactionContext();
@@ -22,8 +25,8 @@ export default function TransferForm() {
 
     function onInputChange(value: any) {
         const inputNumber = parseFloat(value || '0');
-        setIsButtonDisabled(inputNumber === 0 || (inputNumber > saldo))
-        setAmount(inputNumber)
+        const transactionAmount = setAmount(inputNumber)
+        setIsButtonDisabled(transactionAmount === 0 || (transactionAmount > saldo))
     }
 
     return (

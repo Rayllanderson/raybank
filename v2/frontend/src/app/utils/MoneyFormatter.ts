@@ -10,3 +10,8 @@ export default function formatMoney(value: string | number) {
 function isNumber(value: string | number): boolean {
     return !isNaN(value as number);
 }
+
+export function getValueNumberFromMoneyInput(value: any): number {
+    const rawValue = value.replace(/[^\d]/g, '');
+    return parseFloat(rawValue) / 100 || 0;
+}

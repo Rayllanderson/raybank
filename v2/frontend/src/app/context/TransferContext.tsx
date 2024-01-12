@@ -5,7 +5,7 @@ interface TransferTransactionContextData {
     transaction: TransferTransaction;
     setTransaction: Dispatch<SetStateAction<TransferTransaction>>;
     setBeneficiaryAccountNumber: (value: number | null) => void;
-    setAmount: (value: number) => void;
+    setAmount: (value: number) => number;
     setMessage: (value: string | null) => void;
 }
 
@@ -29,11 +29,12 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
         }));
     };
 
-    const setAmount = (value: number) => {
+    const setAmount = (value: number): number => {
         setTransaction((prevTransaction) => ({
             ...prevTransaction!,
             amount: value,
         }));
+        return value;
     };
 
     const setMessage = (value: string | null) => {
