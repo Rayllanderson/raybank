@@ -27,7 +27,7 @@ export default function ContactForm() {
 
     useEffect(() => {
         if (transaction.amount === 0) {
-            router.push('/accounts/transfer')
+            router.push('/transfer')
         }
     }, [transaction, router]);
 
@@ -87,7 +87,7 @@ export default function ContactForm() {
                         {isButtonDisabled ? (
                             <NextButton isDisabled={isButtonDisabled} />
                         ) : (
-                            <Link href='/accounts/transfer/confirm' className='w-full flex  justify-center'>
+                            <Link href='/transfer/confirm' className='w-full flex  justify-center'>
                                 <NextButton isDisabled={isButtonDisabled} onClick={onButtonClick} type={getBeneficiaryType()} />
                             </Link>
                         )}
@@ -101,7 +101,7 @@ export default function ContactForm() {
                     {
                         contacts.map(contact => {
                             return (
-                                <Link href='/accounts/transfer/confirm' key={contact.id} className='w-full' onClick={() => onContactClick(contact)}>
+                                <Link href='/transfer/confirm' key={contact.id} className='w-full' onClick={() => onContactClick(contact)}>
                                     <button title={contact.name} key={contact.id}
                                         className="p-0 m-0 bg-transparent border-none cursor-pointer text-current hover:scale-[1.03] transform transition-transform w-full" >
                                         <ContactCard contact={contact} key={contact.id} />

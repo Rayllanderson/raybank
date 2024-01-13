@@ -50,7 +50,7 @@ export default function TransferForm() {
                         {isButtonDisabled ? (
                             <NextButton isDisabled={isButtonDisabled} />
                         ) : (
-                            <Link href='/accounts/transfer/contacts'>
+                            <Link href='/transfer/contacts'>
                                 <NextButton isDisabled={isButtonDisabled} />
                             </Link>
                         )}

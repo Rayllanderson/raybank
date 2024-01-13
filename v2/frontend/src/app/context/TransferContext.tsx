@@ -8,6 +8,7 @@ interface TransferTransactionContextData {
     setBeneficiaryType: (value: 'account' | 'pix' | 'contact') => void;
     setAmount: (value: number) => number;
     setMessage: (value: string | null) => void;
+    resetTransaction: () => void;
 }
 
 const TransactionContext = createContext<TransferTransactionContextData | undefined>(undefined);
@@ -24,6 +25,16 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
         beneficiaryType: null,
         beneficiaryName: null
     });
+
+    const resetTransaction = () => {
+        setTransaction({
+            beneficiary: null,
+            amount: 0,
+            message: null,
+            beneficiaryType: null,
+            beneficiaryName: null
+        })
+    }
 
     const setBeneficiary = (value: string) => {
         setTransaction((prevTransaction) => ({
@@ -68,7 +79,8 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
         setAmount,
         setBeneficiaryType,
         setMessage,
-        setBeneficiaryName
+        setBeneficiaryName,
+        resetTransaction
     };
 
     return <TransactionContext.Provider value={contextValue}>{children}</TransactionContext.Provider>;
