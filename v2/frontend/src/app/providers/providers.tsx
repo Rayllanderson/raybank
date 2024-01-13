@@ -1,11 +1,14 @@
 'use client'
 
+import { PixPaymentProvider } from "../context/PixPaymentContext"
 import { TransactionProvider } from "../context/TransferContext"
 
-export const Providers = ({children}: {children: React.ReactNode}) => {
+export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
         <TransactionProvider>
-            {children}
+            <PixPaymentProvider>
+                {children}
+            </PixPaymentProvider>
         </TransactionProvider>
     )
 }

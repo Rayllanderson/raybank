@@ -16,8 +16,8 @@ export default function page() {
 
                 <div className="space-y-5 mt-3">
                     <CardGroup>
-                        <MiniCard icon={FaBarcode} title="Pagar" className='w-32 h-28 md:w-[8.5rem] lg:w-36' />
-                        <MiniCard icon={FaMoneyBill} title="Depositar" className='w-32 h-28 md:w-[8.5rem] lg:w-36' />
+                        <MiniCard href='' icon={FaBarcode} title="Pagar" className='w-32 h-28 md:w-[8.5rem] lg:w-36' />
+                        <MiniCard href='' icon={FaMoneyBill} title="Depositar" className='w-32 h-28 md:w-[8.5rem] lg:w-36' />
                     </CardGroup>
                 </div>
             </Card>
