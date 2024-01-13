@@ -3,7 +3,7 @@ import { TransferTransaction } from '../types/transactions/TransferTransaction';
 
 interface TransferTransactionContextData {
     transaction: TransferTransaction;
-    setBeneficiaryAccountNumber: (value: number | null) => void;
+    setBeneficiary: (value: number | null) => void;
     setAmount: (value: number) => number;
     setMessage: (value: string | null) => void;
 }
@@ -21,7 +21,7 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
         message: null,
     });
 
-    const setBeneficiaryAccountNumber = (value: number | null) => {
+    const setBeneficiary = (value: number | null) => {
         setTransaction((prevTransaction) => ({
             ...prevTransaction!,
             beneficiaryAccountNumber: value,
@@ -45,7 +45,7 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
 
     const contextValue: TransferTransactionContextData = {
         transaction,
-        setBeneficiaryAccountNumber,
+        setBeneficiary: setBeneficiary,
         setAmount,
         setMessage,
     };

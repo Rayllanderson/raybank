@@ -1,6 +1,6 @@
 'use client';
 import { Container } from '@/app/components/Container';
-import PreviousPageButton from '@/app/components/PreviousPage';
+import PreviousPageButton from '@/app/components/PreviousPageButton';
 import { Card } from '@/app/components/cards/Card';
 import { CurrencyInput } from '@/app/components/inputs/InputMoney';
 import { useTransferTransactionContext } from '@/app/context/TransferContext';
@@ -8,7 +8,7 @@ import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/app/utils/MoneyF
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react'
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6';
+import { FaArrowRight } from 'react-icons/fa6';
 
 const saldo = 542.89
 
@@ -43,14 +43,14 @@ export default function TransferForm() {
                     </div>
                 </header>
 
-                <div className="mt-4 flex flex-col gap-3">
+                <div className="mt-2 flex flex-col gap-3">
                     <CurrencyInput value={transaction.amount} onValueChange={onInputChange} ref={inputRef} />
 
                     <div className='flex justify-end'>
                         {isButtonDisabled ? (
                             <NextButton isDisabled={isButtonDisabled} />
                         ) : (
-                            <Link href='/accounts'>
+                            <Link href='/accounts/transfer/contacts'>
                                 <NextButton isDisabled={isButtonDisabled} />
                             </Link>
                         )}
