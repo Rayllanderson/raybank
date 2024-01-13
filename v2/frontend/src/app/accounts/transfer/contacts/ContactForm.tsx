@@ -3,20 +3,16 @@ import { ContactCard } from '@/app/components/ContactCard';
 import { Container } from '@/app/components/Container';
 import PreviousPageButton from '@/app/components/PreviousPageButton';
 import { Card } from '@/app/components/cards/Card';
-import { CurrencyInput } from '@/app/components/inputs/InputMoney';
 import InputText from '@/app/components/inputs/InputText';
 import { useTransferTransactionContext } from '@/app/context/TransferContext';
-import { Contact } from '@/app/types/Contact';
-import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/app/utils/MoneyFormatter';
-import { Button, TextInput } from 'flowbite-react';
+import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
+import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
-import { FaArrowRight } from 'react-icons/fa6';
 import { contacts } from './mock';
 import { isPixKeyValid } from '@/app/validators/PixKeyValidator';
-import { getPixKeyType, getPixKeyTypeAsString, getPixKeyTypeAsStringForTransfer } from '@/app/utils/PixKeyUtil';
-import { PixType } from '@/app/types/Pix';
+import { getPixKeyTypeAsStringForTransfer } from '@/app/utils/PixKeyUtil';
 
 function isAccountNumber(v: string): boolean {
     const regex = /^\d{9}$/;
@@ -26,12 +22,13 @@ function isAccountNumber(v: string): boolean {
 export default function ContactForm() {
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
-    const { transaction, setBeneficiary } = useTransferTransactionContext();
+    const { transaction, setBeneficiary, setBeneficiaryType } = useTransferTransactionContext();
 
     useEffect(() => {
         if (transaction.amount === 0) {
-            // router.push('/accounts/transfer') for now is disabled, just for now, rs
+            router.push('/accounts/transfer')
         }
+        console.log(transaction)
     }, [transaction, router]);
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -51,8 +48,21 @@ export default function ContactForm() {
         return getPixKeyTypeAsStringForTransfer(value)
     }
 
-    function onClick() {
-        console.log('click')
+    function onButtonClick() {
+        const value: string | null = inputRef.current?.value || null
+        if (value === null) {
+            return;
+        }
+        setBeneficiary(value)
+        setBeneficiaryType(isAccountNumber(value) ? 'account' : 'pix')
+    }
+
+    function onContactClick(contactId: string) {
+        if (contactId === null) {
+            return;
+        }
+        setBeneficiary(contactId)
+        setBeneficiaryType('contact')
     }
 
     return (
@@ -76,7 +86,7 @@ export default function ContactForm() {
                             <NextButton isDisabled={isButtonDisabled} />
                         ) : (
                             <Link href='/accounts/transfer/contacts' className='w-full flex  justify-center'>
-                                <NextButton isDisabled={isButtonDisabled} onClick={onClick} type={getBeneficiaryType()} />
+                                <NextButton isDisabled={isButtonDisabled} onClick={onButtonClick} type={getBeneficiaryType()} />
                             </Link>
                         )}
                     </div>
@@ -89,7 +99,9 @@ export default function ContactForm() {
                     {
                         contacts.map(contact => {
                             return (
-                                <button title={contact.name} key={contact.id} className="p-0 m-0 bg-transparent border-none cursor-pointer text-current hover:scale-[1.03] transform transition-transform" >
+                                <button title={contact.name} key={contact.id} 
+                                onClick={() => onContactClick(contact.id)}
+                                className="p-0 m-0 bg-transparent border-none cursor-pointer text-current hover:scale-[1.03] transform transition-transform" >
                                     <ContactCard contact={contact} key={contact.id} />
                                 </button>
                             )
