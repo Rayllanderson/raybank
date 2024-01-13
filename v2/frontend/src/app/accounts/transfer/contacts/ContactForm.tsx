@@ -14,8 +14,12 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa6';
 import { contacts } from './mock';
+import { isPixKeyValid } from '@/app/validators/pixKeyValidator';
 
-const saldo = 542.89
+function isAccountNumber(v: string): boolean {
+    const regex = /^\d{9}$/;
+    return regex.test(v);
+}
 
 export default function ContactForm() {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -30,23 +34,15 @@ export default function ContactForm() {
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-    function onInputChange(value: any) {
-        // buscar uma conta... ou pix... isso na proxima página. se beneficiary nao existir, back para previou page, nem busca
-        // só buscar se encaixar em um determinado formato. isPix() -> dentro dele tem regex pra validar se é cpf, cnpj, email, celular... se sim em um deles, habilitar botao
-
-        setIsButtonDisabled(!isPix(value) || !isAccountNumber(value))
+    function onInputChange(event: any) {
+        const value = event.target.value || '';
+        const isPixValid = isPixKeyValid(value);
+        const isAccountNumberValid = isAccountNumber(value);
+        setIsButtonDisabled(!(isPixValid || isAccountNumberValid));
     }
 
     function onClick() {
         console.log('click')
-    }
-
-    function isPix(v: string): boolean {
-        return true
-    }
-
-    function isAccountNumber(v: string): boolean {
-        return false
     }
 
     return (
@@ -95,7 +91,6 @@ export default function ContactForm() {
         </Container>
     )
 }
-
 
 const NextButton = ({ isDisabled, onClick }: { isDisabled: boolean, onClick?: () => void }) => (
     <Button color='primary' disabled={isDisabled} onClick={onClick}>
