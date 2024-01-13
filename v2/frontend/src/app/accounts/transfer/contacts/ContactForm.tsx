@@ -14,7 +14,9 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa6';
 import { contacts } from './mock';
-import { isPixKeyValid } from '@/app/validators/pixKeyValidator';
+import { isPixKeyValid } from '@/app/validators/PixKeyValidator';
+import { getPixKeyType, getPixKeyTypeAsString, getPixKeyTypeAsStringForTransfer } from '@/app/utils/PixKeyUtil';
+import { PixType } from '@/app/types/Pix';
 
 function isAccountNumber(v: string): boolean {
     const regex = /^\d{9}$/;
@@ -41,6 +43,14 @@ export default function ContactForm() {
         setIsButtonDisabled(!(isPixValid || isAccountNumberValid));
     }
 
+    function getBeneficiaryType(): string | null {
+        const value: string = inputRef.current?.value || ''
+        if (isAccountNumber(value)) {
+            return 'essa Conta'
+        }
+        return getPixKeyTypeAsStringForTransfer(value)
+    }
+
     function onClick() {
         console.log('click')
     }
@@ -61,12 +71,12 @@ export default function ContactForm() {
                 <div className="mt-4 flex flex-col gap-3">
                     <InputText placeholder='Conta ou chave Pix' ref={inputRef} onChange={onInputChange} />
 
-                    <div className='flex justify-end'>
+                    <div className='flex'>
                         {isButtonDisabled ? (
                             <NextButton isDisabled={isButtonDisabled} />
                         ) : (
-                            <Link href='/accounts/transfer/contacts'>
-                                <NextButton isDisabled={isButtonDisabled} onClick={onClick} />
+                            <Link href='/accounts/transfer/contacts' className='w-full flex  justify-center'>
+                                <NextButton isDisabled={isButtonDisabled} onClick={onClick} type={getBeneficiaryType()} />
                             </Link>
                         )}
                     </div>
@@ -92,8 +102,10 @@ export default function ContactForm() {
     )
 }
 
-const NextButton = ({ isDisabled, onClick }: { isDisabled: boolean, onClick?: () => void }) => (
-    <Button color='primary' disabled={isDisabled} onClick={onClick}>
-        <FaArrowRight className='w-6 h-6' />
+const NextButton = ({ isDisabled, type, onClick }: { isDisabled: boolean, type?: string | null, onClick?: () => void }) => (
+    <Button color='primary' disabled={isDisabled} onClick={onClick} className={`w-full`}>
+        {
+            isDisabled ? <p>Transferir</p> : <p>Transferir para {type}</p>
+        }
     </Button>
 );
