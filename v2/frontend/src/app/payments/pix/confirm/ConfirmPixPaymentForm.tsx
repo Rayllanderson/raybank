@@ -48,11 +48,9 @@ export default function ConfirmPixPaymentForm() {
                 </header>
 
                 <div className="mt-2 flex flex-col gap-3">
-                    <InputText placeholder='Mensagem (opcional)' ref={inputRef} onChange={onInputChange} />
-
                     <div className='flex mt-2'>
                         <Button color='primary' className={`w-full`}>
-                            <p>Confirmar Transferência</p>
+                            <p>Confirmar Pagamento</p>
                         </Button>
                     </div>
                 </div>
