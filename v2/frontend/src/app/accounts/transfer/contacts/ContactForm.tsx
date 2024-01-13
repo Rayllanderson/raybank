@@ -13,6 +13,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { contacts } from './mock';
 import { isPixKeyValid } from '@/app/validators/PixKeyValidator';
 import { getPixKeyTypeAsStringForTransfer } from '@/app/utils/PixKeyUtil';
+import { Contact } from '@/app/types/Contact';
 
 function isAccountNumber(v: string): boolean {
     const regex = /^\d{9}$/;
@@ -22,13 +23,12 @@ function isAccountNumber(v: string): boolean {
 export default function ContactForm() {
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
-    const { transaction, setBeneficiary, setBeneficiaryType } = useTransferTransactionContext();
+    const { transaction, setBeneficiary, setBeneficiaryType, setBeneficiaryName } = useTransferTransactionContext();
 
     useEffect(() => {
         if (transaction.amount === 0) {
             router.push('/accounts/transfer')
         }
-        console.log(transaction)
     }, [transaction, router]);
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -55,14 +55,16 @@ export default function ContactForm() {
         }
         setBeneficiary(value)
         setBeneficiaryType(isAccountNumber(value) ? 'account' : 'pix')
+        setBeneficiaryName(value)
     }
 
-    function onContactClick(contactId: string) {
-        if (contactId === null) {
+    function onContactClick(contact: Contact) {
+        if (contact.id === null) {
             return;
         }
-        setBeneficiary(contactId)
+        setBeneficiary(contact.id)
         setBeneficiaryType('contact')
+        setBeneficiaryName(contact.name)
     }
 
     return (
@@ -85,7 +87,7 @@ export default function ContactForm() {
                         {isButtonDisabled ? (
                             <NextButton isDisabled={isButtonDisabled} />
                         ) : (
-                            <Link href='/accounts/transfer/contacts' className='w-full flex  justify-center'>
+                            <Link href='/accounts/transfer/confirm' className='w-full flex  justify-center'>
                                 <NextButton isDisabled={isButtonDisabled} onClick={onButtonClick} type={getBeneficiaryType()} />
                             </Link>
                         )}
@@ -99,11 +101,12 @@ export default function ContactForm() {
                     {
                         contacts.map(contact => {
                             return (
-                                <button title={contact.name} key={contact.id} 
-                                onClick={() => onContactClick(contact.id)}
-                                className="p-0 m-0 bg-transparent border-none cursor-pointer text-current hover:scale-[1.03] transform transition-transform" >
-                                    <ContactCard contact={contact} key={contact.id} />
-                                </button>
+                                <Link href='/accounts/transfer/confirm' key={contact.id} className='w-full' onClick={() => onContactClick(contact)}>
+                                    <button title={contact.name} key={contact.id}
+                                        className="p-0 m-0 bg-transparent border-none cursor-pointer text-current hover:scale-[1.03] transform transition-transform w-full" >
+                                        <ContactCard contact={contact} key={contact.id} />
+                                    </button>
+                                </Link>
                             )
                         })
                     }

@@ -4,6 +4,7 @@ import { TransferTransaction } from '../types/transactions/TransferTransaction';
 interface TransferTransactionContextData {
     transaction: TransferTransaction;
     setBeneficiary: (value: string) => void;
+    setBeneficiaryName: (value: string) => void;
     setBeneficiaryType: (value: 'account' | 'pix' | 'contact') => void;
     setAmount: (value: number) => number;
     setMessage: (value: string | null) => void;
@@ -20,7 +21,8 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
         beneficiary: null,
         amount: 0,
         message: null,
-        beneficiaryType: null
+        beneficiaryType: null,
+        beneficiaryName: null
     });
 
     const setBeneficiary = (value: string) => {
@@ -36,6 +38,14 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
             beneficiaryType: value,
         }));
     };
+
+    const setBeneficiaryName = (value: string) => {
+        setTransaction((prevTransaction) => ({
+            ...prevTransaction!,
+            beneficiaryName: value,
+        }));
+    };
+
 
     const setAmount = (value: number): number => {
         setTransaction((prevTransaction) => ({
@@ -58,6 +68,7 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
         setAmount,
         setBeneficiaryType,
         setMessage,
+        setBeneficiaryName
     };
 
     return <TransactionContext.Provider value={contextValue}>{children}</TransactionContext.Provider>;
