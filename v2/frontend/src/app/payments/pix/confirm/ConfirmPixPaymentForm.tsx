@@ -2,17 +2,14 @@
 import { Container } from '@/app/components/Container';
 import PreviousPageButton from '@/app/components/PreviousPageButton';
 import { Card } from '@/app/components/cards/Card';
-import InputText from '@/app/components/inputs/InputText';
 import { usePixPayment } from '@/app/context/PixPaymentContext';
-import { useTransferTransactionContext } from '@/app/context/TransferContext';
 import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 
 
 export default function ConfirmPixPaymentForm() {
-    const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const { qrCode, beneficiaryName, amount } = usePixPayment();
 
