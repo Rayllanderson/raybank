@@ -4,7 +4,6 @@ import TextHeaderForm from '@/app/components/TextHeaderForm';
 import { Card } from '@/app/components/cards/Card';
 import InputText from '@/app/components/inputs/InputText';
 import { useBoletoPayment } from '@/app/context/BoletoPaymentContext';
-import { usePixPayment } from '@/app/context/PixPaymentContext';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react'

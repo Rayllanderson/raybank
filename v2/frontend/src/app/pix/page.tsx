@@ -16,15 +16,15 @@ export default function page() {
 
                 <div className="space-y-5 mt-3">
                     <CardGroup>
-                        <MiniCard icon={FaMoneyBillTransfer} title="Transferir" />
-                        <MiniCard icon={FaQrcode} title="Pagar" />
-                        <MiniCard icon={FaMoneyBill} title="Depositar" />
+                        <MiniCard href='/transfer' icon={FaMoneyBillTransfer} title="Transferir" />
+                        <MiniCard href='/payments/pix' icon={FaQrcode} title="Pagar" />
+                        <MiniCard href='' icon={FaMoneyBill} title="Depositar" />
                     </CardGroup>
 
                     <CardGroup>
-                        <MiniCard icon={FaKey} title="Registrar Chave" />
-                        <MiniCard icon={FaListUl} title="Listar Chaves" />
-                        <MiniCard icon={FaSliders} title="Ajustar Limite" />
+                        <MiniCard href='' icon={FaKey} title="Registrar Chave" />
+                        <MiniCard href='' icon={FaListUl} title="Listar Chaves" />
+                        <MiniCard href='' icon={FaSliders} title="Ajustar Limite" />
                     </CardGroup>
                 </div>
 

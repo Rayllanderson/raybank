@@ -4,9 +4,9 @@ import PreviousPageButton from '@/app/components/PreviousPageButton';
 import { Card } from '@/app/components/cards/Card';
 import { useBoletoPayment } from '@/app/context/BoletoPaymentContext';
 import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
-import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
+import { ButtonConfirm } from '../../ButtonConfirm';
 
 
 export default function ConfirmBoletoPaymentForm() {
@@ -39,13 +39,7 @@ export default function ConfirmBoletoPaymentForm() {
                     </div>
                 </header>
 
-                <div className="mt-2 flex flex-col gap-3">
-                    <div className='flex mt-2'>
-                        <Button color='primary' className={`w-full`}>
-                            <p>Confirmar Pagamento</p>
-                        </Button>
-                    </div>
-                </div>
+                <ButtonConfirm onClick={onButtonClick}/>
             </Card>
         </Container>
     )

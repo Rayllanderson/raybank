@@ -1,14 +1,12 @@
 'use client';
 import { Container } from '@/app/components/Container';
-import PreviousPageButton from '@/app/components/PreviousPageButton';
-import { Card } from '@/app/components/cards/Card';
-import { CurrencyInput } from '@/app/components/inputs/InputMoney';
 import { useTransferTransactionContext } from '@/app/context/TransferContext';
 import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/app/utils/MoneyFormatter';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa6';
+import CurrencyForm from '../components/CurrencyForm';
 
 const saldo = 542.89
 
@@ -32,31 +30,15 @@ export default function TransferForm() {
 
     return (
         <Container>
-            <Card >
-                <header className="flex flex-col gap-3">
-                    <div>
-                        <PreviousPageButton />    
-                    </div>
-                    <div className="text-start">
-                        <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">Qual é o valor da transferência?</h1>
-                        <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>Saldo disponível em conta {MoneyFormatter.format(saldo)}</p>
-                    </div>
-                </header>
-
-                <div className="mt-2 flex flex-col gap-3">
-                    <CurrencyInput value={transaction.amount} onValueChange={onInputChange} ref={inputRef} />
-
-                    <div className='flex justify-end'>
-                        {isButtonDisabled ? (
-                            <NextButton isDisabled={isButtonDisabled} />
-                        ) : (
-                            <Link href='/transfer/contacts'>
-                                <NextButton isDisabled={isButtonDisabled} />
-                            </Link>
-                        )}
-                    </div>
-                </div>
-            </Card>
+            <CurrencyForm
+                title={'Qual é o valor da transferência?'}
+                subtitle={`Saldo disponível em conta ${MoneyFormatter.format(saldo)}`}
+                isButtonDisabled={isButtonDisabled}
+                onInputChange={onInputChange}
+                amount={transaction.amount}
+                inputRef={inputRef}
+                href='/transfer/contacts'
+            />
         </Container>
     )
 }
