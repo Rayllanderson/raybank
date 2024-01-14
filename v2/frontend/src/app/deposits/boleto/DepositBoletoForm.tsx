@@ -31,7 +31,7 @@ export default function DepositBoletoForm() {
                 onInputChange={onInputChange}
                 amount={boletoDepositData.amount}
                 inputRef={inputRef}
-                href='/deposit/boleto/confirm'
+                href='/deposits/boleto/confirm'
             />
         </Container>
     )

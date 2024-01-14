@@ -50,7 +50,7 @@ export default function BankAccountCard({ withLinkHeader = true }: Props) {
 
         <MiniCard title={'Transferir'} icon={FaMoneyBillTransfer} href='/transfer'/>
         <MiniCard title={'Pagar'} icon={FaBarcode} href='/payments'/>
-        <MiniCard title={'Depositar'} icon={FaMoneyBill} href='/deposit'/>
+        <MiniCard title={'Depositar'} icon={FaMoneyBill} href='/deposits'/>
 
       </div>
     </Card>

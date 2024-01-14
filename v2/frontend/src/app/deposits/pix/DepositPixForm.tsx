@@ -31,7 +31,7 @@ export default function DepositPixForm() {
                 onInputChange={onInputChange}
                 amount={pixDepositData.amount}
                 inputRef={inputRef}
-                href='/deposit/pix/confirm'
+                href='/deposits/pix/confirm'
             />
         </Container>
     )

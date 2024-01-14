@@ -16,7 +16,7 @@ export default function DepositForm() {
                 <div className='flex flex-col space-y-5'>
                     <ListItem
                         type='link'
-                        href='/deposit/pix'
+                        href='/deposits/pix'
                         icon={FaPix}
                         title='Receber na hora em qualquer dia, sem custo'
                         subtitle='Gere um código Pix para copiar e colar'
@@ -24,7 +24,7 @@ export default function DepositForm() {
                     />
                     <ListItem
                         type='link'
-                        href='/deposit/boleto'
+                        href='/deposits/boleto'
                         icon={FaBarcode}
                         title='Depositar em dinheiro'
                         subtitle='Gere um boleto para pagar em bancos'

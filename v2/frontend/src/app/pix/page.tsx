@@ -18,7 +18,7 @@ export default function page() {
                     <CardGroup>
                         <MiniCard href='/transfer' icon={FaMoneyBillTransfer} title="Transferir" />
                         <MiniCard href='/payments/pix' icon={FaQrcode} title="Pagar" />
-                        <MiniCard href='' icon={FaMoneyBill} title="Depositar" />
+                        <MiniCard href='/deposits/pix' icon={FaMoneyBill} title="Depositar" />
                     </CardGroup>
 
                     <CardGroup>

@@ -17,7 +17,7 @@ export default function page() {
                 <div className="space-y-5 mt-3">
                     <CardGroup>
                         <MiniCard href='/payments/boleto' icon={FaBarcode} title="Pagar" className='w-32 h-28 md:w-[8.5rem] lg:w-36' />
-                        <MiniCard href='' icon={FaMoneyBill} title="Depositar" className='w-32 h-28 md:w-[8.5rem] lg:w-36' />
+                        <MiniCard href='/deposits/boleto' icon={FaMoneyBill} title="Depositar" className='w-32 h-28 md:w-[8.5rem] lg:w-36' />
                     </CardGroup>
                 </div>
             </Card>
