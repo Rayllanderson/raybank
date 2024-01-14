@@ -4,9 +4,11 @@ interface PixPaymentContextProps {
   qrCode: string;
   amount: number;
   beneficiaryName: string;
+  description: string | null
   setBeneficiaryName: React.Dispatch<React.SetStateAction<string>>
   setQrCode: React.Dispatch<React.SetStateAction<string>>;
   setAmount: React.Dispatch<React.SetStateAction<number>>;
+  setDescription: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const PixPaymentContext = createContext<PixPaymentContextProps | undefined>(undefined);
@@ -19,9 +21,10 @@ export const PixPaymentProvider: React.FC<PixPaymentProviderProps> = ({ children
   const [qrCode, setQrCode] = useState<string>('');
   const [beneficiaryName, setBeneficiaryName] = useState<string>('');
   const [amount, setAmount] = useState(0)
+  const [description, setDescription] = useState<string | null>(null)
 
   return (
-    <PixPaymentContext.Provider value={{ qrCode, beneficiaryName, amount, setQrCode, setBeneficiaryName, setAmount }}>
+    <PixPaymentContext.Provider value={{ qrCode, beneficiaryName, amount, description, setDescription, setQrCode, setBeneficiaryName, setAmount }}>
       {children}
     </PixPaymentContext.Provider>
   );

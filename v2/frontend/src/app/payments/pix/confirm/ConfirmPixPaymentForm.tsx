@@ -10,7 +10,7 @@ import { ConfirmTransactionHeader } from '../../../components/ConfirmTransaction
 
 export default function ConfirmPixPaymentForm() {
     const router = useRouter();
-    const { qrCode, beneficiaryName, amount } = usePixPayment();
+    const { qrCode, beneficiaryName, amount, description } = usePixPayment();
 
     useEffect(() => {
         if (qrCode === null || qrCode.length < 140) {
@@ -32,9 +32,16 @@ export default function ConfirmPixPaymentForm() {
     return (
         <Container>
             <Card >
-                <ConfirmTransactionHeader title="Pagando" amount={amount} beneficiaryName={beneficiaryName}/>
-
-                <ButtonConfirm onClick={onButtonClick}/>
+                <ConfirmTransactionHeader title="Pagando" amount={amount} beneficiaryName={beneficiaryName} />
+                {
+                    description && (
+                        <div className='text-start max-w-xs'>
+                            <p className="md:text-lg">Mensagem</p>
+                            <p className="md:text-lg text-gray-500 dark:text-gray-400">{description}</p>
+                        </div>
+                    )
+                }
+                <ButtonConfirm onClick={onButtonClick} />
             </Card>
         </Container>
     )
