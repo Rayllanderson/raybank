@@ -18,6 +18,5 @@ export default function TextHeaderForm({ title, subtitle }: Props) {
                 <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>{subtitle}</p>
             </div>
         </header>
-
     )
 }
