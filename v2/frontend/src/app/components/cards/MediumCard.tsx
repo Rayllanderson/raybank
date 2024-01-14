@@ -10,7 +10,7 @@ interface MediumCardProps {
 
 export default function MediumCard({title, icon, href }: MediumCardProps) {
     return (
-        <Card className='p-3 w-[50%]'>
+        <Card className='p-3 w-[50%] flex rounded-lg border border-gray-200 bg-white shadow-md dark:border-black-3 dark:bg-black-2'>
             <div className='flex justify-center items-center'>
                 {icon}
             </div>
