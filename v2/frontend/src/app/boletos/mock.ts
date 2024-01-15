@@ -1,4 +1,4 @@
-import { Boleto } from "../types/Boleto";
+import { Boleto } from "@/types/Boleto";
 
 export const boletos: Boleto[] = [
     {

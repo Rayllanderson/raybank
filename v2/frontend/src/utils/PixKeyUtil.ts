@@ -1,4 +1,4 @@
-import { PixType } from "../types/Pix";
+import { PixType } from "@/types/Pix";
 import { RegexPattern } from "./PixRegexPattern";
 import { validate as isUuidValid } from 'uuid';
 

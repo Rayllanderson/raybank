@@ -1,9 +1,9 @@
 'use client';
-import { Container } from '@/app/components/Container';
-import PreviousPageButton from '@/app/components/PreviousPageButton';
-import { Card } from '@/app/components/cards/Card';
-import { useCardPayment } from '@/app/context/CardPaymentContext';
-import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
+import { Container } from '@/components/Container';
+import PreviousPageButton from '@/components/PreviousPageButton';
+import { Card } from '@/components/cards/Card';
+import { useCardPayment } from '@/context/CardPaymentContext';
+import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { FaAngleRight, FaBarcode, FaMoneyBill } from 'react-icons/fa6';

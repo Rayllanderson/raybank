@@ -1,9 +1,9 @@
 'use client';
-import { Container } from '@/app/components/Container';
-import TextHeaderForm from '@/app/components/TextHeaderForm';
-import { Card } from '@/app/components/cards/Card';
-import InputText from '@/app/components/inputs/InputText';
-import { usePixPayment } from '@/app/context/PixPaymentContext';
+import { Container } from '@/components/Container';
+import TextHeaderForm from '@/components/TextHeaderForm';
+import { Card } from '@/components/cards/Card';
+import InputText from '@/components/inputs/InputText';
+import { usePixPayment } from '@/context/PixPaymentContext';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react'

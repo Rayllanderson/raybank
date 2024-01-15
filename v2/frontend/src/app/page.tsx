@@ -1,12 +1,12 @@
 import { FaPix } from 'react-icons/fa6';
 import { LiaBarcodeSolid } from "react-icons/lia";
-import Header from './components/Header';
-import SideBar from './components/SideBar';
-import BankAccountCard from './components/cards/BankAccountCard';
-import CreditCardCard from './components/cards/CreditCardCard';
-import { SidebarProvider } from './context/SidebarContext';
+import Header from '../components/Header';
+import SideBar from '../components/SideBar';
+import BankAccountCard from '../components/cards/BankAccountCard';
+import CreditCardCard from '../components/cards/CreditCardCard';
+import { SidebarProvider } from '../context/SidebarContext';
 
-import MediumCard from './components/cards/MediumCard';
+import MediumCard from '../components/cards/MediumCard';
 
 export default function page() {
 

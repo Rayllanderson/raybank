@@ -1,12 +1,12 @@
 'use client';
-import { Container } from '@/app/components/Container';
-import { Card } from '@/app/components/cards/Card';
-import InputText from '@/app/components/inputs/InputText';
-import { ConfirmTransactionHeader } from '@/app/components/ConfirmTransactionHeader';
+import { Container } from '@/components/Container';
+import { Card } from '@/components/cards/Card';
+import InputText from '@/components/inputs/InputText';
+import { ConfirmTransactionHeader } from '@/components/ConfirmTransactionHeader';
 import { Button, Select } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
-import { usePixDepositContext } from '@/app/context/PixDepositContext';
+import { usePixDepositContext } from '@/context/PixDepositContext';
 
 
 export default function ConfirmPixDepositForm() {

@@ -1,19 +1,19 @@
 'use client';
-import { ContactCard } from '@/app/components/ContactCard';
-import { Container } from '@/app/components/Container';
-import { Card } from '@/app/components/cards/Card';
-import InputText from '@/app/components/inputs/InputText';
-import { useTransferTransactionContext } from '@/app/context/TransferContext';
-import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
+import { ContactCard } from '@/components/ContactCard';
+import { Container } from '@/components/Container';
+import { Card } from '@/components/cards/Card';
+import InputText from '@/components/inputs/InputText';
+import { useTransferTransactionContext } from '@/context/TransferContext';
+import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 import { contacts } from './mock';
-import { isPixKeyValid } from '@/app/validators/PixKeyValidator';
-import { getPixKeyTypeAsStringForTransfer } from '@/app/utils/PixKeyUtil';
-import { Contact } from '@/app/types/Contact';
-import TextHeaderForm from '@/app/components/TextHeaderForm';
+import { isPixKeyValid } from '@/validators/PixKeyValidator';
+import { getPixKeyTypeAsStringForTransfer } from '@/utils/PixKeyUtil';
+import TextHeaderForm from '@/components/TextHeaderForm';
+import { Contact } from '@/types/Contact';
 
 function isAccountNumber(v: string): boolean {
     const regex = /^\d{9}$/;

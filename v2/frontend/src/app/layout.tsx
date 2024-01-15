@@ -4,7 +4,7 @@ import './globals.css'
 import { Flowbite, ThemeModeScript } from 'flowbite-react'
 import { twMerge } from "tailwind-merge";
 import { flowbiteTheme } from './theme';
-import { Providers } from './providers/providers';
+import { Providers } from '../providers/providers';
 
 
 const inter = Inter({ subsets: ['latin'] })

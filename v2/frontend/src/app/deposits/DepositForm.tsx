@@ -1,10 +1,10 @@
 'use client'
-import { Container } from '@/app/components/Container';
+import { Container } from '@/components/Container';
 import React from 'react'
 import { FaBarcode, FaPix } from 'react-icons/fa6';
-import { Card } from '../components/cards/Card';
-import ListItem from '../components/ListItem';
-import TextHeaderForm from '../components/TextHeaderForm';
+import { Card } from '../../components/cards/Card';
+import ListItem from '../../components/ListItem';
+import TextHeaderForm from '../../components/TextHeaderForm';
 
 export default function DepositForm() {
     return (

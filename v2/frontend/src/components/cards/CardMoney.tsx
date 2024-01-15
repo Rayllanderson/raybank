@@ -1,4 +1,4 @@
-import formatMoney, { MoneyFormatter } from '@/app/utils/MoneyFormatter'
+import formatMoney, { MoneyFormatter } from '@/utils/MoneyFormatter'
 import React from 'react'
 
 interface CardMoneyProps {

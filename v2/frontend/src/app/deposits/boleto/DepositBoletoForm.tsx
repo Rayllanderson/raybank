@@ -1,8 +1,8 @@
 'use client';
-import { Container } from '@/app/components/Container';
-import CurrencyForm from '@/app/components/CurrencyForm';
-import { useBoletoDepositContext } from '@/app/context/BoletoDepositContext';
-import { getValueNumberFromMoneyInput } from '@/app/utils/MoneyFormatter';
+import { Container } from '@/components/Container';
+import CurrencyForm from '@/components/CurrencyForm';
+import { useBoletoDepositContext } from '@/context/BoletoDepositContext';
+import { getValueNumberFromMoneyInput } from '@/utils/MoneyFormatter';
 import React, { useEffect, useRef, useState } from 'react'
 
 export default function DepositBoletoForm() {

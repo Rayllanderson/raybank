@@ -1,7 +1,6 @@
 import { FaBagShopping, FaBasketShopping, FaCartShopping, FaCircleArrowDown, FaCircleArrowUp, FaCreditCard, FaMoneyBillTrendUp } from 'react-icons/fa6';
 import { formatDate } from '../utils/DateFormatter';
 import { isIncomming } from '../utils/StatementUtil';
-import { StatementProps } from './StatamentCard';
 import { Statement } from '../types/Statement';
 import { IconType } from 'react-icons';
 

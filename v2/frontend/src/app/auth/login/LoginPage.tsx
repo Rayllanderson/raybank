@@ -1,10 +1,10 @@
 "use client";
-import Logo from '@/app/components/Logo';
-import InputWithIcon from '@/app/components/inputs/InputWithIcon';
+import Logo from '@/components/Logo';
+import InputWithIcon from '@/components/inputs/InputWithIcon';
 import { Button } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { FiLock, FiUser } from "react-icons/fi";
-import { AuthFooter } from '../../components/AuthFooter';
+import { AuthFooter } from '../../../components/AuthFooter';
 
 export const LoginPage: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);

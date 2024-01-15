@@ -1,11 +1,11 @@
 'use client';
-import { Container } from '@/app/components/Container';
-import { Card } from '@/app/components/cards/Card';
-import { usePixPayment } from '@/app/context/PixPaymentContext';
+import { Container } from '@/components/Container';
+import { Card } from '@/components/cards/Card';
+import { usePixPayment } from '@/context/PixPaymentContext';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { ButtonConfirm } from '../../ButtonConfirm';
-import { ConfirmTransactionHeader } from '../../../components/ConfirmTransactionHeader';
+import { ConfirmTransactionHeader } from '../../../../components/ConfirmTransactionHeader';
 
 
 export default function ConfirmPixPaymentForm() {

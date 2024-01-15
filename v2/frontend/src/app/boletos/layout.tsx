@@ -1,7 +1,7 @@
 import React from 'react'
-import { SidebarProvider } from '../context/SidebarContext'
-import Header from '../components/Header'
-import SideBar from '../components/SideBar'
+import { SidebarProvider } from '../../context/SidebarContext'
+import Header from '../../components/Header'
+import SideBar from '../../components/SideBar'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (

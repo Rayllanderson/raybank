@@ -1,9 +1,9 @@
 'use client';
-import { Card } from '../components/cards/Card';
+import { Card } from '../../components/cards/Card';
 import React, { useRef, useState } from 'react'
-import { Container } from '../components/Container';
+import { Container } from '../../components/Container';
 import { Button, Label, RangeSlider, Select } from 'flowbite-react';
-import { MoneyFormatter } from '../utils/MoneyFormatter';
+import { MoneyFormatter } from '../../utils/MoneyFormatter';
 
 export function WithoutCreditCard() {
     const [limit, setLimit] = useState(7500);

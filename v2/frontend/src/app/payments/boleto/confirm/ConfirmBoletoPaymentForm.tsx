@@ -1,9 +1,9 @@
 'use client';
-import { Container } from '@/app/components/Container';
-import PreviousPageButton from '@/app/components/PreviousPageButton';
-import { Card } from '@/app/components/cards/Card';
-import { useBoletoPayment } from '@/app/context/BoletoPaymentContext';
-import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
+import { Container } from '@/components/Container';
+import PreviousPageButton from '@/components/PreviousPageButton';
+import { Card } from '@/components/cards/Card';
+import { useBoletoPayment } from '@/context/BoletoPaymentContext';
+import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { ButtonConfirm } from '../../ButtonConfirm';

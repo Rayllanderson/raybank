@@ -1,12 +1,11 @@
 'use client';
-import { Container } from '@/app/components/Container';
-import { useTransferTransactionContext } from '@/app/context/TransferContext';
-import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/app/utils/MoneyFormatter';
+import { Container } from '@/components/Container';
+import { useTransferTransactionContext } from '@/context/TransferContext';
+import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/utils/MoneyFormatter';
 import { Button } from 'flowbite-react';
-import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa6';
-import CurrencyForm from '../components/CurrencyForm';
+import CurrencyForm from '../../components/CurrencyForm';
 
 const saldo = 542.89
 

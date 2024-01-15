@@ -1,5 +1,5 @@
-import { maxTransactionValue } from '@/app/constants/CurrencyConstans';
-import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
+import { maxTransactionValue } from '@/constants/CurrencyConstans';
+import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import React, { ChangeEvent, InputHTMLAttributes, LegacyRef, useEffect, useState } from 'react';
 
 interface CurrencyInputProps extends InputHTMLAttributes<HTMLInputElement> {

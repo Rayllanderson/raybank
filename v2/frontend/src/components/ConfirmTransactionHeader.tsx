@@ -1,5 +1,5 @@
-import PreviousPageButton from '@/app/components/PreviousPageButton';
-import { MoneyFormatter } from '@/app/utils/MoneyFormatter';
+import PreviousPageButton from '@/components/PreviousPageButton';
+import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import React from 'react';
 
 export function ConfirmTransactionHeader({ title, amount, beneficiaryName }: { title:string, amount: number; beneficiaryName: string; }) {

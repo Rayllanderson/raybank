@@ -1,9 +1,9 @@
 import React from 'react'
-import { Container } from '../components/Container';
-import { MiniCard } from '../components/cards/MiniCard';
-import { Card } from '../components/cards/Card';
+import { Container } from '../../components/Container';
+import { MiniCard } from '../../components/cards/MiniCard';
+import { Card } from '../../components/cards/Card';
 import { FaBarcode, FaMoneyBill } from 'react-icons/fa6';
-import { BoletoCard } from '../components/BoletoCard';
+import { BoletoCard } from '../../components/BoletoCard';
 import { boletos } from './mock';
 
 export default function page() {

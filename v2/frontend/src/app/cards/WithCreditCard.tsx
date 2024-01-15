@@ -1,9 +1,9 @@
 'use client';
-import { Card } from '../components/cards/Card';
-import { CardMoney } from '../components/cards/CardMoney';
-import { Statements } from '../components/Statements';
+import { Card } from '../../components/cards/Card';
+import { CardMoney } from '../../components/cards/CardMoney';
+import { Statements } from '../../components/Statements';
 import React, { useRef, useState } from 'react'
-import { MiniCard } from '../components/cards/MiniCard';
+import { MiniCard } from '../../components/cards/MiniCard';
 import { FaBarcode, FaCreditCard, FaFileInvoiceDollar, FaListUl, FaSliders } from 'react-icons/fa6';
 
 export function WithCreditCard() {

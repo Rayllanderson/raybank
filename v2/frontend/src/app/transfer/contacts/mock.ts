@@ -1,4 +1,4 @@
-import { Contact } from "@/app/types/Contact";
+import { Contact } from "@/types/Contact";
 
 export const contacts: Contact[] = [
     {

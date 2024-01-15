@@ -1,7 +1,7 @@
 import React from 'react'
-import ContactForm from './ConfirmForm'
+import ConfirmTransferForm from './ConfirmTransferForm'
 
 
 export default function page() {
-    return <ContactForm />
+    return <ConfirmTransferForm />
 }

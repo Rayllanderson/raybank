@@ -1,6 +1,6 @@
-import TextHeaderForm from '@/app/components/TextHeaderForm';
-import { Card } from '@/app/components/cards/Card';
-import { CurrencyInput } from '@/app/components/inputs/InputMoney';
+import TextHeaderForm from '@/components/TextHeaderForm';
+import { Card } from '@/components/cards/Card';
+import { CurrencyInput } from '@/components/inputs/InputMoney';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import React from 'react'

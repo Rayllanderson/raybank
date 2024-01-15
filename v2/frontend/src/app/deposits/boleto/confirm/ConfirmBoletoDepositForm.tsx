@@ -1,11 +1,11 @@
 'use client';
-import { Container } from '@/app/components/Container';
-import { Card } from '@/app/components/cards/Card';
-import { ConfirmTransactionHeader } from '@/app/components/ConfirmTransactionHeader';
+import { Container } from '@/components/Container';
+import { Card } from '@/components/cards/Card';
+import { ConfirmTransactionHeader } from '@/components/ConfirmTransactionHeader';
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
-import { useBoletoDepositContext } from '@/app/context/BoletoDepositContext';
+import { useBoletoDepositContext } from '@/context/BoletoDepositContext';
 
 
 export default function ConfirmBoletoDepositForm() {

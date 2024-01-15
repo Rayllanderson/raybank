@@ -1,5 +1,5 @@
 //todo:: deletar futuramente
-import { FinancialMovementType, StatementType, Statements } from "../types/Statement";
+import { FinancialMovementType, StatementType, Statements } from "../../types/Statement";
 
 const today = new Date();
 const yesterday = new Date();

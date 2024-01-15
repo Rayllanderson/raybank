@@ -1,7 +1,7 @@
 import React from 'react'
-import { Container } from '../components/Container';
-import { MiniCard } from '../components/cards/MiniCard';
-import { Card } from '../components/cards/Card';
+import { Container } from '../../components/Container';
+import { MiniCard } from '../../components/cards/MiniCard';
+import { Card } from '../../components/cards/Card';
 import { FaBarcode, FaCreditCard, FaMoneyBill, FaPix, FaQrcode } from 'react-icons/fa6';
 
 export default function page() {

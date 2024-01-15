@@ -1,5 +1,5 @@
-import React, { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction } from 'react';
-import { TransferTransaction } from '../types/transactions/TransferTransaction';
+import { TransferTransaction } from '@/types/transactions/TransferTransaction';
+import React, { createContext, useContext, ReactNode, useState } from 'react';
 
 interface TransferTransactionContextData {
     transaction: TransferTransaction;

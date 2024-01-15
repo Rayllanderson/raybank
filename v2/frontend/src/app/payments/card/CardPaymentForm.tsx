@@ -1,9 +1,9 @@
 'use client';
-import { Container } from '@/app/components/Container';
-import { useCardPayment } from '@/app/context/CardPaymentContext';
-import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/app/utils/MoneyFormatter';
+import { Container } from '@/components/Container';
+import { useCardPayment } from '@/context/CardPaymentContext';
+import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/utils/MoneyFormatter';
 import React, { useEffect, useRef, useState } from 'react'
-import CurrencyForm from '../../components/CurrencyForm';
+import CurrencyForm from '../../../components/CurrencyForm';
 
 const fatura = 542.89
 

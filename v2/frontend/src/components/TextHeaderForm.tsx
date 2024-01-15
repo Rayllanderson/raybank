@@ -1,5 +1,5 @@
 'use client';
-import PreviousPageButton from '@/app/components/PreviousPageButton';
+import PreviousPageButton from '@/components/PreviousPageButton';
 import React from 'react';
 
 interface Props {
