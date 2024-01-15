@@ -52,7 +52,7 @@ export default function ConfirmPixDepositForm() {
 
                     <div className='flex mt-2'>
                         <Button color='primary' className={`w-full`}>
-                            <p>Cria código</p>
+                            <p>Criar código</p>
                         </Button>
                     </div>
                 </div>

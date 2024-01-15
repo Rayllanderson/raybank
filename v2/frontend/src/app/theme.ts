@@ -36,7 +36,7 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
         field: {
             select: {
                 colors: {
-                    default: 'bg-gray-50 border-gray-300 text-gray-900 focus:border-primary-1 focus:ring-primary-1 dark:border-gray-600 dark:bg-black-2 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-1 dark:focus:ring-primary-1',
+                    default: 'bg-gray-100 border-0 text-gray-900 focus:border-primary-1 focus:ring-primary-1 dark:bg-black-3 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-1 dark:focus:ring-primary-1',
                 },
             },
         },
