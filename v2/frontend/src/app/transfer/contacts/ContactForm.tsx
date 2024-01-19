@@ -8,7 +8,7 @@ import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { contacts } from './mock';
 import { isPixKeyValid } from '@/validators/PixKeyValidator';
 import { getPixKeyTypeAsStringForTransfer } from '@/utils/PixKeyUtil';
@@ -25,11 +25,15 @@ export default function ContactForm() {
     const router = useRouter();
     const { transaction, setBeneficiary, setBeneficiaryType, setBeneficiaryName } = useTransferTransactionContext();
 
+    const isInvalidTransaction = useCallback(() => {
+        return transaction.amount === 0
+    }, [transaction])
+
     useEffect(() => {
-        if (transaction.amount === 0) {
+        if (isInvalidTransaction()) {
             router.push('/transfer')
         }
-    }, [transaction, router]);
+    }, [isInvalidTransaction, router]);
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
@@ -68,48 +72,52 @@ export default function ContactForm() {
     }
 
     return (
-        <Container>
-            <Card >
-                <TextHeaderForm 
-                title={`Para quem você quer transferir ${MoneyFormatter.format(transaction.amount)}?`}
-                subtitle='Encontre um contato na sua lista ou inicie uma nova transferência'
+        <>
+          {isInvalidTransaction() && null}
+      
+          {!isInvalidTransaction() && (
+            <Container>
+              <Card>
+                <TextHeaderForm
+                  title={`Para quem você quer transferir ${MoneyFormatter.format(transaction.amount)}?`}
+                  subtitle='Encontre um contato na sua lista ou inicie uma nova transferência'
                 />
-
+      
                 <div className="mt-4 flex flex-col gap-3">
-                    <InputText placeholder='Conta ou chave Pix' ref={inputRef} onChange={onInputChange} />
-
-                    <div className='flex'>
-                        {isButtonDisabled ? (
-                            <NextButton isDisabled={isButtonDisabled} />
-                        ) : (
-                            <Link href='/transfer/confirm' className='w-full flex  justify-center'>
-                                <NextButton isDisabled={isButtonDisabled} onClick={onButtonClick} type={getBeneficiaryType()} />
-                            </Link>
-                        )}
-                    </div>
+                  <InputText placeholder='Conta ou chave Pix' ref={inputRef} onChange={onInputChange} />
+      
+                  <div className='flex'>
+                    {isButtonDisabled ? (
+                      <NextButton isDisabled={isButtonDisabled} />
+                    ) : (
+                      <Link href='/transfer/confirm' className='w-full flex  justify-center'>
+                        <NextButton isDisabled={isButtonDisabled} onClick={onButtonClick} type={getBeneficiaryType()} />
+                      </Link>
+                    )}
+                  </div>
                 </div>
-            </Card>
-
-            <div className='mt-8 p-1'>
+              </Card>
+      
+              <div className='mt-8 p-1'>
                 <h1 className="text-xl font-semibold font-mono">Todos os contatos</h1>
                 <div className="space-y-4 mt-5 flex flex-col">
-                    {
-                        contacts.map(contact => {
-                            return (
-                                <Link href='/transfer/confirm' key={contact.id} className='w-full' onClick={() => onContactClick(contact)}>
-                                    <button title={contact.name} key={contact.id}
-                                        className="p-0 m-0 bg-transparent border-none cursor-pointer text-current hover:scale-[1.03] transform transition-transform w-full" >
-                                        <ContactCard contact={contact} key={contact.id} />
-                                    </button>
-                                </Link>
-                            )
-                        })
-                    }
+                  {contacts.map(contact => (
+                    <Link href='/transfer/confirm' key={contact.id} className='w-full' onClick={() => onContactClick(contact)}>
+                      <button
+                        title={contact.name}
+                        key={contact.id}
+                        className="p-0 m-0 bg-transparent border-none cursor-pointer text-current hover:scale-[1.03] transform transition-transform w-full"
+                      >
+                        <ContactCard contact={contact} key={contact.id} />
+                      </button>
+                    </Link>
+                  ))}
                 </div>
-            </div>
-
-        </Container>
-    )
+              </div>
+            </Container>
+          )}
+        </>
+      );
 }
 
 const NextButton = ({ isDisabled, type, onClick }: { isDisabled: boolean, type?: string | null, onClick?: () => void }) => (
