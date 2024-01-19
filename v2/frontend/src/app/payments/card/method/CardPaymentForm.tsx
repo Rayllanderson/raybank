@@ -5,7 +5,7 @@ import { Card } from '@/components/cards/Card';
 import { useCardPayment } from '@/context/CardPaymentContext';
 import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { FaAngleRight, FaBarcode, FaMoneyBill } from 'react-icons/fa6';
 
 const fatura = 542.89
@@ -14,11 +14,16 @@ export default function CardPaymentForm() {
     const router = useRouter();
     const { amount, setPaymentMethod } = useCardPayment();
     
+    const isInvalidPayment = useCallback(() => {
+        return amount === 0
+    }, [amount])
+
+
     useEffect(() => {
-        if (amount === 0) {
+        if (isInvalidPayment()) {
             router.push('/payments/card')
         }
-    }, [amount, router]);
+    }, [isInvalidPayment, router]);
     
 
     const setPaymentMethodOnClick = (v:'account' | 'boleto') => {
@@ -26,25 +31,32 @@ export default function CardPaymentForm() {
     }
 
     return (
-        <Container>
-            <Card >
+        <>
+          {isInvalidPayment() && null}
+      
+          {!isInvalidPayment() && (
+            <Container>
+              <Card>
                 <header className="flex flex-col gap-3">
-                    <div>
-                        <PreviousPageButton />
-                    </div>
-                    <div className="text-start">
-                        <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">Você está pagando</h1>
-                        <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary-2">{MoneyFormatter.format(amount)}</h1>
-                        <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>Total da fatura aberta: {MoneyFormatter.format(fatura)}</p>
-                    </div>
+                  <div>
+                    <PreviousPageButton />
+                  </div>
+                  <div className="text-start">
+                    <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">Você está pagando</h1>
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-primary-2">{MoneyFormatter.format(amount)}</h1>
+                    <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>Total da fatura aberta: {MoneyFormatter.format(fatura)}</p>
+                  </div>
                 </header>
                 <div className='flex flex-col justify-between items-center mt-2 space-y-2'>
-                    <CardPaymentMethod title="Pague com saldo da conta" method='account' onClick={setPaymentMethodOnClick} icon={FaMoneyBill}/>
-                    <CardPaymentMethod title="Gerar um boleto" method='boleto' onClick={setPaymentMethodOnClick} icon={FaBarcode}/>
+                  <CardPaymentMethod title="Pague com saldo da conta" method='account' onClick={setPaymentMethodOnClick} icon={FaMoneyBill}/>
+                  <CardPaymentMethod title="Gerar um boleto" method='boleto' onClick={setPaymentMethodOnClick} icon={FaBarcode}/>
                 </div>
-            </Card>
-        </Container>
-    )
+              </Card>
+            </Container>
+          )}
+        </>
+      );
+      
 }
 
 function CardPaymentMethod({ title, method, icon: Icon, onClick }: { title: string, icon:any, method:'account' | 'boleto', onClick: (v:'account' | 'boleto') => void; }) {
