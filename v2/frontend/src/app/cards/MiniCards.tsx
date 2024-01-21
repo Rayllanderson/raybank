@@ -3,11 +3,13 @@ import React, { useRef, useState } from 'react';
 import { MiniCard } from '../../components/cards/MiniCard';
 import { FaBarcode, FaCreditCard, FaFileInvoiceDollar, FaSliders } from 'react-icons/fa6';
 import { CredidCardDataModal } from '@/components/CredidCardDataModal';
+import { AjustLimitCardModal } from '@/components/AjustLimitCardModal';
 
 export function MiniCards() {
     const scrollableDivRef = useRef<HTMLDivElement>(null);
     const [isAutoScrolling, setIsAutoScrolling] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showLimitModal, setShowLimitModal] = useState(false);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (scrollableDivRef.current) {
@@ -45,6 +47,7 @@ export function MiniCards() {
     return (
         <>
             <CredidCardDataModal show={showModal} setOpenModal={setShowModal} />
+            <AjustLimitCardModal show={showLimitModal} setOpenModal={setShowLimitModal} />
             <div
                 ref={scrollableDivRef}
                 onMouseMove={handleMouseMove}
@@ -53,7 +56,7 @@ export function MiniCards() {
                 <MiniCard onClick={() => setShowModal(true)} title={'Dados Cartão'} icon={FaCreditCard} />
                 <MiniCard href='/payments/card' title={'Pagar Fatura'} icon={FaBarcode} />
                 <MiniCard href='' title={'Resumo Faturas'} icon={FaFileInvoiceDollar} />
-                <MiniCard href='' title={'Ajustar Limite'} icon={FaSliders} />
+                <MiniCard onClick={() => setShowLimitModal(true)}  title={'Ajustar Limite'} icon={FaSliders} />
             </div>
         </>
     );
