@@ -1,13 +1,18 @@
-import React from 'react'
+'use client';
+import React, { useState } from 'react'
 import { Container } from '../../components/Container';
 import { MiniCard } from '../../components/cards/MiniCard';
 import { Card } from '../../components/cards/Card';
 import { FaKey, FaListUl, FaMoneyBill, FaMoneyBillTransfer, FaPix, FaQrcode, FaSliders } from 'react-icons/fa6';
+import { AjustLimitPixModal } from '@/components/AjustLimitPixModal';
 
 
 export default function page() {
+    const [showModal, setShowModal] = useState(false);
+
     return (
         <Container>
+            <AjustLimitPixModal show={showModal} setOpenModal={setShowModal}  />
             <Card >
                 <header className="flex items-center space-x-2">
                     <h1 className='text-xl md:text-2xl font-semibold font-mono'>Área Pix</h1>
@@ -24,7 +29,7 @@ export default function page() {
                     <CardGroup>
                         <MiniCard href='' icon={FaKey} title="Registrar Chave" />
                         <MiniCard href='' icon={FaListUl} title="Listar Chaves" />
-                        <MiniCard href='' icon={FaSliders} title="Ajustar Limite" />
+                        <MiniCard onClick={() => setShowModal(true)} icon={FaSliders} title="Ajustar Limite" />
                     </CardGroup>
                 </div>
 

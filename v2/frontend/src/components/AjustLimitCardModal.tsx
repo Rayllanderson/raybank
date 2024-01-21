@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'flowbite-react';
 import CreditCard from '@/components/CreditCard';
-import FormAjustLimit from './FormAjustLimit';
+import FormSliderLimit from './FormSliderLimit';
 
 export function AjustLimitCardModal({ show, setOpenModal }: { show: boolean; setOpenModal: (v: boolean) => void; }) {
     const [limit, setLimit] = useState(7500);
@@ -14,11 +14,11 @@ export function AjustLimitCardModal({ show, setOpenModal }: { show: boolean; set
     };
 
     return (
-        <Modal show={show} onClose={() => setOpenModal(false)}>
+        <Modal show={show} onClose={() => setOpenModal(false)} size='lg'>
             <ModalHeader>Ajuste o Limite do Cartão de Crédito</ModalHeader>
-            <ModalBody className='flex justify-center'>
+            <ModalBody className='flex justify-center mb-5'>
                 <div className='w-full'>
-                    <FormAjustLimit limit={limit} handleSliderChange={handleSliderChange} />
+                    <FormSliderLimit limit={limit} handleSliderChange={handleSliderChange} />
                 </div>
             </ModalBody>
         </Modal>

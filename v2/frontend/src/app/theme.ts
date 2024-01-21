@@ -12,7 +12,8 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
     button: {
         base: "active:scale-[.98] enabled:focus:ring-0 enabled:border-0 dark:enabled:border-0 dark:enabled:focus:ring-0 group flex items-stretch items-center justify-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none transition duration-100 ease-out hover:ease-in",
         color: {
-            primary: "text-white enabled:border-0 enabled:active:bg-primary-1-darken bg-primary-2 enabled:hover:bg-primary-1 dark:bg-primary-2 dark:text-white dark:border-primary-2 dark:enabled:hover:bg-primary-1 dark:enabled:active:bg-primary-1-darken "
+            primary: "text-white enabled:border-0 enabled:active:bg-primary-1-darken bg-primary-2 enabled:hover:bg-primary-1 dark:bg-primary-2 dark:text-white dark:border-primary-2 dark:enabled:hover:bg-primary-1 dark:enabled:active:bg-primary-1-darken ",
+            "light": "text-gray-900 bg-gray-300 border border-gray-300 enabled:hover:bg-gray-400  dark:bg-gray-600 dark:text-white dark:border-gray-600 dark:enabled:hover:bg-gray-700 dark:enabled:hover:border-gray-700 dark:focus:ring-gray-700",
         },
         gradient: {
             "purple": "text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 bg-pos-0 hover:bg-pos-100 bg-size-200",
@@ -40,5 +41,11 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
                 },
             },
         },
+    },
+    modal: {
+        content: {
+            "base": "relative h-full w-full p-4 md:h-auto",
+            "inner": "relative rounded-lg bg-white shadow dark:bg-black-1 flex flex-col max-h-[90vh]"  
+        }
     }
 };

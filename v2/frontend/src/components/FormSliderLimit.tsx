@@ -8,7 +8,7 @@ interface Props {
     handleSliderChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function FormAjustLimit({limit, handleSliderChange}: Props) {
+export default function FormSliderLimit({limit, handleSliderChange}: Props) {
     return (
         <div className="flex flex-col">
             <Label className='text-lg'>Limite desejado</Label>
