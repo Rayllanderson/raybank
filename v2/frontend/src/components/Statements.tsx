@@ -17,17 +17,22 @@ export function Statements({ type }: Props) {
 
     return <div>
         <h1 className="text-2xl font-semibold font-mono">Histórico</h1>
+        {statements.length === 0 ? (<p className="text-gray-500 mt-5"> Sem transações até o momento</p>)
+            : (
+                <>
+                    <div className='mt-2'>
+                        <InputWithIcon icon={FaSearch} type="text" placeholder='Buscar' />
+                    </div>
 
-        <div className='mt-2'>
-            <InputWithIcon icon={FaSearch} type="text" placeholder='Buscar' />
-        </div>
+                    <div className='space-y-2 mt-5'>
+                        {statements.map((statement: Statement) => {
+                            return (
+                                <StatamentCard statement={statement} key={statement.id} type={type} />
+                            )
+                        })}
+                    </div>
 
-        <div className='space-y-2 mt-5'>
-            {statements.map((statement: Statement) => {
-                return (
-                    <StatamentCard statement={statement} key={statement.id} type={type} />
-                );
-            })}
-        </div>
+                </>
+            )}
     </div>;
 }
