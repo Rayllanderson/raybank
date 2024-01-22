@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { MiniCard } from '../../components/cards/MiniCard';
 import { FaBarcode, FaCreditCard, FaFileInvoiceDollar, FaSliders } from 'react-icons/fa6';
 import { CredidCardDataModal } from '@/components/CredidCardDataModal';
-import { AjustLimitCardModal } from '@/components/AjustLimitCardModal';
+import { AjustLimitCardModal } from '@/components/modal/AjustLimitCardModal';
 
 export function MiniCards() {
     const scrollableDivRef = useRef<HTMLDivElement>(null);

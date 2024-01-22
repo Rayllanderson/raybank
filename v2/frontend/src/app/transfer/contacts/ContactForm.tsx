@@ -99,7 +99,7 @@ export default function ContactForm() {
               </Card>
       
               <div className='mt-8 p-1'>
-                <h1 className="text-xl font-semibold font-mono">Todos os contatos</h1>
+                <h1 className="text-xl font-semibold">Todos os contatos</h1>
                 <div className="space-y-4 mt-5 flex flex-col">
                   {contacts.map(contact => (
                     <Link href='/transfer/confirm' key={contact.id} className='w-full' onClick={() => onContactClick(contact)}>

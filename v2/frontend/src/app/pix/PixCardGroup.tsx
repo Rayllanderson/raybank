@@ -1,5 +1,5 @@
 'use client';
-import { AjustLimitPixModal } from '@/components/AjustLimitPixModal';
+import { AjustLimitPixModal } from '@/components/modal/AjustLimitPixModal';
 import { MiniCard } from '@/components/cards/MiniCard'
 import React, { useState } from 'react'
 import { FaKey, FaListUl, FaMoneyBill, FaMoneyBillTransfer, FaQrcode, FaSliders } from 'react-icons/fa6';

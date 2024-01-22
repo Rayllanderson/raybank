@@ -1,8 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'flowbite-react';
-import CreditCard from '@/components/CreditCard';
-import FormSliderLimit from './FormSliderLimit';
+import FormSliderLimit from '../FormSliderLimit';
 
 export function AjustLimitCardModal({ show, setOpenModal }: { show: boolean; setOpenModal: (v: boolean) => void; }) {
     const [limit, setLimit] = useState(7500);

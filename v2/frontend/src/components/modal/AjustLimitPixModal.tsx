@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
-import { CurrencyInput } from './inputs/InputMoney';
+import { CurrencyInput } from '../inputs/InputMoney';
 import { MoneyFormatter } from '@/utils/MoneyFormatter';
 
 export function AjustLimitPixModal({ show, setOpenModal }: { show: boolean; setOpenModal: (v: boolean) => void; }) {

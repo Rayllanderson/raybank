@@ -13,7 +13,7 @@ export function ContactCard({ contact }: Props) {
             <div className='header flex justify-between items-center '>
                 <div className='flex space-x-2 items-center text-lg'>
                     <div className='rounded-full bg-gray-200 dark:bg-gray-800 p-1 w-7 h-7 flex items-center justify-center'>
-                        <FirstLetterIcon letter={contact.name[0]} className='w-3 h-3 ' />
+                        <FirstLetterIcon letter={contact.name[0]} className='w-3 h-3 text-primary-2' />
                     </div>
                     <div className='title '>
                         {contact.name}
