@@ -55,7 +55,7 @@ export function MiniCards() {
                 className='flex justify-between p-2 pl-[0.15rem] space-x-2 sm:space-x-1 overflow-x-scroll scrollbar-hide '>
                 <MiniCard onClick={() => setShowModal(true)} title={'Dados Cartão'} icon={FaCreditCard} />
                 <MiniCard href='/payments/card' title={'Pagar Fatura'} icon={FaBarcode} />
-                <MiniCard href='' title={'Resumo Faturas'} icon={FaFileInvoiceDollar} />
+                <MiniCard href='/cards/invoices' title={'Resumo Faturas'} icon={FaFileInvoiceDollar} />
                 <MiniCard onClick={() => setShowLimitModal(true)}  title={'Ajustar Limite'} icon={FaSliders} />
             </div>
         </>

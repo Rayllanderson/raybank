@@ -14,7 +14,7 @@ export function BoletoCard({boleto}: Props) {
         <header>
             <div className='header flex justify-between items-center '>
                 <div className='flex space-x-2 items-center text-lg'>
-                    <FaCalendarDays className='w-6 h-6' />
+                    <FaCalendarDays className='w-5 h-5 text-primary-2' />
                     <div className='title font-semibold '>
                         {boleto.beneficiary}
                     </div>
@@ -40,6 +40,6 @@ export function BoletoCard({boleto}: Props) {
                 </div>
             </div>
         </div>
-        <Separator />
+        <Separator/>
     </div>;
 }
