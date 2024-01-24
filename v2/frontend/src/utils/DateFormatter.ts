@@ -33,3 +33,10 @@ export const formartToMonthYear = (inputDate: string): string => {
     const year = inputDateTime.getFullYear();
     return `${month} ${year}`.replace(".", "");
 }
+
+export const formartToDayMonth = (inputDate: string): string => {
+    const inputDateTime = new Date(inputDate);
+    const month = inputDateTime.toLocaleString('PT-BR', { month: 'short' }).toUpperCase();
+    const day = inputDateTime.getDate()
+    return `${day} ${month}`.replace(".", "");
+}
