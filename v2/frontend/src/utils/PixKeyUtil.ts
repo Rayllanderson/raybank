@@ -25,6 +25,13 @@ export const pixTypeTranslations: Record<PixType, string> = {
     [PixType.CPF]: 'CPF',
 };
 
+export const pixTypeTranslationsStrings: Record<string, string> = {
+    ['PHONE']: 'Telefone',
+    ['EMAIL']: 'E-mail',
+    ['RANDOM']: 'Aleatória',
+    ['CPF']: 'CPF',
+};
+
 export const pixTypeTranslationForTransfer: Record<PixType, string> = {
     [PixType.PHONE]: 'esse Telefone',
     [PixType.EMAIL]: 'esse E-mail',

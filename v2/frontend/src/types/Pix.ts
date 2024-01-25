@@ -4,3 +4,9 @@ export enum PixType {
     RANDOM,
     CPF,
 }
+
+export interface PixKey {
+    key: string;
+    type: string;
+    createdAt: string;
+}

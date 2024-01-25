@@ -5,23 +5,23 @@ import { formatLongDate } from '@/utils/DateFormatter';
 import { Container } from '@/components/Container';
 import { Card } from '@/components/cards/Card';
 import { InstallmentPlan } from '@/types/InstallmentPlan';
-import { InstallmentCardHeader } from './InstallmentCardHeader';
-import { InstallmentCardFooter } from './InstallmentCardFooter';
+import { InstallmentCardHeader } from './InstallmentPlanCardHeader';
+import { InstallmentCardFooter } from './InstallmentPlanCardFooter';
 
-export function InstallmentCard({ installment }: { installment: InstallmentPlan; }) {
+export function InstallmentCard({ installmentPlan }: { installmentPlan: InstallmentPlan; }) {
     return <Container>
         <Card>
             <InstallmentCardHeader />
-            
+
             <div className='flex flex-col justify-center text-start space-y-1'>
-                <h1 className=' font-semibold text-primary-2 text-2xl'>{titlerize(installment.description)}</h1>
-                <h1 className='font-semibold text-2xl'>{MoneyFormatter.format(installment.total)}</h1>
+                <h1 className=' font-semibold text-primary-2 text-2xl'>{titlerize(installmentPlan.description)}</h1>
+                <h1 className='font-semibold text-2xl'>{MoneyFormatter.format(installmentPlan.total)}</h1>
                 <p className='text-gray-500 dark:text-gray-300'>
-                    {formatLongDate(installment.createdAt)}
+                    {formatLongDate(installmentPlan.createdAt)}
                 </p>
             </div>
-            
-            <InstallmentCardFooter installment={installment} />
+
+            <InstallmentCardFooter installmentPlan={installmentPlan} />
         </Card>
     </Container>;
 }
