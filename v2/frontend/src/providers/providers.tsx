@@ -1,5 +1,6 @@
 'use client'
 
+import { AccountDepositProvider } from "@/context/AccountDepositContext"
 import { BoletoDepositProvider } from "../context/BoletoDepositContext"
 import { BoletoPaymentProvider } from "../context/BoletoPaymentContext"
 import { CardPaymentProvider } from "../context/CardPaymentContext"
@@ -15,7 +16,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
                     <BoletoPaymentProvider>
                         <PixDepositProvider>
                             <BoletoDepositProvider>
-                                {children}
+                                <AccountDepositProvider>
+                                    {children}
+                                </AccountDepositProvider>
                             </BoletoDepositProvider>
                         </PixDepositProvider>
                     </BoletoPaymentProvider>
