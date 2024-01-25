@@ -15,7 +15,7 @@ export function RemovePixKeyModal({ pixKey, show, setOpenModal }: { pixKey: PixK
                 <div className="text-center">
                     <FaCircleExclamation className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
                     <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                        Tem certeza que deseja excluir a chave PIX <strong>{pixKey.key} </strong>?
+                        Tem certeza que deseja excluir a chave Pix <strong>{pixKey.key}</strong>?
                     </h3>
                     <div className="flex justify-center gap-4">
                         <Button color="primary" onClick={handleClick}>

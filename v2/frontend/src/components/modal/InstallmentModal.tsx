@@ -1,6 +1,5 @@
-'use client';
 import React from 'react';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
+import { Modal, ModalBody, ModalHeader } from 'flowbite-react';
 import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { Installment, InstallmentPlan, getOrdenedInstallments } from '@/types/InstallmentPlan';
 import { formartToMonthYear } from '@/utils/DateFormatter';

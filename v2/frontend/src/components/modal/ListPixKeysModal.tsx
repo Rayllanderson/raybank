@@ -1,6 +1,5 @@
-'use client';
-import React, { useState } from 'react';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
+import React from 'react';
+import { Modal, ModalBody, ModalHeader } from 'flowbite-react';
 import { keys } from '@/app/pix/mock';
 import { PixKeyListElement } from '../PixKeyList';
 

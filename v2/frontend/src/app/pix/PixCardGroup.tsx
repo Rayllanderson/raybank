@@ -4,15 +4,18 @@ import { MiniCard } from '@/components/cards/MiniCard'
 import React, { useState } from 'react'
 import { FaKey, FaListUl, FaMoneyBill, FaMoneyBillTransfer, FaQrcode, FaSliders } from 'react-icons/fa6';
 import { ListPixKeysModal } from '@/components/modal/ListPixKeysModal';
+import { RegisterPixKeyModal } from '@/components/modal/RegisterPixKeyModal';
 
 
 export default function PixCardGroup() {
     const [showModal, setShowModal] = useState(false);
     const [showListKeyModal, setShowListKeyModal] = useState(false);
+    const [showRegisterKeyModal, setShowRegisterKeyModal] = useState(false);
     return (
         <>
             <AjustLimitPixModal show={showModal} setOpenModal={setShowModal} />
             <ListPixKeysModal show={showListKeyModal} setOpenModal={setShowListKeyModal} />
+            <RegisterPixKeyModal show={showRegisterKeyModal} setOpenModal={setShowRegisterKeyModal} />
 
             <div className="space-y-5 mt-3">
                 <CardGroup>
@@ -22,7 +25,7 @@ export default function PixCardGroup() {
                 </CardGroup>
 
                 <CardGroup>
-                    <MiniCard href='' icon={FaKey} title="Registrar Chave" />
+                    <MiniCard onClick={() => setShowRegisterKeyModal(true)} icon={FaKey} title="Registrar Chave" />
                     <MiniCard onClick={() => setShowListKeyModal(true)} icon={FaListUl} title="Listar Chaves" />
                     <MiniCard onClick={() => setShowModal(true)} icon={FaSliders} title="Ajustar Limite" />
                 </CardGroup>
