@@ -17,7 +17,21 @@ export interface Installment {
     description: string;
     value: number;
     valueToPay: number;
-    status: string;
+    status: 'PAID' | 'OPEN' | 'OVERDUE'| 'REFUNDED' | 'CANCELED';
     dueDate: string;
     invoiceId: string;
+}
+
+export function getOrdenedInstallments(installments: Installment[]): Installment[] {
+    const sortedInstallments = installments.map(installment => ({
+        ...installment,
+        dueDate: new Date(installment.dueDate) 
+    }));
+
+    sortedInstallments.sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
+
+    return sortedInstallments.map(installment => ({
+        ...installment,
+        dueDate: installment.dueDate.toISOString()
+    }));
 }
