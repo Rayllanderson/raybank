@@ -9,7 +9,7 @@ export function WithCreditCard() {
         <Card>
             <div className='flex flex-col gap-2'>
                 <div className="flex">
-                    <p className="text-lg font-mono">Fatura Atual</p>
+                    <p className="text-lg ">Fatura Atual</p>
                 </div>
 
                 <div className="space-y-1">
@@ -17,7 +17,7 @@ export function WithCreditCard() {
                         <CardMoney value={1242.5} className='text-c-blue-1' darkColor='dark:text-c-blue-1' />
                     </div>
                     <div className='flex items-center space-x-3'>
-                        <p className="text-md font-mono ">Limite Disponível</p>
+                        <p className="text-md  ">Limite Disponível</p>
                         <CardMoney size="text-md" value={5423} className='text-c-green-1 ' darkColor='dark:text-c-green-1' />
                     </div>
                 </div>

@@ -28,7 +28,7 @@ function MiniCardComponent({ title, icon: Icon, className }: MiniCardProps) {
       <Icon className='w-6 h-6' />
     </div>
     <div className='flex justify-center text-center'>
-      <p className='text-sm md:text-md font-mono font-semibold'>{title}</p>
+      <p className='text-sm md:text-md font-semibold'>{title}</p>
     </div>
   </Card>);
 }

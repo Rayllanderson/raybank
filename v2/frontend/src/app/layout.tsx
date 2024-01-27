@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Nunito } from 'next/font/google'
 import './globals.css'
 import { Flowbite, ThemeModeScript } from 'flowbite-react'
 import { twMerge } from "tailwind-merge";
@@ -7,7 +7,7 @@ import { flowbiteTheme } from './theme';
 import { Providers } from '../providers/providers';
 
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Nunito({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'RayBank',
