@@ -43,7 +43,7 @@ class ProcessInstallmentInInvoiceServiceTest {
 
     @Test
     void shouldProcessInvoices() {
-        when(invoiceGateway.getDayOfDueDateByCardId("cId")).thenReturn(1);
+        when(invoiceGateway.getDayOfDueDateByCardId("cId")).thenReturn(6);
         when(invoiceGateway.findAllByCardIdAndStatus(anyString(), any())).thenReturn(Collections.emptyList());
         final var expectedOutput = createPlan(bigDecimalOf(150),
                 bigDecimalOf(50),
