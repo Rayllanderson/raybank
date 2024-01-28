@@ -1,18 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react'
 
-interface Props {
-    placeholder?: string;
-    onChange?: (e: any) => void,
-    value?: string,
-}
-
-interface InputWithIconsProps extends Props {
+interface InputWithIconsProps extends React.InputHTMLAttributes<HTMLInputElement> {
     icon: any;
-    type: string;
 }
 
-
-export default function InputWithIcon({onChange, value, placeholder, icon: Icon, type}: InputWithIconsProps) {
+export default function InputWithIcon({icon: Icon, ...props }: InputWithIconsProps) {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const [isFocused, setIsFocused] = useState(false)
@@ -28,14 +20,11 @@ export default function InputWithIcon({onChange, value, placeholder, icon: Icon,
         <div className="relative rounded-md shadow-sm ">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <span className="sm:text-sm">
-                    <Icon className={`${(isFilled || isFocused) ? 'text-primary-2' : 'text-gray-400' } w-4 h-4 md:w-5 md:h5 lg:w-6 lg:h-6 `} />
+                    <Icon className={`${(isFilled || isFocused) ? 'text-primary-2' : 'text-gray-400'} w-4 h-4 md:w-5 md:h5 lg:w-6 lg:h-6 `} />
                 </span>
             </div>
             <input
-                onChange={onChange}
-                value={value}
-                type={type}
-                placeholder={placeholder}
+                {...props}
                 ref={inputRef}
                 onBlur={handleInputBlur}
                 onFocus={() => setIsFocused(true)}

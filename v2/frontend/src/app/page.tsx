@@ -7,8 +7,11 @@ import CreditCardCard from '../components/cards/CreditCardCard';
 import { SidebarProvider } from '../context/SidebarContext';
 
 import MediumCard from '../components/cards/MediumCard';
+import { getServerAuthSession } from './api/auth/[...nextauth]/options';
+import Session from '@/types/Session';
 
-export default function page() {
+export default async function page() {
+  const authSession: Session = await getServerAuthSession();
 
   return (
     <SidebarProvider>
@@ -22,7 +25,7 @@ export default function page() {
 
           <div className="cards flex w-full max-w-sm md:max-w-md lg:max-w-lg flex-col">
             <div className="flex flex-col h-screen space-y-10  max-w-full">
-              <BankAccountCard />
+              <BankAccountCard account={authSession.account}/>
 
               <CreditCardCard />
 
