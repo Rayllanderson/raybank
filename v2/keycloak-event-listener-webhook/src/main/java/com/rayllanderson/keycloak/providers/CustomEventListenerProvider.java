@@ -14,6 +14,7 @@ import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventType;
 import org.keycloak.events.admin.AdminEvent;
+import org.keycloak.events.admin.OperationType;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,15 +28,17 @@ public class CustomEventListenerProvider implements EventListenerProvider {
 
     private final CloseableHttpClient client = HttpClients.createDefault();
     private final Set<EventType> excludedEvents;
+    private final Set<OperationType> excludedAdminOperations;
     private final List<String> serverUris;
     private final String username;
     private final String password;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public CustomEventListenerProvider(Set<EventType> excludedEvents, List<String> serverUris, String username, String password) {
+    public CustomEventListenerProvider(Set<EventType> excludedEvents, Set<OperationType> excludedAdminOperations, List<String> serverUris, String username, String password) {
         this.excludedEvents = excludedEvents;
         this.serverUris = serverUris;
+        this.excludedAdminOperations = excludedAdminOperations;
         this.username = username;
         this.password = password;
     }
@@ -51,7 +54,11 @@ public class CustomEventListenerProvider implements EventListenerProvider {
 
     @Override
     public void onEvent(AdminEvent event, boolean includeRepresentation) {
-
+        if (excludedAdminOperations == null || !excludedAdminOperations.contains(event.getOperationType())) {
+            String stringEvent = toString(event);
+            log.info("Event to react to: " + stringEvent);
+            this.sendRequest(stringEvent);
+        }
     }
 
     private void sendRequest(String stringEvent) {
@@ -74,7 +81,7 @@ public class CustomEventListenerProvider implements EventListenerProvider {
                 if (response.getStatusLine().getStatusCode() != 200) {
                     throw new IOException("Unexpected code " + response);
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 log.error("Error while requesting the webhook " + e.getMessage());
                 log.trace("Full stack trace: ", e);
             }
@@ -106,7 +113,30 @@ public class CustomEventListenerProvider implements EventListenerProvider {
         }
     }
 
+    private String toString(AdminEvent adminEvent) {
+        try {
+            HashMap<String, Object> resultMap = new HashMap<>();
+            resultMap.put("type", adminEvent.getOperationType());
+            resultMap.put("realmId", adminEvent.getAuthDetails().getRealmId());
+            resultMap.put("clientId", adminEvent.getAuthDetails().getClientId());
+            resultMap.put("userId", adminEvent.getAuthDetails().getUserId());
+            resultMap.put("ipAddress", adminEvent.getAuthDetails().getIpAddress());
+            resultMap.put("resourcePath", adminEvent.getResourcePath());
+            resultMap.put("resourceType", adminEvent.getResourceType());
+            String eventError = adminEvent.getError();
+            if (eventError != null && eventError.length() > 0) {
+                resultMap.put("error", eventError);
+            }
+            return objectMapper.writeValueAsString(resultMap);
+        } catch (JsonProcessingException e) {
+            log.error("Could not serialize JSON: " + e.getMessage());
+            log.trace("Full stack trace: ", e);
+            return "";
+        }
+    }
+
     @Override
-    public void close() { }
+    public void close() {
+    }
 
 }

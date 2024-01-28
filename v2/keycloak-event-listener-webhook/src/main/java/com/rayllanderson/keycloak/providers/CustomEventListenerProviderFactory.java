@@ -9,23 +9,28 @@ import org.keycloak.events.admin.OperationType;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class CustomEventListenerProviderFactory implements EventListenerProviderFactory {
 
     private static final Logger log = Logger.getLogger(CustomEventListenerProviderFactory.class);
-
+    private Set<OperationType> excludedAdminOperations;
     private Set<EventType> eventBlacklist = new HashSet<>(Arrays.asList(
-        EventType.LOGIN,
-        EventType.LOGOUT,
-        EventType.SEND_RESET_PASSWORD
+            EventType.LOGIN,
+            EventType.LOGOUT,
+            EventType.SEND_RESET_PASSWORD,
+            EventType.REFRESH_TOKEN
     ));
 
     private List<String> serverUris;
 
     @Override
     public EventListenerProvider create(KeycloakSession session) {
-        return new CustomEventListenerProvider(eventBlacklist, serverUris, null, null);
+        return new CustomEventListenerProvider(eventBlacklist, excludedAdminOperations, serverUris, null, null);
     }
 
     @Override
@@ -35,6 +40,14 @@ public class CustomEventListenerProviderFactory implements EventListenerProvider
             eventBlacklist = new HashSet<>();
             for (String e : excludes) {
                 eventBlacklist.add(EventType.valueOf(e));
+            }
+        }
+
+        String[] excludesOperations = config.getArray("excludesOperations");
+        if (excludesOperations != null) {
+            excludedAdminOperations = new HashSet<>();
+            for (String e : excludesOperations) {
+                excludedAdminOperations.add(OperationType.valueOf(e));
             }
         }
 
@@ -49,6 +62,7 @@ public class CustomEventListenerProviderFactory implements EventListenerProvider
             serverUris = Collections.singletonList(webhookUriString);
         }
     }
+
 
     @Override
     public void postInit(KeycloakSessionFactory factory) {
