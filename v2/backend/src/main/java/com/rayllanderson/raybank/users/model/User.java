@@ -27,6 +27,7 @@ public class User {
     @Size(min = 3, max = 100)
     @Column(unique = true)
     private String username;
+    private String email;
     private String authorities;
     @Enumerated(EnumType.STRING)
     private UserType type;

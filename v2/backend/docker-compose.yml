@@ -16,7 +16,7 @@ services:
       - KEYCLOAK_REALM=raybank
       - KEYCLOAK_SERVER-URL=http://keycloak:8080
       - KEYCLOAK_CLIENT-ID=raybank-backend-create-user
-      - KEYCLOAK_CLIENT-SECRET=prEF109rkQBFGCbGGnqrkpoiCxAv0Pih
+      - KEYCLOAK_CLIENT-SECRET=2sSe4b3gdsi8QjQeAAsyIEaIK99E0YCq
     ports:
       - "8080:8080"
     depends_on:
@@ -69,7 +69,7 @@ services:
       - --import-realm
     volumes:
       - C:/docker/volumes/raybank/keycloak/imports:/opt/jboss/keycloak/imports
-      - C:/docker/volumes/raybank/keycloak/provider/ray.jar:/opt/keycloak/providers/custom-event-listener.jar
+      - C:/docker/volumes/raybank/keycloak/provider/custom-event-listener.jar:/opt/keycloak/providers/custom-event-listener.jar
     depends_on:
       - keycloak-postgres
     networks:

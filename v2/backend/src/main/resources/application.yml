@@ -19,6 +19,9 @@ spring:
       generate.statistics: false
 
 retry:
+  register:
+    maxAttempts: 10
+    maxDelay: 30000
   statement:
     create:
       maxAttempts: 5
