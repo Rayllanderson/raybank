@@ -1,7 +1,5 @@
-import { userService } from '@/services/UserService';
-import { getServerSession } from 'next-auth';
+import { TokenSet, getServerSession } from 'next-auth';
 import KeycloakProvider from "next-auth/providers/keycloak";
-import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
 
@@ -14,18 +12,48 @@ export const authOptions = {
     ],
 
     callbacks: {
-        async jwt({ token, account }: { token: any; account: any }) {
-            account && (token.user = account);
-            return token;
+        async jwt({ account, token }: { account: any, token: any }) {
+            if (account) {
+                token.user = account
+                return token
+            } else if (Date.now() < token.user.expires_at * 1000) {
+                return token
+            } else {
+                try {
+                    const response = await fetch(process.env.REFRESH_TOKEN_URL!, {
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams({
+                            client_id: process.env.KEYCLOAK_ID!,
+                            client_secret: process.env.KEYCLOAK_SECRET!,
+                            grant_type: "refresh_token",
+                            refresh_token: token.user.refresh_token,
+                        }),
+                        method: "POST",
+                    })
+
+                    const refreshToken: TokenSet = await response.json()
+
+                    if (!response.ok) throw refreshToken   
+                    
+                    token.user.access_token = refreshToken.access_token
+                    token.user.expires_at = Math.floor(Date.now() / 1000) + (refreshToken?.expires_in as number ?? 0),
+                    token.user.refresh_token = refreshToken.refresh_token ?? token.user.refresh_token
+                    return token
+                } catch (error) {
+                    console.error("Error refreshing access token", error)
+                    return { ...token, error: "RefreshAccessTokenError" as const }
+                }
+            }
         },
         session: async ({ session, token }: { session: any; token: any }) => {
-            const user = {name: token.name, email: token.email, id: token.sub};
+            const user = { name: token.name, email: token.email, id: token.sub };
             session.user = user
             session.token = token.user.access_token
             session.refreshToken = token.user.refresh_token
+            session.expiresAt = token.user.expires_at
             return session;
         },
-    }
+    },
 };
 
 export const getServerAuthSession = () => getServerSession(authOptions);
