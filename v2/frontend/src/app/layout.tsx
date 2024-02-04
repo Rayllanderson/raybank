@@ -13,11 +13,7 @@ export const metadata: Metadata = {
   title: 'RayBank',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({children,}: {children: React.ReactNode}) {
   return (
     <html lang="en">
       <head>

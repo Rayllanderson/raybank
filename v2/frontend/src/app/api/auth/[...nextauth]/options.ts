@@ -1,50 +1,32 @@
 import { userService } from '@/services/UserService';
 import { getServerSession } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import KeycloakProvider from "next-auth/providers/keycloak";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
+
     providers: [
-        CredentialsProvider({
-            name: 'Credentials',
-            credentials: {
-                username: { label: 'Username', type: 'text' },
-                password: { label: 'Password', type: 'password' },
-            },
-
-            async authorize(credentials, req) {
-                const { username, password } = credentials as {
-                    username: string
-                    password: string
-                };
-
-                const user = userService.authenticate(username, password);
-
-                if (user) {
-                    return user
-                } else {
-                    return null
-                }
-            },
-        }),
+        KeycloakProvider({
+            clientId: process.env.KEYCLOAK_ID!,
+            clientSecret: process.env.KEYCLOAK_SECRET!,
+            issuer: process.env.KEYCLOAK_ISSUER!,
+        })
     ],
 
     callbacks: {
-        jwt: async ({ token, user }: { token: any; user: any }) => {
-            if (user) {
-                token.token = user.token
-                token.account = user.account
-            }
+        async jwt({ token, account }: { token: any; account: any }) {
+            account && (token.user = account);
             return token;
         },
-        session: async ({ session, token }: { session: any, token: any, user: any }) => {
-            session.token = token.token
-            session.account = token.account
+        session: async ({ session, token }: { session: any; token: any }) => {
+            console.log('session' + JSON.stringify(token, null, 2))
+            const user = {name: token.name, email: token.email, id: token.sub};
+            session.user = user
+            session.token = token.user.access_token
+            session.refreshToken = token.user.refresh_token
             return session;
         },
-    },
-    pages: {
-        signIn: '/auth/login',
-    },
+    }
 };
 
 export const getServerAuthSession = () => getServerSession(authOptions);
