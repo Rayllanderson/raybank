@@ -1,4 +1,5 @@
 import { Avatar, Dropdown } from 'flowbite-react'
+import { signOut } from 'next-auth/react'
 import React from 'react'
 
 export default function AvatarDropdown() {
@@ -18,7 +19,7 @@ export default function AvatarDropdown() {
             <Dropdown.Item>Settings</Dropdown.Item>
             <Dropdown.Item>Earnings</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={() => signOut()}>Sign out</Dropdown.Item>
         </Dropdown>
     )
 }

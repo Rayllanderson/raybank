@@ -10,13 +10,12 @@ import MediumCard from '../components/cards/MediumCard';
 import { getServerAuthSession } from './api/auth/[...nextauth]/options';
 import Session from '@/types/Session';
 import { Account } from '@/types/User';
+import { getAccount } from '@/services/AccountService';
 
 export default async function page() {
   const authSession: Session = await getServerAuthSession();
+  const account: Account = (await getAccount(authSession.token)).account;
 
-  console.log(authSession.user)
-  console.log(authSession.token)
-  console.log(authSession.refreshToken)
 
   return (
     <SidebarProvider>
@@ -30,7 +29,7 @@ export default async function page() {
 
           <div className="cards flex w-full max-w-sm md:max-w-md lg:max-w-lg flex-col">
             <div className="flex flex-col h-screen space-y-10  max-w-full">
-              <BankAccountCard account={{balance: 5600} as Account}/>
+              <BankAccountCard account={account}/>
 
               <CreditCardCard />
 

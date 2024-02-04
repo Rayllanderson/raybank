@@ -1,3 +1,6 @@
+import { getServerAuthSession } from "@/app/api/auth/[...nextauth]/options";
+import Session from "@/types/Session";
+
 export type LoginResponse = {
     access_token: string;
 }
@@ -8,6 +11,8 @@ export const keycloak = {
 
 async function login(username: string, password: string): Promise<LoginResponse> {
     const url = `${process.env.KEYCLOAK_ISSUER_URL}/protocol/openid-connect/token`;
+    const session: Session = await getServerAuthSession()
+    const token = session.token
     
     const formData = new URLSearchParams();
     formData.append('username', username);
@@ -18,7 +23,8 @@ async function login(username: string, password: string): Promise<LoginResponse>
     const response = await fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: formData
     });

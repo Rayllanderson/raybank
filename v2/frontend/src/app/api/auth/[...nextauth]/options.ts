@@ -19,7 +19,6 @@ export const authOptions = {
             return token;
         },
         session: async ({ session, token }: { session: any; token: any }) => {
-            console.log('session' + JSON.stringify(token, null, 2))
             const user = {name: token.name, email: token.email, id: token.sub};
             session.user = user
             session.token = token.user.access_token
