@@ -1,4 +1,4 @@
-import { Account, User } from "./User";
+import { User } from "./User";
 
 export default interface Session {
     user: User;

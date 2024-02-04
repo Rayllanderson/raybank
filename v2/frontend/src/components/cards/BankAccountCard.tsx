@@ -6,7 +6,7 @@ import { Card } from './Card';
 import CardHeader from './CardHeader';
 import { CardMoney } from './CardMoney';
 import { MiniCard } from './MiniCard';
-import { Account } from '@/types/User';
+import { Account } from '@/types/Account';
 
 type Props = {
   account: Account

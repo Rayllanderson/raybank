@@ -4,9 +4,13 @@ import CardHeader from './CardHeader';
 import { CardMoney } from './CardMoney';
 import Link from 'next/link';
 import { Card } from './Card';
+import { CardDetails, Card as CreditCard } from '@/types/Card';
+import { getCardPassingToken } from '@/services/CardService';
 
 
-export default function WithCreditCardCard() {
+export default async function WithCreditCardCard({card}: {card: CreditCard}) {
+  const cardDetails: CardDetails = await getCardPassingToken(card.id)
+  
   return (
     <Card>
 
@@ -21,11 +25,11 @@ export default function WithCreditCardCard() {
 
         <Link href={"/cards"} className="space-y-1">
           <div>
-            <CardMoney value={1242.5} className='text-c-blue-1' darkColor='dark:text-c-blue-1' />
+            <CardMoney value={cardDetails.invoiceValue ?? 132.1} className='text-c-blue-1' darkColor='dark:text-c-blue-1' />
           </div>
           <div className='flex items-center space-x-3'>
             <p className="text-md font-mono dark:text-white">Limite Disponível</p>
-            <CardMoney size="text-md" value={5423} className='text-c-green-1 ' darkColor='dark:text-c-green-1'/>
+            <CardMoney size="text-md" value={cardDetails.availableLimit} className='text-c-green-1 ' darkColor='dark:text-c-green-1'/>
           </div>
         </Link>
 

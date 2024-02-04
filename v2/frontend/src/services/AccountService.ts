@@ -1,4 +1,4 @@
-import { Account, AccountResponse } from "@/types/User";
+import { Account, AccountResponse } from "@/types/Account";
 import { get } from "./ApiRequest";
 import { getServerAuthSession } from "@/app/api/auth/[...nextauth]/options";
 import Session from "@/types/Session";
