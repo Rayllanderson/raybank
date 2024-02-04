@@ -1,4 +1,25 @@
 spring:
+  kafka:
+    bootstrap-servers: ${kafka.bootstrap-server}
+    consumer:
+      group-id: ${kafka.consumer.group-id}
+      client-id: ${kafka.client-id}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: ${kafka.auto-offset-reset:earliest}
+      fetch-min-size: 500
+      fetch-max-wait: 900
+      isolation-level: read_committed
+      max-poll-records: 10
+      enable-auto-commit: false
+      properties:
+        allow.auto.create.topics: false
+        key.deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        value.deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        spring:
+          deserializer:
+            key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+            value.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
   security:
     oauth2:
       resourceserver:
@@ -44,3 +65,9 @@ server:
 logging:
   level:
     com.rayllanderson.raybank: ${LOGGING_LEVEL:INFO}
+
+kafka:
+  register-user-topic: keycloak-event-listener-topic
+  client-id: raybank-client-id
+  consumer:
+    group-id: raybank-group-id

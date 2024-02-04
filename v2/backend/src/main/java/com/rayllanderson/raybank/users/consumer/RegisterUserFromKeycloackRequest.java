@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.users.controllers.register;
+package com.rayllanderson.raybank.users.consumer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rayllanderson.raybank.users.services.register.RegisterUserInput;

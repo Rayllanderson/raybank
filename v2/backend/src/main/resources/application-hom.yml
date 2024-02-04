@@ -5,6 +5,9 @@ postgres:
   port: ${POSTGRES_PORT}
   schema: ${POSTGRES_SCHEMA}
 
+kafka:
+  bootstrap-server: ${KAFKA_BOOTSTRAP-SERVER}
+
 keycloak:
   realm: ${KEYCLOAK_REALM}
   server-url: ${KEYCLOAK_SERVER-URL}

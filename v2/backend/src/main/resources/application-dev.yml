@@ -30,3 +30,6 @@ boleto:
     expirate: 30
     process: 30
     refund: 30
+
+kafka:
+  bootstrap-server: localhost:29092
