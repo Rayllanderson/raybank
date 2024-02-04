@@ -10,27 +10,34 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
+import static org.keycloak.events.EventType.CODE_TO_TOKEN;
+import static org.keycloak.events.EventType.LOGIN;
+import static org.keycloak.events.EventType.LOGIN_ERROR;
+import static org.keycloak.events.EventType.LOGOUT;
+import static org.keycloak.events.EventType.REFRESH_TOKEN;
+import static org.keycloak.events.EventType.REGISTER_ERROR;
+import static org.keycloak.events.EventType.SEND_RESET_PASSWORD;
+import static org.keycloak.events.EventType.valueOf;
 
 public class CustomEventListenerProviderFactory implements EventListenerProviderFactory {
 
-    private static final Logger log = Logger.getLogger(CustomEventListenerProviderFactory.class);
     private Set<OperationType> excludedAdminOperations;
     private Set<EventType> eventBlacklist = new HashSet<>(Arrays.asList(
-            EventType.LOGIN,
-            EventType.LOGOUT,
-            EventType.SEND_RESET_PASSWORD,
-            EventType.REFRESH_TOKEN
+            LOGIN,
+            LOGOUT,
+            SEND_RESET_PASSWORD,
+            REFRESH_TOKEN,
+            CODE_TO_TOKEN,
+            REGISTER_ERROR,
+            LOGIN_ERROR
     ));
-
-    private List<String> serverUris;
 
     @Override
     public EventListenerProvider create(KeycloakSession session) {
-        return new CustomEventListenerProvider(eventBlacklist, excludedAdminOperations, serverUris, null, null);
+        return new CustomEventListenerProvider(eventBlacklist, excludedAdminOperations);
     }
 
     @Override
@@ -39,7 +46,7 @@ public class CustomEventListenerProviderFactory implements EventListenerProvider
         if (excludes != null) {
             eventBlacklist = new HashSet<>();
             for (String e : excludes) {
-                eventBlacklist.add(EventType.valueOf(e));
+                eventBlacklist.add(valueOf(e));
             }
         }
 
@@ -49,17 +56,6 @@ public class CustomEventListenerProviderFactory implements EventListenerProvider
             for (String e : excludesOperations) {
                 excludedAdminOperations.add(OperationType.valueOf(e));
             }
-        }
-
-        String webhookUriString = System.getenv("WEBHOOK_URIS");
-        log.info("Picked up environment variable WEBHOOK_URIS: " + webhookUriString);
-
-        if (webhookUriString == null) {
-            log.info("ServerURI: Using default webhook URI http://raybank:8080/api/v1/users/register. Configure it with env WEBHOOK_URIS");
-            serverUris = Collections.singletonList("http://raybank:8080/api/v1/users/register");
-        } else {
-            log.info("ServerURI: Using env webhook URI " + webhookUriString);
-            serverUris = Collections.singletonList(webhookUriString);
         }
     }
 
