@@ -12,7 +12,7 @@ export default function NoCreditCardCard() {
       <div className='mt-5 flex flex-col gap-2'>
 
         <p className='text-lg font-mono dark:text-white'>Sem cartão de crédito?</p>
-        <LinkButton gradientMonochrome={'purple'} href='/cards'> Pedir Cartão </LinkButton>
+        <LinkButton gradientMonochrome={'purple'} href={'/cards'}> Pedir Cartão </LinkButton>
       </div>
     </Card>
   )

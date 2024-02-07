@@ -6,8 +6,16 @@ export type LoginResponse = {
 }
 
 export const keycloak = {
-    login
+    login, logout
 }
+
+async function logout() {
+    try {
+      await fetch(`/api/auth/logout`, { method: "GET" });
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
 async function login(username: string, password: string): Promise<LoginResponse> {
     const url = `${process.env.KEYCLOAK_ISSUER_URL}/protocol/openid-connect/token`;

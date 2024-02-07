@@ -1,15 +1,14 @@
+import { getCreditCard } from '@/services/CardService';
 import { WithCreditCard } from './WithCreditCard';
 import { WithoutCreditCard } from './WithoutCreditCard';
+import { CardDetails } from '@/types/Card';
 
-const hasCreditCard: boolean = true
+export default async function page() {
 
-export default function page() {
-    return (<>
-        {hasCreditCard ?
-            <WithCreditCard /> :
-            <WithoutCreditCard />
-        }
-    </>
+    const card: CardDetails = await getCreditCard();
+
+    return (
+        <WithCreditCard card={card}/>
     )
 }
 

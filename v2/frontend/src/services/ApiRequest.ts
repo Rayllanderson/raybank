@@ -1,3 +1,5 @@
+import { ApiError, ApiErrorException } from "@/types/Error";
+
 const API_URL = process.env.API_URL;
 
 export interface ApiQueryParameters {
@@ -35,8 +37,10 @@ export async function apiRequest<T>(
             }
         });
 
+        console.log(`${API_URL}${endpoint}${queryString}`)
+        
         if (!response.ok) {
-            throw new Error(`API request failed: ${response.statusText}`);
+            throw new ApiErrorException('Erro', await response.json() as ApiError)
         }
 
         return await response.json();

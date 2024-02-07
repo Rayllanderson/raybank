@@ -4,13 +4,13 @@ import Session from "@/types/Session";
 import { getAccountIdFromToken } from "@/utils/JwtUtil";
 import { CardDetails } from "@/types/Card";
 
-export async function getCard(id:string, token: string): Promise<CardDetails> {
+export async function getCardByIdAndToken(token: string): Promise<CardDetails> {
     const accountId = getAccountIdFromToken(token);
-    return await get(`/api/v1/internal/accounts${accountId}/cards/${id}`, token);
+    return await get(`/api/v1/internal/accounts/${accountId}/cards`, token);
 }
 
-export async function getCardPassingToken(id:string): Promise<CardDetails> {
+export async function getCreditCard(): Promise<CardDetails> {
     const session: Session = await getServerAuthSession()
-    return await getCard(id, session.token)
+    return await getCardByIdAndToken(session.token)
 }
 

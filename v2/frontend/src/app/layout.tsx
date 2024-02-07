@@ -5,6 +5,7 @@ import { Flowbite, ThemeModeScript } from 'flowbite-react'
 import { twMerge } from "tailwind-merge";
 import { flowbiteTheme } from './theme';
 import { Providers } from '../providers/providers';
+import { Toaster } from 'react-hot-toast';
 
 
 const inter = Nunito({ subsets: ['latin'] })
@@ -21,7 +22,10 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
       </head>
       <body className={twMerge("bg-gray-50 scrollbar-hide dark:bg-black-1 dark:text-white", inter.className)}>
         <Providers>
-          <Flowbite theme={{ theme: flowbiteTheme }}>{children}</Flowbite>
+          <Flowbite theme={{ theme: flowbiteTheme }}>
+            <Toaster position="top-right" />
+            {children}
+          </Flowbite>
         </Providers>
       </body>
 

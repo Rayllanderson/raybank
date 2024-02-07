@@ -10,12 +10,13 @@ import MediumCard from '../components/cards/MediumCard';
 import { getServerAuthSession } from './api/auth/[...nextauth]/options';
 import Session from '@/types/Session';
 import { AccountResponse } from '@/types/Account';
-import { getAccount } from '@/services/AccountService';
+import { getAuthAccount } from '@/services/AccountService';
 
 export default async function page() {
   const authSession: Session = await getServerAuthSession();
-  const userData: AccountResponse = await getAccount(authSession.token);
-
+  console.log(authSession);
+  const userData: AccountResponse = await getAuthAccount();
+  
 
   return (
     <SidebarProvider>

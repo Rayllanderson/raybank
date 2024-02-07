@@ -1,5 +1,7 @@
+import { keycloak } from '@/services/KeycloakService';
 import { TokenSet, getServerSession } from 'next-auth';
 import KeycloakProvider from "next-auth/providers/keycloak";
+import { signOut } from 'next-auth/react';
 
 export const authOptions = {
 
@@ -13,6 +15,8 @@ export const authOptions = {
 
     callbacks: {
         async jwt({ account, token }: { account: any, token: any }) {
+            console.log("token "+   JSON.stringify(token, undefined, 2));
+            console.log("account "+   JSON.stringify(account, undefined, 2));
             if (account) {
                 token.user = account
                 return token

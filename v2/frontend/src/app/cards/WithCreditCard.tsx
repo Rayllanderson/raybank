@@ -3,8 +3,9 @@ import { CardMoney } from '../../components/cards/CardMoney';
 import { Statements } from '../../components/Statements';
 import React from 'react'
 import { MiniCards } from './MiniCards';
+import { CardDetails } from '@/types/Card';
 
-export function WithCreditCard() {
+export function WithCreditCard({card}: {card: CardDetails}) {
     return <div className="cards flex w-full max-w-[23rem] md:max-w-md lg:max-w-lg flex-col">
         <Card>
             <div className='flex flex-col gap-2'>

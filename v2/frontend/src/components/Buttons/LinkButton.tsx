@@ -5,12 +5,16 @@ import Link from 'next/link'
 interface ButtonProps {
   href: string,
   gradientMonochrome?: string,
-  children?: string
+  children?: string,
+  hrefQueryParams?: any
 }
 
-export default function LinkButton({ children, href, gradientMonochrome }: ButtonProps) {
+export default function LinkButton({ children, href,hrefQueryParams: hrefData, gradientMonochrome }: ButtonProps) {
   return (
-    <Link href={href}>
+    <Link href={{
+      pathname: href,
+      query: hrefData
+    }} >
       {gradientMonochrome === undefined ?
         <FlowbiteButton>{children}</FlowbiteButton>
         :

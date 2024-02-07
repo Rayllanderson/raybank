@@ -1,3 +1,4 @@
+import { keycloak } from '@/services/KeycloakService'
 import { Avatar, Dropdown } from 'flowbite-react'
 import { signOut } from 'next-auth/react'
 import React from 'react'
@@ -19,7 +20,7 @@ export default function AvatarDropdown() {
             <Dropdown.Item>Settings</Dropdown.Item>
             <Dropdown.Item>Earnings</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={() => signOut()}>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={() => keycloak.logout().then(() => signOut())}>Sign out</Dropdown.Item>
         </Dropdown>
     )
 }
