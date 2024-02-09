@@ -13,7 +13,7 @@ public class ChangeCardLimitService {
 
     @Transactional
     public void change(final ChangeCardLimitInput input) {
-        final var card = cardGateway.findById(input.getCardId());
+        final var card = cardGateway.findByAccountId(input.getAccountId());
 
         card.changeLimit(input.getNewLimit());
 

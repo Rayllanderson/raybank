@@ -12,5 +12,5 @@ import java.math.BigDecimal;
 public class ChangeCardLimitRequest {
     @NotNull
     @PositiveOrZero
-    private BigDecimal newLimit;
+    private BigDecimal limit;
 }

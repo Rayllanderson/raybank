@@ -10,6 +10,6 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 public class ChangeCardLimitInput {
-    private String cardId;
+    private String accountId;
     private BigDecimal newLimit;
 }

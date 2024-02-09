@@ -29,11 +29,10 @@ public class ChangeCardLimitController {
     @RequiredAccountOwner
     public ResponseEntity<?> change(@Valid @RequestBody ChangeCardLimitRequest request,
                                   @PathVariable String accountId,
-                                  @PathVariable String cardId,
                                   @AuthenticationPrincipal Jwt jwt) {
 
-        limitService.change(new ChangeCardLimitInput(cardId, request.getNewLimit()));
+        limitService.change(new ChangeCardLimitInput(accountId, request.getLimit()));
 
-        return ResponseEntity.ok(Map.of("new_limit", request.getNewLimit()));
+        return ResponseEntity.ok(Map.of("new_limit", request.getLimit()));
     }
 }
