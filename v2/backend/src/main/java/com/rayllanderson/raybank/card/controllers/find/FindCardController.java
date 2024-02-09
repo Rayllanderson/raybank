@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.card.controllers.find;
 
 import com.rayllanderson.raybank.card.services.find.CardFinderService;
-import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +21,12 @@ public class FindCardController {
 
     private final CardFinderService cardFinderService;
 
-    @RequiredAccountAndCardOwner
-    @GetMapping("/{cardId}")
+    @RequiredAccountOwner
+    @GetMapping
     public ResponseEntity<?> find(@PathVariable String accountId,
-                                  @PathVariable String cardId,
                                   @AuthenticationPrincipal Jwt jwt,
                                   @RequestParam(required = false, defaultValue = "false") Boolean sensitive) {
-        final var creditCard = cardFinderService.findById(cardId);
+        final var creditCard = cardFinderService.findByAccountId(accountId);
 
         if (Boolean.TRUE.equals(sensitive))
             return ResponseEntity.ok(CardDetailsSensitiveResponse.from(creditCard));

@@ -70,7 +70,7 @@ services:
       - --import-realm
     volumes:
       - C:/docker/volumes/raybank/keycloak/imports:/opt/jboss/keycloak/imports
-      - C:/docker/volumes/raybank/keycloak/provider/custom-event-listener-jar-with-dependencies.jar:/opt/keycloak/providers/custom-event-listener.jar
+      - C:/docker/volumes/raybank/keycloak/provider/custom-event-listener-jar-with-dependencies.jar:/opt/keycloak/providers/custom-event-listener-jar-with-dependencies.jar
     depends_on:
       - keycloak-postgres
     networks:

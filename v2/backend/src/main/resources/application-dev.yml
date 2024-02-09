@@ -18,7 +18,7 @@ keycloak:
   realm: raybank
   server-url: http://localhost:8443
   credentials:
-    client-secret: prEF109rkQBFGCbGGnqrkpoiCxAv0Pih
+    client-secret: 702PlTfBk922cjPGUmwkZpSAuyP6Hx1v
     client-id: raybank-backend-create-user
 
 #every 30s

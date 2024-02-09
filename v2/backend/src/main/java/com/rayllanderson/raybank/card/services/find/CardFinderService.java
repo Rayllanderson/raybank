@@ -18,9 +18,20 @@ public class CardFinderService {
     public CardDetailsOutput findById(String cardId){
         final Card card = cardGateway.findById(cardId);
 
+        return getCardDetailsOutput(cardId, card);
+    }
+
+    private CardDetailsOutput getCardDetailsOutput(String cardId, Card card) {
         final var usedLimit = cardLimitService.findUsedLimit(cardId);
         final var availableLimit = card.getLimit().subtract(usedLimit);
 
         return CardDetailsOutput.fromCreditCard(card, usedLimit, availableLimit);
+    }
+
+    @Transactional(readOnly = true)
+    public CardDetailsOutput findByAccountId(String accountId){
+        final Card card = cardGateway.findByAccountId(accountId);
+
+        return getCardDetailsOutput(card.getId(), card);
     }
 }

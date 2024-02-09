@@ -6,6 +6,8 @@ public interface CardGateway {
     Card save(Card card);
     Card findById(final String id);
 
+    Card findByAccountId(final String id);
+
     Card findByNumber(Long cardNumber);
 
     boolean existsByBankAccountId(String id);

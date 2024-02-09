@@ -28,6 +28,11 @@ public class CardPostgresGateway implements CardGateway {
     }
 
     @Override
+    public Card findByAccountId(String accountId) {
+        return cardRepository.findByBankAccountId(accountId).orElseThrow(notFoundException());
+    }
+
+    @Override
     public Card findByNumber(Long cardNumber) {
         return cardRepository.findByNumber(cardNumber).orElseThrow(notFoundException());
     }
