@@ -1,22 +1,22 @@
 import { get, post } from "./ApiRequest";
-import { getServerAuthSession, getToken } from "@/app/api/auth/[...nextauth]/options";
-import Session from "@/types/Session";
+import { getToken } from "@/app/api/auth/[...nextauth]/options";
 import { getAccountIdFromToken } from "@/utils/JwtUtil";
-import { CardDetails, CreateCardFormData } from "@/types/Card";
+import { CardDetails, CreateCardFormData, convertCardDetailsToCamelCase } from "@/types/Card";
 import { ApiErrorException } from "@/types/Error";
 
 export const CardService = {createCard}
 
 export async function getCardByIdAndToken(token: string): Promise<CardDetails> {
     const accountId = getAccountIdFromToken(token);
-    return await get(`/api/v1/internal/accounts/${accountId}/cards`, token);
+    const response = await get(`/api/v1/internal/accounts/${accountId}/cards`, token);
+    return convertCardDetailsToCamelCase(response)
 }
 
 export async function getCreditCard(): Promise<CardDetails> {
     return await getCardByIdAndToken(await getToken())
 }
 
-export async function getCreditCardOrNull(): Promise<CardDetails | null> {
+export async function getCreditCardOrNullIfNotFound(): Promise<CardDetails | null> {
     try {
         return await getCardByIdAndToken(await getToken())
     } catch (err) {

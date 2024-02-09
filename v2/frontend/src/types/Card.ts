@@ -13,6 +13,20 @@ export interface CardDetails {
     invoiceValue?: number
 }
 
+export function convertCardDetailsToCamelCase(data: any): CardDetails {
+    if (!data) {
+        return data
+    }
+    const camelCaseData: CardDetails = {
+        id: data.id,
+        limit: data.limit,
+        availableLimit: data.available_limit,
+        usedLimit: data.used_limit,
+        invoiceValue: data.invoice_value
+    };
+    return camelCaseData;
+}
+
 export const DUE_DAYS = {
     SIX: 6,
     TWELVE: 12,

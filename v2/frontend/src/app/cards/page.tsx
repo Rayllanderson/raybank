@@ -1,4 +1,4 @@
-import { getCreditCard, getCreditCardOrNull } from '@/services/CardService';
+import { getCreditCard, getCreditCardOrNullIfNotFound } from '@/services/CardService';
 import { WithCreditCard } from './WithCreditCard';
 import { CardDetails } from '@/types/Card';
 import { getServerSession } from 'next-auth';
@@ -10,7 +10,7 @@ import { notFound } from 'next/navigation';
 export default async function page() {
     const session = await getServerAuthSession()
     
-    const card: CardDetails | null = await getCreditCardOrNull();
+    const card: CardDetails | null = await getCreditCardOrNullIfNotFound();
 
     if(!card) {
         notFound()

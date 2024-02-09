@@ -26,11 +26,7 @@ export async function apiRequest<T>(
     
     const defaultHeaders = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-        'Accept': '*/*',
-        'Access-Control-Allow-Origin': '*',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X)',
-        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+        'Authorization': `Bearer ${token}`
     };
 
     let requestOptions: { method: string; headers: { [key: string]: string }; body?: string | null } = {
@@ -47,13 +43,8 @@ export async function apiRequest<T>(
     }
     
     try {
-        console.log(`${API_URL}${endpoint}${queryString}`)
-        console.log(requestOptions)
         const response = await fetch(`${API_URL}${endpoint}${queryString}`, requestOptions);
-        console.log(response)
         if (!response.ok) {
-            console.log(response)
-            console.log(response.status)
             throw new ApiErrorException(response.status, await response.json() as ApiError)
         }
 
