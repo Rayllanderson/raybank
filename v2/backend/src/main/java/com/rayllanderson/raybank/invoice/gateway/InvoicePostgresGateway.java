@@ -50,6 +50,11 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     }
 
     @Override
+    public List<Invoice> findAllByAccountId(String accountId) {
+        return invoiceRepository.findAllByCard_BankAccount_Id(accountId);
+    }
+
+    @Override
     public List<Invoice> findAllPresentAndFutureByCardId(String cardId) {
         return this.invoiceRepository.findAllByCard_IdAndStatusIn(cardId, List.of(InvoiceStatus.OPEN, InvoiceStatus.NONE, InvoiceStatus.CLOSED, InvoiceStatus.OVERDUE));
     }
@@ -64,6 +69,13 @@ public class InvoicePostgresGateway implements InvoiceGateway {
     @Override
     public Invoice findCurrentByCardId(final String cardId) {
         final var allInvoicesByCard = this.findAllByCardId(cardId);
+        final InvoiceListHelper invoices = new InvoiceListHelper(allInvoicesByCard);
+        return invoices.getCurrentInvoiceToPay();
+    }
+
+    @Override
+    public Invoice findCurrentByAccountId(final String accountId) {
+        final var allInvoicesByCard = invoiceRepository.findAllByCard_BankAccount_Id(accountId);
         final InvoiceListHelper invoices = new InvoiceListHelper(allInvoicesByCard);
         return invoices.getCurrentInvoiceToPay();
     }

@@ -13,8 +13,10 @@ public interface InvoiceGateway {
     void flush();
     Invoice findById(String invoiceId);
     Invoice findCurrentByCardId(String cardId);
+    Invoice findCurrentByAccountId(String accountId);
     Collection<Invoice> findAllByCardIdAndStatus(String cardId, Collection<InvoiceStatus> status);
     List<Invoice> findAllByCardId(final String cardId);
+    List<Invoice> findAllByAccountId(final String accountId);
     List<Invoice> findAllPresentAndFutureByCardId(final String cardId);
     Integer getDayOfDueDateByCardId(final String cardId);
 }

@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     List<Invoice> findAllByClosingDateLessThanEqualAndStatus(LocalDate closingDate, InvoiceStatus status);
     List<Invoice> findAllByCard_Id(String cardId);
+    List<Invoice> findAllByCard_BankAccount_Id(String accountId);
     List<Invoice> findAllByCard_IdAndStatusIn(String cardId, List<InvoiceStatus> status);
     Optional<Invoice> findAnyByCard_Id(String cardId);
     List<Invoice> findAllByDueDateLessThanEqualAndStatus(LocalDate dueDate, InvoiceStatus status);

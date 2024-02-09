@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Tag(name = "cards")
 @RestController
-@RequestMapping("api/v1/internal/accounts/{accountId}/cards/{cardId}/limit")
+@RequestMapping("api/v1/internal/accounts/{accountId}/cards/limit")
 @RequiredArgsConstructor
 public class ChangeCardLimitController {
 

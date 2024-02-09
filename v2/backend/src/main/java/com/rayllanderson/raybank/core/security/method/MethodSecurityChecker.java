@@ -110,13 +110,13 @@ public class MethodSecurityChecker {
         return checkPixKey(request.getCreditKey(), jwt);
     }
 
-    public boolean checkInvoice(String accountId, String cardId, String invoiceId, Jwt jwt) {
-        return checkAccountAndCard(accountId, cardId, jwt) && checkInvoice(cardId, invoiceId);
+    public boolean checkInvoice(String accountId, String invoiceId, Jwt jwt) {
+        return checkAccount(accountId, jwt) && checkInvoice(accountId, invoiceId);
     }
 
-    private boolean checkInvoice(String cardId, String invoiceId) {
+    private boolean checkInvoice(String accountId, String invoiceId) {
         final var invoice = invoiceGateway.findById(invoiceId);
-        if (invoice.getCardId().equals(cardId))
+        if (invoice.getCard().getAccountId().equals(accountId))
             return true;
         throw NotFoundException.withFormatted(INVOICE_NOT_FOUND, "Fatura não encontrada");
     }

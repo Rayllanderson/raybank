@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.invoice.controllers.credit;
 
-import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
 import com.rayllanderson.raybank.core.security.method.RequiredInvoiceOwner;
 import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditInput;
 import com.rayllanderson.raybank.invoice.services.credit.InvoiceCreditService;
@@ -18,20 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "invoices")
 @RestController
-@RequestMapping("api/v1/internal/accounts/{accountId}/cards/{cardId}")
+@RequestMapping("api/v1/internal/accounts/{accountId}")
 @RequiredArgsConstructor
 public class InvoiceCreditController {
 
     private final InvoiceCreditService invoiceCreditService;
 
-    @RequiredAccountAndCardOwner
+    @RequiredAccountOwner
     @PostMapping("/invoices/current/pay")
     public ResponseEntity<InvoiceCreditResponse> payInvoice(@RequestBody @Valid InvoiceCreditRequest request,
                                                             @PathVariable String accountId,
-                                                            @PathVariable String cardId,
                                                             @AuthenticationPrincipal Jwt jwt) {
 
-        final var transaction = invoiceCreditService.creditCurrent(new InvoiceCreditInput(request.getAmount(), accountId, cardId, null));
+        final var transaction = invoiceCreditService.creditCurrent(new InvoiceCreditInput(request.getAmount(), accountId, null));
 
         return ResponseEntity.ok().body(InvoiceCreditResponse.fromTransaction(transaction));
     }
@@ -40,11 +39,10 @@ public class InvoiceCreditController {
     @PostMapping("/invoices/{invoiceId}/pay")
     public ResponseEntity<InvoiceCreditResponse> payInvoiceById(@RequestBody @Valid InvoiceCreditRequest request,
                                                                 @PathVariable String accountId,
-                                                                @PathVariable String cardId,
                                                                 @PathVariable final String invoiceId,
                                                                 @AuthenticationPrincipal Jwt jwt) {
 
-        final var transaction = invoiceCreditService.creditById(new InvoiceCreditInput(request.getAmount(), accountId, cardId, invoiceId));
+        final var transaction = invoiceCreditService.creditById(new InvoiceCreditInput(request.getAmount(), accountId, invoiceId));
 
         return ResponseEntity.ok().body(InvoiceCreditResponse.fromTransaction(transaction));
     }

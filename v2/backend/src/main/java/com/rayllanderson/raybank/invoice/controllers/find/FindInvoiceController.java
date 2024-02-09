@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.invoice.controllers.find;
 
-import com.rayllanderson.raybank.core.security.method.RequiredAccountAndCardOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
+import com.rayllanderson.raybank.core.security.method.RequiredInvoiceOwner;
 import com.rayllanderson.raybank.invoice.services.find.FindInvoiceMapper;
 import com.rayllanderson.raybank.invoice.services.find.FindInvoiceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,26 +18,24 @@ import java.util.List;
 
 @Tag(name = "invoices")
 @RestController
-@RequestMapping("api/v1/internal/accounts/{accountId}/cards/{cardId}")
+@RequestMapping("api/v1/internal/accounts/{accountId}")
 @RequiredArgsConstructor
 public class FindInvoiceController {
 
     private final FindInvoiceService findInvoiceService;
     private final FindInvoiceMapper mapper;
 
-    @RequiredAccountAndCardOwner
+    @RequiredAccountOwner
     @GetMapping("/invoices")
     public ResponseEntity<List<FindInvoiceListResponse>> findAll(@PathVariable String accountId,
-                                                             @PathVariable String cardId,
                                                              @AuthenticationPrincipal Jwt jwt) {
-        final var invoices = findInvoiceService.findAllByCardId(cardId);
+        final var invoices = findInvoiceService.findAllByAccountId(accountId);
         return ResponseEntity.ok(mapper.fromOutput(invoices));
     }
 
-    @RequiredAccountAndCardOwner
+    @RequiredInvoiceOwner
     @GetMapping("/invoices/{invoiceId}")
     public ResponseEntity<FindInvoiceResponse> findAll(@PathVariable String accountId,
-                                                       @PathVariable String cardId,
                                                        @PathVariable String invoiceId,
                                                        @AuthenticationPrincipal Jwt jwt) {
         final var invoice = findInvoiceService.findById(invoiceId);

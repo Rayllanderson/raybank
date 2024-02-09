@@ -22,6 +22,14 @@ public class FindInvoiceService {
         return mapper.from(invoices);
     }
 
+    public List<FindInvoiceListOutput> findAllByAccountId(final String accountId) {
+        final var invoices = invoiceGateway.findAllByAccountId(accountId);
+
+        Collections.sort(invoices);
+
+        return mapper.from(invoices);
+    }
+
     public FindInvoiceOutput findById(final String id) {
         final var invoice = invoiceGateway.findById(id);
 

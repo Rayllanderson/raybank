@@ -14,6 +14,5 @@ import java.math.BigDecimal;
 public class InvoiceCreditInput {
     private BigDecimal amount;
     private String accountId;
-    private String cardId;
     private String invoiceId;
 }

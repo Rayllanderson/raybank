@@ -30,7 +30,7 @@ public class InvoiceCreditService {
 
     @Transactional
     public Transaction creditCurrent(final InvoiceCreditInput input) {
-        final var currentInvoice = invoiceGateway.findCurrentByCardId(input.getCardId());
+        final var currentInvoice = invoiceGateway.findCurrentByAccountId(input.getAccountId());
         input.setInvoiceId(currentInvoice.getId());
 
         final var debit = DebitAccountFacadeInput.from(input);
