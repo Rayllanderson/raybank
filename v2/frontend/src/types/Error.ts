@@ -1,9 +1,10 @@
 export class ApiErrorException extends Error {
     apiError: ApiError;
+    httpStatus: number;
 
-    constructor(message: string = "", error: any) {
-        console.log(error)
+    constructor(status: number, error: any) {
         super(error.message);
+        this.httpStatus = status;
         this.name = 'ApiErrorException'
         this.apiError = error
     }

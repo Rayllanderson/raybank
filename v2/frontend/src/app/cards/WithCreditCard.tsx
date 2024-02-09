@@ -6,6 +6,7 @@ import { MiniCards } from './MiniCards';
 import { CardDetails } from '@/types/Card';
 
 export function WithCreditCard({card}: {card: CardDetails}) {
+    console.log(card);
     return <div className="cards flex w-full max-w-[23rem] md:max-w-md lg:max-w-lg flex-col">
         <Card>
             <div className='flex flex-col gap-2'>
@@ -19,7 +20,7 @@ export function WithCreditCard({card}: {card: CardDetails}) {
                     </div>
                     <div className='flex items-center space-x-3'>
                         <p className="text-md  ">Limite Disponível</p>
-                        <CardMoney size="text-md" value={5423} className='text-c-green-1 ' darkColor='dark:text-c-green-1' />
+                        <CardMoney size="text-md" value={card.availableLimit} className='text-c-green-1 ' darkColor='dark:text-c-green-1' />
                     </div>
                 </div>
             </div>

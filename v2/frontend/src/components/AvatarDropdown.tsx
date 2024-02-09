@@ -4,6 +4,15 @@ import { signOut } from 'next-auth/react'
 import React from 'react'
 
 export default function AvatarDropdown() {
+    const handleLogout = async () => {
+        try {
+            await keycloak.logout();
+            signOut();
+        } catch (error) {
+            console.error('Erro ao fazer logout:', error);
+        }
+    };
+
     return (
         <Dropdown
             arrowIcon={false}
@@ -20,7 +29,7 @@ export default function AvatarDropdown() {
             <Dropdown.Item>Settings</Dropdown.Item>
             <Dropdown.Item>Earnings</Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={() => keycloak.logout().then(() => signOut())}>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
         </Dropdown>
     )
 }

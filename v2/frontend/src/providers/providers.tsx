@@ -8,6 +8,7 @@ import { PixDepositProvider } from "../context/PixDepositContext"
 import { PixPaymentProvider } from "../context/PixPaymentContext"
 import { TransactionProvider } from "../context/TransferContext"
 import { SessionProvider } from "next-auth/react"
+import { CardProvider } from "@/context/CreateCardContext "
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -19,7 +20,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
                             <PixDepositProvider>
                                 <BoletoDepositProvider>
                                     <AccountDepositProvider>
-                                        {children}
+                                        <CardProvider >
+                                            {children}
+                                        </CardProvider>
                                     </AccountDepositProvider>
                                 </BoletoDepositProvider>
                             </PixDepositProvider>

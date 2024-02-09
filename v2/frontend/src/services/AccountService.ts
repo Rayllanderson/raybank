@@ -1,6 +1,6 @@
 import { Account, AccountResponse } from "@/types/Account";
 import { get } from "./ApiRequest";
-import { getServerAuthSession } from "@/app/api/auth/[...nextauth]/options";
+import { getServerAuthSession, getToken } from "@/app/api/auth/[...nextauth]/options";
 import { Session } from "next-auth";
 
 export async function getAccount(token: string): Promise<AccountResponse> {
@@ -8,8 +8,6 @@ export async function getAccount(token: string): Promise<AccountResponse> {
 }
 
 export async function getAuthAccount(): Promise<AccountResponse> {
-    const session: Session = await getServerAuthSession()
-    console.log(session)
-    return await getAccount(session.token)
+    return await getAccount(await getToken())
 }
 

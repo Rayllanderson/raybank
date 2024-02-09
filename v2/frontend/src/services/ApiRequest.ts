@@ -1,6 +1,6 @@
 import { ApiError, ApiErrorException } from "@/types/Error";
 
-const API_URL = process.env.API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface ApiQueryParameters {
     [key: string]: string | number | boolean;
@@ -16,35 +16,50 @@ export function buildQueryString(params: ApiQueryParameters): string {
 
 export async function apiRequest<T>(
     endpoint: string,
+    data: any,
     token: string,
-    query: ApiQueryParameters = {},
-    headers: {[key: string]: string} = {},
-    method: string = 'GET'
+    query: ApiQueryParameters,
+    headers: {[key: string]: string},
+    method: string
 ): Promise<T> {
     const queryString: string = buildQueryString({ ...query });
     
     const defaultHeaders = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Accept': '*/*',
+        'Access-Control-Allow-Origin': '*',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X)',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
     };
 
-    try {
-        const response = await fetch(`${API_URL}${endpoint}${queryString}`, {
-            method: method,
-            headers: {
-                ...defaultHeaders,
-                ...headers
-            }
-        });
+    let requestOptions: { method: string; headers: { [key: string]: string }; body?: string | null } = {
+        method: method,
+        headers: {
+            ...defaultHeaders,
+            ...headers
+        }
+    };
 
+    
+    if (data !== null) {
+        requestOptions.body = JSON.stringify(data);
+    }
+    
+    try {
         console.log(`${API_URL}${endpoint}${queryString}`)
-        
+        console.log(requestOptions)
+        const response = await fetch(`${API_URL}${endpoint}${queryString}`, requestOptions);
+        console.log(response)
         if (!response.ok) {
-            throw new ApiErrorException('Erro', await response.json() as ApiError)
+            console.log(response)
+            console.log(response.status)
+            throw new ApiErrorException(response.status, await response.json() as ApiError)
         }
 
         return await response.json();
     } catch (error) {
+        console.log(error)
         throw error;
     }
 }
@@ -55,14 +70,15 @@ export async function get<T>(
     query: ApiQueryParameters = {},
     headers: {[key: string]: string} = {},
 ): Promise<T> {
-    return apiRequest(endpoint, token, query, headers, 'GET')
+    return apiRequest(endpoint, null, token, query, headers, 'GET')
 }
 
 export async function post<T>(
     endpoint: string,
+    body: any,
     token: string,
     query: ApiQueryParameters = {},
     headers: {[key: string]: string} = {},
 ): Promise<T> {
-    return apiRequest(endpoint, token, query, headers, 'POST')
+    return apiRequest(endpoint, body, token, query, headers, 'POST')
 }

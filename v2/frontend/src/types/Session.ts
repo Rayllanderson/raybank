@@ -5,4 +5,5 @@ export default interface Session {
     token: string;
     expiresAt: number;
     refreshToken: string;
+    error: string
 }

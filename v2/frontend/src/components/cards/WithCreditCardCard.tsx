@@ -5,11 +5,11 @@ import { CardMoney } from './CardMoney';
 import Link from 'next/link';
 import { Card } from './Card';
 import { CardDetails, Card as CreditCard } from '@/types/Card';
-import { getCardById } from '@/services/CardService';
+import { getCreditCard } from '@/services/CardService';
 
 
 export default async function WithCreditCardCard({card}: {card: CreditCard}) {
-  const cardDetails: CardDetails = await getCardById(card.id)
+  const cardDetails: CardDetails = await getCreditCard()
   
   return (
     <Card>

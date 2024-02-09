@@ -9,7 +9,6 @@ export async function GET() {
       const refreshToken = session.refreshToken;
   
       var url = `${process.env.KEYCLOAK_LOGOUT_URL}?client_id=${process.env.KEYCLOAK_ID}&refresh_token=${refreshToken}`;
-        console.log(url);
       try {
         const resp = await fetch(url, { method: "POST", headers: { 'Content-Type': "application/x-www-form-urlencoded", 'Authorization': 'Bearer ' + session.token } });
         if (!resp.ok) {

@@ -1,7 +1,9 @@
 import { keycloak } from '@/services/KeycloakService';
+import Session from '@/types/Session';
 import { TokenSet, getServerSession } from 'next-auth';
 import KeycloakProvider from "next-auth/providers/keycloak";
-import { signOut } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 export const authOptions = {
 
@@ -55,9 +57,19 @@ export const authOptions = {
             session.token = token.user.access_token
             session.refreshToken = token.user.refresh_token
             session.expiresAt = token.user.expires_at
+            session.error = token.error
             return session;
         },
+        
     },
 };
 
 export const getServerAuthSession = () => getServerSession(authOptions);
+
+export async function getToken(): Promise<string> {
+    const session: Session = await getServerAuthSession();
+    if (session?.error === "RefreshAccessTokenError") {
+        redirect('/api/auth/signin')
+    }
+    return session.token
+}
