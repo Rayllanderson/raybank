@@ -25,7 +25,7 @@ export default async function WithCreditCardCard({card}: {card: CreditCard}) {
 
         <Link href={"/cards"} className="space-y-1">
           <div>
-            <CardMoney value={cardDetails.invoiceValue ?? 132.1} className='text-c-blue-1' darkColor='dark:text-c-blue-1' />
+            <CardMoney value={cardDetails.invoiceValue ?? 0} className='text-c-blue-1' darkColor='dark:text-c-blue-1' />
           </div>
           <div className='flex items-center space-x-3'>
             <p className="text-md font-mono dark:text-white">Limite Disponível</p>

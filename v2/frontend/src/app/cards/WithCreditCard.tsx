@@ -16,7 +16,7 @@ export function WithCreditCard({card}: {card: CardDetails}) {
 
                 <div className="space-y-1">
                     <div>
-                        <CardMoney value={1242.5} className='text-c-blue-1' darkColor='dark:text-c-blue-1' />
+                        <CardMoney value={card.invoiceValue!} className='text-c-blue-1' darkColor='dark:text-c-blue-1' />
                     </div>
                     <div className='flex items-center space-x-3'>
                         <p className="text-md  ">Limite Disponível</p>
