@@ -14,6 +14,7 @@ public class CardDetailsResponse {
     private BigDecimal limit;
     private BigDecimal usedLimit;
     private BigDecimal availableLimit;
+    private BigDecimal invoiceValue;
 
     public static CardDetailsResponse from(CardDetailsOutput c){
         return new ModelMapper().map(c, CardDetailsResponse.class);

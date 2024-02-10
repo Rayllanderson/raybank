@@ -18,11 +18,13 @@ public class CardDetailsOutput {
     private BigDecimal limit;
     private BigDecimal usedLimit;
     private BigDecimal availableLimit;
+    private BigDecimal invoiceValue;
 
-    public static CardDetailsOutput fromCreditCard(final Card c, final BigDecimal usedLimit, final BigDecimal availableLimit) {
+    public static CardDetailsOutput fromCreditCard(final Card c, final BigDecimal usedLimit, final BigDecimal availableLimit, BigDecimal invoiceValue) {
         CardDetailsOutput cardDetailsOutput = new ModelMapper().map(c, CardDetailsOutput.class);
         cardDetailsOutput.usedLimit = usedLimit;
         cardDetailsOutput.availableLimit = availableLimit;
+        cardDetailsOutput.invoiceValue = invoiceValue;
         return cardDetailsOutput;
     }
 }

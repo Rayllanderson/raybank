@@ -18,6 +18,7 @@ public class CardDetailsSensitiveResponse {
     private BigDecimal limit;
     private BigDecimal usedLimit;
     private BigDecimal availableLimit;
+    private BigDecimal invoiceValue;
 
     public static CardDetailsSensitiveResponse from(CardDetailsOutput c){
         return new ModelMapper().map(c, CardDetailsSensitiveResponse.class);
