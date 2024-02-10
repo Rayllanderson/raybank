@@ -17,6 +17,7 @@ export default async function page() {
   console.log(authSession);
   const userData: AccountResponse = await getAuthAccount();
   
+  console.log(userData);
 
   return (
     <SidebarProvider>

@@ -4,25 +4,26 @@ import { Statement } from '@/types/Statement';
 import { signIn, useSession } from 'next-auth/react';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-interface CardStatementContextType {
+interface StatementContextType {
     pagination: Page<Statement>;
     loading: boolean;
+    setType: (e:'account'| 'card') => void
 }
 
-const CardStatementContext = createContext<CardStatementContextType | undefined>(undefined);
+const StatementContext = createContext<StatementContextType | undefined>(undefined);
 
-export function useCardStatement(): CardStatementContextType {
-    const context = useContext(CardStatementContext);
+export function useFindStatement(): StatementContextType {
+    const context = useContext(StatementContext);
     if (!context) {
         throw new Error('useCardStatement must be used within a CardStatementProvider');
     }
     return context;
 }
 
-interface CardStatementProviderProps {
+interface StatementProviderProps {
     children: ReactNode;
 }
-export function CardStatementProvider({ children }: CardStatementProviderProps) {
+export function StatementProvider({ children }: StatementProviderProps) {
     const [pagination, setPagination] = useState<Page<Statement>>({
         page: 0,
         size: 1,
@@ -30,6 +31,7 @@ export function CardStatementProvider({ children }: CardStatementProviderProps) 
         items: []
       });
     const [page, setPage] = useState(0);
+    const [type, setType] = useState<'account'| 'card'>();
     const { data: session } = useSession();
     const [loading, setLoading] = useState(true);
     const [canFetch, setCanFetch] = useState(true);
@@ -41,9 +43,20 @@ export function CardStatementProvider({ children }: CardStatementProviderProps) 
     }, [session]);
 
     useEffect(() => {
+        setPagination({
+            page: 0,
+            size: 1,
+            total: 0,
+            items: []
+        });
+        setPage(0)
+    }, [type]);
+
+    useEffect(() => {
+        console.log(type)
         async function fetchItems() {
             setLoading(true);
-            const data: Page<Statement> =  await getAllCardStatementsWithToken(session?.token!, { page: page, size: 10 }) 
+            const data: Page<Statement> =  await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10 }) 
             console.log(data)
             setPagination(prevPagination => ({
                 ...data,
@@ -54,7 +67,7 @@ export function CardStatementProvider({ children }: CardStatementProviderProps) 
         }
 
         fetchItems();
-    }, [session?.token!, page]);
+    }, [session?.token!, page, type]);
 
     function handleScroll() {
         if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
@@ -70,14 +83,15 @@ export function CardStatementProvider({ children }: CardStatementProviderProps) 
 
 
 
-    const value: CardStatementContextType = {
+    const value: StatementContextType = {
         pagination,
         loading,
+        setType
     };
 
     return (
-        <CardStatementContext.Provider value={value}>
+        <StatementContext.Provider value={value}>
             {children}
-        </CardStatementContext.Provider>
+        </StatementContext.Provider>
     );
 }

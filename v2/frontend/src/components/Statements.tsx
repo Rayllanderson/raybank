@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import InputWithIcon from './inputs/InputWithIcon';
 import { FaSearch } from 'react-icons/fa';
 import StatamentCard from './StatamentCard';
@@ -7,7 +7,7 @@ import { Statement } from '@/types/Statement';
 import { getAllCardStatementsWithToken } from '@/services/StatementService';
 import { signIn, useSession } from 'next-auth/react';
 import { Page } from '@/types/Page';
-import { useCardStatement } from '@/context/StatementContext';
+import { useFindStatement } from '@/context/StatementContext';
 import LoadingDiv, { loadingDiv } from './LoadingDiv';
 import { StatementHeaderLoading } from './StatementHeader';
 import { StatementCreditCardBodyLoading } from './StatementCreditCardBody';
@@ -20,7 +20,12 @@ interface Props {
 
 export function Statements({ type }: Props) {
 
-    const { pagination, loading } = useCardStatement()
+    const { pagination, loading, setType } = useFindStatement()
+
+    useEffect( () => {
+        setType(type)
+    },[])
+
 
     return <div>
         <h1 className="text-2xl font-semibold font-mono">Histórico</h1>
