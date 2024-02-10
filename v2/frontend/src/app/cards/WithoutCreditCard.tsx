@@ -31,8 +31,7 @@ export function WithoutCreditCard() {
 
     async function onSubmit(data: CreateCardFormData) {
         await createCard(data, session?.token!);
-        if (!error)
-            router.replace('/cards');
+        window.location.href = '/cards';
     }
 
     if (!formState.isValid) {

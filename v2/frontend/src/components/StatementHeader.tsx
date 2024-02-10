@@ -4,6 +4,7 @@ import { isIncomming } from '../utils/StatementUtil';
 import { Statement } from '../types/Statement';
 import { IconType } from 'react-icons';
 import { capitalizeFirstLetter } from '@/utils/StringUtils';
+import LoadingDiv, { loadingDiv } from './LoadingDiv';
 
 type Props = {
     statement: Statement,
@@ -14,11 +15,11 @@ export default function StatementHeader({ statement, type }: Props) {
     return <div className='header flex justify-between items-center '>
 
         <div className='flex space-x-2 items-center lg:text-lg'>
-            
+
             {
                 type === 'account' ?
-                <AccountHeader statement={statement}/> :
-                <CardHeader statement={statement} />
+                    <AccountHeader statement={statement} /> :
+                    <CardHeader statement={statement} />
             }
 
             <div className='title font-semibold '>
@@ -34,11 +35,35 @@ export default function StatementHeader({ statement, type }: Props) {
     </div>;
 }
 
+export function StatementHeaderLoading() {
+const bg = 'bg-gray-300 dark:bg-black-3'
+
+    return <div className='header flex justify-between items-center p1 '>
+
+        <div className='flex space-x-3 justify-center items-center w-full'>
+
+            <div className='w-6 h-6' >
+                <LoadingDiv className={`rounded-full ${bg}`} />
+            </div>
+
+            <div className='flex-1'> 
+                <LoadingDiv className={`rounded-md max-w-[40%]  ${bg}`} />
+            </div>
+        </div>
+
+        <div className='flex justify-end w-[10%]' >
+            <div className='w-full'>
+            <LoadingDiv className={`rounded-md ${bg}`} />
+            </div>
+        </div>
+    </div>;
+}
+
 interface HeaderProps {
     statement: Statement
 }
 
-function AccountHeader({statement}: HeaderProps) {
+function AccountHeader({ statement }: HeaderProps) {
     return (
         <>
             {isIncomming(statement.financialMovement) ?
@@ -49,14 +74,14 @@ function AccountHeader({statement}: HeaderProps) {
         </>)
 }
 
-function CardHeader({statement}: HeaderProps) {
-    const icons: IconType[] = [FaCartShopping, FaBagShopping, FaBasketShopping ]
+function CardHeader({ statement }: HeaderProps) {
+    const icons: IconType[] = [FaCartShopping, FaBagShopping, FaBasketShopping]
     const RandomIcon = icons[Math.floor(Math.random() * icons.length)];
-    
+
     return (
         <>
             {isIncomming(statement.financialMovement) ?
-                <FaCreditCard  className='text-c-green-1 w-5 h-5' />
+                <FaCreditCard className='text-c-green-1 w-5 h-5' />
                 :
                 <RandomIcon className='dark:text-gray-200 text-gray-800 w-5 h-5' />
             }

@@ -8,8 +8,6 @@ import { WithoutCreditCard } from './WithoutCreditCard';
 import { notFound } from 'next/navigation';
 
 export default async function page() {
-    const session = await getServerAuthSession()
-    
     const card: CardDetails | null = await getCreditCardOrNullIfNotFound();
 
     if(!card) {

@@ -1,12 +1,16 @@
 import { Card } from '../../components/cards/Card';
 import { CardMoney } from '../../components/cards/CardMoney';
-import { Statements } from '../../components/Statements';
 import React from 'react'
 import { MiniCards } from './MiniCards';
 import { CardDetails } from '@/types/Card';
+import { Statement, Statements as StatementsArray} from '@/types/Statement';
+import { getAllCardStatements } from '@/services/StatementService';
+import { Statements } from '@/components/Statements';
+import { Page } from '@/types/Page';
 
-export function WithCreditCard({card}: {card: CardDetails}) {
-    console.log(card);
+export async function WithCreditCard({card}: {card: CardDetails}) {
+    const statements: Page<Statement> = await getAllCardStatements()
+    console.log(statements)
     return <div className="cards flex w-full max-w-[23rem] md:max-w-md lg:max-w-lg flex-col">
         <Card>
             <div className='flex flex-col gap-2'>
@@ -28,7 +32,7 @@ export function WithCreditCard({card}: {card: CardDetails}) {
         </Card>
 
         <div className="mt-8 p-1">
-            <Statements type="card" />
+            <Statements type="card" statements={statements?.items!}/>
         </div>
     </div>;
 }

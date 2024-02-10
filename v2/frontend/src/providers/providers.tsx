@@ -10,6 +10,7 @@ import { TransactionProvider } from "../context/TransferContext"
 import { SessionProvider } from "next-auth/react"
 import { CardProvider } from "@/context/CreateCardContext "
 import { ChangeCardLimitProvider } from "@/context/ChangeCardLimitContext"
+import { CardStatementProvider } from "@/context/StatementContext"
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -23,7 +24,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
                                     <AccountDepositProvider>
                                         <CardProvider >
                                             <ChangeCardLimitProvider>
-                                            {children}
+                                                <CardStatementProvider>
+                                                    {children}
+                                                </CardStatementProvider>
                                             </ChangeCardLimitProvider>
                                         </CardProvider>
                                     </AccountDepositProvider>

@@ -11,5 +11,8 @@ export function decodeToken(token: string): any {
 }
 
 export function getAccountIdFromToken(token: string): string {
-    return decodeToken(token).sub
+    if (!token) {
+        return '';
+    }
+    return decodeToken(token).sub;
 }
