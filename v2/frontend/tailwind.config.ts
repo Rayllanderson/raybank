@@ -31,6 +31,11 @@ const config: Config = {
         'black-2': '#161B22',
         'black-3': '#1A1F25'
       }
+    },
+    keyframes: {
+      shimmer: {
+        '100%' : {transform: 'translateX(100%)'}
+      }
     }
   }
 }

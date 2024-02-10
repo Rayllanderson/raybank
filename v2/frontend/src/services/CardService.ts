@@ -6,14 +6,18 @@ import { ApiErrorException } from "@/types/Error";
 
 export const CardService = {createCard, changeLimit}
 
-export async function getCardByIdAndToken(token: string): Promise<CardDetails> {
+export async function getCardByIdAndToken(token: string, sensitive: boolean = false): Promise<CardDetails> {
     const accountId = getAccountIdFromToken(token);
-    const response = await get(`/api/v1/internal/accounts/${accountId}/cards`, token);
+    const response = await get(`/api/v1/internal/accounts/${accountId}/cards`, token, {sensitive: sensitive});
     return convertCardDetailsToCamelCase(response)
 }
 
 export async function getCreditCard(): Promise<CardDetails> {
     return await getCardByIdAndToken(await getToken())
+}
+
+export async function getCreditCardWithSensitiveData(token: string): Promise<CardDetails> {
+    return await getCardByIdAndToken(token, true)
 }
 
 export async function getCreditCardOrNullIfNotFound(): Promise<CardDetails | null> {

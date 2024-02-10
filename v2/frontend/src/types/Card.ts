@@ -11,6 +11,9 @@ export interface CardDetails {
     availableLimit: number
     usedLimit: number
     invoiceValue?: number
+    number?: string,
+    expiryDate?: string,
+    securityCode?: number
 }
 
 export function convertCardDetailsToCamelCase(data: any): CardDetails {
@@ -22,7 +25,10 @@ export function convertCardDetailsToCamelCase(data: any): CardDetails {
         limit: data.limit,
         availableLimit: data.available_limit,
         usedLimit: data.used_limit,
-        invoiceValue: data.invoice_value
+        invoiceValue: data.invoice_value,
+        number: data.number,
+        securityCode: data.security_code,
+        expiryDate: data.expiry_date
     };
     return camelCaseData;
 }
