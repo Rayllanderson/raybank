@@ -43,4 +43,11 @@ export const createCardFormSchema = z.object({
     limit: z.number().min(CARD_MIN_LIMIT).max(CARD_MAX_LIMIT)
 })
 
+export const changeCardLimitFormSchema = z.object({
+    limit: z.number().min(CARD_MIN_LIMIT).max(CARD_MAX_LIMIT)
+})
+
+
 export type CreateCardFormData = z.infer<typeof createCardFormSchema>
+
+export type ChangeCardLimitFormData = z.infer<typeof changeCardLimitFormSchema>

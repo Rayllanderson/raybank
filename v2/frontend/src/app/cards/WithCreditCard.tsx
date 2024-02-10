@@ -24,7 +24,7 @@ export function WithCreditCard({card}: {card: CardDetails}) {
                     </div>
                 </div>
             </div>
-            <MiniCards />
+            <MiniCards card={card}/>
         </Card>
 
         <div className="mt-8 p-1">

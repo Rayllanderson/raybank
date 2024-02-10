@@ -4,8 +4,9 @@ import { MiniCard } from '../../components/cards/MiniCard';
 import { FaBarcode, FaCreditCard, FaFileInvoiceDollar, FaSliders } from 'react-icons/fa6';
 import { CredidCardDataModal } from '@/components/CredidCardDataModal';
 import { AjustLimitCardModal } from '@/components/modal/AjustLimitCardModal';
+import { CardDetails } from '@/types/Card';
 
-export function MiniCards() {
+export function MiniCards({card}: {card: CardDetails}) {
     const scrollableDivRef = useRef<HTMLDivElement>(null);
     const [isAutoScrolling, setIsAutoScrolling] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -47,7 +48,7 @@ export function MiniCards() {
     return (
         <>
             <CredidCardDataModal show={showModal} setOpenModal={setShowModal} />
-            <AjustLimitCardModal show={showLimitModal} setOpenModal={setShowLimitModal} />
+            <AjustLimitCardModal show={showLimitModal} setOpenModal={setShowLimitModal} card={card} />
             <div
                 ref={scrollableDivRef}
                 onMouseMove={handleMouseMove}

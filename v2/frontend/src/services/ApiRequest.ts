@@ -73,3 +73,13 @@ export async function post<T>(
 ): Promise<T> {
     return apiRequest(endpoint, body, token, query, headers, 'POST')
 }
+
+export async function patch<T>(
+    endpoint: string,
+    body: any,
+    token: string,
+    query: ApiQueryParameters = {},
+    headers: {[key: string]: string} = {},
+): Promise<T> {
+    return apiRequest(endpoint, body, token, query, headers, 'PATCH')
+}
