@@ -44,6 +44,7 @@ export function CardStatementProvider({ children }: CardStatementProviderProps) 
         async function fetchItems() {
             setLoading(true);
             const data: Page<Statement> =  await getAllCardStatementsWithToken(session?.token!, { page: page, size: 10 }) 
+            console.log(data)
             setPagination(prevPagination => ({
                 ...data,
                 items: [...prevPagination.items, ...data.items]

@@ -34,3 +34,23 @@ export enum FinancialMovementType {
 }
 
 export type Statements = Statement[]
+
+
+export function convertStatementToSnakeToCamel(obj: any): any {
+    if (typeof obj !== 'object' || obj === null) {
+        return obj;
+    }
+
+    if (Array.isArray(obj)) {
+        return obj.map(item => convertStatementToSnakeToCamel(item));
+    }
+
+    const newObj: any = {};
+    for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const newKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+            newObj[newKey] = convertStatementToSnakeToCamel(obj[key]);
+        }
+    }
+    return newObj;
+}
