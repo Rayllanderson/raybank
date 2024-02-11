@@ -1,12 +1,12 @@
 import { Container } from '@/components/Container'
-import Separator from '@/components/Separator'
-import { MoneyFormatter } from '@/utils/MoneyFormatter'
 import React from 'react'
-import { FaAngleRight } from 'react-icons/fa6'
 import InvoiceCard from '../../../components/InvoiceCard'
-import { invoices } from './mock'
+import { findAllInvoices } from '@/services/InvoiceService'
 
-export default function InvoiceList() {
+export default async function InvoiceList() {
+
+    const invoices = await findAllInvoices()
+
     return (
         <Container >
             <h1 className="font-semibold text-xl mb-1">Resumo de faturas</h1>

@@ -1,9 +1,5 @@
 import React from 'react'
 import BankAccountCard from '../../components/cards/BankAccountCard'
-import InputWithIcon from '../../components/inputs/InputWithIcon'
-import { FaSearch } from 'react-icons/fa'
-import { statements } from './mock'
-import StatamentCard from '../../components/StatamentCard';
 import { Statements } from '../../components/Statements';
 import { AccountResponse } from '@/types/Account'
 import { getAuthAccount } from '@/services/AccountService'

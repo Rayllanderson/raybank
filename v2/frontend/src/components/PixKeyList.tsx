@@ -4,6 +4,7 @@ import Separator from './Separator';
 import { FaDice, FaMobileScreen, FaRegEnvelope, FaRegUser, FaShield, FaTrash } from 'react-icons/fa6';
 import { pixTypeTranslationsStrings } from '@/utils/PixKeyUtil';
 import ButtonRemovePixKey from './Buttons/ButtonRemovePixKey';
+import { IconType } from 'react-icons';
 
 export function PixKeyListElement({ pixKey }: { pixKey: PixKey }): React.JSX.Element {
     const Icon = getIconByPixType(pixKey);
@@ -25,7 +26,7 @@ export function PixKeyListElement({ pixKey }: { pixKey: PixKey }): React.JSX.Ele
     </>;
 }
 
-function getIconByPixType(pixKey: PixKey) {
+function getIconByPixType(pixKey: PixKey):IconType {
     if (pixKey.type === 'EMAIL')
         return FaRegEnvelope;
     if (pixKey.type === 'RANDOM')
@@ -34,4 +35,5 @@ function getIconByPixType(pixKey: PixKey) {
         return FaMobileScreen;
     if (pixKey.type === 'CPF')
         return FaRegUser;
+    return FaRegUser
 }

@@ -53,7 +53,6 @@ export function StatementProvider({ children }: StatementProviderProps) {
     }, [type]);
 
     useEffect(() => {
-        console.log(type)
         async function fetchItems() {
             setLoading(true);
             const data: Page<Statement> =  await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10 }) 

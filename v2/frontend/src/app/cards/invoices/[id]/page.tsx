@@ -1,14 +1,20 @@
 import { Container } from '@/components/Container'
 import React from 'react'
-import { invoices } from '../mock'
 import { Invoice } from '@/types/Invoice'
 import { formatInvoiceStatus, getBgColor } from '@/utils/InvoiceUtil'
 import { formatDate } from '@/utils/DateFormatter'
 import { MoneyFormatter } from '@/utils/MoneyFormatter'
 import { InvoiceTransactionCard } from './InvoiceTransactionCard'
+import { findInvoiceById, findInvoiceOrNull } from '@/services/InvoiceService'
+import { notFound } from 'next/navigation'
 
-export default function page({ params }: { params: { id: string } }) {
-  const invoice: Invoice = invoices.filter(it => it.id === params.id)[0]
+export default async function page({ params }: { params: { id: string } }) {
+  const invoice: Invoice | null = await findInvoiceOrNull(params.id)
+
+  if (!invoice){
+    notFound()
+  }
+
   return (
     <Container >
       <div className="flex justify-center">
