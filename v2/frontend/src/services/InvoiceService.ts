@@ -29,7 +29,6 @@ export async function findInvoiceOrNull(id: string): Promise<Invoice | null> {
     try {
         return await findInvoiceByIdUsingToken(id, await getToken());
     } catch (err) {
-        console.log(err)
         if (err instanceof ApiErrorException) {
             if (err.httpStatus === 404) {
                 return null

@@ -1,9 +1,14 @@
-import { FaHouse } from 'react-icons/fa6'
-import { installments } from './mock'
 import { InstallmentCard } from '../../../components/cards/InstallmentPlanCard'
+import { findPlanById } from '@/services/PlanService'
+import { notFound } from 'next/navigation'
+import { InstallmentPlan } from '@/types/InstallmentPlan'
 
-export default function page({ params }: { params: { id: string } }) {
-    const installment = installments.filter(m => m.id === params.id)[0]
+export default async function page({ params }: { params: { id: string } }) {
+    const installment: InstallmentPlan | null = await findPlanById(params.id)
+
+    if(!installment) {
+        notFound()
+    }
 
     return (
         <InstallmentCard installmentPlan={installment} />
