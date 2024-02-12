@@ -28,8 +28,8 @@ export default function FormSliderLimit({ card }: Props) {
         }
     }, [session]);
 
-    const submit = (data: ChangeCardLimitFormData) => {
-        changeLimit(data, session?.token!)
+    const submit = async (data: ChangeCardLimitFormData) => {
+        await changeLimit(data, session?.token!)
         if (!error) {
             card.limit = data.limit
         }

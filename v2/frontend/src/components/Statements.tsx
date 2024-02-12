@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputWithIcon from './inputs/InputWithIcon';
 import { FaSearch } from 'react-icons/fa';
 import StatamentCard from './StatamentCard';
@@ -19,12 +19,60 @@ interface Props {
 }
 
 export function Statements({ type }: Props) {
+    const [pagination, setPagination] = useState<Page<Statement>>({
+        page: 0,
+        size: 1,
+        total: 0,
+        items: []
+    });
+    const [page, setPage] = useState(0);
+    const { data: session } = useSession();
+    const [loading, setLoading] = useState(true);
+    const [canFetch, setCanFetch] = useState(true);
 
-    const { pagination, loading, setType } = useFindStatement()
+    useEffect(() => {
+        if (session?.error === "RefreshAccessTokenError") {
+            signIn();
+        }
+    }, [session]);
 
-    useEffect( () => {
-        setType(type)
-    },[])
+    useEffect(() => {
+        setPagination({
+            page: 0,
+            size: 1,
+            total: 0,
+            items: []
+        });
+        setPage(0)
+    }, [type]);
+
+    useEffect(() => {
+        async function fetchItems() {
+            setLoading(true);
+            const data: Page<Statement> = await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10 })
+            console.log(data)
+            setPagination(prevPagination => ({
+                ...data,
+                items: [...prevPagination.items, ...data.items]
+            }));
+            setCanFetch(data.items.length > 0);
+            setLoading(false);
+        }
+
+        fetchItems();
+    }, [session?.token!, page, type]);
+
+    function handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+            if (canFetch)
+                setPage(prevPage => prevPage + 1);
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [pagination]);
 
 
     return <div>

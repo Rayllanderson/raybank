@@ -12,7 +12,7 @@ interface Props {
 export default function GradientButton({ loading, text, onClick }: Props) {
     return (
         <Button disabled={loading} type='submit' gradientMonochrome={'purple'} className='w-full' onClick={onClick}>
-            {loading ? <ImSpinner2 className="h-5 w-5  animate-spin" /> : text}
+            {loading ? <div className='animate-spin'><ImSpinner2 className="h-5 w-5" /> </div>: text}
         </Button>
     )
 }

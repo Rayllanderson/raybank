@@ -14,6 +14,6 @@ export async function getAllCardStatementsWithToken(token: string, queryParam?: 
     return { ...page, items: itemsSnakeCase };
 }
 
-export async function getAllCardStatements(): Promise<Page<Statement>> {
-    return getAllCardStatementsWithToken(await getToken());
+export async function getAllCardStatements(queryParam?: ApiQueryParameters): Promise<Page<Statement>> {
+    return getAllCardStatementsWithToken(await getToken(), queryParam);
 }

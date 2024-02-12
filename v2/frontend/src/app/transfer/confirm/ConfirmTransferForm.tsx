@@ -15,7 +15,7 @@ import PrimaryButton from '@/components/Buttons/PrimaryButton';
 export default function ConfirmTransferForm() {
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
-    const { transaction, setMessage, transfer, error, loading } = useTransferTransactionContext();
+    const { transaction, setMessage, transfer, loading } = useTransferTransactionContext();
 
     const isInvalidTransaction = useCallback(() => {
         return transaction.amount === 0 || transaction.beneficiary === null
@@ -36,8 +36,8 @@ export default function ConfirmTransferForm() {
     }
 
     async function onButtonClick() {
-        await transfer()
-        if (!error) {
+        const response = await transfer()
+        if (response) {
             router.push('/transfer/success')
             toast.success('Transferência realizada com sucesso')
         }

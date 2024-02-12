@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function changeLimit(data: ChangeCardLimitFormData, token: string) {
     try {
-        CardService.changeLimit(data, token)
+        await CardService.changeLimit(data, token)
         revalidatePath("/cards")
     }catch(e) {
         console.log(e)

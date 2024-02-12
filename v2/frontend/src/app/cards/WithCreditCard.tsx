@@ -9,8 +9,6 @@ import { Statements } from '@/components/Statements';
 import { Page } from '@/types/Page';
 
 export async function WithCreditCard({card}: {card: CardDetails}) {
-    const statements: Page<Statement> = await getAllCardStatements()
-    console.log(statements)
     return <div className="cards flex w-full max-w-[23rem] md:max-w-md lg:max-w-lg flex-col">
         <Card>
             <div className='flex flex-col gap-2'>
@@ -32,7 +30,7 @@ export async function WithCreditCard({card}: {card: CardDetails}) {
         </Card>
 
         <div className="mt-8 p-1">
-            <Statements type="card" statements={statements?.items!}/>
+            <Statements type="card"/>
         </div>
     </div>;
 }

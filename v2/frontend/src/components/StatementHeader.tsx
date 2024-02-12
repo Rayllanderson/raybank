@@ -12,7 +12,6 @@ type Props = {
 }
 
 export default function StatementHeader({ statement, type }: Props) {
-    console.log(statement)
     return <div className='header flex justify-between items-center '>
 
         <div className='flex space-x-2 items-center lg:text-lg'>
@@ -65,9 +64,10 @@ interface HeaderProps {
 }
 
 function AccountHeader({ statement }: HeaderProps) {
+    console.log(statement);
     return (
         <>
-            {isIncomming(statement.financialMovement) ?
+            {isIncomming(statement.financialMovement?.toString()) ?
                 <FaCircleArrowDown className='text-c-green-1 w-5 h-5' />
                 :
                 <FaCircleArrowUp className='text-red-500 w-5 h-5' />
@@ -81,7 +81,7 @@ function CardHeader({ statement }: HeaderProps) {
 
     return (
         <>
-            {isIncomming(statement.financialMovement) ?
+            {isIncomming(statement.financialMovement?.toString()) ?
                 <FaCreditCard className='text-c-green-1 w-5 h-5' />
                 :
                 <RandomIcon className='dark:text-gray-200 text-gray-800 w-5 h-5' />

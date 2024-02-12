@@ -10,7 +10,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement>{
 export default function PrimaryButton({loading, children,...props}: Props) {
     return (
         <Button {...props} color='primary' className='w-full'>
-            {loading ? <ImSpinner2 className="h-5 w-5 animate-spin" /> : children}
+            {loading ? <div className='animate-spin'><ImSpinner2 className="h-5 w-5" /></div> : children}
         </Button>
     )
 }

@@ -26,13 +26,13 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
                                     <AccountDepositProvider>
                                         <CardProvider >
                                             <ChangeCardLimitProvider>
-                                                <StatementProvider>
+                                                {/* <StatementProvider> */}
                                                     <ContactProvider>
                                                         <FindAccountProvider>
                                                             {children}
                                                         </FindAccountProvider>
                                                     </ContactProvider>
-                                                </StatementProvider>
+                                                {/* </StatementProvider> */}
                                             </ChangeCardLimitProvider>
                                         </CardProvider>
                                     </AccountDepositProvider>

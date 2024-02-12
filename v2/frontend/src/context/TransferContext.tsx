@@ -13,7 +13,7 @@ interface TransferTransactionContextData {
     setAmount: (value: number) => number;
     setMessage: (value: string | null) => void;
     resetTransaction: () => void;
-    transfer: () => void;
+    transfer: () => Promise<TransferTransaction | null>;
     loading: boolean;
     error: any;
 }
@@ -43,19 +43,22 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
         }
     }, [session]);
 
-    async function transfer() {
+    async function transfer(): Promise<TransferTransaction | null>{
         try {
             setLoading(true)
             await TransferSerice.transfer(transaction, session?.token!)
             setLoading(false)
             transaction.success = true
+            return transaction
         } catch (err) {
+            setError(err);
             if (err instanceof ApiErrorException && err.httpStatus <= 500) {
                 toast.error(err.message)
             } else
                 toast.error('Ocorreu um erro ao transferir.')
             setLoading(false)
         }
+        return null
     }
 
     const resetTransaction = () => {
