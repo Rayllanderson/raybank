@@ -13,3 +13,8 @@ export interface AccountResponse {
     user: User;
     account: Account;
 }
+
+export interface FindAccountByType {
+    number:   number;
+    name: string;
+}

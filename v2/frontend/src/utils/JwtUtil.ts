@@ -12,7 +12,7 @@ export function decodeToken(token: string): any {
 
 export function getAccountIdFromToken(token: string): string {
     if (!token) {
-        return '';
+        throw token
     }
     return decodeToken(token).sub;
 }

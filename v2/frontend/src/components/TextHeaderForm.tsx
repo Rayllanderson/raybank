@@ -1,4 +1,3 @@
-'use client';
 import PreviousPageButton from '@/components/PreviousPageButton';
 import React from 'react';
 

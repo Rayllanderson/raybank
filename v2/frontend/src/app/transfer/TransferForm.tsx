@@ -7,15 +7,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa6';
 import CurrencyForm from '../../components/CurrencyForm';
 
-const saldo = 542.89
-
-export default function TransferForm() {
+export default function TransferForm({balance}: {balance: number}) {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         inputRef?.current?.focus();
         const value = getValueNumberFromMoneyInput(inputRef.current?.value)
-        setIsButtonDisabled(value > saldo || value === 0)
+        setIsButtonDisabled(value > balance || value === 0)
     }, []);
 
     const { transaction, setAmount } = useTransferTransactionContext();
@@ -24,14 +22,14 @@ export default function TransferForm() {
     function onInputChange(value: any) {
         const inputNumber = parseFloat(value || '0');
         const transactionAmount = setAmount(inputNumber)
-        setIsButtonDisabled(transactionAmount === 0 || (transactionAmount > saldo))
+        setIsButtonDisabled(transactionAmount === 0 || (transactionAmount > balance))
     }
 
     return (
         <Container>
             <CurrencyForm
                 title={'Qual é o valor da transferência?'}
-                subtitle={`Saldo disponível em conta ${MoneyFormatter.format(saldo)}`}
+                subtitle={`Saldo disponível em conta ${MoneyFormatter.format(balance)}`}
                 isButtonDisabled={isButtonDisabled}
                 onInputChange={onInputChange}
                 amount={transaction.amount}

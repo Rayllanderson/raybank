@@ -6,6 +6,7 @@ export interface Statement {
     title: string | null;
     moment: string;
     amount: number;
+    message: string;
     description: string;
     type: StatementType;
     method: string;

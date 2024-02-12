@@ -12,6 +12,7 @@ type Props = {
 }
 
 export default function StatementHeader({ statement, type }: Props) {
+    console.log(statement)
     return <div className='header flex justify-between items-center '>
 
         <div className='flex space-x-2 items-center lg:text-lg'>

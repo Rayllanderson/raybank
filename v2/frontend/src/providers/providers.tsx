@@ -11,6 +11,8 @@ import { SessionProvider } from "next-auth/react"
 import { CardProvider } from "@/context/CreateCardContext "
 import { ChangeCardLimitProvider } from "@/context/ChangeCardLimitContext"
 import { StatementProvider } from "@/context/StatementContext"
+import { ContactProvider } from "@/context/ContactContex"
+import { FindAccountProvider } from "@/context/FindAccountContext"
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -25,7 +27,11 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
                                         <CardProvider >
                                             <ChangeCardLimitProvider>
                                                 <StatementProvider>
-                                                    {children}
+                                                    <ContactProvider>
+                                                        <FindAccountProvider>
+                                                            {children}
+                                                        </FindAccountProvider>
+                                                    </ContactProvider>
                                                 </StatementProvider>
                                             </ChangeCardLimitProvider>
                                         </CardProvider>

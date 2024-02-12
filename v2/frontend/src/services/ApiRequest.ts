@@ -37,7 +37,6 @@ export async function apiRequest<T>(
         }
     };
 
-    
     if (data !== null) {
         requestOptions.body = JSON.stringify(data);
     }

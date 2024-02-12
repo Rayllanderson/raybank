@@ -1,14 +1,21 @@
+import { TransferSerice } from '@/services/TransferService';
+import { ApiErrorException } from '@/types/Error';
 import { TransferTransaction } from '@/types/transactions/TransferTransaction';
-import React, { createContext, useContext, ReactNode, useState } from 'react';
+import { signIn, useSession } from 'next-auth/react';
+import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 interface TransferTransactionContextData {
     transaction: TransferTransaction;
-    setBeneficiary: (value: string) => void;
+    setBeneficiary: (value: string | number) => void;
     setBeneficiaryName: (value: string) => void;
     setBeneficiaryType: (value: 'account' | 'pix' | 'contact') => void;
     setAmount: (value: number) => number;
     setMessage: (value: string | null) => void;
     resetTransaction: () => void;
+    transfer: () => void;
+    loading: boolean;
+    error: any;
 }
 
 const TransactionContext = createContext<TransferTransactionContextData | undefined>(undefined);
@@ -18,13 +25,38 @@ interface TransactionProviderProps {
 }
 
 const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<any>(null);
     const [transaction, setTransaction] = useState<TransferTransaction>({
         beneficiary: null,
         amount: 0,
         message: null,
         beneficiaryType: null,
-        beneficiaryName: null
+        beneficiaryName: null,
+        success: false
     });
+
+    const { data: session } = useSession();
+    useEffect(() => {
+        if (session?.error === "RefreshAccessTokenError") {
+            signIn();
+        }
+    }, [session]);
+
+    async function transfer() {
+        try {
+            setLoading(true)
+            await TransferSerice.transfer(transaction, session?.token!)
+            setLoading(false)
+            transaction.success = true
+        } catch (err) {
+            if (err instanceof ApiErrorException && err.httpStatus <= 500) {
+                toast.error(err.message)
+            } else
+                toast.error('Ocorreu um erro ao transferir.')
+            setLoading(false)
+        }
+    }
 
     const resetTransaction = () => {
         setTransaction({
@@ -32,11 +64,12 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
             amount: 0,
             message: null,
             beneficiaryType: null,
-            beneficiaryName: null
+            beneficiaryName: null,
+            success: false
         })
     }
 
-    const setBeneficiary = (value: string) => {
+    const setBeneficiary = (value: string | number) => {
         setTransaction((prevTransaction) => ({
             ...prevTransaction!,
             beneficiary: value,
@@ -75,12 +108,15 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
 
     const contextValue: TransferTransactionContextData = {
         transaction,
+        transfer,
         setBeneficiary,
         setAmount,
         setBeneficiaryType,
         setMessage,
         setBeneficiaryName,
-        resetTransaction
+        resetTransaction,
+        loading,
+        error
     };
 
     return <TransactionContext.Provider value={contextValue}>{children}</TransactionContext.Provider>;

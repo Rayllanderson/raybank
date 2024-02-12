@@ -6,13 +6,16 @@ import { useTransferTransactionContext } from '@/context/TransferContext';
 import { ConfirmTransactionHeader } from '@/components/ConfirmTransactionHeader';
 import { Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
+import toast from 'react-hot-toast';
+import { ImSpinner2 } from 'react-icons/im';
+import PrimaryButton from '@/components/Buttons/PrimaryButton';
 
 
 export default function ConfirmTransferForm() {
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
-    const { transaction, setMessage } = useTransferTransactionContext();
+    const { transaction, setMessage, transfer, error, loading } = useTransferTransactionContext();
 
     const isInvalidTransaction = useCallback(() => {
         return transaction.amount === 0 || transaction.beneficiary === null
@@ -32,8 +35,12 @@ export default function ConfirmTransferForm() {
         setMessage(value)
     }
 
-    function onButtonClick() {
-
+    async function onButtonClick() {
+        await transfer()
+        if (!error) {
+            router.push('/transfer/success')
+            toast.success('Transferência realizada com sucesso')
+        }
     }
 
     return (
@@ -48,9 +55,9 @@ export default function ConfirmTransferForm() {
                             <InputText placeholder='Mensagem (opcional)' ref={inputRef} onChange={onInputChange} />
 
                             <div className='flex mt-2'>
-                                <Button color='primary' className={`w-full`}>
+                                <PrimaryButton disabled={loading} loading={loading} className={`w-full`} onClick={onButtonClick}>
                                     <p>Confirmar Transferência</p>
-                                </Button>
+                                </PrimaryButton>
                             </div>
                         </div>
                     </Card>
