@@ -41,7 +41,7 @@ public class CreditAccountService {
 
         bankAccount.credit(creditInput.getAmount());
 
-        final Transaction transaction = Transaction.creditAccount(creditInput, originalTransaction.getId(), originalTransaction.getDescription());
+        final Transaction transaction = Transaction.creditAccount(creditInput, originalTransaction.getId(), originalTransaction.getMessage());
         return transactionRepository.save(transaction);
     }
 

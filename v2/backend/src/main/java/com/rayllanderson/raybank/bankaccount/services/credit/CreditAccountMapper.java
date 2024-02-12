@@ -17,6 +17,7 @@ public interface CreditAccountMapper {
     @Mapping(target = "origin.referenceTransactionId", source = "referenceTransactionId")
     @Mapping(target = "transactionType", expression = "java(TransactionType.TRANSFER)")
     @Mapping(target = "transactionMethod", expression = "java(TransactionMethod.ACCOUNT_TRANSFER)")
+    @Mapping(target = "description", constant = "Transferência Recebida")
     CreditAccountByNumberInput from(BankAccountTransferInput input, String referenceTransactionId);
 
     @Mapping(target = "origin.identifier", source = "input.accountId")
@@ -24,6 +25,7 @@ public interface CreditAccountMapper {
     @Mapping(target = "origin.referenceTransactionId", source = "referenceTransactionId")
     @Mapping(target = "transactionType", expression = "java(TransactionType.DEPOSIT)")
     @Mapping(target = "transactionMethod", expression = "java(TransactionMethod.ACCOUNT)")
+    @Mapping(target = "description", constant = "Depósito Recebido")
     CreditAccountInput from(DepositAccountInput input, String referenceTransactionId);
 
     CreditAccountInput from(CreditAccountByNumberInput input, String accountId);

@@ -27,6 +27,7 @@ public class CreditAccountFacadeInput {
     private String accountId;
     private BigDecimal amount;
     private Origin origin;
+    private String description;
     private final TransactionType transactionType;
     private final TransactionMethod transactionMethod;
 
@@ -36,46 +37,41 @@ public class CreditAccountFacadeInput {
 
     public static CreditAccountFacadeInput createFromCardPayment(CardCreditPaymentCompletedEvent event) {
         final var origin = new Origin(event.getCardId(), Type.CREDIT_CARD, event.getTransactionId());
-        return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
-    }
-
-    public static CreditAccountFacadeInput createFromCardPayment(CardDebitPaymentCompletedEvent event) {
-        final var origin = new Origin(event.getCardId(), Type.CREDIT_CARD, event.getTransactionId());
-        return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
+        return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, event.getDescription(), TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
     }
 
     public static CreditAccountFacadeInput createFromDebitCardPayment(CardDebitPaymentCompletedEvent event) {
         final var origin = new Origin(event.getCardId(), Type.DEBIT_CARD, event.getTransactionId());
-        return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
+        return new CreditAccountFacadeInput(event.getEstablishmentId(), event.getTotal(), origin, event.getDescription(), TransactionType.DEPOSIT, TransactionMethod.RAYBANK_TRANSFER);
     }
 
     public static CreditAccountFacadeInput refundCardPayment(Transaction transaction, String debitTransactionId, BigDecimal amount) {
         final var origin = new Origin(transaction.getCredit().getId(), Type.ESTABLISHMENT_ACCOUNT, debitTransactionId);
-        return new CreditAccountFacadeInput(transaction.getDebit().getId(), amount, origin, TransactionType.REFUND, TransactionMethod.DEBIT_CARD);
+        return new CreditAccountFacadeInput(transaction.getDebit().getId(), amount, origin, transaction.getDescription(), TransactionType.REFUND, TransactionMethod.DEBIT_CARD);
     }
 
     public static CreditAccountFacadeInput from(BoletoCreditInput boleto) {
         final var origin = new Origin(boleto.getBarCode(), Type.BOLETO, boleto.getOriginalTransactionId());
-        return new CreditAccountFacadeInput(boleto.getBeneficiaryId(), boleto.getAmount(), origin, TransactionType.DEPOSIT, TransactionMethod.BOLETO);
+        return new CreditAccountFacadeInput(boleto.getBeneficiaryId(), boleto.getAmount(), origin, "Depósito Recebido", TransactionType.DEPOSIT, TransactionMethod.BOLETO);
     }
 
     public static CreditAccountFacadeInput refundBoleto(final Boleto boleto, final String originalTransactionId) {
         final var origin = new Origin(boleto.getBarCode(), Type.BOLETO, originalTransactionId);
-        return new CreditAccountFacadeInput(boleto.getPayerId(), boleto.getValue(), origin, TransactionType.REFUND, TransactionMethod.BOLETO);
+        return new CreditAccountFacadeInput(boleto.getPayerId(), boleto.getValue(), origin, "Reembolso Recebido", TransactionType.REFUND, TransactionMethod.BOLETO);
     }
 
     public static CreditAccountFacadeInput transfer(final Pix pix, final String originalTransactionId) {
         final var origin = new Origin(pix.getId(), Type.PIX, originalTransactionId);
-        return new CreditAccountFacadeInput(pix.getCreditAccountId(), pix.getAmount(), origin, TransactionType.TRANSFER, TransactionMethod.PIX);
+        return new CreditAccountFacadeInput(pix.getCreditAccountId(), pix.getAmount(), origin, "Transferência Recebida" ,TransactionType.TRANSFER, TransactionMethod.PIX);
     }
 
     public static CreditAccountFacadeInput credit(final Pix pix, final String originalTransactionId) {
         final var origin = new Origin(pix.getId(), Type.PIX, originalTransactionId);
-        return new CreditAccountFacadeInput(pix.getCreditAccountId(), pix.getAmount(), origin, TransactionType.DEPOSIT, TransactionMethod.PIX);
+        return new CreditAccountFacadeInput(pix.getCreditAccountId(), pix.getAmount(), origin, "Depósito Recebido", TransactionType.DEPOSIT, TransactionMethod.PIX);
     }
 
     public static CreditAccountFacadeInput doReturn(final Pix pix, PixReturn pixReturn, final String originalTransactionId) {
         final var origin = new Origin(pixReturn.getId(), Type.PIX, originalTransactionId);
-        return new CreditAccountFacadeInput(pix.getDebitAccountId(), pixReturn.getAmount(), origin, TransactionType.RETURN, TransactionMethod.PIX);
+        return new CreditAccountFacadeInput(pix.getDebitAccountId(), pixReturn.getAmount(), origin, "Reembolso Recebido", TransactionType.RETURN, TransactionMethod.PIX);
     }
 }

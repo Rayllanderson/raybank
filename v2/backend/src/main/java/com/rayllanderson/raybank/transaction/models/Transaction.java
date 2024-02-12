@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.PrePersist;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,7 +47,10 @@ public class Transaction {
 
     protected String referenceId;
 
+    @NotNull
     protected String description;
+
+    protected String message;
 
     @Column(nullable = false)
     protected String accountId;
@@ -80,7 +84,7 @@ public class Transaction {
         return TransactionType.DEPOSIT.equals(this.getType()) && Objects.isNull(this.getDebit());
     }
 
-    public static Transaction creditAccount(final CreditAccountInput input, final String referenceId, final String description) {
+    public static Transaction creditAccount(final CreditAccountInput input, final String referenceId, String message) {
         final var credit = new Credit(input.getAccountId(), Credit.Destination.ACCOUNT);
         final var debit = new Debit(input.getOrigin().getIdentifier(), Debit.Origin.valueOf(input.getOrigin().getType().name()));
 
@@ -89,8 +93,9 @@ public class Transaction {
                 .method(input.getTransactionMethod())
                 .financialMovement(FinancialMovement.CREDIT)
                 .moment(LocalDateTime.now())
-                .description(description)
+                .description(input.getDescription())
                 .debit(debit)
+                .message(message)
                 .credit(credit)
                 .type(input.getTransactionType())
                 .referenceId(referenceId)
@@ -109,6 +114,7 @@ public class Transaction {
                 .financialMovement(FinancialMovement.DEBIT)
                 .amount(MoneyUtils.from(input.getAmount()))
                 .moment(LocalDateTime.now())
+                .message(input.getMessage())
                 .description(input.getDescription())
                 .accountId(input.getAccountId())
                 .credit(credit)
@@ -122,6 +128,7 @@ public class Transaction {
         return Transaction.builder()
                 .type(TransactionType.DEPOSIT)
                 .method(TransactionMethod.ACCOUNT)
+                .description("Depósito Recebido")
                 .financialMovement(FinancialMovement.CREDIT)
                 .amount(MoneyUtils.from(input.amount()))
                 .moment(LocalDateTime.now())

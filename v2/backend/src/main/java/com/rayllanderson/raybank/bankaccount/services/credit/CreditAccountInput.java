@@ -15,6 +15,7 @@ public class CreditAccountInput {
     private String accountId;
     private BigDecimal amount;
     private Origin origin;
+    private String description;
     private TransactionType transactionType;
     private TransactionMethod transactionMethod;
 }

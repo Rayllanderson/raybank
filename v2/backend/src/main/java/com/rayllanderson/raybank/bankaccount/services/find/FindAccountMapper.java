@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.bankaccount.services.find;
 
 import com.rayllanderson.raybank.bankaccount.controllers.find.BankAccountDetailsResponse;
+import com.rayllanderson.raybank.bankaccount.controllers.find.BankAccountResponse;
 import com.rayllanderson.raybank.bankaccount.model.BankAccount;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,4 +15,9 @@ public interface FindAccountMapper {
     BankAccountDetailsOutput.AccountOutput mapFrom(BankAccount account);
 
     BankAccountDetailsResponse from(BankAccountDetailsOutput output);
+
+    @Mapping(target = "name", source = "user.name")
+    BankAccountOutput mapFromBankAccount(BankAccount account);
+
+    BankAccountResponse mapFromBankAccount(BankAccountOutput account);
 }

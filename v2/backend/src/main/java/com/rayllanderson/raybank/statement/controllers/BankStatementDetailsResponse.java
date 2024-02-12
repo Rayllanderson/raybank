@@ -15,6 +15,7 @@ public class BankStatementDetailsResponse {
     private LocalDateTime moment;
     private BigDecimal amount;
     private String description;
+    private String message;
     private String type;
     private String method;
     private String financialMovement;

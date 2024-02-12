@@ -11,5 +11,5 @@ public class BankAccountTransferInput {
     private String senderId;
     private int beneficiaryAccountNumber;
     private BigDecimal amount;
-    private String description;
+    private String message;
 }
