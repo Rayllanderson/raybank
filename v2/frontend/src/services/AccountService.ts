@@ -1,5 +1,5 @@
 import { Account, AccountResponse, FindAccountByType } from "@/types/Account";
-import { get } from "./ApiRequest";
+import { get, post } from "./ApiRequest";
 import { getServerAuthSession, getToken } from "@/app/api/auth/[...nextauth]/options";
 import { Session } from "next-auth";
 import { ApiErrorException } from "@/types/Error";
@@ -16,3 +16,6 @@ export async function getAuthAccount(): Promise<AccountResponse> {
     return await getAccount(await getToken())
 }
 
+export async function deposit(amount: number | string, token: string): Promise<any> {
+    return await post('/api/v1/internal/accounts/deposit', { amount: amount }, token);
+}
