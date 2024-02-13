@@ -19,7 +19,7 @@ export async function register(body:RegisterPixKeySchemaData, token: string): Pr
 }
 
 export async function deleteByKey(key: string, token: string): Promise<any> {
-    const response = await doDelete(`/api/v1/internal/pix/keys${key}`, token);
+    const response = await doDelete(`/api/v1/internal/pix/keys/${key}`, token);
     return snakeToCamel(response)
 }
 

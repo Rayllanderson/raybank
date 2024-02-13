@@ -1,11 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, ModalHeader } from 'flowbite-react';
 import { PixKey } from '@/types/Pix';
 import { FaCircleExclamation } from 'react-icons/fa6';
+import { useSession } from 'next-auth/react';
+import { PixService } from '@/services/PixService';
+import { ApiErrorException } from '@/types/Error';
+import toast from 'react-hot-toast';
+import PrimaryButton from '../Buttons/PrimaryButton';
+import { useRouter } from 'next/navigation';
 
 export function RemovePixKeyModal({ pixKey, show, setOpenModal }: { pixKey: PixKey, show: boolean; setOpenModal: (v: boolean) => void; }) {
-    const handleClick = () => {
-        console.log('excluiu chave ' + pixKey.key)
+    const [loading, setLoading] = useState(false);
+    const { data: session } = useSession();
+    const router = useRouter()
+
+    const deleteKey = async (): Promise<any | null> => {
+        try {
+            setLoading(true)
+            await PixService.deleteByKey(pixKey.key, session?.token!)
+            return Promise.resolve(true)
+        } catch (err) {
+            if (err instanceof ApiErrorException) {
+                if (err.httpStatus === 400 || err.httpStatus === 422) {
+                    toast.error(err.message)
+                }
+            } else
+                toast.error('Ocorreu um erro ao excluir chave')
+            return Promise.resolve(null)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+
+    const handleClick = async () => {
+        const response = await deleteKey()
+        if (response) {
+            toast.success(`Chave ${pixKey?.key} excluída com sucesso`)
+            setOpenModal(false)
+            router.refresh()
+        }
     };
 
     return (
@@ -18,9 +52,11 @@ export function RemovePixKeyModal({ pixKey, show, setOpenModal }: { pixKey: PixK
                         Tem certeza que deseja excluir a chave Pix <strong>{pixKey.key}</strong>?
                     </h3>
                     <div className="flex justify-center gap-4">
-                        <Button color="primary" onClick={handleClick}>
-                            Sim
-                        </Button>
+                        <div>
+                            <PrimaryButton loading={loading} disabled={loading} onClick={handleClick}>
+                                Sim
+                            </PrimaryButton>
+                        </div>
                         <Button color="light" onClick={() => setOpenModal(false)}>
                             Não
                         </Button>
