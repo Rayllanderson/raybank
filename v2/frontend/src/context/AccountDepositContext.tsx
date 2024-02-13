@@ -49,7 +49,6 @@ export const AccountDepositProvider = ({ children }: AccountDepositProviderProps
     loading,
     doDeposit,
     setAmount,
-    setLoading
   };
 
   return (

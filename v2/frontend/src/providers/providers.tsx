@@ -13,6 +13,7 @@ import { ChangeCardLimitProvider } from "@/context/ChangeCardLimitContext"
 import { StatementProvider } from "@/context/StatementContext"
 import { ContactProvider } from "@/context/ContactContex"
 import { FindAccountProvider } from "@/context/FindAccountContext"
+import { PixRegisterKeyProvider } from "@/context/PixRegisterKeyContext"
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -27,11 +28,14 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
                                         <CardProvider >
                                             <ChangeCardLimitProvider>
                                                 {/* <StatementProvider> */}
-                                                    <ContactProvider>
-                                                        <FindAccountProvider>
+                                                <ContactProvider>
+                                                    <FindAccountProvider>
+                                                        <PixRegisterKeyProvider>
                                                             {children}
-                                                        </FindAccountProvider>
-                                                    </ContactProvider>
+                                                        </PixRegisterKeyProvider>
+                                                    </FindAccountProvider>
+
+                                                </ContactProvider>
                                                 {/* </StatementProvider> */}
                                             </ChangeCardLimitProvider>
                                         </CardProvider>

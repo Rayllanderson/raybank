@@ -73,6 +73,15 @@ export async function post<T>(
     return apiRequest(endpoint, body, token, query, headers, 'POST')
 }
 
+export async function doDelete<T>(
+    endpoint: string,
+    token: string,
+    query: ApiQueryParameters = {},
+    headers: {[key: string]: string} = {},
+): Promise<T> {
+    return apiRequest(endpoint, null, token, query, headers, 'DELETE')
+}
+
 export async function patch<T>(
     endpoint: string,
     body: any,

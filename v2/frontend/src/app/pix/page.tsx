@@ -3,9 +3,14 @@ import { Container } from '../../components/Container';
 import { Card } from '../../components/cards/Card';
 import { FaPix } from 'react-icons/fa6';
 import PixCardGroup from './PixCardGroup';
+import { PixService } from '@/services/PixService';
+import { PixKey } from '@/types/Pix';
 
 
-export default function page() {
+export default async function page() {
+
+    const pixKeys: PixKey[] = await PixService.findAll()
+
 
     return (
         <Container>
@@ -14,7 +19,7 @@ export default function page() {
                     <h1 className='text-xl md:text-2xl font-semibold font-mono'>Área Pix</h1>
                     <FaPix className='w-6 h-6 text-primary-2'/>
                 </header>
-                <PixCardGroup />
+                <PixCardGroup keys={pixKeys} />
             </Card>
         </Container>
     )

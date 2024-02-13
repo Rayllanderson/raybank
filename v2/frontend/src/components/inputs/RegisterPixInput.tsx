@@ -12,14 +12,14 @@ export function RegisterPhoneInput({onChange, ...props}: Props) {
     )
 }
 
-export function RegisterCpfInput({onChange}: Props) {
+export function RegisterCpfInput({onChange,...props}: Props) {
     return (
-        <InputNumeric placeholder='Digite o CPF' sizing='sm' onChange={onChange}/>
+        <InputNumeric placeholder='Digite o CPF' sizing='sm' onChange={onChange} {... props}/>
     )
 }
 
-export function RegisterEmailInput({onChange}: Props) {
+export function RegisterEmailInput({onChange,...props}: Props) {
     return (
-        <InputText placeholder='Digite o Email' sizing='sm' onChange={onChange}/>
+        <InputText placeholder='Digite o Email' sizing='sm' onChange={onChange} {... props}/>
     )
 }
