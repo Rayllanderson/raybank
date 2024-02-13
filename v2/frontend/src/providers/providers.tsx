@@ -14,6 +14,7 @@ import { StatementProvider } from "@/context/StatementContext"
 import { ContactProvider } from "@/context/ContactContex"
 import { FindAccountProvider } from "@/context/FindAccountContext"
 import { PixRegisterKeyProvider } from "@/context/PixRegisterKeyContext"
+import { PixUpdateLimitProvider } from "@/context/PixLimitContext"
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
@@ -31,7 +32,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
                                                 <ContactProvider>
                                                     <FindAccountProvider>
                                                         <PixRegisterKeyProvider>
-                                                            {children}
+                                                            <PixUpdateLimitProvider>
+                                                                {children}
+                                                            </PixUpdateLimitProvider>
                                                         </PixRegisterKeyProvider>
                                                     </FindAccountProvider>
 

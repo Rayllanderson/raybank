@@ -12,7 +12,7 @@ function hasInstallments(statement: Statement): boolean {
   }
 
 export function StatementCreditCardBody({statement}: Props) {
-    return <div className='body p-1 ml-7 text-base dark:text-gray-200 text-gray-800'>
+    return <div className='body p-1 ml-6 text-base dark:text-gray-200 text-gray-800'>
         <div className='flex space-x-1'>
             <p>{MoneyFormatter.format(statement.amount)} </p>
             {hasInstallments(statement) && <p>em {statement.installmentPlan?.installments}x</p> }

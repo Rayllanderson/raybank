@@ -1,8 +1,6 @@
-import { Account, AccountResponse, FindAccountByType } from "@/types/Account";
+import { AccountResponse, FindAccountByType } from "@/types/Account";
 import { get, post } from "./ApiRequest";
-import { getServerAuthSession, getToken } from "@/app/api/auth/[...nextauth]/options";
-import { Session } from "next-auth";
-import { ApiErrorException } from "@/types/Error";
+import { getToken } from "@/app/api/auth/[...nextauth]/options";
 
 export async function getAccount(token: string): Promise<AccountResponse> {
     return await get('/api/v1/internal/accounts/authenticated', token);

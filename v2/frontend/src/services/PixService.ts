@@ -32,8 +32,9 @@ export async function findLimit(token: string): Promise<{ limit: number }> {
     return snakeToCamel(response)
 }
 
-export async function updateLimit(newLimit: number, token: string): Promise<{ new_limit: number }> {
+export async function updateLimit(newLimit: number, token: string): Promise<{ newLimit: number }> {
     const response = await patch(`/api/v1/internal/pix/limits`, { new_limit: newLimit }, token);
+    console.log(response);
     return snakeToCamel(response)
 }
 

@@ -22,7 +22,7 @@ export async function apiRequest<T>(
     headers: { [key: string]: string },
     method: string
 ): Promise<T> {
-    const queryString: string = buildQueryString({ ...query });
+    const queryString: string = decodeURIComponent(buildQueryString({ ...query }));
 
     const defaultHeaders = {
         'Content-Type': 'application/json',

@@ -5,7 +5,7 @@ import React, { ChangeEvent, InputHTMLAttributes, LegacyRef, useEffect, useState
 interface CurrencyInputProps extends InputHTMLAttributes<HTMLInputElement> {
   value: number;
   ref: LegacyRef<HTMLInputElement>,
-  onValueChange: (value: number) => void;
+  onValueChange?: (value: number) => void;
 }
 
 export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>((props, ref) => {
@@ -21,7 +21,8 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
     const displayedValue = numericValue > maxTransactionValue ? value : numericValue;
 
     setInputValue(formatter(displayedValue));
-    onValueChange(displayedValue);
+    if (onValueChange)
+      onValueChange(displayedValue);
   };
 
   return (
