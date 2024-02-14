@@ -4,9 +4,12 @@ import { MiniCard } from '../../components/cards/MiniCard';
 import { Card } from '../../components/cards/Card';
 import { FaBarcode, FaMoneyBill } from 'react-icons/fa6';
 import { BoletoCard } from '../../components/BoletoCard';
-import { boletos } from './mock';
+import { findAllBoletos } from '@/services/BoletoService';
 
-export default function page() {
+export default async function page() {
+
+    const boletos = await findAllBoletos()
+
     return (
         <Container>
             <Card >
@@ -25,13 +28,15 @@ export default function page() {
             <div className='mt-8 p-1'>
                 <h1 className="text-xl font-semibold font-mono">Meus Boletos</h1>
                 <div className="space-y-2 mt-5">
-                    {
+                    {boletos.length === 0 ?
+                        <p>Sem boletos cadastrados</p>
+                        :
                         boletos.map(boleto => <BoletoCard boleto={boleto} key={boleto.barCode} />)
                     }
                 </div>
             </div>
         </Container>
-    )    
+    )
 }
 
 function CardGroup({ children }: { children: any }) {

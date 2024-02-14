@@ -25,30 +25,7 @@ export const authOptions = {
             } else if (Date.now() < token.user.expires_at * 1000) {
                 return token
             } else {
-                try {
-                    const response = await fetch(process.env.REFRESH_TOKEN_URL!, {
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: new URLSearchParams({
-                            client_id: process.env.KEYCLOAK_ID!,
-                            client_secret: process.env.KEYCLOAK_SECRET!,
-                            grant_type: "refresh_token",
-                            refresh_token: token.user.refresh_token,
-                        }),
-                        method: "POST",
-                    })
-
-                    const refreshToken: TokenSet = await response.json()
-
-                    if (!response.ok) throw refreshToken   
-                    
-                    token.user.access_token = refreshToken.access_token
-                    token.user.expires_at = Math.floor(Date.now() / 1000) + (refreshToken?.expires_in as number ?? 0),
-                    token.user.refresh_token = refreshToken.refresh_token ?? token.user.refresh_token
-                    return token
-                } catch (error) {
-                    console.error("Error refreshing access token", error)
-                    return { ...token, error: "RefreshAccessTokenError" as const }
-                }
+                refreshToken(token)
             }
         },
         session: async ({ session, token }: { session: any; token: any }) => {
@@ -63,6 +40,33 @@ export const authOptions = {
         
     },
 };
+
+export async function refreshToken (token:any) {
+    try {
+        const response = await fetch(process.env.REFRESH_TOKEN_URL!, {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                client_id: process.env.KEYCLOAK_ID!,
+                client_secret: process.env.KEYCLOAK_SECRET!,
+                grant_type: "refresh_token",
+                refresh_token: token.user.refresh_token,
+            }),
+            method: "POST",
+        })
+
+        const refreshToken: TokenSet = await response.json()
+
+        if (!response.ok) throw refreshToken   
+        
+        token.user.access_token = refreshToken.access_token
+        token.user.expires_at = Math.floor(Date.now() / 1000) + (refreshToken?.expires_in as number ?? 0),
+        token.user.refresh_token = refreshToken.refresh_token ?? token.user.refresh_token
+        return token
+    } catch (error) {
+        console.error("Error refreshing access token", error)
+        return { ...token, error: "RefreshAccessTokenError" as const }
+    }
+}
 
 export const getServerAuthSession = () => getServerSession(authOptions);
 
