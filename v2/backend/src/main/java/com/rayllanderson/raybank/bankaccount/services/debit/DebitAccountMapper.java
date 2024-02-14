@@ -17,6 +17,6 @@ public interface DebitAccountMapper {
     @Mapping(target = "transaction.transactionMethod", expression = "java(TransactionMethod.ACCOUNT_TRANSFER)")
     @Mapping(target = "destination.identifier", source = "beneficiaryAccountNumber")
     @Mapping(target = "destination.type", expression = "java(Type.ACCOUNT)")
-    @Mapping(target = "description", constant = "Transferência enviada")
+    @Mapping(target = "description", constant = "Transferência Enviada")
     DebitAccountInput from(BankAccountTransferInput input);
 }

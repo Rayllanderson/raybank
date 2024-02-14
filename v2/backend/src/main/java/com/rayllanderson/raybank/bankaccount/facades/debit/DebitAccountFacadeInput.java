@@ -26,7 +26,8 @@ public class DebitAccountFacadeInput {
 
     private final String accountId;
     private final BigDecimal amount;
-    private String description;
+    private final String description;
+    private String message;
     private final DebitTransaction transaction;
     private final Destination destination;
 
@@ -46,7 +47,7 @@ public class DebitAccountFacadeInput {
     public static DebitAccountFacadeInput from(final InvoiceCreditInput input) {
         final var destination = new Destination(input.getInvoiceId(), Type.INVOICE);
         final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.ACCOUNT);
-        return new DebitAccountFacadeInput(input.getAccountId(), input.getAmount(), debitTransaction, destination);
+        return new DebitAccountFacadeInput(input.getAccountId(), input.getAmount(), "Pagamento de Fatura", debitTransaction, destination);
     }
 
     public static DebitAccountFacadeInput debitCardPayment(final CardPaymentInput input, final Card card) {
@@ -64,19 +65,19 @@ public class DebitAccountFacadeInput {
     public static DebitAccountFacadeInput from(String accountId, Boleto boleto) {
         final Destination destination = new Destination(boleto.getBarCode(), Type.BOLETO);
         final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.BOLETO);
-        return new DebitAccountFacadeInput(accountId, boleto.getValue(), debitTransaction, destination);
+        return new DebitAccountFacadeInput(accountId, boleto.getValue(), "Boleto Pago", debitTransaction, destination);
     }
 
     public static DebitAccountFacadeInput transfer(final Pix pix) {
         final Destination destination = new Destination(pix.getId(), Type.PIX);
         final var debitTransaction = DebitTransaction.from(TransactionType.TRANSFER, TransactionMethod.PIX);
-        return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), pix.getMessage(), debitTransaction, destination);
+        return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), "Transferência Enviada", pix.getMessage(), debitTransaction, destination);
     }
 
     public static DebitAccountFacadeInput pay(final Pix pix) {
         final Destination destination = new Destination(pix.getId(), Type.PIX);
         final var debitTransaction = DebitTransaction.from(TransactionType.PAYMENT, TransactionMethod.PIX);
-        return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), pix.getMessage(), debitTransaction, destination);
+        return new DebitAccountFacadeInput(pix.getDebitAccountId(), pix.getAmount(), "Pagamento Enviado", pix.getMessage(), debitTransaction, destination);
     }
 
     public static DebitAccountFacadeInput returnPix(final Pix pix, PixReturn pixReturn) {
