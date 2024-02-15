@@ -15,6 +15,11 @@ public class UserPostgresGateway implements UserGateway {
     private final UserRepository userRepository;
 
     @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
     public User findById(final String id) {
         return userRepository.findById(id).orElseThrow(() -> NotFoundException.withFormatted(USER_NOT_FOUND, "Usuário não encontrado"));
     }

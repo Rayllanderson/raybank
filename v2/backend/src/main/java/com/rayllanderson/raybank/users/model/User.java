@@ -51,4 +51,8 @@ public class User {
     public void addBankAccount(String bankAccountId) {
         this.bankAccountId = bankAccountId;
     }
+
+    public void updateName(final String name) {
+        this.name = name;
+    }
 }

@@ -67,7 +67,8 @@ logging:
     com.rayllanderson.raybank: ${LOGGING_LEVEL:INFO}
 
 kafka:
-  register-user-topic: keycloak-event-listener-topic
+  topics:
+    keycloak-event-listener-topic: keycloak-event-listener-topic
   client-id: raybank-client-id
   consumer:
     group-id: raybank-group-id
