@@ -31,4 +31,12 @@ public class Contact {
         final var account = new ContactAccount(bankAccount.getId(), String.valueOf(bankAccount.getNumber()));
         return new Contact(UUID.randomUUID().toString(), bankAccount.getUser().getName(), account, BankAccount.withId(onwerId));
     }
+
+    public boolean hasChangedName(String accountName) {
+        return !this.name.equals(accountName);
+    }
+
+    public void updateName(String accountName) {
+        this.name = accountName;
+    }
 }

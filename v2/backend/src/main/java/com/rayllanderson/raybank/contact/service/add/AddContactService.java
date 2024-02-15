@@ -22,13 +22,18 @@ public class AddContactService {
     @Transactional
     @Retryable(maxAttemptsExpression = "${retry.statement.create.maxAttempts}", backoff = @Backoff(maxDelayExpression = "${retry.statement.create.maxDelay}"))
     public void add(final AddContactInput input) {
-        final BankAccount bankAccount = accountFactory.find(input.getContactId(), input.getTransactionMethod());
+        final BankAccount contactAccount = accountFactory.find(input.getContactId(), input.getTransactionMethod());
 
-        final boolean contactAlreadyExists = contactGateway.existsByContactAccountIdAndOwnerId(bankAccount.getId(), input.getOnwerId());
-        if(contactAlreadyExists)
+        final boolean contactAlreadyExists = contactGateway.existsByContactAccountIdAndOwnerId(contactAccount.getId(), input.getOnwerId());
+        if (contactAlreadyExists) {
+            Contact contact = contactGateway.findByAccountId(contactAccount.getId());
+            if (contact.hasChangedName(contactAccount.getAccountName())) {
+                contact.updateName(contactAccount.getAccountName());
+            }
             return;
+        }
 
-        final Contact contact = Contact.from(bankAccount, input.getOnwerId());
+        final Contact contact = Contact.from(contactAccount, input.getOnwerId());
         contactGateway.save(contact);
     }
 }
