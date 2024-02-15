@@ -17,15 +17,45 @@ export const authOptions = {
 
     callbacks: {
         async jwt({ account, token }: { account: any, token: any }) {
-            console.log("token "+   JSON.stringify(token, undefined, 2));
-            console.log("account "+   JSON.stringify(account, undefined, 2));
             if (account) {
                 token.user = account
                 return token
             } else if (Date.now() < token.user.expires_at * 1000) {
                 return token
             } else {
-                refreshToken(token)
+                console.log("refresh token")
+                try {
+                    const response = await fetch(process.env.REFRESH_TOKEN_URL!, {
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams({
+                            client_id: process.env.KEYCLOAK_ID!,
+                            client_secret: process.env.KEYCLOAK_SECRET!,
+                            grant_type: "refresh_token",
+                            refresh_token: token.user.refresh_token,
+                        }),
+                        method: "POST",
+                    })
+
+                    const refreshToken: TokenSet = await response.json()
+                    console.log(token.user)
+                    console.log(refreshToken)
+
+                    if (!response.ok) throw refreshToken
+
+                    token.user.access_token = refreshToken.access_token
+
+
+                    token.user.expires_at = Math.floor(Date.now() / 1000) + (refreshToken?.expires_in as number ?? 0)
+                    
+                    if (refreshToken.refresh_token)
+                        token.user.refresh_token = refreshToken.refresh_token
+                    else throw refreshToken
+
+                    return token
+                } catch (error) {
+                    console.error("Error refreshing access token", error)
+                    return { ...token, error: "RefreshAccessTokenError" as const }
+                }
             }
         },
         session: async ({ session, token }: { session: any; token: any }) => {
@@ -37,11 +67,11 @@ export const authOptions = {
             session.error = token.error
             return session;
         },
-        
+
     },
 };
 
-export async function refreshToken (token:any) {
+export async function refreshToken(token: any) {
     try {
         const response = await fetch(process.env.REFRESH_TOKEN_URL!, {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -56,11 +86,11 @@ export async function refreshToken (token:any) {
 
         const refreshToken: TokenSet = await response.json()
 
-        if (!response.ok) throw refreshToken   
-        
+        if (!response.ok) throw refreshToken
+
         token.user.access_token = refreshToken.access_token
         token.user.expires_at = Math.floor(Date.now() / 1000) + (refreshToken?.expires_in as number ?? 0),
-        token.user.refresh_token = refreshToken.refresh_token ?? token.user.refresh_token
+            token.user.refresh_token = refreshToken.refresh_token ?? token.user.refresh_token
         return token
     } catch (error) {
         console.error("Error refreshing access token", error)
@@ -72,6 +102,7 @@ export const getServerAuthSession = () => getServerSession(authOptions);
 
 export async function getToken(): Promise<string> {
     const session: Session = await getServerAuthSession();
+    console.log(session);
     if (session?.error === "RefreshAccessTokenError") {
         redirect('/api/auth/signin')
     }

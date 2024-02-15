@@ -1,6 +1,6 @@
 import { Invoice } from "@/types/Invoice";
 import { getAccountIdFromToken } from "@/utils/JwtUtil";
-import { get } from "./ApiRequest";
+import { get, post } from "./ApiRequest";
 import { snakeToCamel } from "@/utils/StringUtils";
 import { getToken } from "@/app/api/auth/[...nextauth]/options";
 import { ApiErrorException } from "@/types/Error";
@@ -36,4 +36,14 @@ export async function findInvoiceOrNull(id: string): Promise<Invoice | null> {
         }
         throw err;
     }
+}
+
+export async function payInvoice(id: string | null = null, amount: number, token: string): Promise<Invoice> {
+    const accountId = getAccountIdFromToken(token);
+    const data = { amount: amount }
+
+    const url = `/api/v1/internal/accounts/${accountId}/invoices/${id ? id : 'current'}/pay`
+
+    const response = await post(url, data, token);
+    return snakeToCamel(response)
 }

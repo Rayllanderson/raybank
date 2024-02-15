@@ -15,7 +15,6 @@ export function CredidCardDataModal({ show, setOpenModal }: { show: boolean; set
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-
         if (session?.error === "RefreshAccessTokenError") {
             signIn();
         }
