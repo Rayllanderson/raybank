@@ -35,7 +35,7 @@ public class FindBoletoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BoletoDetailsResponse.BoletoResponse>> findByAccount(@RequestParam(required = false, defaultValue = "all") String status,
+    public ResponseEntity<List<BoletoDetailsResponse.BoletoResponse>> findAllByAccount(@RequestParam(required = false, defaultValue = "all") String status,
                                                                                     @AuthenticationPrincipal Jwt jwt) {
         final BoletoStatusParamRequest requestParam = BoletoStatusParamRequest.from(status);
 

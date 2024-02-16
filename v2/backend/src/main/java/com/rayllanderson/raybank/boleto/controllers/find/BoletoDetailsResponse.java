@@ -22,6 +22,7 @@ public class BoletoDetailsResponse {
         private String status;
         private LocalDate createdAt;
         private LocalDate expirationDate;
+        private String title;
     }
 
     @Getter

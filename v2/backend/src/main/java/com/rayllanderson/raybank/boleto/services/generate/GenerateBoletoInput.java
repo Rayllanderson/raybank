@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Setter
 public class GenerateBoletoInput {
     private BigDecimal value;
+    private String title;
     private BeneficiaryInput beneficiary;
     private String accountHolderId;
 

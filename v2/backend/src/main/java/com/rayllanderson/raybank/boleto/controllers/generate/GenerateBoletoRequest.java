@@ -20,6 +20,9 @@ public class GenerateBoletoRequest {
     @NotNull
     @DecimalMin("0.1")
     private BigDecimal value;
+
+    private String title;
+
     @NotBlank
     private String accountHolderId;
     @Valid

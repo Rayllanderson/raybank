@@ -39,6 +39,8 @@ public class Boleto {
     @Id
     private String barCode;
 
+    private String title;
+
     @DecimalMin("0.1")
     @Column(nullable = false, name = "_value")
     private BigDecimal value;
@@ -64,9 +66,9 @@ public class Boleto {
     @Column(nullable = false)
     private LocalDate expirationDate;
 
-    public static Boleto generate(final String barCode, BigDecimal value, Beneficiary beneficiary, BankAccount holder) {
+    public static Boleto generate(final String barCode, String title, BigDecimal value, Beneficiary beneficiary, BankAccount holder) {
         final var creationDate = LocalDate.now();
-        return new Boleto(barCode, value, beneficiary, holder, null, WAITING_PAYMENT, creationDate, BoletoUtil.generateExpirationDate(creationDate));
+        return new Boleto(barCode, title, value, beneficiary, holder, null, WAITING_PAYMENT, creationDate, BoletoUtil.generateExpirationDate(creationDate));
     }
 
     public boolean isExpired() {
