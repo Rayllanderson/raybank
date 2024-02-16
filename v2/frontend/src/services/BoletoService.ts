@@ -21,7 +21,8 @@ export async function findAllBoletosUsingToken(token: string): Promise<Boleto[]>
     return snakeToCamel(response)
 }
 
-export async function generateBoleto(data: GenerateBoletoRequest, token: string): Promise<{ barCode: string, value: string }> {
+export type DepositBoletoResponse = { barCode: string, value: string }
+export async function generateBoleto(data: GenerateBoletoRequest, token: string): Promise<DepositBoletoResponse> {
     const response = await post(`/api/v1/internal/boletos`, data, token);
     return snakeToCamel(response)
 }

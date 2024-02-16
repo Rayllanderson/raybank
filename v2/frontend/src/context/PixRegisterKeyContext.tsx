@@ -1,10 +1,10 @@
 import { RegisterPixKeySchemaData } from '@/components/form/RegisterPixKeyForm';
+import { handlerApiError } from '@/services/HandlerApiError';
 import { PixService } from '@/services/PixService';
 import { ApiErrorException } from '@/types/Error';
 import { PixKey } from '@/types/Pix';
 import { useSession } from 'next-auth/react';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import toast from 'react-hot-toast';
 
 interface PixRegisterKeyContextProps {
   loading: boolean,
@@ -26,15 +26,7 @@ export const PixRegisterKeyProvider: React.FC<PixRegisterKeyProviderProps> = ({ 
       setLoading(true)
       return await PixService.register(data, session?.token!)
     } catch (err) {
-      if (err instanceof ApiErrorException) {
-        if (err.httpStatus === 401) {
-          toast.error('Ocorreu um erro ao registrar chave. Recarregue a página e tente novamente')
-        }
-        if (err.httpStatus === 400 || err.httpStatus === 422) {
-          toast.error(err.message)
-        }
-      } else
-        toast.error('Ocorreu um erro ao registrar chave')
+      handlerApiError(err, 'Ocorreu um erro ao registrar chave')
       return Promise.resolve(null)
     } finally {
       setLoading(false)

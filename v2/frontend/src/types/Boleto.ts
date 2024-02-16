@@ -1,6 +1,6 @@
 export interface Boleto {
   barCode: string;
-  beneficiary: string;
+  title: string;
   value: number;
   status: string;
   createdAt: string;
