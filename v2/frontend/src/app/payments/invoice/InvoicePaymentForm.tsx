@@ -1,6 +1,6 @@
 'use client';
 import { Container } from '@/components/Container';
-import { useInvoicePayment as useInvoicePayment } from '@/context/CardPaymentContext';
+import { useInvoicePayment as useInvoicePayment } from '@/context/InvoicePaymentContext';
 import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/utils/MoneyFormatter';
 import React, { useEffect, useRef, useState } from 'react'
 import CurrencyForm from '../../../components/CurrencyForm';

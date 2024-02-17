@@ -1,6 +1,6 @@
 'use client'
 import { useBoletoDepositContext } from '@/context/BoletoDepositContext';
-import { useInvoicePayment } from '@/context/CardPaymentContext';
+import { useInvoicePayment } from '@/context/InvoicePaymentContext';
 import React, { useEffect } from 'react'
 
 export default function page() {

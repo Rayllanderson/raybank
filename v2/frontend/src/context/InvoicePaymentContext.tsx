@@ -1,11 +1,11 @@
-// CardPaymentContext.tsx
+// InvoicePaymentContext.tsx
 import { handlerApiError } from '@/services/HandlerApiError';
 import { payInvoice } from '@/services/InvoiceService';
 import { Invoice } from '@/types/Invoice';
 import { useSession } from 'next-auth/react';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface CardPaymentContextProps {
+interface InvoicePaymentContextProps {
   amount: number;
   invoice: Invoice | null;
   paymentMethod: 'account' | 'boleto';
@@ -16,13 +16,13 @@ interface CardPaymentContextProps {
   payCurrent: () => Promise<any | null>
 }
 
-const CardPaymentContext = createContext<CardPaymentContextProps | undefined>(undefined);
+const InvoicePaymentContext = createContext<InvoicePaymentContextProps | undefined>(undefined);
 
-interface CardPaymentProviderProps {
+interface InvoicePaymentProviderProps {
   children: ReactNode;
 }
 
-export const CardPaymentProvider: React.FC<CardPaymentProviderProps> = ({ children }) => {
+export const InvoicePaymentProvider: React.FC<InvoicePaymentProviderProps> = ({ children }) => {
   const [amount, setAmount] = useState<number>(0);
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'account' | 'boleto'>('account');
@@ -42,17 +42,17 @@ export const CardPaymentProvider: React.FC<CardPaymentProviderProps> = ({ childr
   }
 
   return (
-    <CardPaymentContext.Provider value={{ amount, invoice, setInvoice, paymentMethod, setAmount, setPaymentMethod, payCurrent, loading }}>
+    <InvoicePaymentContext.Provider value={{ amount, invoice, setInvoice, paymentMethod, setAmount, setPaymentMethod, payCurrent, loading }}>
       {children}
-    </CardPaymentContext.Provider>
+    </InvoicePaymentContext.Provider>
   );
 };
 
-export const useInvoicePayment = (): CardPaymentContextProps => {
-  const context = useContext(CardPaymentContext);
+export const useInvoicePayment = (): InvoicePaymentContextProps => {
+  const context = useContext(InvoicePaymentContext);
 
   if (!context) {
-    throw new Error('useCardPayment deve ser usado dentro de um CardPaymentProvider');
+    throw new Error('useInvoicePayment deve ser usado dentro de um InvoicePaymentProvider');
   }
 
   return context;

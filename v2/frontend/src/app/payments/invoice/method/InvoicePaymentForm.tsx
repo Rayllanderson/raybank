@@ -3,7 +3,7 @@ import { Container } from '@/components/Container';
 import PreviousPageButton from '@/components/PreviousPageButton';
 import { Card } from '@/components/cards/Card';
 import { useBoletoDepositContext } from '@/context/BoletoDepositContext';
-import { useInvoicePayment } from '@/context/CardPaymentContext';
+import { useInvoicePayment } from '@/context/InvoicePaymentContext';
 import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect } from 'react'
@@ -34,14 +34,14 @@ export default function CardPaymentForm() {
   const setPaymentMethodOnClick = async (paymentMethod: 'account' | 'boleto') => {
     setPaymentMethod(paymentMethod)
     if (paymentMethod === 'boleto') {
-      await depositUsingBoleto()
+      await payUsingBoleto()
     }
     else if (paymentMethod === 'account') {
-      await depositUsingAccount()
+      await payUsingAccount()
     }
   }
 
-  async function depositUsingAccount() {
+  async function payUsingAccount() {
     const response = await payCurrent()
     if (response) {
       toast.success('Fatura paga com sucesso')
@@ -49,7 +49,7 @@ export default function CardPaymentForm() {
     }
   }
 
-  async function depositUsingBoleto() {
+  async function payUsingBoleto() {
     const response = await generateBoleto(invoice?.id!, 'invoice')
     if (response) {
       toast.success('Boleto gerado com sucesso')
