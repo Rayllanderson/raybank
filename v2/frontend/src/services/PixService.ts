@@ -5,7 +5,7 @@ import { getToken } from "@/app/api/auth/[...nextauth]/options";
 import { RegisterPixKeySchemaData } from "@/components/form/RegisterPixKeyForm";
 
 export const PixService = {
-    findAll, register, deleteByKey, findLimit, updateLimit, doReturn, findByE2E, generateQrCode,findByQrCode: findQrCode
+    findAll, register, deleteByKey, findLimit, updateLimit, doReturn, findByE2E, generateQrCode,findByQrCode: findQrCode,payQrCode
 }
 
 export async function findAllUsingToken(token: string): Promise<PixKey[]> {
@@ -63,5 +63,10 @@ export async function generateQrCode(amount: number | string, pixKey: string, de
 
 export async function findQrCode(idOrQrCode: string, token: string): Promise<QrCode> {
     const response = await get(`/api/v1/internal/pix/qrcode/${idOrQrCode}`, token)
+    return snakeToCamel(response)
+}
+
+export async function payQrCode(qrCode:string, token: string): Promise<Pix> {
+    const response = await post(`/api/v1/internal/pix/payment`, {qr_code: qrCode}, token);
     return snakeToCamel(response)
 }

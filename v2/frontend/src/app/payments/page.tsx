@@ -15,7 +15,7 @@ export default function page() {
                 <div className="space-y-5 mt-3">
                     <CardGroup>
                         <MiniCard href='/payments/pix' icon={FaPix} title="Pix" className='md:h-28' />
-                        <MiniCard href='/payments/card' icon={FaCreditCard} title="Fatura" className='md:h-28' />
+                        <MiniCard href='/payments/invoice' icon={FaCreditCard} title="Fatura" className='md:h-28' />
                         <MiniCard href='/payments/boleto' icon={FaBarcode} title="Boleto" className='md:h-28' />
                     </CardGroup>
                 </div>

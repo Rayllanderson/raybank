@@ -6,15 +6,16 @@ import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect } from 'react'
 import { ButtonConfirm } from '../../ButtonConfirm';
 import { ConfirmTransactionHeader } from '../../../../components/ConfirmTransactionHeader';
+import toast from 'react-hot-toast';
 
 
 export default function ConfirmPixPaymentForm() {
     const router = useRouter();
-    const { qrCode, beneficiaryName, amount, description } = usePixPayment();
+    const { qrCode, payPixQrCode,pix } = usePixPayment();
 
     const isInvalidPayment = useCallback(() => {
-        return qrCode === null || qrCode.length < 140
-    }, [qrCode])
+        return pix === null || qrCode.length < 100
+    }, [pix,qrCode])
 
     useEffect(() => {
         if (isInvalidPayment()) {
@@ -22,8 +23,12 @@ export default function ConfirmPixPaymentForm() {
         }
     }, [isInvalidPayment, router]);
 
-    function onButtonClick() {
-
+    async function onButtonClick() {
+        const paymentResponse = await payPixQrCode()
+        if (paymentResponse) {
+          toast.success('Pix pago com sucesso')
+          router.replace('/payments/pix/success')
+        }
     }
 
     return (
@@ -32,12 +37,12 @@ export default function ConfirmPixPaymentForm() {
             {!isInvalidPayment() && (
                 <Container>
                     <Card >
-                        <ConfirmTransactionHeader title="Pagando" amount={amount} beneficiaryName={beneficiaryName} />
+                        <ConfirmTransactionHeader title="Pagando" amount={pix?.amount!} beneficiaryName={pix?.creditKey!} />
                         {
-                            description && (
-                                <div className='text-start max-w-xs'>
-                                    <p className="md:text-lg">Mensagem</p>
-                                    <p className="md:text-lg text-gray-500 dark:text-gray-400">{description}</p>
+                            pix?.description && (
+                                <div className='text-start max-w-lg'>
+                                    <label htmlFor="description" className="md:text-lg">Mensagem</label>
+                                    <input id='description' disabled className="md:text-lg p-2 rounded-md w-full bg-gray-200 text-gray-500 dark:bg-black-3" value={pix?.description}/>
                                 </div>
                             )
                         }

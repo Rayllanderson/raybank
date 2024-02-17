@@ -18,3 +18,26 @@ export interface Beneficiary {
   id: string;
   type: 'account' | 'invoice';
 }
+
+export interface BoletoDetailsResponse {
+  boleto:             Boleto;
+  beneficiary:        BeneficiaryResponse;
+  institutionIssuing: InstitutionIssuing;
+}
+
+interface BeneficiaryResponse {
+  type:    string;
+  account?: Account;
+  invoice?: {id:string}
+}
+
+interface Account {
+  id:     string;
+  name:   string;
+  number: string;
+}
+
+interface InstitutionIssuing {
+  code: number;
+  name: string;
+}

@@ -1,3 +1,7 @@
+import { handlerApiError } from '@/services/HandlerApiError';
+import { PixService } from '@/services/PixService';
+import { QrCode } from '@/types/Pix';
+import { useSession } from 'next-auth/react';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface PixPaymentContextProps {
@@ -9,6 +13,10 @@ interface PixPaymentContextProps {
   setQrCode: React.Dispatch<React.SetStateAction<string>>;
   setAmount: React.Dispatch<React.SetStateAction<number>>;
   setDescription: React.Dispatch<React.SetStateAction<string | null>>
+  loading:boolean
+  findPix: () => Promise<QrCode | null>
+  payPixQrCode: () => any,
+  pix: QrCode | null
 }
 
 const PixPaymentContext = createContext<PixPaymentContextProps | undefined>(undefined);
@@ -22,9 +30,38 @@ export const PixPaymentProvider: React.FC<PixPaymentProviderProps> = ({ children
   const [beneficiaryName, setBeneficiaryName] = useState<string>('');
   const [amount, setAmount] = useState(0)
   const [description, setDescription] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false);
+  const [pix, setPix] = useState<QrCode | null>(null)
+  const { data: session } = useSession();
+
+  const findPix = async () => {
+    try {
+        setLoading(true);
+        const response = await PixService.findByQrCode(qrCode, session?.token!);
+        setPix(response)
+        return response
+    } catch (err) {
+        handlerApiError(err, 'Ocorreu um erro ao buscar os dados do Pix QrCode');
+        return null;
+    } finally {
+        setLoading(false);
+    }
+}
+
+const payPixQrCode = async () => {
+    try {
+        setLoading(true);
+        return await PixService.payQrCode(pix?.code!, session?.token!);
+    } catch (err) {
+        handlerApiError(err, 'Ocorreu um erro ao pagar Pix');
+        return null;
+    } finally {
+        setLoading(false);
+    }
+}
 
   return (
-    <PixPaymentContext.Provider value={{ qrCode, beneficiaryName, amount, description, setDescription, setQrCode, setBeneficiaryName, setAmount }}>
+    <PixPaymentContext.Provider value={{ qrCode, beneficiaryName, amount, description, pix, findPix,payPixQrCode,loading,setDescription, setQrCode, setBeneficiaryName, setAmount }}>
       {children}
     </PixPaymentContext.Provider>
   );
