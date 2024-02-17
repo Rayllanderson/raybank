@@ -5,10 +5,10 @@ import { getToken } from "@/app/api/auth/[...nextauth]/options";
 import { RegisterPixKeySchemaData } from "@/components/form/RegisterPixKeyForm";
 
 export const PixService = {
-    findAll, register, deleteByKey, findLimit, updateLimit, doReturn, findByE2E, generateQrCode,findByQrCode: findQrCode,payQrCode
+    findAllPixKey, register, deleteByKey, findLimit, updateLimit, doReturn, findByE2E, generateQrCode,findByQrCode: findQrCode,payQrCode
 }
 
-export async function findAllUsingToken(token: string): Promise<PixKey[]> {
+export async function findAllPixKeyUsingToken(token: string): Promise<PixKey[]> {
     const response = await get(`/api/v1/internal/pix/keys`, token);
     return snakeToCamel(response).keys
 }
@@ -23,8 +23,8 @@ export async function deleteByKey(key: string, token: string): Promise<any> {
     return snakeToCamel(response)
 }
 
-export async function findAll(): Promise<PixKey[]> {
-    return findAllUsingToken(await getToken());
+export async function findAllPixKey(): Promise<PixKey[]> {
+    return findAllPixKeyUsingToken(await getToken());
 }
 
 export async function findLimit(token: string): Promise<{ limit: number }> {
@@ -58,7 +58,8 @@ export async function generateQrCode(amount: number | string, pixKey: string, de
     amount: number,
     description?: string
 }> {
-    return await post('/api/v1/internal/pix/qrcode', { amount: amount, description: description, credit_key: pixKey }, token);
+    const request = { amount: amount, description: description, credit_key: pixKey }
+    return await post('/api/v1/internal/pix/qrcode', request, token);
 }
 
 export async function findQrCode(idOrQrCode: string, token: string): Promise<QrCode> {

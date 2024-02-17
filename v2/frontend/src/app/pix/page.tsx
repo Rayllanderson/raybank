@@ -9,7 +9,7 @@ import { PixKey } from '@/types/Pix';
 
 export default async function page() {
 
-    const pixKeys: PixKey[] = await PixService.findAll()
+    const pixKeys: PixKey[] = await PixService.findAllPixKey()
 
 
     return (

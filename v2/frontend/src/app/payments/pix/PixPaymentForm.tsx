@@ -19,14 +19,14 @@ export default function PixPaymentForm() {
     useEffect(() => {
         inputRef?.current?.focus();
         const value = inputRef.current?.value
-        setIsButtonDisabled(value !== undefined && value.length < 120)
+        setIsButtonDisabled(value !== undefined && value.length < 110)
     }, []);
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     function onInputChange(e: any) {
         const value = e.target.value === undefined ? '' : e.target.value;
-        const isValid = value?.length > 120
+        const isValid = value?.length > 110
         setIsButtonDisabled(!isValid || loading)
         if (isValid) {
             setQrCode(value)

@@ -46,6 +46,7 @@ export interface QrCode {
     amount:      number;
     status:      string;
     creditKey:   string;
+    creditName:   string;
     expiresIn:   Date;
     description: string;
 }

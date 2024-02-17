@@ -11,11 +11,11 @@ import toast from 'react-hot-toast';
 
 export default function ConfirmPixPaymentForm() {
     const router = useRouter();
-    const { qrCode, payPixQrCode,pix } = usePixPayment();
+    const { qrCode, payPixQrCode, pix } = usePixPayment();
 
     const isInvalidPayment = useCallback(() => {
         return pix === null || qrCode.length < 100
-    }, [pix,qrCode])
+    }, [pix, qrCode])
 
     useEffect(() => {
         if (isInvalidPayment()) {
@@ -26,8 +26,8 @@ export default function ConfirmPixPaymentForm() {
     async function onButtonClick() {
         const paymentResponse = await payPixQrCode()
         if (paymentResponse) {
-          toast.success('Pix pago com sucesso')
-          router.replace('/payments/pix/success')
+            toast.success('Pix pago com sucesso')
+            router.replace('/payments/pix/success')
         }
     }
 
@@ -37,12 +37,12 @@ export default function ConfirmPixPaymentForm() {
             {!isInvalidPayment() && (
                 <Container>
                     <Card >
-                        <ConfirmTransactionHeader title="Pagando" amount={pix?.amount!} beneficiaryName={pix?.creditKey!} />
+                        <ConfirmTransactionHeader title="Pagando" amount={pix?.amount!} beneficiaryName={pix?.creditName!} />
                         {
                             pix?.description && (
                                 <div className='text-start max-w-lg'>
                                     <label htmlFor="description" className="md:text-lg">Mensagem</label>
-                                    <input id='description' disabled className="md:text-lg p-2 rounded-md w-full bg-gray-200 text-gray-500 dark:bg-black-3" value={pix?.description}/>
+                                    <input id='description' disabled className="md:text-lg p-2 rounded-md w-full bg-gray-200 text-gray-500 dark:bg-black-3" value={pix?.description} />
                                 </div>
                             )
                         }
