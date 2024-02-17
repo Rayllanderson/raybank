@@ -3,7 +3,7 @@ import { Container } from '@/components/Container';
 import PreviousPageButton from '@/components/PreviousPageButton';
 import { Card } from '@/components/cards/Card';
 import { useBoletoDepositContext } from '@/context/BoletoDepositContext';
-import { useCardPayment } from '@/context/CardPaymentContext';
+import { useInvoicePayment } from '@/context/CardPaymentContext';
 import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect } from 'react'
@@ -12,14 +12,14 @@ import { FaAngleRight, FaBarcode, FaMoneyBill } from 'react-icons/fa6';
 
 export default function CardPaymentForm() {
   const router = useRouter();
-  const { amount, setPaymentMethod, invoice } = useCardPayment();
-  const { setAmount: setBoletoAmount, generateBoleto, loading } = useBoletoDepositContext();
+  const { amount, setPaymentMethod, invoice, payCurrent, loading: accountLoading } = useInvoicePayment();
+  const { setAmount: setBoletoAmount, generateBoleto, loading: boletoLoading } = useBoletoDepositContext();
 
   const isInvalidPayment = useCallback(() => {
     return amount === 0
   }, [amount])
 
-  
+
   useEffect(() => {
     setBoletoAmount(amount)
   }, []);
@@ -31,9 +31,21 @@ export default function CardPaymentForm() {
   }, [isInvalidPayment, router]);
 
 
-  const setPaymentMethodOnClick = async (v: 'account' | 'boleto') => {
-    if (v === 'boleto') {
+  const setPaymentMethodOnClick = async (paymentMethod: 'account' | 'boleto') => {
+    setPaymentMethod(paymentMethod)
+    if (paymentMethod === 'boleto') {
       await depositUsingBoleto()
+    }
+    else if (paymentMethod === 'account') {
+      await depositUsingAccount()
+    }
+  }
+
+  async function depositUsingAccount() {
+    const response = await payCurrent()
+    if (response) {
+      toast.success('Fatura paga com sucesso')
+      router.replace('/payments/invoice/success')
     }
   }
 
@@ -41,7 +53,7 @@ export default function CardPaymentForm() {
     const response = await generateBoleto(invoice?.id!, 'invoice')
     if (response) {
       toast.success('Boleto gerado com sucesso')
-      router.replace('/deposits/boleto/success')
+      router.replace('/payments/invoice/success')
     }
   }
 
@@ -63,8 +75,8 @@ export default function CardPaymentForm() {
               </div>
             </header>
             <div className='flex flex-col justify-between items-center mt-2 space-y-2'>
-              <InvoicePaymentMethod title="Pague com saldo da conta" method='account' onClick={setPaymentMethodOnClick} icon={FaMoneyBill} disabled={loading}/>
-              <InvoicePaymentMethod title="Gerar um boleto" method='boleto' onClick={setPaymentMethodOnClick} icon={FaBarcode} disabled={loading}/>
+              <InvoicePaymentMethod title="Pague com saldo da conta" method='account' onClick={setPaymentMethodOnClick} icon={FaMoneyBill} disabled={boletoLoading || accountLoading} />
+              <InvoicePaymentMethod title="Gerar um boleto" method='boleto' onClick={setPaymentMethodOnClick} icon={FaBarcode} disabled={boletoLoading || accountLoading} />
             </div>
           </Card>
         </Container>
@@ -74,7 +86,7 @@ export default function CardPaymentForm() {
 
 }
 
-function InvoicePaymentMethod({ title, method, icon: Icon, onClick }: { disabled:boolean,title: string, icon: any, method: 'account' | 'boleto', onClick: (v: 'account' | 'boleto') => void; }) {
+function InvoicePaymentMethod({ title, method, icon: Icon, onClick }: { disabled: boolean, title: string, icon: any, method: 'account' | 'boleto', onClick: (v: 'account' | 'boleto') => void; }) {
   return (
     <button onClick={() => onClick(method)} className='w-full hover:scale-[1.03] transition-transform'>
       <div className='flex justify-between items-center'>

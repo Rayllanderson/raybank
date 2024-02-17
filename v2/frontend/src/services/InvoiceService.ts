@@ -46,7 +46,7 @@ export async function findInvoiceOrNull(id: string): Promise<Invoice | null> {
     }
 }
 
-export async function payInvoice(id: string | null = null, amount: number, token: string): Promise<Invoice> {
+export async function payInvoice(amount: number, token: string,id: string | null = null, ): Promise<Invoice> {
     const accountId = getAccountIdFromToken(token);
     const data = { amount: amount }
 

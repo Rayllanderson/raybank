@@ -1,6 +1,6 @@
 'use client';
 import { Container } from '@/components/Container';
-import { useCardPayment } from '@/context/CardPaymentContext';
+import { useInvoicePayment as useInvoicePayment } from '@/context/CardPaymentContext';
 import { MoneyFormatter, getValueNumberFromMoneyInput } from '@/utils/MoneyFormatter';
 import React, { useEffect, useRef, useState } from 'react'
 import CurrencyForm from '../../../components/CurrencyForm';
@@ -8,7 +8,7 @@ import { Invoice } from '@/types/Invoice';
 
 export default function InvoicePaymentForm({ invoice }: { invoice: Invoice }) {
     const inputRef = useRef<HTMLInputElement>(null);
-    const { amount, setAmount, setInvoice } = useCardPayment();
+    const { amount, setAmount, setInvoice } = useInvoicePayment();
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     useEffect(() => {
