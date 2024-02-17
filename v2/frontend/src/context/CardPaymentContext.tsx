@@ -1,10 +1,13 @@
 // CardPaymentContext.tsx
+import { Invoice } from '@/types/Invoice';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface CardPaymentContextProps {
   amount: number;
+  invoice: Invoice | null;
   paymentMethod: 'account' | 'boleto';
   setAmount: React.Dispatch<React.SetStateAction<number>>;
+  setInvoice: (n:Invoice) => void;
   setPaymentMethod: React.Dispatch<React.SetStateAction<'account' | 'boleto'>>;
 }
 
@@ -16,10 +19,11 @@ interface CardPaymentProviderProps {
 
 export const CardPaymentProvider: React.FC<CardPaymentProviderProps> = ({ children }) => {
   const [amount, setAmount] = useState<number>(0);
+  const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'account' | 'boleto'>('account');
 
   return (
-    <CardPaymentContext.Provider value={{ amount, paymentMethod, setAmount, setPaymentMethod }}>
+    <CardPaymentContext.Provider value={{ amount, invoice,setInvoice,paymentMethod, setAmount, setPaymentMethod }}>
       {children}
     </CardPaymentContext.Provider>
   );

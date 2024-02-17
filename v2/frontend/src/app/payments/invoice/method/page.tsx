@@ -1,4 +1,4 @@
-import CardPaymentForm from './CardPaymentForm';
+import CardPaymentForm from './InvoicePaymentForm';
 
 export default function page() {
     return (

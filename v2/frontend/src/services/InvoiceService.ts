@@ -11,6 +11,14 @@ export async function findAllInvoicesUsingToken(token: string): Promise<Invoice[
     return snakeToCamel(response)
 }
 
+export async function findCurrentInvoice(): Promise<Invoice> {
+    const token = await getToken();
+    const accountId = getAccountIdFromToken(token);
+    const response = await get(`/api/v1/internal/accounts/${accountId}/invoices/current`, token);
+    return snakeToCamel(response)
+}
+
+
 export async function findInvoiceByIdUsingToken(id: string, token: string): Promise<Invoice> {
     const accountId = getAccountIdFromToken(token);
     const response = await get(`/api/v1/internal/accounts/${accountId}/invoices/${id}`, token);
