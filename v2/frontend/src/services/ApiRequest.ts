@@ -70,7 +70,7 @@ export async function get<T>(
     query: ApiQueryParameters = {},
     headers: { [key: string]: string } = {},
 ): Promise<T> {
-    return apiRequest(endpoint, null, token, query, headers, 'GET')
+    return await apiRequest(endpoint, null, token, query, headers, 'GET')
 }
 
 export async function post<T>(
@@ -80,7 +80,7 @@ export async function post<T>(
     query: ApiQueryParameters = {},
     headers: { [key: string]: string } = {},
 ): Promise<T> {
-    return apiRequest(endpoint, body, token, query, headers, 'POST')
+    return await apiRequest(endpoint, body, token, query, headers, 'POST')
 }
 
 export async function doDelete<T>(
@@ -89,7 +89,7 @@ export async function doDelete<T>(
     query: ApiQueryParameters = {},
     headers: { [key: string]: string } = {},
 ): Promise<T> {
-    return apiRequest(endpoint, null, token, query, headers, 'DELETE')
+    return await apiRequest(endpoint, null, token, query, headers, 'DELETE')
 }
 
 export async function patch<T>(
@@ -99,5 +99,5 @@ export async function patch<T>(
     query: ApiQueryParameters = {},
     headers: { [key: string]: string } = {},
 ): Promise<T> {
-    return apiRequest(endpoint, body, token, query, headers, 'PATCH')
+    return await apiRequest(endpoint, body, token, query, headers, 'PATCH')
 }

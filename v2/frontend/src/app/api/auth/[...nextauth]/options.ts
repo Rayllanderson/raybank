@@ -102,7 +102,6 @@ export const getServerAuthSession = () => getServerSession(authOptions);
 
 export async function getToken(): Promise<string> {
     const session: Session = await getServerAuthSession();
-    console.log(session);
     if (session?.error === "RefreshAccessTokenError") {
         redirect('/api/auth/signin')
     }

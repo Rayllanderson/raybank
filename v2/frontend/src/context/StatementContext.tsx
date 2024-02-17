@@ -55,8 +55,7 @@ export function StatementProvider({ children }: StatementProviderProps) {
     useEffect(() => {
         async function fetchItems() {
             setLoading(true);
-            const data: Page<Statement> =  await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10 }) 
-            console.log(data)
+            const data: Page<Statement> =  await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10, sort: 'moment,desc' }) 
             setPagination(prevPagination => ({
                 ...data,
                 items: [...prevPagination.items, ...data.items]

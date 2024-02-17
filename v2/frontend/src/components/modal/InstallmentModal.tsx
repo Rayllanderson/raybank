@@ -22,7 +22,7 @@ export function InstallmentModal({ installmentPlan: installmentPlan, show, setOp
                     <div>
                         {getOrdenedInstallments(installmentPlan.installments).map((installment, index) => {
                             return (
-                                <>
+                                <div key={installment.id}>
                                     <div className={`flex justify-between p-1 ${getTextProperty(installment)}`}>
                                         <div className='flex space-x-1 items-center'>
                                             <p className='font-semibold'>{++index}ª</p>
@@ -33,7 +33,7 @@ export function InstallmentModal({ installmentPlan: installmentPlan, show, setOp
                                         </div>
                                     </div>
                                     <Separator />
-                                </>
+                                </div>
                             )
                         })}
                     </div>

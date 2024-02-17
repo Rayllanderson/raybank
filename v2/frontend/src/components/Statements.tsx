@@ -7,11 +7,8 @@ import { Statement } from '@/types/Statement';
 import { getAllCardStatementsWithToken } from '@/services/StatementService';
 import { signIn, useSession } from 'next-auth/react';
 import { Page } from '@/types/Page';
-import { useFindStatement } from '@/context/StatementContext';
-import LoadingDiv, { loadingDiv } from './LoadingDiv';
 import { StatementHeaderLoading } from './StatementHeader';
 import { StatementCreditCardBodyLoading } from './StatementCreditCardBody';
-import Separator from './Separator';
 
 interface Props {
     type: "card" | "account";
@@ -49,8 +46,7 @@ export function Statements({ type }: Props) {
     useEffect(() => {
         async function fetchItems() {
             setLoading(true);
-            const data: Page<Statement> = await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10 })
-            console.log(data)
+            const data: Page<Statement> = await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10, sort: 'moment,desc' })
             setPagination(prevPagination => ({
                 ...data,
                 items: [...prevPagination.items, ...data.items]

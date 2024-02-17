@@ -4,7 +4,6 @@ import { ApiQueryParameters, get } from "./ApiRequest";
 import { getToken } from "@/app/api/auth/[...nextauth]/options";
 import { Page } from "@/types/Page";
 import { snakeToCamel } from "@/utils/StringUtils";
-import { getStaticProps } from "next/dist/build/templates/pages";
 
 
 export async function getAllCardStatementsWithToken(token: string, queryParam?: ApiQueryParameters): Promise<Page<Statement>> {

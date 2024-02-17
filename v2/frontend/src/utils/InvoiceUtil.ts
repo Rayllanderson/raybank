@@ -21,13 +21,13 @@ export const getBgColor = (invoice: Invoice) => {
     if (invoice.status === 'OPEN')
         return 'bg-cyan-500'
     if (invoice.status === 'CLOSED')
-        return 'bg-orange-500'
+        return 'bg-orange-600'
     if (invoice.status === 'PAID')
-        return 'bg-green-500'
+        return 'bg-green-600'
     if (invoice.status === 'OVERDUE')
-        return 'bg-red-500'
+        return 'bg-red-600'
     if (invoice.status === 'NONE') {
-        return 'bg-indigo-500' //ou pink
+        return 'bg-indigo-600'
     }
     else
         return 'bg-indigo-500'
