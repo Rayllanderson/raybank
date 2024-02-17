@@ -28,9 +28,17 @@ public class FindInvoiceController {
     @RequiredAccountOwner
     @GetMapping("/invoices")
     public ResponseEntity<List<FindInvoiceListResponse>> findAll(@PathVariable String accountId,
-                                                             @AuthenticationPrincipal Jwt jwt) {
+                                                                 @AuthenticationPrincipal Jwt jwt) {
         final var invoices = findInvoiceService.findAllByAccountId(accountId);
         return ResponseEntity.ok(mapper.fromOutput(invoices));
+    }
+
+    @RequiredAccountOwner
+    @GetMapping("/invoices/current")
+    public ResponseEntity<?> findCurrentInvoice(@PathVariable String accountId,
+                                                @AuthenticationPrincipal Jwt jwt) {
+        final var invoice = findInvoiceService.findCurrentAccountId(accountId);
+        return ResponseEntity.ok(mapper.fromOutput(invoice));
     }
 
     @RequiredInvoiceOwner

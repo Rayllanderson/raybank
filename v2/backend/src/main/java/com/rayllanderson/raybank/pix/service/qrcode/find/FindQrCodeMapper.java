@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface FindQrCodeMapper {
     @Mapping(target = "creditKey", source = "credit.key")
+    @Mapping(target = "creditName", source = "credit.bankAccount.user.name")
     QrCodeOutput from(PixQrCode qrCode);
     QrCodeResponse from(QrCodeOutput qrCode);
 }

@@ -14,6 +14,7 @@ public class QrCodeOutput {
     private BigDecimal amount;
     private String status;
     private String creditKey;
+    private String creditName;
     private LocalDateTime expiresIn;
     private String description;
 }

@@ -18,7 +18,7 @@ import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.B
 @Setter
 public class GenerateBoletoRequest {
     @NotNull
-    @DecimalMin("0.1")
+    @DecimalMin("0.01")
     private BigDecimal value;
 
     private String title;

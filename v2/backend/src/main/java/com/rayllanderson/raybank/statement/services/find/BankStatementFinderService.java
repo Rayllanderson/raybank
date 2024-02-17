@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static com.rayllanderson.raybank.statement.services.find.BankStatementSorter.sortByProperty;
+
 @Service
 @RequiredArgsConstructor
 public class BankStatementFinderService {
@@ -83,6 +85,8 @@ public class BankStatementFinderService {
 
         List<BankStatementOutput> allBankStatements = new ArrayList<>(bankStatements.items());
         allBankStatements.addAll(invoiceBankStatements.items());
+
+        sortByProperty(allBankStatements, query.sortProperty(), query.sort().direction());
 
         return new Pagination<>(bankStatements.page(), bankStatements.size(), bankStatements.total(), allBankStatements);
     }

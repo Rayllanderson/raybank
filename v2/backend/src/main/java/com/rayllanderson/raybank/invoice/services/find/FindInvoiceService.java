@@ -30,6 +30,11 @@ public class FindInvoiceService {
         return mapper.from(invoices);
     }
 
+    public FindInvoiceOutput findCurrentAccountId(final String accountId) {
+        final var invoice = invoiceGateway.findCurrentByAccountId(accountId);
+        return mapper.from(invoice);
+    }
+
     public FindInvoiceOutput findById(final String id) {
         final var invoice = invoiceGateway.findById(id);
 

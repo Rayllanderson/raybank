@@ -23,6 +23,14 @@ public class BankStatementOutput {
     private Credit credit;
     private InstallmentPlan installmentPlan;
 
+    public String getCreditName() {
+        return this.credit.name;
+    }
+
+    public String getDebitName() {
+        return this.debit.name;
+    }
+
     @Getter
     @Setter
     protected static class InstallmentPlan {
