@@ -1,11 +1,11 @@
 import React from 'react';
-import NoCreditCardCard from './NoCreditCardCard';
-import WithCreditCardCard from './WithCreditCardCard';
-import { Card } from './Card';
-import CardHeader from './CardHeader';
+import NoCreditCardCard from '../cards/NoCreditCardCard';
+import WithCreditCardCard from '../cards/WithCreditCardCard';
+import { Card } from '../cards/Card';
+import CardHeader from '../cards/CardHeader';
 import { FaAngleRight } from 'react-icons/fa6';
 import Link from 'next/link';
-import { CardMoney } from './CardMoney';
+import { CardMoney } from '../cards/CardMoney';
 import LoadingDiv from '../LoadingDiv';
 
 

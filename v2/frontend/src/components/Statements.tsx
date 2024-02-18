@@ -7,8 +7,8 @@ import { Statement } from '@/types/Statement';
 import { getAllCardStatementsWithToken } from '@/services/StatementService';
 import { signIn, useSession } from 'next-auth/react';
 import { Page } from '@/types/Page';
-import { StatementHeaderLoading } from './StatementHeader';
-import { StatementCreditCardBodyLoading } from './StatementCreditCardBody';
+import { StatementHeaderLoading } from './loading/StatementHeaderLoading';
+import { StatementCreditCardBodyLoading } from './loading/StatementCreditCardBodyLoading';
 
 interface Props {
     type: "card" | "account";

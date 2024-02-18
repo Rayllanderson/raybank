@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { FaBarcode, FaEye, FaEyeSlash, FaMoneyBill, FaMoneyBillTransfer } from "react-icons/fa6";
-import { Card } from './Card';
-import CardHeader from './CardHeader';
-import { MiniCard } from './MiniCard';
+import { Card } from '../cards/Card';
+import CardHeader from '../cards/CardHeader';
+import { MiniCard } from '../cards/MiniCard';
 import { Account } from '@/types/Account';
 import LoadingDiv from '../LoadingDiv';
 
