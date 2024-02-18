@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { flowbiteTheme } from './theme';
 import { Providers } from '../providers/providers';
 import { Toaster } from 'react-hot-toast';
+import { lazy } from 'react';
 
 
 const inter = Nunito({ subsets: ['latin'] })
