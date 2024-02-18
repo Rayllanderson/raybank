@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'flowbite-react';
 import Link from 'next/link';
-import LoadingDiv from '../LoadingDiv';
+import LoadingDiv, { loadingClassName } from '../LoadingDiv';
 
 export interface MiniCardProps {
   title: string;
@@ -20,6 +20,11 @@ export function MiniCardLoading({ title, icon: Icon, href, className }: MiniCard
       <MiniCardComponent title={title} icon={Icon} className={className} />
     </button>
   );
+}
+
+export function MiniCardLoadingSkeleton() {
+  return <Card className={` flex-shrink-0  w-24 h-24 md:w-28 lg:w-32 ${loadingClassName} bg-gray-300 dark:bg-black-3`}>
+  </Card>
 }
 
 function MiniCardComponent({ title, icon: Icon, className }: MiniCardProps) {

@@ -3,13 +3,11 @@ import { LiaBarcodeSolid } from "react-icons/lia";
 import Header from '../components/Header';
 import SideBar from '../components/SideBar';
 import { SidebarProvider } from '../context/SidebarContext';
-
 import MediumCard from '../components/cards/MediumCard';
 import { getServerAuthSession } from './api/auth/[...nextauth]/options';
 import Session from '@/types/Session';
 import { AccountResponse } from '@/types/Account';
 import { getAuthAccount } from '@/services/AccountService';
-import { Suspense } from 'react';
 import BankAccountCardLoading from '@/components/loading/BankAccountCardLoading';
 import CreditCardCardLoading from '@/components/loading/CreditCardCardLoading';
 
