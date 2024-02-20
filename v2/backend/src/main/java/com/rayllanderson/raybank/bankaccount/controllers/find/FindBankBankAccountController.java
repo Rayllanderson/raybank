@@ -1,7 +1,6 @@
 package com.rayllanderson.raybank.bankaccount.controllers.find;
 
 import com.rayllanderson.raybank.bankaccount.services.find.BankAccountDetailsOutput;
-import com.rayllanderson.raybank.bankaccount.services.find.BankAccountOutput;
 import com.rayllanderson.raybank.bankaccount.services.find.FindAccountMapper;
 import com.rayllanderson.raybank.bankaccount.services.find.FindAccountService;
 import com.rayllanderson.raybank.bankaccount.services.find.FindAccountType;

@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface ContactRepository extends JpaRepository<Contact, String> {
     List<Contact> findAllByOwnerId(String ownerId);
     boolean existsContactByAccount_IdAndOwnerId(String accountId, String ownerId);
-    Optional<Contact> findByAccount_Id(String accountId);
+    Optional<Contact> findByAccount_IdAndOwnerId(String accountId,String ownerId);
     boolean existsContactByIdAndOwnerId(String contactId, String ownerId);
 }

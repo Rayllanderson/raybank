@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AddContactService {
@@ -24,15 +26,19 @@ public class AddContactService {
     public void add(final AddContactInput input) {
         final BankAccount contactAccount = accountFactory.find(input.getContactId(), input.getTransactionMethod());
 
-        final boolean contactAlreadyExists = contactGateway.existsByContactAccountIdAndOwnerId(contactAccount.getId(), input.getOnwerId());
-        if (contactAlreadyExists) {
-            Contact contact = contactGateway.findByAccountId(contactAccount.getId());
+        final Optional<Contact> possibleExistingContact = contactGateway.findByAccountIdAndOwnerId(contactAccount.getId(), input.getOnwerId());
+        possibleExistingContact.ifPresent(contact -> {
             if (contact.hasChangedName(contactAccount.getAccountName())) {
                 contact.updateName(contactAccount.getAccountName());
             }
-            return;
-        }
+        });
 
+        if (possibleExistingContact.isEmpty()) {
+            createNewContact(input, contactAccount);
+        }
+    }
+
+    private void createNewContact(AddContactInput input, BankAccount contactAccount) {
         final Contact contact = Contact.from(contactAccount, input.getOnwerId());
         contactGateway.save(contact);
     }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.CONTACT_NOT_FOUND;
 
@@ -27,8 +28,8 @@ public class ContactPostgresGateway implements ContactGateway {
     }
 
     @Override
-    public Contact findByAccountId(String accountId) {
-        return contactRepository.findByAccount_Id(accountId).orElseThrow(() -> NotFoundException.withFormatted(CONTACT_NOT_FOUND, "Contato não encontrado"));
+    public Optional<Contact> findByAccountIdAndOwnerId(String accountId, String ownerId) {
+        return contactRepository.findByAccount_IdAndOwnerId(accountId, ownerId);
     }
 
     @Override
