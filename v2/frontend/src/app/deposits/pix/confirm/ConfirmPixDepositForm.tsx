@@ -10,12 +10,14 @@ import { usePixDepositContext } from '@/context/PixDepositContext';
 import { PixKey } from '@/types/Pix';
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
+import PrimaryButton from '@/components/Buttons/PrimaryButton';
 
 export default function ConfirmPixDepositForm({keys}: {keys: PixKey[]}) {
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const { pixDepositData, setCreditKey, setMessage, generateQrCode,loading } = usePixDepositContext();
     const {data} = useSession()
+    const [finished, setFinished] = useState(true)
 
     const isDepositInvalid = useCallback(() => {
         return pixDepositData.amount === 0
@@ -46,11 +48,14 @@ export default function ConfirmPixDepositForm({keys}: {keys: PixKey[]}) {
     }
 
     async function onButtonClick() {
+        setFinished(false)
         const response = await generateQrCode()
         if (response) {
           toast.success('Pix Qr code gerado com sucesso')
           router.replace('/deposits/pix/success')
+          return
         }
+        setFinished(true)
     }
 
     return (
@@ -83,9 +88,9 @@ export default function ConfirmPixDepositForm({keys}: {keys: PixKey[]}) {
                             </div>
 
                             <div className='flex mt-2'>
-                                <Button color='primary' className={`w-full`} disabled={loading} onClick={onButtonClick}>
-                                    <p>Criar código</p>
-                                </Button>
+                                <PrimaryButton disabled={loading || !finished} loading={loading || !finished} onClick={onButtonClick}>
+                                    Criar código
+                                </PrimaryButton>
                             </div>
                         </div>
                     </Card>

@@ -1,12 +1,10 @@
 'use client';
-import { ContactCard } from '@/components/ContactCard';
 import { Container } from '@/components/Container';
 import { Card } from '@/components/cards/Card';
 import InputText from '@/components/inputs/InputText';
 import { useTransferTransactionContext } from '@/context/TransferContext';
 import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { Button } from 'flowbite-react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { isPixKeyValid } from '@/validators/PixKeyValidator';
@@ -27,6 +25,7 @@ export default function ContactForm() {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { transaction, setBeneficiary, setBeneficiaryType, setBeneficiaryName } = useTransferTransactionContext();
+  const [finished, setFinished] = useState(true)
 
   const { loading, findAccount } = useFindAccountContext();
 
@@ -81,14 +80,15 @@ export default function ContactForm() {
       return;
     }
 
+    setFinished(false)
 
     const account = await findAccount('contact', contact.id!)
 
     if (!account) {
       toast.error('Nenhuma conta encontrada com o informações fornecidas')
+      setFinished(true)
       return;
     }
-
     setBeneficiary(account?.number!)
     setBeneficiaryType('contact')
     setBeneficiaryName(account?.name)
@@ -111,12 +111,12 @@ export default function ContactForm() {
               <InputText placeholder='Conta ou chave Pix' ref={inputRef} onChange={onInputChange} />
 
               <div className='flex'>
-                <NextButton isDisabled={isButtonDisabled || loading} isLoading={loading} onClick={onButtonClick} type={getBeneficiaryType()} />
+                <NextButton isDisabled={isButtonDisabled || loading || !finished} isLoading={loading || !finished} onClick={onButtonClick} type={getBeneficiaryType()} />
               </div>
             </div>
           </Card>
 
-          <ContactsList onClick={onContactClick} />
+          <ContactsList onClick={onContactClick} disabled={loading || !finished} />
         </Container>
       )}
     </>
