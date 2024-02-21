@@ -39,7 +39,6 @@ interface HeaderProps {
 }
 
 function AccountHeader({ statement }: HeaderProps) {
-    console.log(statement);
     return (
         <>
             {isIncomming(statement.financialMovement?.toString()) ?
