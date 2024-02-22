@@ -6,8 +6,10 @@ import toast from 'react-hot-toast';
 interface AccountDepositContextType {
   amount: number;
   loading: boolean;
-  doDeposit:(t:string) => any;
+  doDeposit: (t: string) => any;
   setAmount: (value: number) => void;
+  resetDeposit: () => void;
+  accountDepositData: AccountDepositData
 }
 
 const AccountDepositContext = createContext<AccountDepositContextType | undefined>(undefined);
@@ -24,14 +26,32 @@ interface AccountDepositProviderProps {
   children: ReactNode;
 }
 
+export type AccountDepositData = {
+  amount: number;
+  success: boolean;
+}
+
+const newDepositData = {
+  amount: 0,
+  success: false
+}
+
 export const AccountDepositProvider = ({ children }: AccountDepositProviderProps) => {
   const [amount, setAmount] = useState<number>(0);
+  const [accountDepositData, setAccountDepositData] = useState<AccountDepositData>(newDepositData)
   const [loading, setLoading] = useState(false)
+
+  const resetDeposit = () => {
+    setAmount(0)
+    setAccountDepositData(newDepositData)
+  }
 
   async function doDeposit(token: string) {
     try {
       setLoading(true)
       const response = await deposit(amount, token)
+      accountDepositData.success = true
+      accountDepositData.amount = amount
       return response
     } catch (err) {
       if (err instanceof ApiErrorException && err.httpStatus <= 500) {
@@ -46,7 +66,9 @@ export const AccountDepositProvider = ({ children }: AccountDepositProviderProps
 
   const value: AccountDepositContextType = {
     amount,
+    resetDeposit,
     loading,
+    accountDepositData,
     doDeposit,
     setAmount,
   };

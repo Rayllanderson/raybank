@@ -1,14 +1,6 @@
-'use client'
-import { useAccountDeposit } from '@/context/AccountDepositContext';
-import React, { useEffect } from 'react'
+import React from 'react'
+import DepositAccountSuccess from './DepositAccountSuccess';
 
 export default function page() {
-    const { setAmount } = useAccountDeposit();
-
-    useEffect(() => {
-        setAmount(0)
-    }, [])
-    return (
-        <div>Sucesso!</div>
-    )
+    return <DepositAccountSuccess />
 }
