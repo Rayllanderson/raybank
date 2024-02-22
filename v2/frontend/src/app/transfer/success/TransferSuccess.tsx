@@ -1,7 +1,6 @@
 'use client';
 
 import LightButton from '@/components/Buttons/LightButton';
-import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import { Container } from '@/components/Container';
 import Separator from '@/components/Separator';
 import { Card } from '@/components/cards/Card';
