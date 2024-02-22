@@ -4,12 +4,13 @@ import { GenerateBoletoRequest } from '@/types/Boleto';
 import { useSession } from 'next-auth/react';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type BoletoDepositData = {
+export type BoletoDepositData = {
   amount: number;
   beneficiaryId: string | null;
   beneficiaryType: string | null;
   beneficiaryName: string | null;
   barCode: string | null
+  success: boolean
 };
 
 type BoletoDepositContextType = {
@@ -19,6 +20,7 @@ type BoletoDepositContextType = {
   setBeneficiaryId: (value: string) => void;
   setBeneficiaryName: (value: string) => void;
   setBeneficiaryType: (value: string) => void;
+  resetDeposit: () => void;
   generateBoleto: (id: string, type: 'account' | 'invoice') => Promise<DepositBoletoResponse | null>;
 };
 
@@ -33,13 +35,20 @@ export const BoletoDepositProvider: React.FC<BoletoDepositProviderProps> = ({ ch
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
 
-  const [depositData, setDepositData] = useState<BoletoDepositData>({
+  const emptyBoletoData = {
     amount: 0,
     beneficiaryId: null,
     beneficiaryType: null,
     beneficiaryName: null,
-    barCode: null
-  });
+    barCode: null,
+    success:false
+  }
+
+  const [depositData, setDepositData] = useState<BoletoDepositData>(emptyBoletoData);
+
+  const resetDeposit = () => {
+    setDepositData(emptyBoletoData)
+  }
 
   async function generateBoleto(id: string, type: 'account' | 'invoice'): Promise<DepositBoletoResponse | null> {
     try {
@@ -53,6 +62,7 @@ export const BoletoDepositProvider: React.FC<BoletoDepositProviderProps> = ({ ch
         },
       } as GenerateBoletoRequest, session?.token!)
       depositData.barCode = response.barCode
+      depositData.success = true
       return response
     } catch (err) {
       handlerApiError(err, 'Não foi gerar boleto, erro inesperado')
@@ -68,7 +78,7 @@ export const BoletoDepositProvider: React.FC<BoletoDepositProviderProps> = ({ ch
   const setBeneficiaryName = (value: string) => setDepositData((prevData) => ({ ...prevData, beneficiaryName: value }));
 
   return (
-    <BoletoDepositContext.Provider value={{ generateBoleto, loading, boletoDepositData: depositData, setAmount, setBeneficiaryId, setBeneficiaryType, setBeneficiaryName }}>
+    <BoletoDepositContext.Provider value={{ resetDeposit, generateBoleto, loading, boletoDepositData: depositData, setAmount, setBeneficiaryId, setBeneficiaryType, setBeneficiaryName }}>
       {children}
     </BoletoDepositContext.Provider>
   );

@@ -2,24 +2,25 @@
 
 import { Container } from '@/components/Container';
 import { Card } from '@/components/cards/Card';
-import { PixDepositData, usePixDepositContext } from '@/context/PixDepositContext';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import ClipboardCopy from '../../../../components/ClipboardCopy';
-import { BsQrCode } from "react-icons/bs";
 import { MoneyFormatter } from '@/utils/MoneyFormatter';
+import { BoletoDepositData, useBoletoDepositContext } from '@/context/BoletoDepositContext';
+import { FaBarcode } from 'react-icons/fa6';
+import { BoletoFormatter } from '@/utils/BoletoFormatter';
 
-export default function DepositPixSuccess() {
-    const { qrCode, resetDeposit, pixDepositData } = usePixDepositContext();
-    const [depositData, setDepositData] = useState<PixDepositData | null>(null)
+export default function DepositBoletoSuccess() {
+    const { boletoDepositData, resetDeposit } = useBoletoDepositContext();
+    const [depositData, setDepositData] = useState<BoletoDepositData | null>(null)
     const router = useRouter()
 
     useEffect(() => {
-        if (!pixDepositData.success) {
-            router.push(' /deposits/pix')
+        if (!boletoDepositData.success) {
+            router.push('/deposits/boleto')
             return
         }
-        setDepositData(pixDepositData)
+        setDepositData(boletoDepositData)
         resetDeposit()
     }, [])
 
@@ -30,20 +31,20 @@ export default function DepositPixSuccess() {
                 <Container>
                     <Card>
                         <div className="">
-                            <h1 className='text-lg lg:text-xl font-semibold'>Qr Code Gerado!</h1>
+                            <h1 className='text-lg lg:text-xl font-semibold'>Boleto Gerado!</h1>
                             <h1 className='lg:text-lg'>Valor a ser pago <span className='text-primary-1 font-semibold'>{MoneyFormatter.format(depositData?.amount!)}</span></h1>
                         </div>
 
                         <div className='flex justify-center'>
-                            <BsQrCode className='w-40 h-40' />
+                            <FaBarcode className='w-56 h-24' />
                         </div>
 
                         <div className='flex justify-center'>
-                            <div className='max-w-md'>
-                                <p className='text-wrap break-all text-primary-3 font-semibold'>{qrCode}</p>
+                            <div className='max-w-lg'>
+                                <p className='text-wrap break-all text-primary-3 font-semibold'>{BoletoFormatter.formatBarCode(depositData?.barCode!)}</p>
                             </div>
                         </div>
-                        <ClipboardCopy text={qrCode!} />
+                        <ClipboardCopy text={depositData?.barCode!} />
                     </Card>
                 </Container>
             )}

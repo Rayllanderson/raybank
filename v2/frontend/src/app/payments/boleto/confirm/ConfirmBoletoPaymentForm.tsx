@@ -9,6 +9,7 @@ import React, { useCallback, useEffect } from 'react'
 import { ButtonConfirm } from '../../ButtonConfirm';
 import { BoletoDetailsResponse } from '@/types/Boleto';
 import toast from 'react-hot-toast';
+import { BoletoFormatter } from '@/utils/BoletoFormatter';
 
 
 export default function ConfirmBoletoPaymentForm() {
@@ -49,8 +50,7 @@ export default function ConfirmBoletoPaymentForm() {
                 <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">Pagando</h1>
                 <h1 className="text-3xl md:text-4xl font-semibold text-primary-2">{MoneyFormatter.format(response?.boleto.value!)}</h1>
                 <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>para: {getBeneficiary(response!)}</p>
-                <p className='text-md md:text-lg max-w-sm text-gray-500 dark:text-gray-400'>{barCode?.toString().substring(0, 23)}</p>
-                <p className='text-md md:text-lg max-w-sm text-gray-500 dark:text-gray-400'>{barCode?.toString().substring(23)}</p>
+                <p className='text-md md:text-lg max-w-sm text-gray-500 dark:text-gray-400'>{BoletoFormatter.formatBarCode(barCode?.toString())}</p>
               </div>
             </header>
 

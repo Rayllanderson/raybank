@@ -2,7 +2,6 @@
 import { Container } from '@/components/Container';
 import CurrencyForm from '@/components/CurrencyForm';
 import { useAccountDeposit } from '@/context/AccountDepositContext';
-import { usePixDepositContext } from '@/context/PixDepositContext';
 import { getValueNumberFromMoneyInput } from '@/utils/MoneyFormatter';
 import React, { useEffect, useRef, useState } from 'react'
 

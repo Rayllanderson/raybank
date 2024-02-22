@@ -1,18 +1,6 @@
-'use client'
-import { useAccountDeposit } from '@/context/AccountDepositContext';
-import { useBoletoDepositContext } from '@/context/BoletoDepositContext';
-import React, { useEffect } from 'react'
+import React from 'react'
+import DepositBoletoSuccess from './DepositBoletoSuccess';
 
 export default function page() {
-    const { setAmount, boletoDepositData } = useBoletoDepositContext();
-
-    useEffect(() => {
-        setAmount(0)
-    }, [])
-    return (
-        <div>Sucesso!
-            <div>{boletoDepositData.barCode}</div>
-        </div>
-
-    )
+    return <DepositBoletoSuccess />
 }
