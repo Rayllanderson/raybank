@@ -4,7 +4,7 @@ import { Sidebar as FlowbiteSidebar } from "flowbite-react";
 import type { FC, PropsWithChildren } from "react";
 import { useSidebarContext } from "../context/SidebarContext";
 import { HiViewBoards } from "react-icons/hi";
-import { FaBarcode, FaCcMastercard, FaMoneyBillTransfer, FaMoneyBillTrendUp, FaPix, FaWallet } from "react-icons/fa6";
+import { FaBarcode, FaCcMastercard, FaDollarSign, FaMoneyBillTransfer, FaMoneyBillTrendUp, FaPix, FaWallet } from "react-icons/fa6";
 import Link from "next/link";
 
 const Sidebar: FC<PropsWithChildren<Record<string, unknown>>> = function ({
@@ -33,8 +33,11 @@ export default function SideBar() {
           <CustomSideBarItem icon={FaBarcode} href="/boletos" title='Boleto' />
 
           <CustomSideBarItem icon={FaMoneyBillTransfer} href="/transfer" title='Transferir' />
+          
+          <CustomSideBarItem icon={FaDollarSign} href="/payments" title='Pagar' />
 
           <CustomSideBarItem icon={FaMoneyBillTrendUp} href="/deposits" title='Depositar' />
+
         </ul>
 
         <FlowbiteSidebar.ItemGroup>
