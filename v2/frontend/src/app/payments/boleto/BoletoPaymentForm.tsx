@@ -5,7 +5,6 @@ import { Card } from '@/components/cards/Card';
 import InputText from '@/components/inputs/InputText';
 import { useBoletoPayment } from '@/context/BoletoPaymentContext';
 import { Button } from 'flowbite-react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast';

@@ -6,7 +6,7 @@ import { useBoletoDepositContext } from '@/context/BoletoDepositContext';
 import { useInvoicePayment } from '@/context/InvoicePaymentContext';
 import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { FaAngleRight, FaBarcode, FaMoneyBill } from 'react-icons/fa6';
 
@@ -14,6 +14,8 @@ export default function CardPaymentForm() {
   const router = useRouter();
   const { amount, setPaymentMethod, invoice, payCurrent, loading: accountLoading } = useInvoicePayment();
   const { setAmount: setBoletoAmount, generateBoleto, loading: boletoLoading } = useBoletoDepositContext();
+  const [finished, setFinished] = useState(true)
+
 
   const isInvalidPayment = useCallback(() => {
     return amount === 0
@@ -42,19 +44,24 @@ export default function CardPaymentForm() {
   }
 
   async function payUsingAccount() {
+    setFinished(false)
     const response = await payCurrent()
     if (response) {
       toast.success('Fatura paga com sucesso')
       router.replace('/payments/invoice/success')
     }
+    setFinished(true)
   }
 
   async function payUsingBoleto() {
+    setFinished(false)
     const response = await generateBoleto(invoice?.id!, 'invoice')
     if (response) {
       toast.success('Boleto gerado com sucesso')
       router.replace('/payments/invoice/success')
+      return
     }
+    setFinished(true)
   }
 
   return (
@@ -75,8 +82,8 @@ export default function CardPaymentForm() {
               </div>
             </header>
             <div className='flex flex-col justify-between items-center mt-2 space-y-2'>
-              <InvoicePaymentMethod title="Pague com saldo da conta" method='account' onClick={setPaymentMethodOnClick} icon={FaMoneyBill} disabled={boletoLoading || accountLoading} />
-              <InvoicePaymentMethod title="Gerar um boleto" method='boleto' onClick={setPaymentMethodOnClick} icon={FaBarcode} disabled={boletoLoading || accountLoading} />
+              <InvoicePaymentMethod title="Pague com saldo da conta" method='account' onClick={setPaymentMethodOnClick} icon={FaMoneyBill} disabled={boletoLoading || accountLoading || !finished} />
+              <InvoicePaymentMethod title="Gerar um boleto" method='boleto' onClick={setPaymentMethodOnClick} icon={FaBarcode} disabled={boletoLoading || !finished || accountLoading} />
             </div>
           </Card>
         </Container>

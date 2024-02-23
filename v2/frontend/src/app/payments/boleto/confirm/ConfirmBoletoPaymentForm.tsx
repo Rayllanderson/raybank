@@ -5,7 +5,7 @@ import { Card } from '@/components/cards/Card';
 import { useBoletoPayment } from '@/context/BoletoPaymentContext';
 import { MoneyFormatter } from '@/utils/MoneyFormatter';
 import { useRouter } from 'next/navigation';
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ButtonConfirm } from '../../ButtonConfirm';
 import { BoletoDetailsResponse } from '@/types/Boleto';
 import toast from 'react-hot-toast';
@@ -15,6 +15,8 @@ import { BoletoFormatter } from '@/utils/BoletoFormatter';
 export default function ConfirmBoletoPaymentForm() {
   const router = useRouter();
   const { barCode, loading, boleto: response, payBoleto } = useBoletoPayment();
+  const [finished, setFinished] = useState(true)
+
 
   const isInvalidPayment = useCallback(() => {
     if (!response) return true
@@ -28,11 +30,14 @@ export default function ConfirmBoletoPaymentForm() {
   }, [isInvalidPayment, router]);
 
   async function onButtonClick() {
+    setFinished(false)
     const paymentResponse = await payBoleto()
     if (paymentResponse) {
       toast.success('Boleto pago com sucesso')
       router.replace('/payments/boleto/success')
+      return
     }
+    setFinished(true)
   }
 
   return (
@@ -54,7 +59,7 @@ export default function ConfirmBoletoPaymentForm() {
               </div>
             </header>
 
-            <ButtonConfirm onClick={onButtonClick} disabled={loading}/>
+            <ButtonConfirm onClick={onButtonClick} disabled={loading || !finished}/>
           </Card>
         </Container>
       )}
