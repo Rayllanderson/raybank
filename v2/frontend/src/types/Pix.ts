@@ -49,4 +49,5 @@ export interface QrCode {
     creditName:   string;
     expiresIn:   Date;
     description: string;
+    success: boolean;
 }
