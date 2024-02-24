@@ -5,7 +5,8 @@ export function handlerApiError(err: unknown, defaultMessage: string = "Ocorreu 
     if (err instanceof ApiErrorException) {
         if (err.httpStatus === 400 || err.httpStatus === 422) {
             toast.error(err.message)
+            return;
         }
-    } else
-        toast.error(defaultMessage)
+    }
+    toast.error(defaultMessage)
 }

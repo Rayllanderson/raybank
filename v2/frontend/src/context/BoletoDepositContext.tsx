@@ -65,7 +65,7 @@ export const BoletoDepositProvider: React.FC<BoletoDepositProviderProps> = ({ ch
       depositData.success = true
       return response
     } catch (err) {
-      handlerApiError(err, 'Não foi gerar boleto, erro inesperado')
+      handlerApiError(err, 'Não foi gerar boleto, ocorreu um erro no servidor')
       return Promise.resolve(null)
     } finally {
       setLoading(false)

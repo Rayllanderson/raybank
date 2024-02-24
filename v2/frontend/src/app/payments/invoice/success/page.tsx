@@ -1,21 +1,7 @@
-'use client'
-import { useBoletoDepositContext } from '@/context/BoletoDepositContext';
-import { useInvoicePayment } from '@/context/InvoicePaymentContext';
-import React, { useEffect } from 'react'
+import React from 'react'
+import PaymentInvoiceSuccess from './PaymentInvoiceSuccess';
+
 
 export default function page() {
-    const { setAmount, boletoDepositData } = useBoletoDepositContext();
-    const { setAmount: setInvoiceAmount, paymentMethod } = useInvoicePayment();
-
-    useEffect(() => {
-        setAmount(0)
-        setInvoiceAmount(0)
-    }, [])
-
-    return (
-        <div>Sucesso!
-            <div>{paymentMethod === 'boleto' && boletoDepositData.barCode}</div>
-        </div>
-
-    )
+    return <PaymentInvoiceSuccess />
 }

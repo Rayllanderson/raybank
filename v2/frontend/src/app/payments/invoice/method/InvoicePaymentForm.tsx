@@ -49,6 +49,7 @@ export default function CardPaymentForm() {
     if (response) {
       toast.success('Fatura paga com sucesso')
       router.replace('/payments/invoice/success')
+      return;
     }
     setFinished(true)
   }
@@ -62,6 +63,7 @@ export default function CardPaymentForm() {
       return
     }
     setFinished(true)
+
   }
 
   return (
@@ -82,8 +84,8 @@ export default function CardPaymentForm() {
               </div>
             </header>
             <div className='flex flex-col justify-between items-center mt-2 space-y-2'>
-              <InvoicePaymentMethod title="Pague com saldo da conta" method='account' onClick={setPaymentMethodOnClick} icon={FaMoneyBill} disabled={boletoLoading || accountLoading || !finished} />
-              <InvoicePaymentMethod title="Gerar um boleto" method='boleto' onClick={setPaymentMethodOnClick} icon={FaBarcode} disabled={boletoLoading || !finished || accountLoading} />
+              <InvoicePaymentMethod title="Pague com saldo da conta" method='account' onClick={setPaymentMethodOnClick} icon={FaMoneyBill} disabled={!finished} />
+              <InvoicePaymentMethod title="Gerar um boleto" method='boleto' onClick={setPaymentMethodOnClick} icon={FaBarcode} disabled={!finished} />
             </div>
           </Card>
         </Container>
@@ -93,9 +95,10 @@ export default function CardPaymentForm() {
 
 }
 
-function InvoicePaymentMethod({ title, method, icon: Icon, onClick }: { disabled: boolean, title: string, icon: any, method: 'account' | 'boleto', onClick: (v: 'account' | 'boleto') => void; }) {
+function InvoicePaymentMethod({ title, method, icon: Icon, onClick, disabled }: { disabled: boolean, title: string, icon: any, method: 'account' | 'boleto', onClick: (v: 'account' | 'boleto') => void; }) {
   return (
-    <button onClick={() => onClick(method)} className='w-full hover:scale-[1.03] transition-transform'>
+
+    <button onClick={() => onClick(method)} className='w-full hover:scale-[1.03] transition-transform' disabled={disabled}>
       <div className='flex justify-between items-center'>
         <div className="flex justify-between items-center space-x-3">
           <div>
