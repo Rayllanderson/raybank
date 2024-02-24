@@ -23,6 +23,7 @@ export interface BoletoDetailsResponse {
   boleto:             Boleto;
   beneficiary:        BeneficiaryResponse;
   institutionIssuing: InstitutionIssuing;
+  success: boolean;
 }
 
 interface BeneficiaryResponse {

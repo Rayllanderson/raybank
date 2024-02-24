@@ -15,6 +15,7 @@ interface BoletoPaymentContextProps {
     payBoleto:() => Promise<any|null>;
     findBoleto:() => Promise<BoletoDetailsResponse|null>;
     boleto:BoletoDetailsResponse|null
+    resetPayment: () => void
 }
 
 const BoletoPaymentContext = createContext<BoletoPaymentContextProps | undefined>(undefined);
@@ -35,6 +36,7 @@ export const BoletoPaymentProvider: React.FC<BoletoPaymentProviderProps> = ({ ch
         try {
             setLoading(true);
             const response = await findBoletoByBarCodeUsingToken(barCode?.toString()!, session?.token!);
+            response.success = true
             setBoleto(response)
             return response
         } catch (err) {
@@ -57,8 +59,14 @@ export const BoletoPaymentProvider: React.FC<BoletoPaymentProviderProps> = ({ ch
         }
     }
 
+    const resetPayment = () => {
+        setBoleto(null)
+        setBarCode(0)
+        setBeneficiaryName('')
+    }
+
     return (
-        <BoletoPaymentContext.Provider value={{loading, barCode, beneficiaryName, amount, setBarCode, setBeneficiaryName, setAmount,payBoleto,findBoleto,boleto }}>
+        <BoletoPaymentContext.Provider value={{resetPayment,loading, barCode, beneficiaryName, amount, setBarCode, setBeneficiaryName, setAmount,payBoleto,findBoleto,boleto }}>
             {children}
         </BoletoPaymentContext.Provider>
     );

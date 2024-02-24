@@ -54,7 +54,7 @@ export default function ConfirmBoletoPaymentForm() {
               <div className="text-start">
                 <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">Pagando</h1>
                 <h1 className="text-3xl md:text-4xl font-semibold text-primary-2">{MoneyFormatter.format(response?.boleto.value!)}</h1>
-                <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>para: {getBeneficiary(response!)}</p>
+                <p className='text-md md:text-lg text-gray-500 dark:text-gray-400'>para: {getBoletoBeneficiaryName(response!)}</p>
                 <p className='text-md md:text-lg max-w-sm text-gray-500 dark:text-gray-400'>{BoletoFormatter.formatBarCode(barCode?.toString())}</p>
               </div>
             </header>
@@ -67,11 +67,12 @@ export default function ConfirmBoletoPaymentForm() {
   );
 }
 
-function getBeneficiary(boletoResponse: BoletoDetailsResponse) {
+export function getBoletoBeneficiaryName(boletoResponse: BoletoDetailsResponse): string {
   if (boletoResponse.beneficiary.account) {
     return boletoResponse.beneficiary.account.name
   }
   if (boletoResponse.beneficiary.invoice) {
     return "Fatura do cartão"
   }
+  return ''
 }
