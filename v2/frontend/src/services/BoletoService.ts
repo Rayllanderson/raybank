@@ -2,6 +2,7 @@ import { Boleto, BoletoDetailsResponse, GenerateBoletoRequest } from "@/types/Bo
 import { snakeToCamel } from "@/utils/StringUtils";
 import { get, post } from "./ApiRequest";
 import { getToken } from "@/app/api/auth/[...nextauth]/options";
+import { ApiErrorException } from "@/types/Error";
 
 export const BoletoService = {
     payBoleto
@@ -13,6 +14,19 @@ export async function findAllBoletos(): Promise<Boleto[]> {
 
 export async function findBoletoByBarCode(code: string): Promise<BoletoDetailsResponse> {
     return await findBoletoByBarCodeUsingToken(code, await getToken())
+}
+
+export async function findBoletoOrNullByBarCode(code: string): Promise<BoletoDetailsResponse | null> {
+    try {
+        return await findBoletoByBarCodeUsingToken(code, await getToken())
+    } catch (err) {
+        if (err instanceof ApiErrorException) {
+            if (err.httpStatus === 404) {
+                return null
+            }
+        }
+        throw err;
+    }
 }
 
 export async function findBoletoByBarCodeUsingToken(code: string, token: string): Promise<BoletoDetailsResponse> {

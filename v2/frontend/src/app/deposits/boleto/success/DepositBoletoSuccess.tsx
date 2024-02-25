@@ -28,8 +28,8 @@ export default function DepositBoletoSuccess() {
         <>
             {!depositData?.success && null}
             {depositData?.success && (
-                <Container>
-                    <Card>
+                <Container size="max-w-md md:max-w-lg lg:max-w-xl">
+                    <Card className='w-full'>
                         <div className="">
                             <h1 className='text-lg lg:text-xl font-semibold'>Boleto Gerado!</h1>
                             <h1 className='lg:text-lg'>Valor a ser pago <span className='text-primary-1 font-semibold'>{MoneyFormatter.format(depositData?.amount!)}</span></h1>

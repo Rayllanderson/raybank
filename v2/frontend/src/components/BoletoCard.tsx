@@ -4,13 +4,15 @@ import { formatDate } from '../utils/DateFormatter';
 import { MoneyFormatter } from '../utils/MoneyFormatter';
 import Separator from './Separator';
 import { Boleto } from '../types/Boleto';
+import Link from 'next/link';
+import BoletoUtils from '@/utils/BoletoUtils';
 
 interface Props {
     boleto: Boleto
 }
 
 export function BoletoCard({boleto}: Props) {
-    return <div className="component">
+    return <Link href={`/boletos/${boleto.barCode}`}>
         <header>
             <div className='header flex justify-between items-center '>
                 <div className='flex space-x-2 items-center text-lg'>
@@ -35,11 +37,11 @@ export function BoletoCard({boleto}: Props) {
                 </div>
                 <div className='flex justify-end'>
                     <div className='data'>
-                        {boleto.status}
+                        {BoletoUtils.formartStatus(boleto.status)}
                     </div>
                 </div>
             </div>
         </div>
         <Separator/>
-    </div>;
+    </Link>;
 }

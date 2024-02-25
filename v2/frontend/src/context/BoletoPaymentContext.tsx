@@ -5,11 +5,11 @@ import { useSession } from 'next-auth/react';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface BoletoPaymentContextProps {
-    barCode: number | null;
+    barCode: string | null;
     beneficiaryName: string;
     amount: number;
     loading: boolean;
-    setBarCode: React.Dispatch<React.SetStateAction<number>>;
+    setBarCode: React.Dispatch<React.SetStateAction<string>>;
     setBeneficiaryName: React.Dispatch<React.SetStateAction<string>>;
     setAmount: React.Dispatch<React.SetStateAction<number>>;
     payBoleto:() => Promise<any|null>;
@@ -25,7 +25,7 @@ interface BoletoPaymentProviderProps {
 }
 
 export const BoletoPaymentProvider: React.FC<BoletoPaymentProviderProps> = ({ children }) => {
-    const [barCode, setBarCode] = useState<number>(0);
+    const [barCode, setBarCode] = useState<string>('');
     const [beneficiaryName, setBeneficiaryName] = useState<string>('');
     const [boleto,setBoleto] = useState<BoletoDetailsResponse|null>(null)
     const [amount, setAmount] = useState<number>(0);
@@ -61,7 +61,7 @@ export const BoletoPaymentProvider: React.FC<BoletoPaymentProviderProps> = ({ ch
 
     const resetPayment = () => {
         setBoleto(null)
-        setBarCode(0)
+        setBarCode('')
         setBeneficiaryName('')
     }
 
