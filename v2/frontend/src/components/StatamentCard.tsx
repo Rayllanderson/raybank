@@ -8,11 +8,13 @@ import Separator from './Separator'
 export type StatementProps = {
     statement: Statement,
     type: 'account' | 'card'
+    onClick: (value: any) => void
 }
 
-export default function StatamentCard({ statement, type }: StatementProps) {
+export default function StatamentCard({ statement, type,onClick }: StatementProps) {
+    
     return (
-        <div className="p-3 shadow-sm rounded-md bg-gray-100 dark:bg-black-2">
+        <div className="p-3 shadow-sm rounded-md bg-gray-100 dark:bg-black-2 cursor-pointer hover:scale-[1.019] transition-transform" onClick={onClick}>
             <div className="p-1">
                 <StatementHeader statement={statement} type={type} />
                 {
@@ -20,8 +22,6 @@ export default function StatamentCard({ statement, type }: StatementProps) {
                         <StatementAccountBody statement={statement} /> :
                         <StatementCreditCardBody statement={statement} />
                 }
-
-                {/* <Separator /> */}
             </div>
         </div>
     )

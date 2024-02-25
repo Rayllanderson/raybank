@@ -4,7 +4,7 @@ import { equalsIgnoreCase } from '@/utils/StringUtils'
 import { Tabs } from 'flowbite-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
-import { HiUserCircle } from 'react-icons/hi'
+import { FaCircleCheck, FaCircleDot, FaCircleXmark, FaClock } from 'react-icons/fa6'
 
 const getStatus = (tab: number) => {
     if (tab === 1)
@@ -27,16 +27,16 @@ export default function BoletoTabs() {
 
     return (
         <Tabs aria-label="Default tabs" style="underline" onActiveTabChange={(tab) => onTableActive(tab)}>
-            <Tabs.Item active={search === undefined || search === null || equalsIgnoreCase(search, getStatus(0))} title="Todos" icon={HiUserCircle}>
+            <Tabs.Item active={search === undefined || search === null || equalsIgnoreCase(search, getStatus(0))} title="Todos" icon={FaCircleDot}>
 
             </Tabs.Item>
-            <Tabs.Item active={equalsIgnoreCase(search, getStatus(1))} title="Pendente" icon={HiUserCircle}>
+            <Tabs.Item active={equalsIgnoreCase(search, getStatus(1))} title="Pendente" icon={FaClock}>
 
             </Tabs.Item>
-            <Tabs.Item active={equalsIgnoreCase(search, getStatus(2))} title="Pagos" icon={HiUserCircle}>
+            <Tabs.Item active={equalsIgnoreCase(search, getStatus(2))} title="Pagos" icon={FaCircleCheck}>
 
             </Tabs.Item>
-            <Tabs.Item active={equalsIgnoreCase(search, getStatus(3))} title="Expirados" icon={HiUserCircle}>
+            <Tabs.Item active={equalsIgnoreCase(search, getStatus(3))} title="Expirados" icon={FaCircleXmark}>
 
             </Tabs.Item>
 

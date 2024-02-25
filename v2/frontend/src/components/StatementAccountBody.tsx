@@ -1,4 +1,4 @@
-import { hasDescription, isIncomming } from '@/utils/StatementUtil';
+import { formatStatementMethod, hasDescription, isIncomming } from '@/utils/StatementUtil';
 import { Statement } from '../types/Statement';
 import { MoneyFormatter } from '../utils/MoneyFormatter';
 
@@ -19,7 +19,7 @@ export function StatementAccountBody({ statement }: Props) {
         </div>
 
         <div className='description'>
-            {statement.method}
+            {formatStatementMethod(statement.method)}
         </div>
     </div>;
 }

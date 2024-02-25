@@ -5,10 +5,11 @@ import { FaSearch } from 'react-icons/fa';
 import StatamentCard from './StatamentCard';
 import { Statement } from '@/types/Statement';
 import { getAllCardStatementsWithToken } from '@/services/StatementService';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Page } from '@/types/Page';
 import { StatementHeaderLoading } from './loading/StatementHeaderLoading';
 import { StatementCreditCardBodyLoading } from './loading/StatementCreditCardBodyLoading';
+import StatementDetailsModal from './modal/StatementDetailsModal';
 
 interface Props {
     type: "card" | "account";
@@ -16,6 +17,14 @@ interface Props {
 }
 
 export function Statements({ type }: Props) {
+    const [openModal, setOpenModal] = useState(false)
+    const [selectedStatement, setSelectedStatement] = useState<Statement | null>(null);
+    const handleStatementClick = (statement: Statement) => {
+        setSelectedStatement(statement);
+        setOpenModal(true);
+    };
+
+
     const [pagination, setPagination] = useState<Page<Statement>>({
         page: 0,
         size: 1,
@@ -26,12 +35,6 @@ export function Statements({ type }: Props) {
     const { data: session } = useSession();
     const [loading, setLoading] = useState(true);
     const [canFetch, setCanFetch] = useState(true);
-
-    useEffect(() => {
-        if (session?.error === "RefreshAccessTokenError") {
-            signIn();
-        }
-    }, [session]);
 
     useEffect(() => {
         setPagination({
@@ -72,6 +75,7 @@ export function Statements({ type }: Props) {
 
 
     return <div>
+        <StatementDetailsModal statement={selectedStatement} show={openModal} setOpenModal={setOpenModal}/>
         <h1 className="text-2xl font-semibold font-mono">Histórico</h1>
         {pagination.items.length === 0 && !loading ? (
             <p className="text-gray-500 mt-5"> Sem transações até o momento</p>
@@ -84,7 +88,7 @@ export function Statements({ type }: Props) {
                 <div className='space-y-2 mt-5'>
                     {pagination.items.map((statement: Statement) => {
                         return (
-                            <StatamentCard statement={statement} key={statement.id} type={type} />
+                            <StatamentCard statement={statement} key={statement.id} type={type} onClick={() => handleStatementClick(statement)}/>
                         )
                     })}
                 </div>
