@@ -26,3 +26,13 @@ export function snakeToCamel(obj: any): any {
     }
     return newObj;
 }
+
+export function equalsIgnoreCase(str1: string | null, str2: string | null): boolean {
+    if (isNullOrUndefined(str1))
+        return false
+    if (isNullOrUndefined(str2))
+        return false
+    return str1!.toLowerCase() === str2!.toLowerCase();
+}
+
+export const isNullOrUndefined = (str: string | null): boolean => str === undefined || str === null

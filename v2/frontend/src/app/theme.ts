@@ -45,7 +45,31 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
     modal: {
         content: {
             "base": "relative h-full w-full p-4 md:h-auto",
-            "inner": "relative rounded-lg bg-white shadow dark:bg-black-1 flex flex-col max-h-[90vh]"  
+            "inner": "relative rounded-lg bg-white shadow dark:bg-black-1 flex flex-col max-h-[90vh]"
         }
+    },
+
+    tabs: {
+        "base": "flex flex-col gap-2",
+        "tablist": {
+            "base": "flex text-center",
+            "styles": {
+                "underline": "w-full -mb-px border-b border-gray-200 dark:border-gray-700",
+            },
+            "tabitem": {
+                "base": "flex items-center justify-center p-4 rounded-lg text-sm font-medium first:ml-0 disabled:cursor-not-allowed disabled:text-gray-400 disabled:dark:text-gray-500 focus:outline-none",
+                "styles": {
+                    "underline": {
+                        "base": "rounded-t-lg w-full ",
+                        "active": {
+                            "on": "text-primary-2 rounded-lg border-2 border-primary-2 active",
+                            "off": "border-b-2 border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300"
+                        }
+                    },
+                },
+                "icon": "mr-2 h-5 w-5"
+            }
+        },
+        "tabpanel": ""
     }
-};
+};  

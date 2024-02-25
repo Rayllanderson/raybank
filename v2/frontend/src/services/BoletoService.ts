@@ -9,7 +9,11 @@ export const BoletoService = {
 }
 
 export async function findAllBoletos(): Promise<Boleto[]> {
-    return await findAllBoletosUsingToken(await getToken())
+    return await findAllBoletosUsingToken(null, await getToken())
+}
+
+export async function findAllBoletosByStatus(status:string): Promise<Boleto[]> {
+    return await findAllBoletosUsingToken(status, await getToken())
 }
 
 export async function findBoletoByBarCode(code: string): Promise<BoletoDetailsResponse> {
@@ -34,8 +38,8 @@ export async function findBoletoByBarCodeUsingToken(code: string, token: string)
     return snakeToCamel(response)
 }
 
-export async function findAllBoletosUsingToken(token: string): Promise<Boleto[]> {
-    const response = await get(`/api/v1/internal/boletos`, token);
+export async function findAllBoletosUsingToken(status:string | null, token: string): Promise<Boleto[]> {
+    const response = await get(`/api/v1/internal/boletos`, token, status === null || status === undefined ? {} : {status: status});
     return snakeToCamel(response)
 }
 

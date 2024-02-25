@@ -4,11 +4,22 @@ import { MiniCard } from '../../components/cards/MiniCard';
 import { Card } from '../../components/cards/Card';
 import { FaBarcode, FaMoneyBill } from 'react-icons/fa6';
 import { BoletoCard } from '../../components/BoletoCard';
-import { findAllBoletos } from '@/services/BoletoService';
+import { findAllBoletos, findAllBoletosByStatus } from '@/services/BoletoService';
+import BoletoTabs from '../../components/BoletoTabs';
+import { revalidatePath } from 'next/cache';
 
-export default async function page() {
+export default async function page({ searchParams }: { searchParams: { status: string } }) {
 
-    const boletos = await findAllBoletos()
+    let boletos = await findAllBoletosByStatus(searchParams.status)
+
+    async function onChange(boletos: any, status: string) {
+        "use server"
+        console.log(status)
+        console.log(boletos)
+        console.log(await findAllBoletosByStatus(status))
+        await findAllBoletosByStatus(status)
+        revalidatePath("/boletos");
+    }
 
     return (
         <Container>
@@ -27,6 +38,7 @@ export default async function page() {
 
             <div className='mt-8 p-1'>
                 <h1 className="text-xl font-semibold font-mono">Meus Boletos</h1>
+                <BoletoTabs />
                 <div className="space-y-2 mt-5">
                     {boletos.length === 0 ?
                         <p>Sem boletos cadastrados</p>
