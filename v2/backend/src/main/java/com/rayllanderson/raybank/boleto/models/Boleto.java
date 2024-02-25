@@ -41,7 +41,7 @@ public class Boleto {
 
     private String title;
 
-    @DecimalMin("0.1")
+    @DecimalMin("0.01")
     @Column(nullable = false, name = "_value")
     private BigDecimal value;
 

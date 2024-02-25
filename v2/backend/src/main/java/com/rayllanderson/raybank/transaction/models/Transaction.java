@@ -48,6 +48,7 @@ public class Transaction {
     protected String referenceId;
 
     @NotNull
+    @Column(nullable = false)
     protected String description;
 
     protected String message;

@@ -42,12 +42,12 @@ public class BoletoPostgresGateway implements BoletoGateway {
 
     @Override
     public List<Boleto> findAllAccountId(String accountId) {
-        return boletoRepository.findAllByHolderId(accountId);
+        return boletoRepository.findAllByHolderIdOrderByCreatedAtDesc(accountId);
     }
 
     @Override
     public List<Boleto> findAllAccountIdAndStatus(String accountId, BoletoStatus status) {
-        return boletoRepository.findAllByHolderIdAndStatus(accountId, status);
+        return boletoRepository.findAllByHolderIdAndStatusOrderByCreatedAtDesc(accountId, status);
     }
 
     @Override

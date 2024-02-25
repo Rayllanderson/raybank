@@ -29,7 +29,7 @@ public class DebitAccountService {
 
         final String referenceTransactionId = getReferenceTransactionId(debitInput);
 
-        var amountToBePaid = debitInput.getAmount();
+        final var amountToBePaid = debitInput.getAmount();
         bankAccount.debit(amountToBePaid);
 
         this.bankAccountGateway.save(bankAccount);
