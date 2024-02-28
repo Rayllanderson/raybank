@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +23,10 @@ public class User {
 
     @Id
     private String id;
+    @NotBlank
     @Size(min = 1, max = 100)
     private String name;
+    @NotBlank
     @Size(min = 3, max = 100)
     @Column(unique = true)
     private String username;

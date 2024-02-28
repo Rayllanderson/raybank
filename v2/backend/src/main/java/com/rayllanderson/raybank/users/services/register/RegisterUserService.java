@@ -68,7 +68,7 @@ public class RegisterUserService {
         try {
             saveOnDatabase(user);
         } catch (final Exception e) {
-            log.error("Failed to save user {} on database.", user.getId());
+            log.error("Failed to save user {} on database.", user.getId(), e);
             throw e;
         }
     }

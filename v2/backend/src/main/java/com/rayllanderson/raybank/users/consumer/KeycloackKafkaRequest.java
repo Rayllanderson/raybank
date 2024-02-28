@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.users.consumer;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rayllanderson.raybank.users.services.register.RegisterUserInput;
 import com.rayllanderson.raybank.users.services.update.UpdateUserInput;
@@ -10,6 +11,7 @@ public record KeycloackKafkaRequest(
         @JsonProperty("realmId")
         String realmId,
         Details details,
+        @JsonAlias({"type", "operationType"})
         String type,
         @JsonProperty("userId")
         String userId,

@@ -35,7 +35,6 @@ public class BankStatementDetailsResponse {
     @Getter
     @Setter
     public static class DebitResponse {
-        private String id;
         private String name;
         private String origin;
     }
@@ -43,7 +42,6 @@ public class BankStatementDetailsResponse {
     @Getter
     @Setter
     public static class CreditResponse {
-        private String id;
         private String name;
         private String destination;
     }

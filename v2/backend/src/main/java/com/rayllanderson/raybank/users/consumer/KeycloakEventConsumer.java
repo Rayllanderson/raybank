@@ -29,7 +29,7 @@ public class KeycloakEventConsumer {
 
             possibleService.ifPresent(service -> service.process(request));
         } catch (Exception e) {
-            log.error("Failed to consume register user request", e);
+            log.error("Failed to consume register user request {}",message, e);
         } finally {
             ack.acknowledge();
         }
