@@ -6,7 +6,9 @@ import com.rayllanderson.raybank.card.services.limit.FindCardLimitService;
 import com.rayllanderson.raybank.card.services.payment.CardPaymentInput;
 import com.rayllanderson.raybank.card.transactions.payment.CardCreditPaymentTransaction;
 import com.rayllanderson.raybank.core.exceptions.UnprocessableEntityException;
+import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanInput;
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanMapper;
+import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanOutput;
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanService;
 import com.rayllanderson.raybank.shared.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.transaction.gateway.TransactionGateway;
@@ -30,16 +32,17 @@ public class CreditCardPaymentStrategy implements CardPaymentStrategy {
     @Override
     @Transactional
     public Transaction pay(final CardPaymentInput payment, final Card card) {
-        final var transaction = CardCreditPaymentTransaction.from(payment, card);
-
         final boolean hasAvailableLimit = cardLimitService.hasAvailableLimit(card, payment.getAmount());
+
         if (!hasAvailableLimit) {
             throw UnprocessableEntityException.with(INSUFFICIENT_CARD_LIMIT, "Seu cartão não possui limite suficiente para esta compra.");
         }
 
-        final var createPlanInput = planMapper.from(transaction);
-        final var installmentPlan = createInstallmentPlanService.create(createPlanInput);
-        transaction.addPlan(installmentPlan.getId());
+        final var transaction = CardCreditPaymentTransaction.from(payment, card);
+
+        final CreateInstallmentPlanInput createPlanInput = planMapper.from(transaction);
+        final CreateInstallmentPlanOutput installmentPlan = createInstallmentPlanService.create(createPlanInput);
+        transaction.addPlan(installmentPlan.id());
 
         eventPublisher.publish(new CardCreditPaymentCompletedEvent(transaction));
 

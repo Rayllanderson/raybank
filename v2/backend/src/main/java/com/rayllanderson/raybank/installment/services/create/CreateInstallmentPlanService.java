@@ -19,13 +19,13 @@ public class CreateInstallmentPlanService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public CreateInstallmentPlanOutput create(final CreateInstallmentPlanInput input) {
-        final InstallmentPlan installmentPlan = InstallmentPlan.create(input.getTransactionId(),
-                input.getAccountId(),
-                input.getInvoiceId(),
-                input.getEstablishmentId(),
-                input.getInstallmentCount(),
-                input.getTotal(),
-                input.getDescription()
+        final InstallmentPlan installmentPlan = InstallmentPlan.create(input.transactionId(),
+                input.accountId(),
+                input.invoiceId(),
+                input.establishmentId(),
+                input.installmentCount(),
+                input.total(),
+                input.description()
         );
 
         createInstallmentsAndAddToPlan(installmentPlan);
