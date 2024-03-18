@@ -16,6 +16,13 @@ interface Props {
     statements?: Statement[];
 }
 
+const emptyPage ={
+    page: 0,
+    size: 1,
+    total: 0,
+    items: []
+}
+
 export function Statements({ type }: Props) {
     const [openModal, setOpenModal] = useState(false)
     const [selectedStatement, setSelectedStatement] = useState<Statement | null>(null);
@@ -25,13 +32,9 @@ export function Statements({ type }: Props) {
     };
 
 
-    const [pagination, setPagination] = useState<Page<Statement>>({
-        page: 0,
-        size: 1,
-        total: 0,
-        items: []
-    });
+    const [pagination, setPagination] = useState<Page<Statement>>(emptyPage);
     const [page, setPage] = useState(0);
+    const [search, setSearch] = useState<string|null>(null);
     const { data: session } = useSession();
     const [loading, setLoading] = useState(true);
     const [canFetch, setCanFetch] = useState(true);
@@ -46,26 +49,38 @@ export function Statements({ type }: Props) {
         setPage(0)
     }, [type]);
 
+    async function fetchItems() {
+        setLoading(true);
+        const data: Page<Statement> = await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10, sort: 'moment,desc', ...(search ? { search: search } : {}) })
+        setPagination(prevPagination => ({
+            ...data,
+            items: [...prevPagination.items, ...data.items]
+        }))
+        setCanFetch(data.items.length > 0);
+        setLoading(false);
+    }
+
     useEffect(() => {
-        async function fetchItems() {
-            setLoading(true);
-            const data: Page<Statement> = await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10, sort: 'moment,desc' })
-            setPagination(prevPagination => ({
-                ...data,
-                items: [...prevPagination.items, ...data.items]
-            }));
-            setCanFetch(data.items.length > 0);
-            setLoading(false);
-        }
 
         fetchItems();
     }, [session?.token!, page, type]);
+
+    
+    useEffect(() => {
+        setPagination(emptyPage)
+        fetchItems();
+    }, [search]);
 
     function handleScroll() {
         if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
             if (canFetch)
                 setPage(prevPage => prevPage + 1);
         }
+    }
+
+    async function handlerSearchChange(e:any) {
+        const searchTerm:string = e.target.value;
+        setSearch(searchTerm);
     }
 
     useEffect(() => {
@@ -78,11 +93,17 @@ export function Statements({ type }: Props) {
         <StatementDetailsModal statement={selectedStatement} show={openModal} setOpenModal={setOpenModal}/>
         <h1 className="text-2xl font-semibold font-mono">Histórico</h1>
         {pagination.items.length === 0 && !loading ? (
-            <p className="text-gray-500 mt-5"> Sem transações até o momento</p>
+            <>
+                {search &&  <div className='mt-2'>
+                    <InputWithIcon icon={FaSearch} type="text" placeholder='Buscar' onChange={handlerSearchChange}/>
+                </div>}
+
+                <p className="text-gray-500 mt-5"> Sem transações</p>
+            </>
         ) : (
             <>
                 <div className='mt-2'>
-                    <InputWithIcon icon={FaSearch} type="text" placeholder='Buscar' />
+                    <InputWithIcon icon={FaSearch} type="text" placeholder='Buscar' onChange={handlerSearchChange}/>
                 </div>
 
                 <div className='space-y-2 mt-5'>
