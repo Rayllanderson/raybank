@@ -38,15 +38,6 @@ public class BankStatementFinderService {
     }
 
     @Transactional(readOnly = true)
-    public List<BankStatementOutput> findAllAccountStatementsByAccountId(final String accountId) {
-        var statements = bankStatementGateway.findAllByAccountIdAndMethodNotIn(accountId, CREDIT_CARD_TRANSACTIONS);
-
-        statements.removeIf(isInvoiceCredit());
-
-        return mapper.from(statements);
-    }
-
-    @Transactional(readOnly = true)
     public Pagination<BankStatementOutput> findAllAccountStatementsByAccountId(final String accountId, SearchQuery query) {
         var statements = bankStatementGateway.findAllByAccountIdAndMethodNotIn(accountId, query, CREDIT_CARD_TRANSACTIONS);
 
@@ -58,19 +49,6 @@ public class BankStatementFinderService {
     private static Predicate<BankStatement> isInvoiceCredit() {
         return statement -> statement.getCredit().getDestination().equals(Credit.Destination.INVOICE.name())
                 && statement.getType().equals(TransactionType.DEPOSIT.name());
-    }
-
-    @Transactional(readOnly = true)
-    public List<BankStatementOutput> findAllCardStatementsByAccountId(final String accountId) {
-        final var statements = bankStatementGateway.findAllByAccountIdAndMethodIn(accountId, CREDIT_CARD_TRANSACTIONS);
-        final var invoiceStatements = bankStatementGateway.findAllByAccountIdAndCreditDestinationAndType(accountId, Credit.Destination.INVOICE, TransactionType.DEPOSIT);
-
-        statements.removeIf(isRefund());
-
-        var bankStatements = new ArrayList<>(mapper.from(statements));
-        bankStatements.addAll(mapper.from(invoiceStatements));
-
-        return bankStatements;
     }
 
     @Transactional(readOnly = true)
@@ -88,7 +66,7 @@ public class BankStatementFinderService {
 
         sortByProperty(allBankStatements, query.sortProperty(), query.sort().direction());
 
-        return new Pagination<>(bankStatements.page(), bankStatements.size(), bankStatements.total(), allBankStatements);
+        return new Pagination<>(bankStatements.page(), bankStatements.size(), allBankStatements.size(), allBankStatements);
     }
 
     private static Predicate<BankStatement> isRefund() {

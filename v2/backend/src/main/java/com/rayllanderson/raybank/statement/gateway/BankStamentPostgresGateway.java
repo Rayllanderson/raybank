@@ -39,7 +39,13 @@ public class BankStamentPostgresGateway implements BankStatementGateway {
     public Pagination<BankStatement> findAllByAccountId(String accountId, SearchQuery query) {
         final PageRequest pageRequest = toPageRequest(query);
 
-        Page<BankStatement> page = bankStatementRepository.findAllByAccountId(accountId, pageRequest);
+        Page<BankStatement> page;
+
+        if (query.searchAttributeValue() == null) {
+            page = bankStatementRepository.findAllByAccountId(accountId, pageRequest);
+        } else {
+            page = bankStatementRepository.searchByTermAndAccountId(query.searchAttributeValue(), accountId, pageRequest);
+        }
 
         return toPagination(page);
     }
@@ -50,38 +56,35 @@ public class BankStamentPostgresGateway implements BankStatementGateway {
     }
 
     @Override
-    public List<BankStatement> findAllByAccountIdAndMethodNotIn(String accountId, List<TransactionMethod> methods) {
-        return bankStatementRepository.findAllByAccountIdAndMethodNotIn(accountId, enumListToString(methods));
-    }
-
-    @Override
     public Pagination<BankStatement> findAllByAccountIdAndMethodNotIn(String accountId, SearchQuery query, List<TransactionMethod> methods) {
         final PageRequest pageRequest = toPageRequest(query);
-        final var page =  bankStatementRepository.findAllByAccountIdAndMethodNotIn(accountId, enumListToString(methods), pageRequest);
+        Page<BankStatement> page;
+        if (query.searchAttributeValue() == null)
+            page = bankStatementRepository.findAllByAccountIdAndMethodNotIn(accountId, enumListToString(methods), pageRequest);
+        else
+            page = bankStatementRepository.searchByTermAndAccountIdAndMethodNotIn(query.searchAttributeValue(), accountId, enumListToString(methods), pageRequest);
         return toPagination(page);
-    }
-
-    @Override
-    public List<BankStatement> findAllByAccountIdAndMethodIn(String accountId, List<TransactionMethod> methods) {
-        return bankStatementRepository.findAllByAccountIdAndMethodIn(accountId, enumListToString(methods));
     }
 
     @Override
     public Pagination<BankStatement> findAllByAccountIdAndMethodIn(String accountId, SearchQuery query, List<TransactionMethod> methods) {
         final PageRequest pageRequest = toPageRequest(query);
-        final var page = bankStatementRepository.findAllByAccountIdAndMethodIn(accountId, enumListToString(methods), pageRequest);
+        Page<BankStatement> page;
+        if (query.searchAttributeValue() == null)
+            page = bankStatementRepository.findAllByAccountIdAndMethodIn(accountId, enumListToString(methods), pageRequest);
+        else
+            page = bankStatementRepository.searchByTermAndAccountIdAndMethodIn(query.searchAttributeValue(), accountId, enumListToString(methods), pageRequest);
         return toPagination(page);
-    }
-
-    @Override
-    public List<BankStatement> findAllByAccountIdAndCreditDestinationAndType(String accountId, Credit.Destination destination, TransactionType type) {
-        return bankStatementRepository.findAllByAccountIdAndCreditDestinationAndType(accountId, destination.name(), type.name());
     }
 
     @Override
     public Pagination<BankStatement> findAllByAccountIdAndCreditDestinationAndType(String accountId, SearchQuery query, Credit.Destination destination, TransactionType type) {
         final PageRequest pageRequest = toPageRequest(query);
-        final var page = bankStatementRepository.findAllByAccountIdAndCreditDestinationAndType(accountId, destination.name(), type.name(), pageRequest);
+        Page<BankStatement> page;
+        if (query.searchAttributeValue() == null)
+            page = bankStatementRepository.findAllByAccountIdAndCreditDestinationAndType(accountId, destination.name(), type.name(), pageRequest);
+        else
+            page = bankStatementRepository.searchByTermAndAccountIdAndCreditDestinationAndType(query.searchAttributeValue(), accountId, destination.name(), type.name(), pageRequest);
         return toPagination(page);
     }
 

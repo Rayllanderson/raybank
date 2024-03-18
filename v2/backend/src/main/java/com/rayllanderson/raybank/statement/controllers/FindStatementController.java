@@ -29,14 +29,14 @@ public class FindStatementController {
 
     @GetMapping
     @RequiredAccountOwner
-    public ResponseEntity<?> findAllStatements(@AuthenticationPrincipal Jwt jwt,
+    public ResponseEntity<Pagination<BankStatementDetailsResponse>> findAllStatements(@AuthenticationPrincipal Jwt jwt,
                                                @PathVariable String accountId,
+                                               @RequestParam(name = "search", required = false) String search,
                                                @RequestParam(required = false, defaultValue = "all") StatementTypeParam type,
                                                @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
                                                @RequestParam(name = "size", required = false, defaultValue = "50") Integer size,
                                                @RequestParam(name = "sort", required = false, defaultValue = "moment,desc") String[] sort) {
-
-        final var query = SearchQuery.from(page, size, null, sort, StatementProperty.class);
+        final var query = SearchQuery.from(page, size, new String[]{"id", search}, sort, StatementProperty.class);
 
         final Pagination<BankStatementOutput> statements = type.find(bankStatementFinderService, accountId, query);
 
