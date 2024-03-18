@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.boleto.controllers.generate;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.rayllanderson.raybank.core.exceptions.BadRequestException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,12 +14,15 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.BOLETO_BENEFICIARY_TYPE_BADLY_FORMATTED;
+import static com.rayllanderson.raybank.shared.constants.TransactionConstants.MAX_TRANSACTION_AMOUNT;
+import static com.rayllanderson.raybank.shared.constants.TransactionConstants.MIN_TRANSACTION_AMOUNT;
 
 @Getter
 @Setter
 public class GenerateBoletoRequest {
     @NotNull
-    @DecimalMin("0.01")
+    @DecimalMin(MIN_TRANSACTION_AMOUNT)
+    @DecimalMax(MAX_TRANSACTION_AMOUNT)
     private BigDecimal value;
 
     private String title;

@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.card.controllers.payment;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
@@ -15,12 +16,16 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 
+import static com.rayllanderson.raybank.shared.constants.TransactionConstants.MAX_TRANSACTION_AMOUNT;
+import static com.rayllanderson.raybank.shared.constants.TransactionConstants.MIN_TRANSACTION_AMOUNT;
+
 @Getter
 @Setter
 public class CardPaymentRequest {
 
     @NotNull
-    @DecimalMin(value = "0.01")
+    @DecimalMin(MIN_TRANSACTION_AMOUNT)
+    @DecimalMax(MAX_TRANSACTION_AMOUNT)
     private BigDecimal amount;
 
     @NotBlank
