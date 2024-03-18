@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -21,7 +22,7 @@ public class OverdueInvoiceSchedulerTask {
     private final OverdueInvoiceService overdueInvoiceService;
 
     @Async
-    @Scheduled(cron = "0 0 */2 * * ?") //every 2 hours starting at 00am, of every day
+    @Scheduled(fixedDelayString = "${invoice.scheduler.overdue}", timeUnit = TimeUnit.SECONDS)
     @SchedulerLock(name = "OverdueInvoice_ScheduleTask", lockAtLeastFor = "${invoice.lock.atLeastFor}", lockAtMostFor = "${invoice.lock.atMostFor}")
     public void process() {
         LockAssert.assertLocked();

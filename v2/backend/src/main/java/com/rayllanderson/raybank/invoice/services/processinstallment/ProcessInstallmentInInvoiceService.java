@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -37,10 +38,8 @@ public class ProcessInstallmentInInvoiceService {
         final var transaction = (CardCreditPaymentTransaction) transactionGateway.findById(input.getTransactionId());
 
         validateFutureDate(transaction.getMoment());
-        final String cardId = transaction.getDebit().getId();
-        final Set<Invoice> invoices = new HashSet<>(invoiceGateway.findAllByCardIdAndStatus(cardId, List.of(InvoiceStatus.OPEN, InvoiceStatus.NONE)));
-        final Integer dayOfDueDate = getDayOfDueDate(cardId);
-        final InvoiceListHelper invoiceList = new InvoiceListHelper(dayOfDueDate, cardId, invoices);
+
+        final InvoiceListHelper invoiceList = createInvoiceListHelper(transaction);
 
         final var installmentPlan = planGateway.findById(transaction.getPlanId());
         installmentPlan.attachOriginalInvoice(getCurrentInvoice(invoiceList));
@@ -53,6 +52,14 @@ public class ProcessInstallmentInInvoiceService {
         invoiceGateway.saveAll(invoiceList.getInvoices());
 
         return Collections.unmodifiableList(invoiceList.getSortedInvoices());
+    }
+
+    private InvoiceListHelper createInvoiceListHelper(CardCreditPaymentTransaction transaction) {
+        final String cardId = transaction.getDebit().getId();
+        final Collection<Invoice> allOpenInvoices = invoiceGateway.findAllByCardIdAndStatus(cardId, List.of(InvoiceStatus.OPEN, InvoiceStatus.NONE));
+        final Set<Invoice> invoices = new HashSet<>(allOpenInvoices);
+        final Integer dayOfDueDate = invoiceGateway.getDayOfDueDateByCardId(cardId);
+        return new InvoiceListHelper(dayOfDueDate, cardId, invoices);
     }
 
     private Invoice getCurrentInvoice(final InvoiceListHelper invoiceList) {
@@ -84,9 +91,5 @@ public class ProcessInstallmentInInvoiceService {
                 }
             }
         });
-    }
-
-    private Integer getDayOfDueDate(final String cardId) {
-        return invoiceGateway.getDayOfDueDateByCardId(cardId);
     }
 }

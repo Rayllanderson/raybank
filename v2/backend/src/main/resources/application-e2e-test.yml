@@ -26,6 +26,9 @@ invoice:
   lock:
     atLeastFor: 1S
     atMostFor: 1S
+  scheduler:
+    close: 1
+    overdue: 1
 
 #every 1 seccond
 boleto:

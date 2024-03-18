@@ -7,6 +7,6 @@ import java.math.BigDecimal;
 public class InvoiceBuilder {
 
     public static InvoiceCreditInput build(BigDecimal amount, String accountId, String cardId, String invoiceId) {
-        return new InvoiceCreditInput(amount, accountId, cardId, invoiceId);
+        return new InvoiceCreditInput(amount, accountId, invoiceId);
     }
 }

@@ -12,7 +12,7 @@ public class BankAccountTransferRequestBuilder {
     public static BankAccountTransferRequest transferRequest(BigDecimal amount, String description, int beneficiaryAccountNumber) {
         final var r =  new BankAccountTransferRequest();
         r.setAmount(amount);
-        r.setDescription(description);
+        r.setMessage(description);
         r.setBeneficiaryAccountNumber(beneficiaryAccountNumber);
         return r;
     }

@@ -58,6 +58,9 @@ invoice:
   lock:
     atLeastFor: 1790S
     atMostFor: 1790S
+  scheduler:
+    close: 3600
+    overdue: 3600
 
 server:
   port: 8080

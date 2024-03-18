@@ -37,18 +37,6 @@ services:
     networks:
       - raybank-network
 
-  teste-pgadmin-compose:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "root@root.com"
-      PGADMIN_DEFAULT_PASSWORD: "12345"
-    ports:
-      - "16543:80"
-    depends_on:
-      - postgres
-    networks:
-      - raybank-network
-
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:20.0.3

@@ -21,6 +21,11 @@ keycloak:
     client-secret: 702PlTfBk922cjPGUmwkZpSAuyP6Hx1v
     client-id: raybank-backend-create-user
 
+invoice:
+  scheduler:
+    close: 30
+    overdue: 30
+
 #every 30s
 boleto:
   lock:

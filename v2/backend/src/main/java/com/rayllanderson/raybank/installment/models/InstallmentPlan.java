@@ -153,8 +153,8 @@ public class InstallmentPlan {
     }
 
     public void checkIfInstallmentsHasInvoice() {
-        Optional<Installment> any = this.installments.stream().filter(i -> Objects.isNull(i.getInvoice())).findAny();
-        any.ifPresent(i -> {
+        Optional<Installment> installmentWithoutInvoice = this.installments.stream().filter(i -> Objects.isNull(i.getInvoice())).findAny();
+        installmentWithoutInvoice.ifPresent(i -> {
             throw InternalServerErrorException.with(INTERNAL_SERVER_ERROR, String.format("Installment %s has no invoice", i.getId()));
         });
     }

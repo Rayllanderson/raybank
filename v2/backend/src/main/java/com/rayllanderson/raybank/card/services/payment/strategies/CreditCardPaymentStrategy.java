@@ -10,6 +10,7 @@ import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPl
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanMapper;
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanOutput;
 import com.rayllanderson.raybank.installment.services.create.CreateInstallmentPlanService;
+import com.rayllanderson.raybank.invoice.facade.InvoicePaymentFacade;
 import com.rayllanderson.raybank.shared.event.IntegrationEventPublisher;
 import com.rayllanderson.raybank.transaction.gateway.TransactionGateway;
 import com.rayllanderson.raybank.transaction.models.Transaction;
@@ -28,6 +29,7 @@ public class CreditCardPaymentStrategy implements CardPaymentStrategy {
     private final FindCardLimitService cardLimitService;
     private final CreateInstallmentPlanMapper planMapper;
     private final CreateInstallmentPlanService createInstallmentPlanService;
+    private final InvoicePaymentFacade invoicePaymentFacade;
 
     @Override
     @Transactional
@@ -40,13 +42,16 @@ public class CreditCardPaymentStrategy implements CardPaymentStrategy {
 
         final var transaction = CardCreditPaymentTransaction.from(payment, card);
 
+        invoicePaymentFacade.verifyPaymentFor(card);
+
         final CreateInstallmentPlanInput createPlanInput = planMapper.from(transaction);
         final CreateInstallmentPlanOutput installmentPlan = createInstallmentPlanService.create(createPlanInput);
         transaction.addPlan(installmentPlan.id());
 
+        transactionGateway.save(transaction);
+
         eventPublisher.publish(new CardCreditPaymentCompletedEvent(transaction));
 
-        transactionGateway.save(transaction);
         return transaction;
     }
 

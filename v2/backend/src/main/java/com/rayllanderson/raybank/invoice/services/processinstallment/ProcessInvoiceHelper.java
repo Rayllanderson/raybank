@@ -20,10 +20,7 @@ public class ProcessInvoiceHelper {
 
         final int difference = installmentsSize - invoiceList.getInvoices().size();
         for (int i = 0; i < difference; i++) {
-            Invoice newInvoice = Invoice.create(plusOneMonthKeepingCurrentDayOfMonth(dueDate, invoiceList.getDayOfDueDate()), invoiceList.getCardId());
-            if (newInvoice.getClosingDate().isEqual(LocalDate.now())) {
-                newInvoice.changeClosingDate();
-            }
+            Invoice newInvoice = createNewInvoice(invoiceList, dueDate);
             invoiceList.add(newInvoice);
             dueDate = newInvoice.getDueDate();
         }
@@ -38,16 +35,20 @@ public class ProcessInvoiceHelper {
 
         final int difference = installmentsSize - invoiceList.getInvoices().size();
         for (int i = 0; i < difference; i++) {
-            Invoice newInvoice = Invoice.create(plusOneMonthKeepingCurrentDayOfMonth(dueDate, invoiceList.getDayOfDueDate()), invoiceList.getCardId());
-            if (newInvoice.getClosingDate().isEqual(LocalDate.now())) {
-                newInvoice.changeClosingDate();
-            }
+            Invoice newInvoice = createNewInvoice(invoiceList, dueDate);
             invoiceList.add(newInvoice);
             invoiceGateway.save(newInvoice);
             dueDate = newInvoice.getDueDate();
         }
     }
 
+    private static Invoice createNewInvoice(InvoiceListHelper invoiceList, LocalDate dueDate) {
+        Invoice newInvoice = Invoice.create(plusOneMonthKeepingCurrentDayOfMonth(dueDate, invoiceList.getDayOfDueDate()), invoiceList.getCardId());
+        if (newInvoice.getClosingDate().isEqual(LocalDate.now())) {
+            newInvoice.changeClosingDate();
+        }
+        return newInvoice;
+    }
     public static Invoice createOpenInvoice(final int dayOfDueDate, final String cardId) {
         return Invoice.createOpenInvoice(plusOneMonthOf(dayOfDueDate), cardId);
     }
