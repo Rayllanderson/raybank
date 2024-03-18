@@ -18,6 +18,7 @@ import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.C
 public class CreateCardService {
 
     private final CardGateway cardGateway;
+    private final CardNumberGenerator cardNumberGenerator;
     private final BankAccountGateway bankAccountGateway;
 
     @Transactional
@@ -27,7 +28,8 @@ public class CreateCardService {
         if (cardGateway.existsByBankAccountId(bankAccount.getId()))
             throw UnprocessableEntityException.with(CARD_ALREADY_REGISTERED, "Já existe um cartão para o usuário");
 
-        var creditCardToBeSaved = Card.create(this.generateCreditCardNumber(),
+        final long generatedCardNumber = cardNumberGenerator.generate();
+        var creditCardToBeSaved = Card.create(generatedCardNumber,
                 input.getLimit(),
                 generateSecurityCode(),
                 generateExpiryDate(),
@@ -39,17 +41,6 @@ public class CreateCardService {
         bankAccountGateway.flush();
 
         return creditCardToBeSaved;
-    }
-
-    private long generateCreditCardNumber() {
-        boolean isCardNumberInvalid;
-        long generatedNumber;
-        final int NUMBER_OF_DIGITS = 16;
-        do {
-            generatedNumber = RandomUtils.generate(NUMBER_OF_DIGITS);
-            isCardNumberInvalid = cardGateway.existsByNumber(generatedNumber) && (Long.toString(generatedNumber).length() != NUMBER_OF_DIGITS);
-        } while (isCardNumberInvalid);
-        return generatedNumber;
     }
 
     private int generateSecurityCode() {
