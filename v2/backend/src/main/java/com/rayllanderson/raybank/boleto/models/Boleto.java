@@ -72,7 +72,8 @@ public class Boleto {
     }
 
     public boolean isExpired() {
-        return EXPIRED.equals(this.status);
+        var today = LocalDate.now();
+        return EXPIRED.equals(this.status) || today.isAfter(expirationDate);
     }
 
     public boolean isPaid() {

@@ -52,6 +52,6 @@ public class BoletoPostgresGateway implements BoletoGateway {
 
     @Override
     public List<Boleto> findAllByExpirationDateAndStatus(LocalDate expiryDate, BoletoStatus boletoStatus) {
-        return boletoRepository.findAllByExpirationDateAndStatus(expiryDate, boletoStatus);
+        return boletoRepository.findAllByExpirationDateLessThanEqualAndStatus(expiryDate, boletoStatus);
     }
 }

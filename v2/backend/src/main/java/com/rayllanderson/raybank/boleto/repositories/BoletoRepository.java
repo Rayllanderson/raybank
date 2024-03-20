@@ -13,5 +13,5 @@ public interface BoletoRepository extends JpaRepository<Boleto, String> {
     List<Boleto> findAllByStatus(BoletoStatus status);
     List<Boleto> findAllByHolderIdOrderByCreatedAtDesc(String holderId);
     List<Boleto> findAllByHolderIdAndStatusOrderByCreatedAtDesc(String holderId, BoletoStatus status);
-    List<Boleto> findAllByExpirationDateAndStatus(final LocalDate expirationDate, final BoletoStatus status);
+    List<Boleto> findAllByExpirationDateLessThanEqualAndStatus(final LocalDate expirationDate, final BoletoStatus status);
 }
