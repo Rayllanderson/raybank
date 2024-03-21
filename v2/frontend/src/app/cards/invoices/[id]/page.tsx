@@ -7,14 +7,16 @@ import { MoneyFormatter } from '@/utils/MoneyFormatter'
 import { InvoiceTransactionCard } from './InvoiceTransactionCard'
 import { findInvoiceById, findInvoiceOrNull } from '@/services/InvoiceService'
 import { notFound } from 'next/navigation'
+import PrimaryButton from '@/components/Buttons/PrimaryButton'
+import Link from 'next/link'
 
 export default async function page({ params }: { params: { id: string } }) {
   const invoice: Invoice | null = await findInvoiceOrNull(params.id)
 
-  if (!invoice){
+  if (!invoice) {
     notFound()
   }
-
+  console.log(invoice.status)
   return (
     <Container >
       <div className="flex justify-center">
@@ -40,6 +42,17 @@ export default async function page({ params }: { params: { id: string } }) {
           </div>
         )
       })
+      }
+
+      {
+        
+        (invoice.status === 'OPEN' || invoice.status === 'CLOSED' || invoice.status === 'OVERDUE') &&
+        <div className="fixed bottom-0 left-0 right-0 flex justify-center items-center mb-4">
+          <Link href={`/payments/invoice/${invoice.id}`}
+            className='w-full flex justify-center'>
+            <PrimaryButton className='max-w-sm'> Pagar Fatura</PrimaryButton>
+          </Link>
+        </div>
       }
 
     </Container>
