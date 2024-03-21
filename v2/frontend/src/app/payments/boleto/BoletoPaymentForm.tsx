@@ -44,7 +44,13 @@ export default function BoletoPaymentForm() {
         }
 
         if (response.boleto.status !== 'WAITING_PAYMENT') {
-            toast.error('Boleto não disponível para pagamento')
+            let reason;
+            if (response.boleto.status === 'EXPIRED')
+                reason = 'boleto está Expirado'
+            if (response.boleto.status === 'PAID' || response.boleto.status === 'PROCESSING' || response.boleto.status === 'REFUNDED' || response.boleto.status === 'PROCESSING_FAILURE')
+                reason = 'boleto está pago'
+
+            toast.error('Boleto não disponível para pagamento pois o ' + reason)
             return
         }
 

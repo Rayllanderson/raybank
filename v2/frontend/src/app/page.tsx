@@ -4,8 +4,6 @@ import Header from '../components/Header';
 import SideBar from '../components/SideBar';
 import { SidebarProvider } from '../context/SidebarContext';
 import MediumCard from '../components/cards/MediumCard';
-import { getServerAuthSession } from './api/auth/[...nextauth]/options';
-import Session from '@/types/Session';
 import { AccountResponse } from '@/types/Account';
 import { getAuthAccount } from '@/services/AccountService';
 import BankAccountCardLoading from '@/components/loading/BankAccountCardLoading';
@@ -24,8 +22,6 @@ const CreditCardCard = dynamic(() => import('../components/cards/CreditCardCard'
 })
 
 export default async function page() {
-  const authSession: Session = await getServerAuthSession();
-  console.log(authSession);
   const userData: AccountResponse = await getAuthAccount();
 
   return (

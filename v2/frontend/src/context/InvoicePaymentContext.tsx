@@ -13,7 +13,7 @@ interface InvoicePaymentContextProps {
   setInvoice: (n: Invoice) => void;
   setPaymentMethod: React.Dispatch<React.SetStateAction<'account' | 'boleto'>>;
   loading: boolean;
-  payCurrent: () => Promise<any | null>
+  pay: () => Promise<any | null>
 }
 
 const InvoicePaymentContext = createContext<InvoicePaymentContextProps | undefined>(undefined);
@@ -29,10 +29,10 @@ export const InvoicePaymentProvider: React.FC<InvoicePaymentProviderProps> = ({ 
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
 
-  const payCurrent = async () => {
+  const pay = async () => {
     try {
       setLoading(true);
-      return await payInvoice(amount, session?.token!)
+      return await payInvoice(amount, session?.token!, invoice?.id)
     } catch (err) {
       handlerApiError(err, 'Ocorreu um erro ao pagar a fatura');
       return null;
@@ -41,8 +41,9 @@ export const InvoicePaymentProvider: React.FC<InvoicePaymentProviderProps> = ({ 
     }
   }
 
+
   return (
-    <InvoicePaymentContext.Provider value={{ amount, invoice, setInvoice, paymentMethod, setAmount, setPaymentMethod, payCurrent, loading }}>
+    <InvoicePaymentContext.Provider value={{ amount, invoice, setInvoice, paymentMethod, setAmount, setPaymentMethod, pay, loading }}>
       {children}
     </InvoicePaymentContext.Provider>
   );

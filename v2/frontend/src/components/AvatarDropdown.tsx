@@ -29,6 +29,7 @@ export default function AvatarDropdown() {
             <Dropdown.Header>
                 <span className="block text-sm">{data?.user.name}</span>
                 <span className="block truncate text-sm font-medium">{data?.user.email}</span>
+                <span className="block truncate text-sm font-medium">{data?.user}</span>
             </Dropdown.Header>
             <Dropdown.Item onClick={handleClick} className="hover:bg-black">Conta</Dropdown.Item>
             <Dropdown.Item>Settings</Dropdown.Item>

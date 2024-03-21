@@ -1,13 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter, Nunito } from 'next/font/google'
+import { Nunito } from 'next/font/google'
 import './globals.css'
 import { Flowbite, ThemeModeScript } from 'flowbite-react'
 import { twMerge } from "tailwind-merge";
 import { flowbiteTheme } from './theme';
 import { Providers } from '../providers/providers';
 import { Toaster } from 'react-hot-toast';
-import { lazy } from 'react';
-
 
 const inter = Nunito({ subsets: ['latin'] })
 
@@ -24,7 +22,7 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
       <body className={twMerge("bg-gray-50 scrollbar-hide dark:bg-black-1 dark:text-white", inter.className)}>
         <Providers>
           <Flowbite theme={{ theme: flowbiteTheme }}>
-            <Toaster position="top-right" />
+            <Toaster position="top-right"/>
             {children}
           </Flowbite>
         </Providers>

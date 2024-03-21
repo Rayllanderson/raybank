@@ -12,7 +12,7 @@ import { FaAngleRight, FaBarcode, FaMoneyBill } from 'react-icons/fa6';
 
 export default function CardPaymentForm() {
   const router = useRouter();
-  const { amount, setPaymentMethod, invoice, payCurrent, loading: accountLoading } = useInvoicePayment();
+  const { amount, setPaymentMethod, invoice, pay, loading: accountLoading } = useInvoicePayment();
   const { setAmount: setBoletoAmount, generateBoleto, loading: boletoLoading } = useBoletoDepositContext();
   const [finished, setFinished] = useState(true)
 
@@ -45,7 +45,7 @@ export default function CardPaymentForm() {
 
   async function payUsingAccount() {
     setFinished(false)
-    const response = await payCurrent()
+    const response = await pay()
     if (response) {
       toast.success('Fatura paga com sucesso')
       router.replace('/payments/invoice/success')

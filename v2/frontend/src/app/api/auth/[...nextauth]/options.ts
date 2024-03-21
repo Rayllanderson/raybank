@@ -1,8 +1,6 @@
-import { keycloak } from '@/services/KeycloakService';
 import Session from '@/types/Session';
 import { TokenSet, getServerSession } from 'next-auth';
 import KeycloakProvider from "next-auth/providers/keycloak";
-import { signIn, signOut } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 
 export const authOptions = {
@@ -23,7 +21,6 @@ export const authOptions = {
             } else if (Date.now() < token.user.expires_at * 1000) {
                 return token
             } else {
-                console.log("refresh token")
                 try {
                     const response = await fetch(process.env.REFRESH_TOKEN_URL!, {
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -37,8 +34,6 @@ export const authOptions = {
                     })
 
                     const refreshToken: TokenSet = await response.json()
-                    console.log(token.user)
-                    console.log(refreshToken)
 
                     if (!response.ok) throw refreshToken
 
