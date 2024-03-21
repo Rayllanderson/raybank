@@ -235,7 +235,7 @@ public class Invoice extends AbstractAggregateRoot<Invoice> implements Comparabl
             this.status = InvoiceStatus.OVERDUE;
     }
 
-    protected boolean isOverdue() {
+    public boolean isOverdue() {
         return now().isAfter(dueDate) && !isPaid();
     }
 
