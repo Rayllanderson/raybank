@@ -1,0 +1,77 @@
+spring:
+  kafka:
+    bootstrap-servers: ${kafka.bootstrap-server}
+    consumer:
+      group-id: ${kafka.consumer.group-id}
+      client-id: ${kafka.client-id}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: ${kafka.auto-offset-reset:earliest}
+      fetch-min-size: 500
+      fetch-max-wait: 900
+      isolation-level: read_committed
+      max-poll-records: 10
+      enable-auto-commit: false
+      properties:
+        allow.auto.create.topics: false
+        key.deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        value.deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+        spring:
+          deserializer:
+            key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+            value.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak.server-url}/realms/${keycloak.realm}
+          jwk-set-uri: ${keycloak.server-url}/realms/${keycloak.realm}/protocol/openid-connect/certs
+  datasource:
+    url: jdbc:postgresql://${postgres.host}:${postgres.port}/${postgres.schema}?serverTimezone=UTC
+    driver-class-name: org.postgresql.Driver
+    username: ${postgres.username}
+    password: ${postgres.password}
+  jpa:
+    open-in-view: 'false'
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      generate.statistics: false
+
+retry:
+  register:
+    maxAttempts: 10
+    maxDelay: 30000
+  statement:
+    create:
+      maxAttempts: 5
+      maxDelay: 5000
+  card:
+    payment:
+      maxAttempts: 3
+      maxDelay: 500
+  maxAttempts: 3
+  maxDelay: 1000
+
+invoice:
+  lock:
+    atLeastFor: 1790S
+    atMostFor: 1790S
+  scheduler:
+    close: 3600
+    overdue: 3600
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.rayllanderson.raybank: ${LOGGING_LEVEL:INFO}
+
+kafka:
+  topics:
+    keycloak-event-listener-topic: keycloak-event-listener-topic
+  client-id: raybank-client-id
+  consumer:
+    group-id: raybank-group-id

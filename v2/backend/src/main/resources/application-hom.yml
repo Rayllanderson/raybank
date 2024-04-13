@@ -1,0 +1,25 @@
+postgres:
+  username: ${POSTGRES_USERNAME}
+  password: ${POSTGRES_PASSWORD}
+  host: ${POSTGRES_HOST}
+  port: ${POSTGRES_PORT}
+  schema: ${POSTGRES_SCHEMA}
+
+kafka:
+  bootstrap-server: ${KAFKA_BOOTSTRAP-SERVER}
+
+keycloak:
+  realm: ${KEYCLOAK_REALM}
+  server-url: ${KEYCLOAK_SERVER-URL}
+  credentials:
+    client-id: ${KEYCLOAK_CLIENT-ID}
+    client-secret: ${KEYCLOAK_CLIENT-SECRET}
+
+boleto:
+  lock:
+    atLeastFor: ${BOLETO_LOCK_ATLEASTFOR:17990S}
+    atMostFor: ${BOLETO_LOCK_ATMOSTFOR:17990S}
+  scheduler:
+    expirate: ${CONFIG_BOLETO_SCHEDULER_EXPIRATE:18000}
+    process: ${CONFIG_BOLETO_SCHEDULER_PROCESS:1800}
+    refund: ${CONFIG_BOLETO_SCHEDULER_REFUND:18000}
