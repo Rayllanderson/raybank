@@ -26,6 +26,8 @@ export default async function page({ params }: { params: { id: string } }) {
         notFound()
     }
 
+    console.log(data)
+
     return (
         <Container className="boleto" size="max-w-xl">
             <Card className='w-full'>

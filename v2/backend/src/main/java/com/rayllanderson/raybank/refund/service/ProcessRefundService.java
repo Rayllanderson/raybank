@@ -15,7 +15,7 @@ import static com.rayllanderson.raybank.core.exceptions.RaybankExceptionReason.R
 
 @Service
 @RequiredArgsConstructor
-public class ProceessRefundService {
+public class ProcessRefundService {
 
     private final TransactionGateway transactionGateway;
     private final ProcessRefundFactory refundFactory;

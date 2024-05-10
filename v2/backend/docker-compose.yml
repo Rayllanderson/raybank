@@ -2,10 +2,8 @@ version: '3.7'
 
 services:
   raybank:
+    image: rayllanderson/raybank:v2.0
     container_name: raybank
-    build:
-      dockerfile: Dockerfile
-      context: .
     environment:
       - SPRING_PROFILES_ACTIVE=hom
       - POSTGRES_USERNAME=postgres
@@ -17,7 +15,7 @@ services:
       - KEYCLOAK_REALM=raybank
       - KEYCLOAK_SERVER-URL=http://keycloak:8080
       - KEYCLOAK_CLIENT-ID=raybank-backend-create-user
-      - KEYCLOAK_CLIENT-SECRET=2sSe4b3gdsi8QjQeAAsyIEaIK99E0YCq
+      - KEYCLOAK_CLIENT-SECRET=8KoaQh9EpjXBN5engNI1licBfLjWdefT
     ports:
       - "8080:8080"
     depends_on:
@@ -57,8 +55,8 @@ services:
       - -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json
       - --import-realm
     volumes:
-      - C:/docker/volumes/raybank/keycloak/imports:/opt/jboss/keycloak/imports
-      - C:/docker/volumes/raybank/keycloak/provider/custom-event-listener-jar-with-dependencies.jar:/opt/keycloak/providers/custom-event-listener-jar-with-dependencies.jar
+      - ../docker-volumes/keycloak/imports:/opt/jboss/keycloak/imports
+      - ../docker-volumes/keycloak/provider/custom-event-listener-jar-with-dependencies.jar:/opt/keycloak/providers/custom-event-listener-jar-with-dependencies.jar
     depends_on:
       - keycloak-postgres
     networks:
@@ -71,7 +69,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloak
     volumes:
-      - C:/docker/volumes/raybank/keycloak-postgres:/var/lib/postgresql/data
+      - ../docker-volumes/raybank/keycloak-postgres:/var/lib/postgresql/data
     networks:
       - raybank-network
 
