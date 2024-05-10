@@ -31,7 +31,7 @@ services:
     environment:
       POSTGRES_PASSWORD: 12345
     volumes:
-      - C:/docker/volumes/raybank/postgres:/var/lib/postgresql/data
+      - ../docker-volumes/postgres:/var/lib/postgresql/data
     networks:
       - raybank-network
 
