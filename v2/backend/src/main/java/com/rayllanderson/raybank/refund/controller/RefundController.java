@@ -1,6 +1,6 @@
 package com.rayllanderson.raybank.refund.controller;
 
-import com.rayllanderson.raybank.refund.service.ProceessRefundService;
+import com.rayllanderson.raybank.refund.service.ProcessRefundService;
 import com.rayllanderson.raybank.refund.service.ProcessRefundInput;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RefundController {
 
-    private final ProceessRefundService refundPaymentService;
+    private final ProcessRefundService refundPaymentService;
 
     @PostMapping("/{transactionId}/refund")
     public ResponseEntity<RefundResponse> find(@Valid @RequestBody RefundRequest request,
