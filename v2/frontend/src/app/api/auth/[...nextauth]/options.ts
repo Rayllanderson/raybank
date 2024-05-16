@@ -3,8 +3,6 @@ import { TokenSet, getServerSession } from 'next-auth';
 import KeycloakProvider from "next-auth/providers/keycloak";
 import { redirect } from 'next/navigation';
 
-const COOKIES_LIFE_TIME = 24 * 60 * 60;
-const COOKIE_PREFIX = process.env.NODE_ENV === 'production' ? '__Secure-' : '';
 
 export const authOptions = {
 
@@ -67,64 +65,6 @@ export const authOptions = {
         },
 
     },
-    // secret: process.env.NEXTAUTH_SECRET,
-    cookies: {
-        sessionToken: {
-          name: `${COOKIE_PREFIX}next-auth.session-token`,
-          options: {
-            httpOnly: true,
-            sameSite: 'lax',
-            path: '/',
-            secure: true,
-          },
-        },
-        callbackUrl: {
-          name: `${COOKIE_PREFIX}next-auth.callback-url`,
-          options: {
-            sameSite: 'lax',
-            path: '/',
-            secure: true,
-          },
-        },
-        csrfToken: {
-          name: `${COOKIE_PREFIX}next-auth.csrf-token`,
-          options: {
-            httpOnly: true,
-            sameSite: 'lax',
-            path: '/',
-            secure: true,
-          },
-        },
-        pkceCodeVerifier: {
-          name: `${COOKIE_PREFIX}next-auth.pkce.code_verifier`,
-          options: {
-            httpOnly: true,
-            sameSite: 'lax',
-            path: '/',
-            secure: true,
-            maxAge: COOKIES_LIFE_TIME,
-          },
-        },
-        state: {
-          name: `${COOKIE_PREFIX}next-auth.state`,
-          options: {
-            httpOnly: true,
-            sameSite: 'lax',
-            path: '/',
-            secure: true,
-            maxAge: COOKIES_LIFE_TIME,
-          },
-        },
-        nonce: {
-          name: `${COOKIE_PREFIX}next-auth.nonce`,
-          options: {
-            httpOnly: true,
-            sameSite: 'lax',
-            path: '/',
-            secure: true,
-          },
-        },
-      },
 };
 
 export async function refreshToken(token: any) {
