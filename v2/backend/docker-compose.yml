@@ -43,11 +43,6 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realm-export.json
       - -Dkeycloak.profile.feature.upload_scripts=enabled
-      - DB_VENDOR=POSTGRES
-      - DB_ADDR=keycloak-postgres
-      - DB_DATABASE=keycloak
-      - DB_USER=keycloak
-      - DB_PASSWORD=keycloak
     ports:
       - "8443:8080"
     command:
@@ -62,17 +57,6 @@ services:
     networks:
       - raybank-network
 
-  keycloak-postgres:
-    image: 'postgres:alpine'
-    environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: keycloak
-    volumes:
-      - ../docker-volumes/raybank/keycloak-postgres:/var/lib/postgresql/data
-    networks:
-      - raybank-network
-
   zookeeper:
     image: confluentinc/cp-zookeeper:6.0.0
     environment:
@@ -84,8 +68,6 @@ services:
     image: confluentinc/cp-kafka:6.0.0
     depends_on:
       - zookeeper
-    ports:
-      - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
