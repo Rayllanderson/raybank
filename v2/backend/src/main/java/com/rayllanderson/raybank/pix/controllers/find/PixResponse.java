@@ -17,7 +17,7 @@ public class PixResponse {
     private Debit debit;
     private Credit credit;
     private String message;
-    private LocalDateTime occuredOn;
+    private LocalDateTime occurredOn;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private QrCodeResponse qrCode;
     private List<PixReturnResponse> returns;

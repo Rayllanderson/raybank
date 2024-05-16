@@ -1,13 +1,14 @@
 package com.rayllanderson.raybank.pix.model.qrcode;
 
+import com.rayllanderson.raybank.pix.model.PixKeyData;
 import com.rayllanderson.raybank.pix.model.key.PixKey;
 import com.rayllanderson.raybank.pix.util.PixQrCodeGenerator;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -41,8 +42,8 @@ public class PixQrCode {
     @Enumerated(EnumType.STRING)
     private PixQrCodeStatus status;
 
-    @ManyToOne
-    private PixKey credit;
+    @Embedded
+    private PixKeyData credit;
 
     @NotNull
     private LocalDateTime expiresIn;
@@ -59,10 +60,10 @@ public class PixQrCode {
 
     public static PixQrCode newQrCode(BigDecimal amount, PixKey credit, String description) {
         final var qrCode = PixQrCodeGenerator.generateQrCode(credit, amount);
-        return new PixQrCode(UUID.randomUUID().toString(), qrCode, amount, PixQrCodeStatus.WAITING_PAYMENT, credit, DEFAULT_EXPIRATION, description);
+        return new PixQrCode(UUID.randomUUID().toString(), qrCode, amount, PixQrCodeStatus.WAITING_PAYMENT, PixKeyData.from(credit), DEFAULT_EXPIRATION, description);
     }
 
-    public void paid() {
+    public void setPaid() {
         if (!isExpired())
             this.status = PixQrCodeStatus.PAID;
     }

@@ -18,7 +18,7 @@ keycloak:
   realm: raybank
   server-url: http://localhost:8443
   credentials:
-    client-secret: 702PlTfBk922cjPGUmwkZpSAuyP6Hx1v
+    client-secret: 8KoaQh9EpjXBN5engNI1licBfLjWdefT
     client-id: raybank-backend-create-user
 
 invoice:

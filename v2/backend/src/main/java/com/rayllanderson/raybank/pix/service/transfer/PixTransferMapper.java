@@ -11,8 +11,6 @@ public interface PixTransferMapper {
 
 
     @Mapping(target = "e2eId", source = "pix.id")
-    @Mapping(target = "debit.accountId", expression = "java(pixKey.getAccountId())")
-    @Mapping(target = "credit.accountId", expression = "java(pixKey.getAccountId())")
     PixTransferOutput from(Pix pix, String transactionId);
 
     @Mapping(target = "transactionType", constant = "PIX")

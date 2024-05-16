@@ -16,7 +16,7 @@ public class PixTransferOutput {
     private Debit debit;
     private Credit credit;
     private BigDecimal amount;
-    private LocalDateTime occuredOn;
+    private LocalDateTime occurredOn;
     private String message;
 
     public String getDebitAccountId() {
