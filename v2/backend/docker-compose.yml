@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   raybank:
-    image: rayllanderson/raybank:v2.0
+    image: rayllanderson/raybank:v2.0.1
     container_name: raybank
     environment:
       - SPRING_PROFILES_ACTIVE=hom
