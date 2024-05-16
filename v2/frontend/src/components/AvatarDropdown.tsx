@@ -17,7 +17,6 @@ export default function AvatarDropdown() {
     const handleClick = () => {
         window.open(process.env.NEXT_PUBLIC_KEYCLOAK_ACCOUNT_INFO!, '_blank');
       };
-
     return (
         <Dropdown
             arrowIcon={false}
@@ -29,11 +28,8 @@ export default function AvatarDropdown() {
             <Dropdown.Header>
                 <span className="block text-sm">{data?.user.name}</span>
                 <span className="block truncate text-sm font-medium">{data?.user.email}</span>
-                <span className="block truncate text-sm font-medium">{data?.user}</span>
             </Dropdown.Header>
             <Dropdown.Item onClick={handleClick} className="hover:bg-black">Conta</Dropdown.Item>
-            <Dropdown.Item>Settings</Dropdown.Item>
-            <Dropdown.Item>Earnings</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
         </Dropdown>

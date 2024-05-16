@@ -7,6 +7,8 @@ import { useSidebarContext } from "../context/SidebarContext";
 import AvatarDropdown from "./AvatarDropdown";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
+import LogoIcon from "./LogoIcon";
+import Logo from "./Logo";
 
 const Header: FC<Record<string, never>> = function () {
     const { isOpenOnSmallScreens, setOpenOnSmallScreens } = useSidebarContext();
@@ -25,15 +27,7 @@ const Header: FC<Record<string, never>> = function () {
                 </button>
 
                 <Navbar.Brand as={Link} href="/">
-                    <Image
-                        alt="Flowbite logo"
-                        height="24"
-                        src="/favicon.ico"
-                        width="24"
-                    />
-                    <span className="self-center whitespace-nowrap px-3 text-xl font-semibold dark:text-white">
-                        RayBank
-                    </span>
+                   <Logo/>
                 </Navbar.Brand>
                 <div className="flex md:order-2 space-x-3">
                     <DarkThemeToggle />
