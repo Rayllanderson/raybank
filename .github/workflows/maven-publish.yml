@@ -6,8 +6,12 @@ name: Maven Package & Publish to Docker
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'v2/backend/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'v2/backend/**'
 
 jobs:
   build:
@@ -32,13 +36,23 @@ jobs:
       run: mvn clean install -Dmaven.test.skip=true
       working-directory: ./v2/backend
 
+    - name: Set env
+      run: echo "DATE=$(date +%s)" >> $GITHUB_ENV
+
     - name: Build the Docker image
       uses: docker/build-push-action@v4
       with:
         context: ./v2/backend
         dockerfile: Dockerfile
         push: false
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank:$(date +%s)
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank:${{ env.DATE }}
+    - name: Build the Latest Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: ./v2/backend
+        dockerfile: Dockerfile
+        push: false
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank:latest
 
     - name: Login to Docker Hub
       uses: docker/login-action@v1
@@ -52,4 +66,12 @@ jobs:
         context: ./v2/backend
         dockerfile: Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank:$(date +%s)
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank:${{ env.DATE }}
+    - name: Push the Docker Latest image to Docker Hub
+      uses: docker/build-push-action@v4
+      with:
+        context: ./v2/backend
+        dockerfile: Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank:latest
+
