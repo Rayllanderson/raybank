@@ -1,17 +1,32 @@
 spring:
-  datasource:
-    url: ${DATABASE_URL}
-    driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
 
-#every 5 hours
+postgres:
+  username: ${POSTGRES_USERNAME}
+  password: ${POSTGRES_PASSWORD}
+  host: ${POSTGRES_HOST}
+  port: ${POSTGRES_PORT}
+  schema: ${POSTGRES_SCHEMA}
+
+keycloak:
+  realm: ${KEYCLOAK_REALM}
+  server-url: ${KEYCLOAK_SERVER-URL}
+  credentials:
+    client-id: ${KEYCLOAK_CLIENT-ID}
+    client-secret: ${KEYCLOAK_CLIENT-SECRET}
+
 boleto:
   lock:
-    atLeastFor: 17990S
-    atMostFor: 17990S
+    atLeastFor: ${BOLETO_LOCK_ATLEASTFOR:7200S}
+    atMostFor: ${BOLETO_LOCK_ATMOSTFOR:7200S}
   scheduler:
-    expirate: 18000
-    process: 18000
-    refund: 18000
+    expirate: ${CONFIG_BOLETO_SCHEDULER_EXPIRATE:7200 }
+    process: ${CONFIG_BOLETO_SCHEDULER_PROCESS:7200 }
+    refund: ${CONFIG_BOLETO_SCHEDULER_REFUND:7200 }
+
+invoice:
+  scheduler:
+    close: ${CONFIG_INVOICE_SCHEDULER_CLOSE:7200 }
+    overdue: ${CONFIG_INVOICE_SCHEDULER_OVERDUE:7200 }
