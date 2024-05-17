@@ -6,7 +6,7 @@ import Separator from '../Separator'
 import PrimaryButton from '../Buttons/PrimaryButton'
 import { usePixUpdateLimit } from '@/context/PixLimitContext'
 import toast from 'react-hot-toast'
-import LoadingDiv, { loadingDiv, loadingDivDefault } from '../LoadingDiv'
+import LoadingDiv from '../LoadingDiv'
 
 
 export default function PixUpdateLimitForm({ closeModal }: { closeModal: () => void }) {
