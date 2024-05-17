@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+import static io.awspring.cloud.sqs.annotation.SqsListenerAcknowledgementMode.ALWAYS;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class KeycloakEventConsumer {
     private final ObjectMapper objectMapper;
     private final List<KeycloakConsumerService> keycloakConsumerServices;
 
-    @SqsListener("${sqs.queue-name}")
+    @SqsListener(value = "${sqs.queue-name}", acknowledgementMode = ALWAYS)
     public void listen(final String message) throws Exception {
         try {
             final var request = objectMapper.readValue(message, KeycloakSQSRequest.class);
