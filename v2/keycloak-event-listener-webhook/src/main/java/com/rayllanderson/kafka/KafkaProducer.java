@@ -1,13 +1,12 @@
 package com.rayllanderson.kafka;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 
-public class Producer {
+public class KafkaProducer {
 
 	private static final String BOOTSTRAP_SERVER = "kafka:9092";
 	private static final String TOPIC = "keycloak-event-listener-topic";
@@ -15,7 +14,7 @@ public class Producer {
 	public static void publish(String value){
 		resetThreadContext();
 
-		final var producer = new KafkaProducer<String, String>(getProperties());
+		final var producer = new org.apache.kafka.clients.producer.KafkaProducer<String, String>(getProperties());
 		ProducerRecord<String, String> eventRecord = new ProducerRecord<>(TOPIC, value);
 		producer.send(eventRecord);
 		producer.flush();

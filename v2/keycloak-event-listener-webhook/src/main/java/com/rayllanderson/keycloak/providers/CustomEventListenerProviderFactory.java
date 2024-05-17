@@ -1,5 +1,11 @@
 package com.rayllanderson.keycloak.providers;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rayllanderson.sqs.SqsEventPublisher;
 import org.jboss.logging.Logger;
 import org.keycloak.Config;
 import org.keycloak.events.EventListenerProvider;
@@ -13,52 +19,46 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.keycloak.events.EventType.CODE_TO_TOKEN;
-import static org.keycloak.events.EventType.LOGIN;
-import static org.keycloak.events.EventType.LOGIN_ERROR;
-import static org.keycloak.events.EventType.LOGOUT;
-import static org.keycloak.events.EventType.REFRESH_TOKEN;
-import static org.keycloak.events.EventType.REGISTER_ERROR;
-import static org.keycloak.events.EventType.SEND_RESET_PASSWORD;
-import static org.keycloak.events.EventType.valueOf;
-
 public class CustomEventListenerProviderFactory implements EventListenerProviderFactory {
 
-    private Set<OperationType> excludedAdminOperations;
-    private Set<EventType> eventBlacklist = new HashSet<>(Arrays.asList(
-            LOGIN,
-            LOGOUT,
-            SEND_RESET_PASSWORD,
-            REFRESH_TOKEN,
-            CODE_TO_TOKEN,
-            REGISTER_ERROR,
-            LOGIN_ERROR
+    private final Set<Object> eventAllowlist = new HashSet<>(Arrays.asList(
+            EventType.CLIENT_REGISTER,
+            EventType.UPDATE_PROFILE,
+            EventType.REGISTER,
+            EventType.UPDATE_EMAIL,
+            OperationType.CREATE,
+            OperationType.UPDATE
     ));
+    private static final Logger log = Logger.getLogger(CustomEventListenerProviderFactory.class);
+    private SqsEventPublisher sqsEventPublisher;
 
     @Override
     public EventListenerProvider create(KeycloakSession session) {
-        return new CustomEventListenerProvider(eventBlacklist, excludedAdminOperations);
+        return new CustomEventListenerProvider(sqsEventPublisher, eventAllowlist);
     }
 
     @Override
     public void init(Config.Scope config) {
-        String[] excludes = config.getArray("exclude-events");
-        if (excludes != null) {
-            eventBlacklist = new HashSet<>();
-            for (String e : excludes) {
-                eventBlacklist.add(valueOf(e));
-            }
-        }
-
-        String[] excludesOperations = config.getArray("excludesOperations");
-        if (excludesOperations != null) {
-            excludedAdminOperations = new HashSet<>();
-            for (String e : excludesOperations) {
-                excludedAdminOperations.add(OperationType.valueOf(e));
-            }
-        }
+        String sqsQueue = System.getenv("KC_SQS_QUEUE");
+        log.info("Configuration to publish event in dedicated sqs queue : " + sqsQueue);
+        final AmazonSQS amazonSQS = createAmazonSQS();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        sqsEventPublisher = new SqsEventPublisher(amazonSQS, sqsQueue, objectMapper);
     }
 
+    private AmazonSQS createAmazonSQS() {
+        String isSqsLocal = System.getenv("SQS_LOCAL");
+        log.info(" sqs local ? : " + System.getenv("SQS_LOCAL"));
+        if (Boolean.parseBoolean(isSqsLocal)) {
+            String sqsUrl = System.getenv("SQS_LOCAL_URL");
+            String awsRegion = System.getenv("AWS_REGION");
+            log.info("Configuration to publish event in local sqs queue : " + sqsUrl + " in region : " + awsRegion);
+            return AmazonSQSAsyncClientBuilder.standard()
+                    .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("accessKey", "secretKey")))
+                    .withEndpointConfiguration(new com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration(sqsUrl, awsRegion)).build();
+        }
+        return AmazonSQSAsyncClientBuilder.standard().build();
+    }
 
     @Override
     public void postInit(KeycloakSessionFactory factory) {
