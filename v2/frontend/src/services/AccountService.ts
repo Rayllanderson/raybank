@@ -10,8 +10,13 @@ export async function findAccountByType(type: 'account' | 'contact' | 'pix', val
     return await get('/api/v1/internal/accounts', token, { type: type, value: value });
 }
 
-export async function getAuthAccount(): Promise<AccountResponse> {
-    return await getAccount(await getToken())
+export async function getAuthAccount(): Promise<AccountResponse | null> {
+    try {
+        return await getAccount(await getToken())
+    } catch (err) {
+        console.log(err)
+        return null
+    }
 }
 
 export async function deposit(amount: number | string, token: string): Promise<any> {

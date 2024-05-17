@@ -10,6 +10,7 @@ import BankAccountCardLoading from '@/components/loading/BankAccountCardLoading'
 import CreditCardCardLoading from '@/components/loading/CreditCardCardLoading';
 
 import dynamic from 'next/dynamic'
+import { notFound } from 'next/navigation';
 
 const BankAccountCard = dynamic(() => import('../components/cards/BankAccountCard'), {
   ssr: false,
@@ -22,7 +23,11 @@ const CreditCardCard = dynamic(() => import('../components/cards/CreditCardCard'
 })
 
 export default async function page() {
-  const userData: AccountResponse = await getAuthAccount();
+  const userData: AccountResponse | null = await getAuthAccount();
+
+  if (!userData){
+    notFound()
+  }
 
   return (
     <SidebarProvider>

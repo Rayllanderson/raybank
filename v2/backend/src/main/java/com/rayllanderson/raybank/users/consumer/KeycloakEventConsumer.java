@@ -19,7 +19,6 @@ public class KeycloakEventConsumer {
 
     @SqsListener("${sqs.queue-name}")
     public void listen(final String message) throws Exception {
-        log.info("chegou mensagem aqui: {}", message);
         try {
             final var request = objectMapper.readValue(message, KeycloakSQSRequest.class);
 
