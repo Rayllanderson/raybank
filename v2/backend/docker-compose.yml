@@ -42,7 +42,13 @@ services:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realm-export.json
+      - KC_SQS_QUEUE=keycloak-event-listener-queue
       - -Dkeycloak.profile.feature.upload_scripts=enabled
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=kaguya
+      - AWS_SECRET_ACCESS_KEY=shinomiya
+      - SQS_LOCAL=true
+      - SQS_LOCAL_URL=http://localstack:4566
     ports:
       - "8443:8080"
     command:
@@ -52,8 +58,23 @@ services:
     volumes:
       - ../docker-volumes/keycloak/imports:/opt/jboss/keycloak/imports
       - ../docker-volumes/keycloak/provider/custom-event-listener-jar-with-dependencies.jar:/opt/keycloak/providers/custom-event-listener-jar-with-dependencies.jar
-    depends_on:
-      - keycloak-postgres
+    networks:
+      - raybank-network
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:3.0.2
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sqs
+      - AWS_DEFAULT_REGION=us-east-1
+      - DEBUG=1
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./script/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
+      - "./script/init-aws.sh:/docker-entrypoint-initaws.d/init-aws.sh"
     networks:
       - raybank-network
 
@@ -68,6 +89,8 @@ services:
     image: confluentinc/cp-kafka:6.0.0
     depends_on:
       - zookeeper
+    ports:
+      - "29092:9092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
