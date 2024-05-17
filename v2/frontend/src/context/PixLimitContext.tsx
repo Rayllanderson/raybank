@@ -57,6 +57,9 @@ export const PixUpdateLimitProvider: React.FC<PixUpdateLimitProviderProps> = ({ 
       if (err.httpStatus === 400 || err.httpStatus === 422) {
         toast.error(err.message);
       }
+      if (err.httpStatus === 404) {
+        toast.error("Limite não encontrado para conta. Registre uma chave PIX para ajustar o limite");
+      }
     } else {
       toast.error(defaultMessage);
     }

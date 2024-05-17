@@ -31,7 +31,13 @@ export default function ConfirmPixDepositForm({keys}: {keys: PixKey[]}) {
 
     useEffect(() => {
         const pixKey: PixKey = keys[0]
-        setCreditKey(pixKey.key)
+        if (pixKey)
+            setCreditKey(pixKey.key)
+        else {
+            router.push('/deposits')
+            toast.error("Nenhuma chave pix registrada")
+        }
+
     },[])
 
     function onInputChange(event: any) {
