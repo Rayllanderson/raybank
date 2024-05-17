@@ -24,7 +24,7 @@ public class SqsEventPublisher {
             SendMessageRequest sqsMessage = new SendMessageRequest()
                     .withQueueUrl(queueUrl)
                     .withMessageBody(objectMapper.writeValueAsString(event))
-                    .withDelaySeconds(5);
+                    .withDelaySeconds(0);
             amazonSQS.sendMessage(sqsMessage);
         } catch (JsonProcessingException e) {
             log.error("The payload wasn't created.", e);
