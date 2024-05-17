@@ -6,6 +6,18 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: 'true'
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      credentials:
+        access-key: kaguya
+        secret-key: sama
+      sqs:
+        enabled: true
+        endpoint: http://localhost:4566
+      stack:
+        auto: false
 
 postgres:
   username: postgres
@@ -35,6 +47,3 @@ boleto:
     expirate: 30
     process: 30
     refund: 30
-
-kafka:
-  bootstrap-server: localhost:29092

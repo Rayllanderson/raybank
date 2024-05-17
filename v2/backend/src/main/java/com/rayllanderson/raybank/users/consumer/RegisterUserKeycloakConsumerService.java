@@ -13,13 +13,13 @@ public class RegisterUserKeycloakConsumerService implements KeycloakConsumerServ
     private final RegisterUserService registerUserService;
 
     @Override
-    public void process(KeycloackKafkaRequest request) {
-        log.info("received register request from realmId:{} and userId: {}", request.realmId(), request.userId());
+    public void process(KeycloakSQSRequest request) {
+        log.info("received register request from realmId:{} and userId: {}", request.getRealmId(), request.getUserId());
         registerUserService.register(request.toUserInput());
     }
 
     @Override
-    public boolean supports(KeycloackKafkaRequest request) {
-        return request.type().equalsIgnoreCase("REGISTER");
+    public boolean supports(KeycloakSQSRequest request) {
+        return request.getType().equalsIgnoreCase("REGISTER");
     }
 }

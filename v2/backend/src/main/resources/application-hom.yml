@@ -1,3 +1,17 @@
+spring:
+  cloud:
+    aws:
+      region:
+        static: ${AWS_REGION:us-east-1}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY:kaguya}
+        secret-key: ${AWS_SECRET_KEY:sama}
+      sqs:
+        enabled: true
+        endpoint: ${SQS_ENDPOINT:http://localstack:4566}
+      stack:
+        auto: false
+
 postgres:
   username: ${POSTGRES_USERNAME}
   password: ${POSTGRES_PASSWORD}
@@ -5,8 +19,6 @@ postgres:
   port: ${POSTGRES_PORT}
   schema: ${POSTGRES_SCHEMA}
 
-kafka:
-  bootstrap-server: ${KAFKA_BOOTSTRAP-SERVER}
 
 keycloak:
   realm: ${KEYCLOAK_REALM}

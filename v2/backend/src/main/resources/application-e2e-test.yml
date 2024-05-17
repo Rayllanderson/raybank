@@ -19,9 +19,6 @@ keycloak:
     client-secret: FNWh2lMeyqJgzDmpqnIvkIcReFepEiMP
     client-id: raybank-backend-create-user
 
-kafka:
-  bootstrap-server: localhost:29092
-
 invoice:
   lock:
     atLeastFor: 1S

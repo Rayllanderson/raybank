@@ -2,7 +2,18 @@ server:
   port: '8080'
 
 spring:
-
+  cloud:
+    aws:
+      region:
+        static: ${AWS_REGION:us-east-1}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY:kaguya}
+        secret-key: ${AWS_SECRET_KEY:sama}
+      sqs:
+        enabled: true
+        endpoint: ${SQS_ENDPOINT:http://localhost:4566}
+      stack:
+        auto: false
   datasource:
     driverClassName: org.h2.Driver
     password: ''
@@ -31,9 +42,6 @@ keycloak:
   credentials:
     client-secret: FNWh2lMeyqJgzDmpqnIvkIcReFepEiMP
     client-id: raybank-backend-create-user
-
-kafka:
-  bootstrap-server: localhost:29092
 
 #every 30s
 boleto:

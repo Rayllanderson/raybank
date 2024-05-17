@@ -13,13 +13,13 @@ public class RegisterEstablishmentKeycloakConsumerService implements KeycloakCon
     private final RegisterUserService registerUserService;
 
     @Override
-    public void process(KeycloackKafkaRequest request) {
-        log.info("received create request from realmId:{} and userId: {}", request.realmId(), request.userId());
-        registerUserService.preRegisterEstablishemnt(request.toEstablismentInput());
+    public void process(KeycloakSQSRequest request) {
+        log.info("received create request from realmId:{} and userId: {}", request.getRealmId(), request.getUserId());
+        registerUserService.preRegisterEstablishemnt(request.toEstablishmentInput());
     }
 
     @Override
-    public boolean supports(KeycloackKafkaRequest request) {
-        return request.type().equalsIgnoreCase("CREATE") && request.resourcePath() != null;
+    public boolean supports(KeycloakSQSRequest request) {
+        return request.getType().equalsIgnoreCase("CREATE") && request.getResourcePath() != null;
     }
 }
