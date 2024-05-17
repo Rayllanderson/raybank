@@ -29,6 +29,7 @@ services:
     ports:
       - "5432:5432"
     environment:
+      POSTGRES_DB: raybank
       POSTGRES_PASSWORD: 12345
     volumes:
       - ./docker-volumes/postgres:/var/lib/postgresql/data
@@ -78,45 +79,46 @@ services:
     networks:
       - raybank-network
 
-  zookeeper:
-    image: confluentinc/cp-zookeeper:6.0.0
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-    networks:
-      - raybank-network
+# enable if you want to keycloak spi with kafka
+  # zookeeper:
+  #   image: confluentinc/cp-zookeeper:6.0.0
+  #   environment:
+  #     ZOOKEEPER_CLIENT_PORT: 2181
+  #   networks:
+  #     - raybank-network
 
-  kafka:
-    image: confluentinc/cp-kafka:6.0.0
-    depends_on:
-      - zookeeper
-    ports:
-      - "29092:9092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    networks:
-      - raybank-network
+  # kafka:
+  #   image: confluentinc/cp-kafka:6.0.0
+  #   depends_on:
+  #     - zookeeper
+  #   ports:
+  #     - "29092:9092"
+  #   environment:
+  #     KAFKA_BROKER_ID: 1
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  #     KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #   networks:
+  #     - raybank-network
 
-  # This "container" is a workaround to pre-create topics
-  kafka-setup:
-    image: confluentinc/cp-kafka:6.0.0
-    hostname: kafka-setup
-    depends_on:
-      - kafka
-    command: "bash -c 'echo Waiting for Kafka to be ready... && \
-                               cub kafka-ready -b kafka:9092 1 20 && \
-                               kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 3 --replication-factor 1 --config retention.ms=10000 --topic keycloak-event-listener-topic'"
-    environment:
-      # The following settings are listed here only to satisfy the image's requirements.
-      # We override the image's `command` anyways, hence this container will not start a broker.
-      KAFKA_BROKER_ID: ignored
-      KAFKA_ZOOKEEPER_CONNECT: ignored
-    networks:
-      - raybank-network
+  # # This "container" is a workaround to pre-create topics
+  # kafka-setup:
+  #   image: confluentinc/cp-kafka:6.0.0
+  #   hostname: kafka-setup
+  #   depends_on:
+  #     - kafka
+  #   command: "bash -c 'echo Waiting for Kafka to be ready... && \
+  #                              cub kafka-ready -b kafka:9092 1 20 && \
+  #                              kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 3 --replication-factor 1 --config retention.ms=10000 --topic keycloak-event-listener-topic'"
+  #   environment:
+  #     # The following settings are listed here only to satisfy the image's requirements.
+  #     # We override the image's `command` anyways, hence this container will not start a broker.
+  #     KAFKA_BROKER_ID: ignored
+  #     KAFKA_ZOOKEEPER_CONNECT: ignored
+  #   networks:
+  #     - raybank-network
 
 networks:
   raybank-network:
