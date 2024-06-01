@@ -46,6 +46,8 @@ server:
 
 sqs:
   queue-name: ${SQS_QUEUE_NAME:keycloak-event-listener-queue}
+s3:
+  bucketName: ${AWS_S3_BUCKET_NAME:rayllanderson-raybank-bucket}
 
 logging:
   level:

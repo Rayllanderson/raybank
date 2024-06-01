@@ -12,6 +12,8 @@ spring:
       sqs:
         enabled: true
         endpoint: ${SQS_ENDPOINT:http://localstack:4566}
+      s3:
+        endpoint:  ${S3_ENDPOINT:http://localstack:4566}
       stack:
         auto: false
 
