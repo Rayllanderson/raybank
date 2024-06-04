@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.users.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,6 +36,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType type;
     private String bankAccountId;
+    @Embedded
+    private ProfilePicture profilePicture;
 
     public User(String id, String name, String username, String authorities) {
         this.id = id;
@@ -57,5 +60,19 @@ public class User {
 
     public void updateName(final String name) {
         this.name = name;
+    }
+
+    public boolean hasProfilePicture() {
+        return profilePicture != null && profilePicture.getKey() != null;
+    }
+
+    public String getProfilePictureKey() {
+        if (profilePicture == null)
+            return null;
+        return profilePicture.getKey();
+    }
+
+    public void addProfilePicture(final ProfilePicture profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }
