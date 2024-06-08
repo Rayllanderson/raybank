@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -29,24 +29,26 @@ public class S3Service {
         final String objectKey = "uploads/" + UUID.randomUUID() + "." + file.getContentType().split("/")[1];
 
         s3Operations.upload(bucketName, objectKey, file.getInputStream());
-        URL url = this.generatePresignedUrl(objectKey);
+        S3PresignUrlOutput s3PresignUrlOutput = this.generatePresignedUrl(objectKey);
 
-        return new S3UploadOutput(objectKey, url.toString(), LocalDateTime.now().plusHours(PRE_SIGN_EXPIRATION_HOURS));
+        return new S3UploadOutput(objectKey, s3PresignUrlOutput.url().toString(), s3PresignUrlOutput.expiration());
     }
 
     public void deleteFile(final String objectKey) {
         s3Operations.deleteObject(bucketName, objectKey);
     }
 
-    public URL generatePresignedUrl(final String objectKey) {
+    public S3PresignUrlOutput generatePresignedUrl(final String objectKey) {
         Consumer<PutObjectRequest.Builder> putObjectRequest = builder -> builder
                 .bucket(bucketName)
-                .key(objectKey)
+                .key(Objects.requireNonNull(objectKey, "objectKey cannot be null"))
                 .build();
 
-        return s3Presigner
+        PresignedPutObjectRequest presignedPutObjectRequest = s3Presigner
                 .presignPutObject(r -> r.signatureDuration(Duration.ofHours(PRE_SIGN_EXPIRATION_HOURS))
-                .putObjectRequest(putObjectRequest))
-                .url();
+                        .putObjectRequest(putObjectRequest));
+
+        return new S3PresignUrlOutput(presignedPutObjectRequest.url(), presignedPutObjectRequest.expiration());
+
     }
 }

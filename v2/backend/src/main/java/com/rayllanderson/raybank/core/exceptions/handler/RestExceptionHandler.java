@@ -2,6 +2,7 @@ package com.rayllanderson.raybank.core.exceptions.handler;
 
 import com.rayllanderson.raybank.core.exceptions.RaybankException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 @Slf4j
 @RestControllerAdvice
@@ -42,17 +45,18 @@ public class RestExceptionHandler {
         int status = HttpStatus.METHOD_NOT_ALLOWED.value();
         return ResponseEntity.status(status).body(StandardError.from(ex, request.getRequestURI()));
     }
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<StandardError> handlerMissingServletRequestParameterException(MissingServletRequestParameterException ex, HttpServletRequest request) {
-        var status = HttpStatus.BAD_REQUEST;
-        return ResponseEntity.status(status.value()).body(StandardError.from(ex, status, request.getRequestURI()));
-    }
 
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
     public ResponseEntity<StandardError> handlerHttpRequestMethodNotSupportedException(org.springframework.security.access.AccessDeniedException ex, HttpServletRequest request) {
         final var status = HttpStatus.FORBIDDEN;
         return ResponseEntity.status(status).body(StandardError.from(ex, request.getRequestURI()));
     }
+
+    @ExceptionHandler({MaxUploadSizeExceededException.class, ConstraintViolationException.class, MissingServletRequestPartException.class, MissingServletRequestParameterException.class})
+    public ResponseEntity<StandardError> handlerSizeLimitExceededException(Exception e, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(StandardError.badRequest(e, request.getRequestURI()));
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StandardError> handlerExceptionInternal(Exception e, HttpServletRequest request) {

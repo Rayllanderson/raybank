@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @Builder
@@ -66,6 +68,10 @@ public class User {
         return profilePicture != null && profilePicture.getKey() != null;
     }
 
+    public boolean doesNotHaveProfilePicture() {
+        return !hasProfilePicture();
+    }
+
     public String getProfilePictureKey() {
         if (profilePicture == null)
             return null;
@@ -74,5 +80,11 @@ public class User {
 
     public void addProfilePicture(final ProfilePicture profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public void updateProfilePicturePreSignedUrl(final String preSignedUrl, Instant newExpiration) {
+        if (this.profilePicture == null) return;
+        this.profilePicture.setPreSignedUrl(preSignedUrl);
+        this.profilePicture.setExpiration(newExpiration);
     }
 }

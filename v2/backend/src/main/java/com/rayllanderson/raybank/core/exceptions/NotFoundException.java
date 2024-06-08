@@ -12,6 +12,10 @@ public class NotFoundException extends RaybankException {
         return new NotFoundException(reason, s);
     }
 
+    public static RaybankException with(RaybankExceptionReason reason) {
+        return new NotFoundException(reason, reason.getDescription());
+    }
+
     public static RaybankException withFormatted(RaybankExceptionReason reason, String s, Object ... args) {
         return NotFoundException.with(reason, java.lang.String.format(s, args));
     }

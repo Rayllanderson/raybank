@@ -2,11 +2,11 @@ package com.rayllanderson.raybank.core.services;
 
 import com.rayllanderson.raybank.users.model.ProfilePicture;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
-public record S3UploadOutput(String key, String url, LocalDateTime expiresIn) {
+public record S3UploadOutput(String key, String url, Instant expiration) {
 
     public ProfilePicture toProfilePicture() {
-        return new ProfilePicture(key(), url(), expiresIn());
+        return new ProfilePicture(key(), url(), expiration());
     }
 }

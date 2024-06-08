@@ -37,6 +37,6 @@ public class UploadProfilePictureController {
 
         S3UploadOutput s3UploadOutput = uploadProfileService.upload(accountId, file);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(s3UploadOutput);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ProfilePictureResponse.from(s3UploadOutput));
     }
 }

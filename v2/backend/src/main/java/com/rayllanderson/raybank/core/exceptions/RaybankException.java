@@ -20,4 +20,8 @@ public class RaybankException extends RuntimeException {
     public String getMessage() {
         return (this.message == null || this.message.isEmpty()) ? super.getMessage() : this.message;
     }
+
+    public static RaybankException unauthorized() {
+        return new RaybankException(RaybankExceptionReason.UNAUTHORIZED, null, HttpStatus.FORBIDDEN);
+    }
 }

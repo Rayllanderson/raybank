@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum RaybankExceptionReason {
 
+    FORBIDDEN("Access forbidden", "FRB403"),
+    UNAUTHORIZED("Access unauthorized", "UNA401"),
     CARD_NOT_FOUND("Card was not found", "CNF404"),
     CARD_EXPIRED("Card is expired", "CED422"),
     CARD_INACTAVED("Card is inactivated", "CNA422"),
@@ -60,7 +62,8 @@ public enum RaybankExceptionReason {
     TRANSACTION_NOT_FOUND("Transaction not found", "TNF404"),
     REFUND_AMOUNT_INVALID("The refund amount is higher than transaction amount", "RAI422"),
     REFUND_AMOUNT_HIGHER("The refund amount sum is higher than amount refunded", "RAH422"),
-    INVOICE_NOT_AVAILABLE("The user's invoice is current unavailable, can't process any payment", "INA500");
+    INVOICE_NOT_AVAILABLE("The user's invoice is current unavailable, can't process any payment", "INA500"),
+    PROFILE_IMAGE_NOT_FOUND("The profile image does not exist", "PINF404");
 
     private final String description;
     private final String code;
