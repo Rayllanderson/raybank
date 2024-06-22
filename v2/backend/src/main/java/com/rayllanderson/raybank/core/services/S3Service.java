@@ -12,6 +12,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequ
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -26,12 +27,18 @@ public class S3Service {
     public static final int PRE_SIGN_EXPIRATION_HOURS = 28;
 
     public S3UploadOutput uploadFile(final MultipartFile file) throws IOException {
-        final String objectKey = "uploads/" + UUID.randomUUID() + "." + file.getContentType().split("/")[1];
+        final String objectKey = "uploads/" + UUID.randomUUID() + "." + getContentType(file);
 
         s3Operations.upload(bucketName, objectKey, file.getInputStream());
         S3PresignUrlOutput s3PresignUrlOutput = this.generatePresignedUrl(objectKey);
 
         return new S3UploadOutput(objectKey, s3PresignUrlOutput.url().toString(), s3PresignUrlOutput.expiration());
+    }
+
+    private static String getContentType(MultipartFile file) {
+        return Optional.ofNullable(file.getContentType())
+                .map(contentType -> contentType.split("/")[1])
+                .orElse("jpg");
     }
 
     public void deleteFile(final String objectKey) {

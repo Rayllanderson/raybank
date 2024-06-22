@@ -22,7 +22,6 @@ import java.util.Optional;
 public class GetProfilePictureController {
 
     private final FindProfileService findProfileService;
-    private static final String REDIRECT_URL = "/api/v1/internal/accounts/%s/renew-profile-picture";
 
     @RequiredAccountOwner
     @GetMapping("accounts/{accountId}/profile-picture")
@@ -34,6 +33,6 @@ public class GetProfilePictureController {
             return new ResponseEntity<>(Map.of("message", "Profile picture is expired. Please renew"), HttpStatus.GONE);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(ProfilePictureResponse.from(profileOutputOptional.get()));
+        return ResponseEntity.ok().body(ProfilePictureResponse.from(profileOutputOptional.get()));
     }
 }
