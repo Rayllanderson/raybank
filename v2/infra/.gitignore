@@ -2,3 +2,9 @@
 /volume/
 
 .idea
+
+localstack_providers_override.tf
+*.tfstate*
+.terraform.lock
+.terraform.lock.hcl
+.terraform

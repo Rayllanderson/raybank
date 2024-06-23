@@ -11,7 +11,6 @@ services:
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
       - POSTGRES_SCHEMA=raybank
-      - KAFKA_BOOTSTRAP-SERVER=kafka:9092
       - KEYCLOAK_REALM=raybank
       - KEYCLOAK_SERVER-URL=http://keycloak:8080
       - KEYCLOAK_CLIENT-ID=raybank-backend-create-user
@@ -38,44 +37,36 @@ services:
 
   keycloak:
     container_name: keycloak
-    image: quay.io/keycloak/keycloak:20.0.3
-    environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
-      - KEYCLOAK_IMPORT=/opt/jboss/keycloak/imports/realm-export.json
-      - KC_SQS_QUEUE=keycloak-event-listener-queue
-      - -Dkeycloak.profile.feature.upload_scripts=enabled
-      - AWS_REGION=us-east-1
-      - AWS_ACCESS_KEY_ID=kaguya
-      - AWS_SECRET_ACCESS_KEY=shinomiya
-      - SQS_LOCAL=true
-      - SQS_LOCAL_URL=http://localstack:4566
+    image: rayllanderson/raybank-keycloak:v0
     ports:
       - "8443:8080"
     command:
       - start-dev # uma versão mais leve customizada para ambiente de desenvolvimento e testes pensada para rodar na máquina do desenvolvedor
-      - -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json
       - --import-realm
-    volumes:
-      - ./docker-volumes/keycloak/imports:/opt/jboss/keycloak/imports
-      - ./docker-volumes/keycloak/provider/custom-event-listener-jar-with-dependencies.jar:/opt/keycloak/providers/custom-event-listener-jar-with-dependencies.jar
+      - -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json
     networks:
       - raybank-network
 
   localstack:
     container_name: localstack
-    image: localstack/localstack:3.0.2
+    # image: localstack/localstack:3.0.2
+    build:
+      context: localstack/.
+      dockerfile: Dockerfile
     ports:
       - "4566:4566"
+      - "4572:4572"
     environment:
-      - SERVICES=sqs
+      - SERVICES=sqs,s3,lambda
       - AWS_DEFAULT_REGION=us-east-1
       - DEBUG=1
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "./script/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
-      - "./script/init-aws.sh:/docker-entrypoint-initaws.d/init-aws.sh"
+      - "./localstack/lambda:/opt/code/localstack/lambda"
+      - "./localstack/terraform:/opt/code/localstack/terraform"
+      - "./localstack/script/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
+      - "./localstack/script/init-aws.sh:/docker-entrypoint-initaws.d/init-aws.sh"
     networks:
       - raybank-network
 
