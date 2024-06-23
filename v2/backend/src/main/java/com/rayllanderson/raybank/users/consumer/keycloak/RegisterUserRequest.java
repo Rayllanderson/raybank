@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.users.consumer;
+package com.rayllanderson.raybank.users.consumer.keycloak;
 
 import com.rayllanderson.raybank.users.services.register.RegisterUserInput;
 import jakarta.validation.constraints.NotBlank;

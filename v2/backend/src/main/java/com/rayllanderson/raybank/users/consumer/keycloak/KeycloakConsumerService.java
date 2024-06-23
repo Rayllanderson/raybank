@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.users.consumer;
+package com.rayllanderson.raybank.users.consumer.keycloak;
 
 public interface KeycloakConsumerService {
 

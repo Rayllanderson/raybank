@@ -1,11 +1,10 @@
-package com.rayllanderson.raybank.users.consumer;
+package com.rayllanderson.raybank.users.consumer.keycloak;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rayllanderson.raybank.users.services.register.RegisterUserInput;
 import com.rayllanderson.raybank.users.services.update.UpdateUserInput;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import static com.rayllanderson.raybank.users.services.register.RegisterUtils.getIdFromResourcePath;

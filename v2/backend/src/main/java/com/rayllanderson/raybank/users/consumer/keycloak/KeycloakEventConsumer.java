@@ -1,4 +1,4 @@
-package com.rayllanderson.raybank.users.consumer;
+package com.rayllanderson.raybank.users.consumer.keycloak;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.awspring.cloud.sqs.annotation.SqsListener;

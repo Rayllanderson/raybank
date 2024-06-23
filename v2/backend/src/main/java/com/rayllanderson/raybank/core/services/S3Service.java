@@ -30,6 +30,7 @@ public class S3Service {
         final String objectKey = "uploads/" + UUID.randomUUID() + "." + getContentType(file);
 
         s3Operations.upload(bucketName, objectKey, file.getInputStream());
+
         S3PresignUrlOutput s3PresignUrlOutput = this.generatePresignedUrl(objectKey);
 
         return new S3UploadOutput(objectKey, s3PresignUrlOutput.url().toString(), s3PresignUrlOutput.expiration());
