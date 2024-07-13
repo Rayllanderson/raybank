@@ -1,2 +1,2 @@
-Pillow
 boto3
+pillow
