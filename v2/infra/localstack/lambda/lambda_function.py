@@ -17,17 +17,18 @@ def lambda_handler(event, context):
         # Baixar a imagem do S3
         response = s3_client.get_object(Bucket=bucket, Key=key)
         image_content = response['Body'].read()
+        original_content_type = response['ContentType'].lower()
         
         # Abrir a imagem com Pillow
         image = Image.open(BytesIO(image_content))
         
         # Criar a thumbnail
-        thumbnail_size = (128, 128)
+        thumbnail_size = (320, 320)
         image.thumbnail(thumbnail_size)
         
         # Salvar a thumbnail em um objeto BytesIO
         thumbnail_buffer = BytesIO()
-        image.save(thumbnail_buffer, 'JPEG')
+        image.save(thumbnail_buffer, format=image.format)
         thumbnail_buffer.seek(0)
         
         # Definir o novo nome do arquivo para a thumbnail
@@ -38,7 +39,7 @@ def lambda_handler(event, context):
             Bucket=bucket,
             Key=thumbnail_key,
             Body=thumbnail_buffer,
-            ContentType='image/jpeg'
+            ContentType=original_content_type
         )
         
         return {
