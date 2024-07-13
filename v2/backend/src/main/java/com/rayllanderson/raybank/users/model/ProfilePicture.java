@@ -34,4 +34,12 @@ public class ProfilePicture {
         }
         return Instant.now().isAfter(expiration);
     }
+
+    public void reset() {
+        this.key = null;
+        this.thumbnailKey = null;
+        this.preSignedUrl = null;
+        this.thumbnailPreSignedUrl = null;
+        this.expiration = null;
+    }
 }
