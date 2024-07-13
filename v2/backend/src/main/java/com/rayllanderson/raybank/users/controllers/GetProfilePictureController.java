@@ -33,6 +33,6 @@ public class GetProfilePictureController {
             return new ResponseEntity<>(Map.of("message", "Profile picture is expired. Please renew"), HttpStatus.GONE);
         }
 
-        return ResponseEntity.ok().body(ProfilePictureResponse.from(profileOutputOptional.get()));
+        return ResponseEntity.ok().body(profileOutputOptional.get());
     }
 }

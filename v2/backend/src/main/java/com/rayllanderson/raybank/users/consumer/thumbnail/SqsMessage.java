@@ -10,11 +10,16 @@ public record SqsMessage(
 ) {
 
     public String key() {
+        if (records == null || records().isEmpty()) return null;
         return records().get(0).s3().object().key();
     }
 
     public String keyWithoutPrefix() {
-        return key().split("thumbnails/")[1];
+        String fullKey = key();
+        if (fullKey == null || !fullKey.contains("thumbnails/")) {
+            return null;
+        }
+        return fullKey.split("thumbnails/")[1];
     }
 
 

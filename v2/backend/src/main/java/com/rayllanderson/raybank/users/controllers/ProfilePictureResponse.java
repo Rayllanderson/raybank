@@ -11,10 +11,6 @@ public record ProfilePictureResponse(
         Instant expiration
 ) {
 
-    public static ProfilePictureResponse from(final FindProfileOutput findProfileOutput) {
-        return new ProfilePictureResponse(findProfileOutput.preSignedUrl(), findProfileOutput.expiration());
-    }
-
     public static ProfilePictureResponse from(final S3PresignUrlOutput s3PresignUrlOutput) {
         return new ProfilePictureResponse(s3PresignUrlOutput.url().toString(), s3PresignUrlOutput.expiration());
     }

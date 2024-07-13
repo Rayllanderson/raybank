@@ -18,9 +18,9 @@ public class UpdateThumbnailService {
     public void updateThumbnail(final SqsMessage sqsMessage) {
         final User user = userGateway.findByImageKey(sqsMessage.keyWithoutPrefix());
 
-        final S3PresignUrlOutput s3PresignUrlOutput = s3Service.generatePresignedUrl(sqsMessage.keyWithoutPrefix());
+        final S3PresignUrlOutput s3PresignUrlOutput = s3Service.generatePresignedUrl(sqsMessage.key());
 
-        user.updateThumbnail(sqsMessage.keyWithoutPrefix(), s3PresignUrlOutput.url().toString());
+        user.updateThumbnail(sqsMessage.key(), s3PresignUrlOutput.url().toString());
         userGateway.save(user);
     }
 }

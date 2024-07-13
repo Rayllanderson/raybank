@@ -21,6 +21,9 @@ public class ThumbnailCreatedEventConsumer {
     @SqsListener(value = "${sqs.thumbnail-queue-name}", acknowledgementMode = ON_SUCCESS)
     public void listen(final String message) {
         SqsMessage sqsMessage = objectMapper.readValue(message, SqsMessage.class);
+
+        if (sqsMessage.keyWithoutPrefix() == null) return;
+
         updateThumbnailService.updateThumbnail(sqsMessage);
     }
 }
