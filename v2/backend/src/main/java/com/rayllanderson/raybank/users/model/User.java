@@ -86,7 +86,7 @@ public class User {
         if (this.profilePicture == null) return;
         this.profilePicture.setPreSignedUrl(preSignedUrl);
         this.profilePicture.setExpiration(newExpiration);
-        this.profilePicture.setThumbnailPreSignedUrl(preSignedUrl);
+        this.profilePicture.setThumbnailPreSignedUrl(thumbnailPreSignedUrl);
     }
 
     public void updateThumbnail(final String thumbnailKey, final String preSignedUrl) {
