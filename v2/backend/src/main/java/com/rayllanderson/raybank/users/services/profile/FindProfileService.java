@@ -16,7 +16,7 @@ public class FindProfileService {
 
     private final UserGateway userGateway;
 
-    public Optional<FindProfileOutput> findByUserId(String userId) {
+    public Optional<ProfilePictureOutput> findByUserId(String userId) {
         final User user = userGateway.findById(userId);
 
         if (user.doesNotHaveProfilePicture()) {
@@ -27,6 +27,6 @@ public class FindProfileService {
             return Optional.empty();
         }
 
-        return Optional.of(FindProfileOutput.from(user));
+        return Optional.of(ProfilePictureOutput.from(user));
     }
 }

@@ -17,7 +17,7 @@ public class GeneratePreSignUrlProfilePictureService {
     private final S3Service s3Service;
     private final UserGateway userGateway;
 
-    public S3PresignUrlOutput generate(String userId) {
+    public ProfilePictureOutput generate(String userId) {
         final User user = userGateway.findById(userId);
 
         if (user.doesNotHaveProfilePicture()) {
@@ -25,10 +25,11 @@ public class GeneratePreSignUrlProfilePictureService {
         }
 
         final S3PresignUrlOutput s3PresignUrlOutput = s3Service.generatePresignedUrl(user.getProfilePictureKey());
+        final S3PresignUrlOutput s3ThumbPresignUrlOutput = s3Service.generatePresignedUrl(user.getProfilePicture().getThumbnailKey());
 
-        user.updateProfilePicturePreSignedUrl(s3PresignUrlOutput.url().toString(), s3PresignUrlOutput.expiration());
+        user.updateProfilePicturePreSignedUrl(s3PresignUrlOutput.url().toString(), s3ThumbPresignUrlOutput.url().toString(), s3PresignUrlOutput.expiration());
         userGateway.save(user);
 
-        return s3PresignUrlOutput;
+        return ProfilePictureOutput.from(s3PresignUrlOutput, s3ThumbPresignUrlOutput);
     }
 }

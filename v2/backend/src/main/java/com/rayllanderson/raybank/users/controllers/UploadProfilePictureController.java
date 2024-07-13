@@ -5,7 +5,6 @@ import com.rayllanderson.raybank.core.services.S3UploadOutput;
 import com.rayllanderson.raybank.users.controllers.validation.ValidFileSize;
 import com.rayllanderson.raybank.users.controllers.validation.ValidFileType;
 import com.rayllanderson.raybank.users.services.profile.UploadProfileService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +36,6 @@ public class UploadProfilePictureController {
 
         S3UploadOutput s3UploadOutput = uploadProfileService.upload(accountId, file);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(ProfilePictureResponse.from(s3UploadOutput));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UploadProfilePictureResponse.from(s3UploadOutput));
     }
 }

@@ -1,7 +1,7 @@
 package com.rayllanderson.raybank.users.controllers;
 
 import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
-import com.rayllanderson.raybank.users.services.profile.FindProfileOutput;
+import com.rayllanderson.raybank.users.services.profile.ProfilePictureOutput;
 import com.rayllanderson.raybank.users.services.profile.FindProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class GetProfilePictureController {
     @GetMapping("accounts/{accountId}/profile-picture")
     public ResponseEntity<?> findImageById(@PathVariable String accountId, @AuthenticationPrincipal Jwt jwt) {
 
-        Optional<FindProfileOutput> profileOutputOptional = findProfileService.findByUserId(accountId);
+        Optional<ProfilePictureOutput> profileOutputOptional = findProfileService.findByUserId(accountId);
 
         if (profileOutputOptional.isEmpty()) {
             return new ResponseEntity<>(Map.of("message", "Profile picture is expired. Please renew"), HttpStatus.GONE);

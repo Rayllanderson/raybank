@@ -82,10 +82,11 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public void updateProfilePicturePreSignedUrl(final String preSignedUrl, Instant newExpiration) {
+    public void updateProfilePicturePreSignedUrl(final String preSignedUrl, String thumbnailPreSignedUrl, Instant newExpiration) {
         if (this.profilePicture == null) return;
         this.profilePicture.setPreSignedUrl(preSignedUrl);
         this.profilePicture.setExpiration(newExpiration);
+        this.profilePicture.setThumbnailPreSignedUrl(preSignedUrl);
     }
 
     public void updateThumbnail(final String thumbnailKey, final String preSignedUrl) {

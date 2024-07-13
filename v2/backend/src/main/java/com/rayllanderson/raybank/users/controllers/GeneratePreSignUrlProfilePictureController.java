@@ -3,6 +3,7 @@ package com.rayllanderson.raybank.users.controllers;
 import com.rayllanderson.raybank.core.security.method.RequiredAccountOwner;
 import com.rayllanderson.raybank.core.services.S3PresignUrlOutput;
 import com.rayllanderson.raybank.users.services.profile.GeneratePreSignUrlProfilePictureService;
+import com.rayllanderson.raybank.users.services.profile.ProfilePictureOutput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,8 +24,8 @@ public class GeneratePreSignUrlProfilePictureController {
     @PostMapping("accounts/{accountId}/renew-profile-picture")
     public ResponseEntity<?> generatePreSignUrl(@PathVariable String accountId, @AuthenticationPrincipal Jwt jwt) {
 
-        S3PresignUrlOutput s3PresignUrlOutput = generatePreSignUrlService.generate(accountId);
+        ProfilePictureOutput s3PresignUrlOutput = generatePreSignUrlService.generate(accountId);
 
-        return ResponseEntity.ok(ProfilePictureResponse.from(s3PresignUrlOutput));
+        return ResponseEntity.ok(s3PresignUrlOutput);
     }
 }
