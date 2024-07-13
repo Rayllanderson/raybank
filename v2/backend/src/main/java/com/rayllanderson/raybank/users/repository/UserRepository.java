@@ -9,9 +9,8 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, String> {
     Optional<User>findByUsername(String username);
+    Optional<User> findByProfilePicture_Key(String key);
     boolean existsByUsername(String username);
-//    boolean existsByPixKeysKeyOrBankAccountAccountNumber(String pixKey, Integer accountNumber);
-//    Optional<User> findByPixKeysKeyOrBankAccountAccountNumber(String pixKey, Integer accountNumber);
 
     @Query("from users as u where u.id = ?1 ")
     @EntityGraph(attributePaths = "pixKeys")

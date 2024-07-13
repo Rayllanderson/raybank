@@ -87,4 +87,10 @@ public class User {
         this.profilePicture.setPreSignedUrl(preSignedUrl);
         this.profilePicture.setExpiration(newExpiration);
     }
+
+    public void updateThumbnail(final String thumbnailKey, final String preSignedUrl) {
+        if (this.profilePicture == null) return;
+        this.profilePicture.setThumbnailKey(thumbnailKey);
+        this.profilePicture.setThumbnailPreSignedUrl(preSignedUrl);
+    }
 }

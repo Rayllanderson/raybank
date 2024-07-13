@@ -7,6 +7,6 @@ import java.time.Instant;
 public record S3UploadOutput(String key, String url, Instant expiration) {
 
     public ProfilePicture toProfilePicture() {
-        return new ProfilePicture(key(), url(), expiration());
+        return new ProfilePicture(key(), null, url(), null, expiration());
     }
 }

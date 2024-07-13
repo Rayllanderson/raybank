@@ -19,9 +19,12 @@ import java.time.Instant;
 public class ProfilePicture {
     @NotBlank
     private String key;
+    private String thumbnailKey;
     @Lob
     @NotNull
     private String preSignedUrl;
+    @Lob
+    private String thumbnailPreSignedUrl;
     @NotNull
     private Instant expiration;
 
