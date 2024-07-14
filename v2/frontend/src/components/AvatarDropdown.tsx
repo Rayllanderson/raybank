@@ -1,37 +1,31 @@
-import { keycloak } from '@/services/KeycloakService'
-import { Avatar, Dropdown } from 'flowbite-react'
-import { signOut, useSession } from 'next-auth/react'
+import { getAuthAccount, getProfilePicture } from '@/services/AccountService'
+import { AccountResponse } from '@/types/Account'
+import { Avatar, Dropdown, DropdownItem, DropdownHeader as DropdownHeaderItem, DropdownDivider } from 'flowbite-react'
+import Link from 'next/link'
 import React from 'react'
+import SignOutButton from './SignOutButton'
+import AccountDropdownButton from './AccountDropdownButton'
 
-export default function AvatarDropdown() {
-    const {data} = useSession()
-    const handleLogout = async () => {
-        try {
-            await keycloak.logout();
-            signOut();
-        } catch (error) {
-            console.error('Erro ao fazer logout:', error);
-        }
-    };
+export default async function AvatarDropdown() {
+    const userData: AccountResponse | null = await getAuthAccount();
+    const profile = await getProfilePicture()
 
-    const handleClick = () => {
-        window.open(process.env.NEXT_PUBLIC_KEYCLOAK_ACCOUNT_INFO!, '_blank');
-      };
     return (
         <Dropdown
             arrowIcon={false}
             inline
-            
+
             label={
-                <Avatar alt="User settings" img="/avatar.png" rounded />
+                <Avatar alt="User settings" img={profile?.thumbnail.preSignedUrl} rounded />
             } className='rounded-md'>
-            <Dropdown.Header>
-                <span className="block text-sm">{data?.user.name}</span>
-                <span className="block truncate text-sm font-medium">{data?.user.email}</span>
-            </Dropdown.Header>
-            <Dropdown.Item onClick={handleClick} className="hover:bg-black">Conta</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
+            <DropdownHeaderItem>
+                <span className="block text-sm">{userData?.user.name}</span>
+                <span className="block text-sm">№ da conta: {userData?.account.number}</span>
+            </DropdownHeaderItem>
+            <AccountDropdownButton />
+            <Link href="/profile"> <DropdownItem>Foto</DropdownItem> </Link>
+            <DropdownDivider />
+            <SignOutButton />
         </Dropdown>
     )
 }
