@@ -94,4 +94,8 @@ public class User {
         this.profilePicture.setThumbnailKey(thumbnailKey);
         this.profilePicture.setThumbnailPreSignedUrl(preSignedUrl);
     }
+
+    public void deleteProfilePicture() {
+        this.profilePicture = null;
+    }
 }

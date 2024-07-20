@@ -23,7 +23,6 @@ public class UploadProfileService {
 
         if (user.hasProfilePicture()) {
             deleteOldProfilePicture(user.getProfilePicture());
-            user.getProfilePicture().reset();
         }
 
         final S3UploadOutput s3UploadOutput = s3Service.uploadFile(file);
@@ -37,7 +36,10 @@ public class UploadProfileService {
 
     private void deleteOldProfilePicture(final ProfilePicture oldProfilePictureKey) {
         s3Service.deleteFile(oldProfilePictureKey.getKey());
-        s3Service.deleteFile(oldProfilePictureKey.getThumbnailKey());
+        if (oldProfilePictureKey.getThumbnailKey() != null) {
+            s3Service.deleteFile(oldProfilePictureKey.getThumbnailKey());
+        }
+        oldProfilePictureKey.reset();
     }
 
 }

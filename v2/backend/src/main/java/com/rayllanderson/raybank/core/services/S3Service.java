@@ -53,7 +53,7 @@ public class S3Service {
                 .build();
 
         PresignedPutObjectRequest presignedPutObjectRequest = s3Presigner
-                .presignPutObject(r -> r.signatureDuration(Duration.ofHours(PRE_SIGN_EXPIRATION_HOURS))
+                .presignPutObject(r -> r.signatureDuration(Duration.ofSeconds(PRE_SIGN_EXPIRATION_HOURS))
                         .putObjectRequest(putObjectRequest));
 
         return new S3PresignUrlOutput(presignedPutObjectRequest.url(), presignedPutObjectRequest.expiration());
