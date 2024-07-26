@@ -24,7 +24,12 @@ export const ProfilePictureProvider = ({ children }: { children: ReactNode }) =>
 
         const response = await getProfilePicture(session?.token!)
 
-        setProfilePicture(response);
+        if (response === WITHOUT_PICTURE) {
+            localStorage.setItem('profilePicture', WITHOUT_PICTURE);
+            return
+        }
+
+        setProfilePicture(response as ProfilePicture);
 
         localStorage.setItem('profilePicture', JSON.stringify(response));
     }
@@ -39,7 +44,7 @@ export const ProfilePictureProvider = ({ children }: { children: ReactNode }) =>
 
     function loadImage() {
         const storedProfilePicture = localStorage.getItem('profilePicture');
-        console.log(storedProfilePicture)
+
         if (storedProfilePicture === WITHOUT_PICTURE) {
             return
         }

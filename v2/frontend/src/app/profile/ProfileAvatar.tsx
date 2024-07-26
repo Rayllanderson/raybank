@@ -15,6 +15,9 @@ import { useProfilePicture } from "@/context/ProfilePictureContext";
 import { deleteProfilePicture, uploadProfilePicture } from "@/services/ProfilePictureService";
 import AvatarLoading from "@/components/AvatarLoading";
 
+const MAX_FILE_SIZE_MB = 2;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
 const ProfileAvatar = () => {
     const { profilePicture, updatePicture, deletePicture } = useProfilePicture();
     const { data: session, status } = useSession();
@@ -27,6 +30,10 @@ const ProfileAvatar = () => {
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
         if (file) {
+            if (file.size > MAX_FILE_SIZE_BYTES) {
+                toast.error(`O arquivo deve ter no máximo ${MAX_FILE_SIZE_MB} MB.`);
+                return
+            }
             setSelectedFile(file);
             setPreview(URL.createObjectURL(file));
         }
@@ -74,12 +81,12 @@ const ProfileAvatar = () => {
 
     return (
         status === 'loading' ?
-            <AvatarLoading size='xl' bordered />
+            <AvatarLoading size='xl' bordered  />
             : (
                 <div className="relative inline-block">
                     <ConfirmModal openModal={openModal} setOpenModal={setOpenModal} loading={isLoading} action={handleDelete} />
                     <div className="relative">
-                        <Avatar img={preview || profilePicture?.originalImage.preSignedUrl || undefined} size="xl" rounded bordered color="primary" />
+                        <Avatar img={preview || profilePicture?.originalImage.preSignedUrl || undefined} size="xl" rounded bordered color="primary" className="transition-all duration-200 ease-in-out"/>
                         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full z-10 opacity-0 hover:opacity-100 transition-opacity duration-200 ease-in-out">
                             <label className="text-white px-4 py-2 rounded-full cursor-pointer">
                                 <FaUpload className="h-6 w-6" />

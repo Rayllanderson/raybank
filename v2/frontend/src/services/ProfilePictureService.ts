@@ -3,7 +3,7 @@ import { getAccountIdFromToken } from "@/utils/JwtUtil";
 import { snakeToCamel } from "@/utils/StringUtils";
 import { doDelete, get, post, postMultiPartFile } from "./ApiRequest";
 
-export async function getProfilePicture(token: string): Promise<ProfilePicture | null> {
+export async function getProfilePicture(token: string): Promise<ProfilePicture | null | 'WITHOUT_PICTURE'> {
     try {
         const accountId = getAccountIdFromToken(token);
         const response = await get(`/api/v1/internal/accounts/${accountId}/profile-picture`, token);
@@ -11,6 +11,9 @@ export async function getProfilePicture(token: string): Promise<ProfilePicture |
     } catch (err: any) {
         if (err.httpStatus === 410) {
             return generateNewPreSignUrlClientSide(token)
+        }
+        if (err.httpStatus === 404) {
+            return 'WITHOUT_PICTURE'
         }
         return null
     }
