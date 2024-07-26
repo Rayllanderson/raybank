@@ -71,5 +71,17 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
             }
         },
         "tabpanel": ""
+    },
+    avatar: {
+        root: {
+            "size": {
+                "xs": "h-6 w-6",
+                "sm": "h-8 w-8",
+                "md": "h-10 w-10",
+                "lg": "h-20 w-20",
+                "xl": "h-80 w-80"
+            },
+            "color": {"primary": "ring-[#830AD1]"}
+        }
     }
 };  

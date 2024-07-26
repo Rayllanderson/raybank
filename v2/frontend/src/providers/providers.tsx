@@ -15,11 +15,13 @@ import { ContactProvider } from "@/context/ContactContex"
 import { FindAccountProvider } from "@/context/FindAccountContext"
 import { PixRegisterKeyProvider } from "@/context/PixRegisterKeyContext"
 import { PixUpdateLimitProvider } from "@/context/PixLimitContext"
+import { ProfilePictureProvider } from "@/context/ProfilePictureContext"
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
         <SessionProvider>
             <TransactionProvider>
+
                 <PixPaymentProvider>
                     <InvoicePaymentProvider>
                         <BoletoPaymentProvider>
@@ -27,20 +29,22 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
                                 <BoletoDepositProvider>
                                     <AccountDepositProvider>
                                         <CardProvider >
-                                            <ChangeCardLimitProvider>
-                                                {/* <StatementProvider> */}
-                                                <ContactProvider>
-                                                    <FindAccountProvider>
-                                                        <PixRegisterKeyProvider>
-                                                            <PixUpdateLimitProvider>
-                                                                {children}
-                                                            </PixUpdateLimitProvider>
-                                                        </PixRegisterKeyProvider>
-                                                    </FindAccountProvider>
+                                            <ProfilePictureProvider>
+                                                <ChangeCardLimitProvider>
+                                                    {/* <StatementProvider> */}
+                                                    <ContactProvider>
+                                                        <FindAccountProvider>
+                                                            <PixRegisterKeyProvider>
+                                                                <PixUpdateLimitProvider>
+                                                                    {children}
+                                                                </PixUpdateLimitProvider>
+                                                            </PixRegisterKeyProvider>
+                                                        </FindAccountProvider>
 
-                                                </ContactProvider>
-                                                {/* </StatementProvider> */}
-                                            </ChangeCardLimitProvider>
+                                                    </ContactProvider>
+                                                    {/* </StatementProvider> */}
+                                                </ChangeCardLimitProvider>
+                                            </ProfilePictureProvider>
                                         </CardProvider>
                                     </AccountDepositProvider>
                                 </BoletoDepositProvider>
@@ -48,6 +52,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
                         </BoletoPaymentProvider>
                     </InvoicePaymentProvider>
                 </PixPaymentProvider>
+
             </TransactionProvider>
         </SessionProvider>
     )

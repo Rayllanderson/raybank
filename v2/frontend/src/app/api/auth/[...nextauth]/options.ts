@@ -1,4 +1,5 @@
 import Session from '@/types/Session';
+import { User } from '@/types/User';
 import { TokenSet, getServerSession } from 'next-auth';
 import KeycloakProvider from "next-auth/providers/keycloak";
 import { redirect } from 'next/navigation';
@@ -39,7 +40,6 @@ export const authOptions = {
                     if (!response.ok) throw refreshToken
 
                     token.user.access_token = refreshToken.access_token
-
 
                     token.user.expires_at = Math.floor(Date.now() / 1000) + (refreshToken?.expires_in as number ?? 0)
                     
@@ -86,7 +86,7 @@ export async function refreshToken(token: any) {
 
         token.user.access_token = refreshToken.access_token
         token.user.expires_at = Math.floor(Date.now() / 1000) + (refreshToken?.expires_in as number ?? 0),
-            token.user.refresh_token = refreshToken.refresh_token ?? token.user.refresh_token
+        token.user.refresh_token = refreshToken.refresh_token ?? token.user.refresh_token
         return token
     } catch (error) {
         console.error("Error refreshing access token", error)

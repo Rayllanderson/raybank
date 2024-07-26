@@ -20,16 +20,14 @@ export async function apiRequest<T>(
     token: string,
     query: ApiQueryParameters,
     headers: { [key: string]: string },
-    method: string
+    method: string,
+    multipart: boolean = false
 ): Promise<T> {
     const queryString: string = decodeURIComponent(buildQueryString({ ...query }));
 
-    const defaultHeaders = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-    };
+    const defaultHeaders = getDefaultHeaders(multipart, token)
 
-    let requestOptions: { method: string; headers: { [key: string]: string }; body?: string | null } = {
+    let requestOptions: { method: string; headers: { [key: string]: string }; body?: any | null } = {
         method: method,
         headers: {
             ...defaultHeaders,
@@ -38,7 +36,10 @@ export async function apiRequest<T>(
     };
 
     if (data !== null) {
-        requestOptions.body = JSON.stringify(data);
+        if (multipart)
+            requestOptions.body = data
+        else
+            requestOptions.body = JSON.stringify(data);
     }
 
     try {
@@ -64,6 +65,18 @@ export async function apiRequest<T>(
     }
 }
 
+const getDefaultHeaders = (isMultipart:any, token: any) => {
+    const headers: { [key: string]: string } = {
+        'Authorization': `Bearer ${token}`
+    };
+
+    if (!isMultipart) {
+        headers['Content-Type'] = 'application/json';
+    }
+
+    return headers;
+};
+
 export async function get<T>(
     endpoint: string,
     token: string,
@@ -81,6 +94,16 @@ export async function post<T>(
     headers: { [key: string]: string } = {},
 ): Promise<T> {
     return await apiRequest(endpoint, body, token, query, headers, 'POST')
+}
+
+export async function postMultiPartFile<T>(
+    endpoint: string,
+    body: any,
+    token: string,
+    query: ApiQueryParameters = {},
+    headers: { [key: string]: string } = {},
+): Promise<T> {
+    return await apiRequest(endpoint, body, token, query, headers, 'POST', true)
 }
 
 export async function doDelete<T>(
