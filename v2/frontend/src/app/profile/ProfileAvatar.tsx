@@ -16,7 +16,7 @@ import { deleteProfilePicture, uploadProfilePicture } from "@/services/ProfilePi
 import AvatarLoading from "@/components/AvatarLoading";
 
 const ProfileAvatar = () => {
-    const { profilePicture, updatePicture } = useProfilePicture();
+    const { profilePicture, updatePicture, deletePicture } = useProfilePicture();
     const { data: session, status } = useSession();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
@@ -62,9 +62,8 @@ const ProfileAvatar = () => {
         setIsLoading(true);
 
         try {
-            await deleteProfilePicture(session?.token!)
+            await deletePicture()
             toast.success('Imagem removida')
-            updatePicture(null);
         } catch (error) {
             handlerApiError(error);
         } finally {

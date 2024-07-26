@@ -1,6 +1,6 @@
 // context/ProfilePictureContext.tsx
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getProfilePicture } from '@/services/ProfilePictureService';
+import { deleteProfilePicture, getProfilePicture } from '@/services/ProfilePictureService';
 import { ProfilePicture } from '@/types/ProfilePicture';
 import { signIn, useSession } from 'next-auth/react';
 
@@ -8,7 +8,10 @@ interface ProfilePictureContextProps {
     profilePicture: ProfilePicture | null;
     updatePicture: (profilePicture: ProfilePicture | null) => void;
     isThumbCreating: boolean;
+    deletePicture: () => void
 }
+
+const WITHOUT_PICTURE = 'WITHOUT_PICTURE'
 
 const ProfilePictureContext = createContext<ProfilePictureContextProps | undefined>(undefined);
 
@@ -16,7 +19,6 @@ export const ProfilePictureProvider = ({ children }: { children: ReactNode }) =>
     const [profilePicture, setProfilePicture] = useState<ProfilePicture | null>(null);
     const { data: session, status } = useSession();
     const [isThumbCreating, setIsThumbCreating] = useState<boolean>(false);
-
 
     const fetchProfilePicture = async () => {
 
@@ -37,6 +39,10 @@ export const ProfilePictureProvider = ({ children }: { children: ReactNode }) =>
 
     function loadImage() {
         const storedProfilePicture = localStorage.getItem('profilePicture');
+        console.log(storedProfilePicture)
+        if (storedProfilePicture === WITHOUT_PICTURE) {
+            return
+        }
 
         if (storedProfilePicture === null || storedProfilePicture === undefined) {
             fetchProfilePicture()
@@ -64,6 +70,16 @@ export const ProfilePictureProvider = ({ children }: { children: ReactNode }) =>
         localStorage.setItem('profilePicture', JSON.stringify(profilePicture));
 
         loadThumbnailAsync()
+    }
+
+    const deletePicture = async () => {
+        await deleteProfilePicture(session?.token!)
+
+        setProfilePicture(null)
+
+        localStorage.setItem('profilePicture', WITHOUT_PICTURE);
+
+        setIsThumbCreating(false)
     }
 
 
@@ -104,7 +120,7 @@ export const ProfilePictureProvider = ({ children }: { children: ReactNode }) =>
     }
 
     return (
-        <ProfilePictureContext.Provider value={{ isThumbCreating, profilePicture, updatePicture }}>
+        <ProfilePictureContext.Provider value={{ deletePicture, isThumbCreating, profilePicture, updatePicture }}>
             {children}
         </ProfilePictureContext.Provider>
     );
