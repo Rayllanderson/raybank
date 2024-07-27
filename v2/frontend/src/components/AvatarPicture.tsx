@@ -6,20 +6,17 @@ import AvatarLoading from './AvatarLoading';
 import { useSession } from 'next-auth/react';
 
 export default function AvatarPicture() {
+    const className = "p-1 rounded-full hover:ring-[#830AD1] transition-all hover:ring-2 "
     const { profilePicture, isThumbCreating } = useProfilePicture();
     const {status} = useSession()
 
-    console.log(profilePicture)
-
-    console.log(isThumbCreating)
-    
     return (
         status === 'loading' || isThumbCreating ? (
-            <AvatarLoading />
+            <AvatarLoading className={className} />
         ) :
             (profilePicture ?
-                <Avatar alt="User settings" img={profilePicture?.thumbnail?.preSignedUrl} rounded /> :
-                <Avatar rounded />
+                <Avatar alt="User settings" img={profilePicture?.thumbnail?.preSignedUrl} rounded  className={className} size='lg'/> :
+                <Avatar rounded className={className} />
             )
     )
 }
