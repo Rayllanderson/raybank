@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useAccountDeposit } from '@/context/AccountDepositContext';
 import { useSession } from 'next-auth/react';
-import { deposit } from '@/services/AccountService';
 import toast from 'react-hot-toast';
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 
