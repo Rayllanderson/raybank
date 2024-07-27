@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { deleteProfilePicture, getProfilePicture } from '@/services/ProfilePictureService';
 import { ProfilePicture } from '@/types/ProfilePicture';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 interface ProfilePictureContextProps {
     profilePicture: ProfilePicture | null;

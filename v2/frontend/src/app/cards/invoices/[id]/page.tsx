@@ -16,7 +16,6 @@ export default async function page({ params }: { params: { id: string } }) {
   if (!invoice) {
     notFound()
   }
-  console.log(invoice.status)
   return (
     <Container >
       <div className="flex justify-center">

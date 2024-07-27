@@ -28,7 +28,6 @@ export function ContactProvider({ children }: { children: React.ReactNode }) {
         try {
             setLoading(true);
             const data: Contact[] = await findAllContactsUsingToken(session?.token!);
-            console.log(data)
             setContacts(data);
         } catch (error) {
             setError(error);

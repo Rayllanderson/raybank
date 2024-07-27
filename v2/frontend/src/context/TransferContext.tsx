@@ -38,7 +38,6 @@ const TransactionProvider: React.FC<TransactionProviderProps> = ({ children }) =
 
     const { data: session } = useSession();
     useEffect(() => {
-        console.log(session)
         if (session?.error === "RefreshAccessTokenError") {
             signIn();
         }

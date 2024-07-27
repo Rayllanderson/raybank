@@ -1,10 +1,6 @@
 import { AccountResponse, FindAccountByType } from "@/types/Account";
-import { doDelete, get, post, postMultiPartFile } from "./ApiRequest";
+import { get, post } from "./ApiRequest";
 import { getToken } from "@/app/api/auth/[...nextauth]/options";
-import { getAccountIdFromToken } from "@/utils/JwtUtil";
-import { OriginalImage } from "@/types/ProfilePicture";
-import { snakeToCamel } from "@/utils/StringUtils";
-import { handlerApiError } from "./HandlerApiError";
 
 export async function getAccount(token: string): Promise<AccountResponse> {
     return await get('/api/v1/internal/accounts/authenticated', token);

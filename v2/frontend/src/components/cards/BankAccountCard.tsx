@@ -19,7 +19,6 @@ export default function BankAccountCard({ account, withLinkHeader = true }: Prop
     setEyeOpen(!isEyeOpen)
   };
 
-  console.log(account)
   return (
     <Card >
       {

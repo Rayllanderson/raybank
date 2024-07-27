@@ -30,7 +30,7 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
 
     navbar: {
         root: {
-            base: "bg-white px-2 py-2.5 dark:border-black-3 dark:bg-black-2 sm:px-4",
+            base: "bg-white px-2 py-1.5 dark:border-black-3 dark:bg-black-2 sm:px-4",
         }
     },
     select: {
@@ -78,7 +78,7 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
                 "xs": "h-6 w-6",
                 "sm": "h-8 w-8",
                 "md": "h-10 w-10",
-                "lg": "h-20 w-20",
+                "lg": "h-10 w-10",
                 "xl": "h-80 w-80"
             },
             "color": {"primary": "ring-[#830AD1]"}

@@ -14,9 +14,6 @@ export default async function page({ searchParams }: { searchParams: { status: s
 
     async function onChange(boletos: any, status: string) {
         "use server"
-        console.log(status)
-        console.log(boletos)
-        console.log(await findAllBoletosByStatus(status))
         await findAllBoletosByStatus(status)
         revalidatePath("/boletos");
     }

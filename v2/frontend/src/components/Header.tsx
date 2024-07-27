@@ -18,7 +18,9 @@ const Header: FC<Record<string, never>> = function () {
                     <Logo />
                 </NavbarBrand>
                 <div className="flex md:order-2 space-x-3">
-                    <DarkThemeToggle />
+                    <div className="flex justify-center items-center">
+                        <DarkThemeToggle />
+                    </div>
                     <AvatarDropdown />
                 </div>
             </Navbar>

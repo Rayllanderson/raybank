@@ -33,7 +33,6 @@ export function FindAccountProvider({ children }: { children: React.ReactNode })
             setLoading(false);
             return data
         } catch (error) {
-            console.log(error)
             setError(error);
             setLoading(false);
             return null

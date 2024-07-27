@@ -80,30 +80,35 @@ const ProfileAvatar = () => {
     };
 
     return (
-        status === 'loading' ?
-            <AvatarLoading size='xl' bordered  />
-            : (
-                <div className="relative inline-block">
-                    <ConfirmModal openModal={openModal} setOpenModal={setOpenModal} loading={isLoading} action={handleDelete} />
-                    <div className="relative">
-                        <Avatar img={preview || profilePicture?.originalImage.preSignedUrl || undefined} size="xl" rounded bordered color="primary" className="transition-all duration-200 ease-in-out"/>
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full z-10 opacity-0 hover:opacity-100 transition-opacity duration-200 ease-in-out">
-                            <label className="text-white px-4 py-2 rounded-full cursor-pointer">
-                                <FaUpload className="h-6 w-6" />
-                                <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} placeholder="upload image" />
-                            </label>
-                            {profilePicture && <button title={'Remover imagem'} className="text-white px-4 py-2  rounded ml-2" onClick={() => setOpenModal(true)}> <FaTrash className="h-6 w-6" /></button>
-                            }
+        <>
+            <h1 className="text-center text-lg font-semibold text-gray-900 dark:text-gray-300 mb-1">Foto de Perfil</h1>
+
+            {status === 'loading' ?
+                <AvatarLoading size='xl' bordered />
+                : (
+                    <div className="relative inline-block">
+                        <ConfirmModal openModal={openModal} setOpenModal={setOpenModal} loading={isLoading} action={handleDelete} />
+                        <div className="relative">
+                            <Avatar img={preview || profilePicture?.originalImage.preSignedUrl || undefined} size="xl" rounded bordered color="primary" className="transition-all duration-200 ease-in-out" />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full z-10 opacity-0 hover:opacity-100 transition-opacity duration-200 ease-in-out">
+                                <label className="text-white px-4 py-2 rounded-full cursor-pointer">
+                                    <FaUpload className="h-6 w-6" />
+                                    <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} placeholder="upload image" />
+                                </label>
+                                {profilePicture && <button title={'Remover imagem'} className="text-white px-4 py-2  rounded ml-2" onClick={() => setOpenModal(true)}> <FaTrash className="h-6 w-6" /></button>
+                                }
+                            </div>
                         </div>
+                        {preview && (
+                            <div className="flex space-x-2 mt-4">
+                                <PrimaryButton loading={isLoading} disabled={isLoading} onClick={handleConfirmUpload}> Confirmar </PrimaryButton>
+                                <LightButton onClick={handleCancelUpload}> Cancelar </LightButton>
+                            </div>
+                        )}
                     </div>
-                    {preview && (
-                        <div className="flex space-x-2 mt-4">
-                            <PrimaryButton loading={isLoading} disabled={isLoading} onClick={handleConfirmUpload}> Confirmar </PrimaryButton>
-                            <LightButton onClick={handleCancelUpload}> Cancelar </LightButton>
-                        </div>
-                    )}
-                </div>
-            )
+                )
+            }
+        </>
 
     );
 };

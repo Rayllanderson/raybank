@@ -12,11 +12,11 @@ export default function AvatarPicture() {
 
     return (
         status === 'loading' || isThumbCreating ? (
-            <AvatarLoading className={className} />
+            <AvatarLoading className={className}  size='lg'/>
         ) :
             (profilePicture ?
                 <Avatar alt="User settings" img={profilePicture?.thumbnail?.preSignedUrl} rounded  className={className} size='lg'/> :
-                <Avatar rounded className={className} />
+                <Avatar rounded className={className}  size='lg' />
             )
     )
 }
