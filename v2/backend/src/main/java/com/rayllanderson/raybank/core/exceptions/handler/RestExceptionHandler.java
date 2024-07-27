@@ -52,9 +52,14 @@ public class RestExceptionHandler {
         return ResponseEntity.status(status).body(StandardError.from(ex, request.getRequestURI()));
     }
 
-    @ExceptionHandler({MaxUploadSizeExceededException.class, ConstraintViolationException.class, MissingServletRequestPartException.class, MissingServletRequestParameterException.class})
-    public ResponseEntity<StandardError> handlerSizeLimitExceededException(Exception e, HttpServletRequest request) {
+    @ExceptionHandler({ConstraintViolationException.class, MissingServletRequestPartException.class, MissingServletRequestParameterException.class})
+    public ResponseEntity<StandardError> handler4xxException(Exception e, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(StandardError.badRequest(e, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<StandardError> handlerSizeLimitExceededException(MaxUploadSizeExceededException e, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(StandardError.badRequest("Tamanho máximo excedido. Selecione um arquivo menor.", request.getRequestURI()));
     }
 
 

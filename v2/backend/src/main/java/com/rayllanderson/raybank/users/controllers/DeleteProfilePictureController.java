@@ -32,8 +32,7 @@ public class DeleteProfilePictureController {
 
     @RequiredAccountOwner
     @DeleteMapping("accounts/{accountId}/profile-picture")
-    public ResponseEntity<?> delete(@PathVariable String accountId,
-                                    @AuthenticationPrincipal Jwt jwt) throws IOException {
+    public ResponseEntity<?> delete(@PathVariable String accountId, @AuthenticationPrincipal Jwt jwt) {
 
         deleteProfilePictureService.delete(accountId);
 

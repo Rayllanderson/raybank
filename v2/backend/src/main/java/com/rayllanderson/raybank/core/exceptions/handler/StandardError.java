@@ -66,8 +66,17 @@ public class StandardError {
         return getStandardError(e, path, status);
     }
 
-    private static StandardError getStandardError(Exception e, String path, HttpStatus status) {
+    public static StandardError badRequest(String message, String path) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return getStandardError(message, path, status);
+    }
+
+    public static StandardError getStandardError(Exception e, String path, HttpStatus status) {
         return new StandardError(status.name(), status.value(), e.getMessage(), null, LocalDateTime.now(), path, emptyList());
+    }
+
+    public static StandardError getStandardError(String message, String path, HttpStatus status) {
+        return new StandardError(status.name(), status.value(), message, null, LocalDateTime.now(), path, emptyList());
     }
 
     public static StandardError from(BindException e, String path) {

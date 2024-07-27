@@ -25,6 +25,7 @@ public class S3Service {
     private final S3Operations s3Operations;
     private final S3Presigner s3Presigner;
     public static final int PRE_SIGN_EXPIRATION_HOURS = 28;
+    private static final int ONE_HOUR_IN_SECONDS = 3600;
 
     public S3UploadOutput uploadFile(final MultipartFile file) throws IOException {
         final String objectKey = "uploads/" + UUID.randomUUID() + "." + getContentType(file);
@@ -53,10 +54,10 @@ public class S3Service {
                 .build();
 
         PresignedPutObjectRequest presignedPutObjectRequest = s3Presigner
-                .presignPutObject(r -> r.signatureDuration(Duration.ofSeconds(PRE_SIGN_EXPIRATION_HOURS))
+                .presignPutObject(r -> r.signatureDuration(Duration.ofHours(PRE_SIGN_EXPIRATION_HOURS))
                         .putObjectRequest(putObjectRequest));
 
-        return new S3PresignUrlOutput(presignedPutObjectRequest.url(), presignedPutObjectRequest.expiration());
+        return new S3PresignUrlOutput(presignedPutObjectRequest.url(), presignedPutObjectRequest.expiration().minusSeconds(ONE_HOUR_IN_SECONDS));
 
     }
 }
