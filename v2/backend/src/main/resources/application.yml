@@ -60,3 +60,12 @@ s3:
 logging:
   level:
     com.rayllanderson.raybank: ${LOGGING_LEVEL:INFO}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
