@@ -1,6 +1,3 @@
-#TODO
-
-
 resource "aws_lambda_function" "create_thumbnail_lambda" {
   function_name = "lambda_function"
   filename      = "${path.module}/../lambda/my_deployment_package.zip"
@@ -50,7 +47,23 @@ resource "aws_iam_role_policy" "lambda_s3_policy" {
           "s3:GetObject"
         ]
         Resource = "${aws_s3_bucket.raybank_bucket.arn}/*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:GetQueueUrl",
+          "sqs:GetQueueAttributes",
+          "sqs:DeleteMessage",
+          "sqs:ReceiveMessage"
+        ]
+        Resource = "${aws_sqs_queue.s3_event_queue.arn}"
       }
     ]
   })
+}
+
+####### LAMBDA LISTEN SQS ##########
+resource "aws_lambda_event_source_mapping" "s3_event_processor_mapping" {
+  event_source_arn = aws_sqs_queue.s3_event_queue.arn
+  function_name    = aws_lambda_function.create_thumbnail_lambda.arn
 }

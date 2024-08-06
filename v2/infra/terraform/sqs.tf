@@ -29,3 +29,25 @@ resource "aws_sqs_queue" "s3_event_queue" {
 resource "aws_sqs_queue" "s3_event_dlq" {
   name = "create-thumb-sqs-dlq"
 }
+
+resource "aws_sqs_queue_policy" "sqs_policy" {
+  queue_url = aws_sqs_queue.s3_event_queue.id
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "s3.amazonaws.com"
+        },
+        Action = "sqs:SendMessage",
+        Resource = aws_sqs_queue.s3_event_queue.arn,
+        Condition = {
+          ArnLike = {
+            "aws:SourceArn": aws_s3_bucket.raybank_bucket.arn
+          }
+        }
+      }
+    ]
+  })
+}

@@ -6,5 +6,5 @@ variable "region" {
 variable "subnet_ids" {
   description = "List of Subnet IDs"
   type        = list(string)
-
+  default     = []
 }
