@@ -1,4 +1,9 @@
 spring:
+  cloud:
+    aws:
+      sqs:
+        endpoint: ${SQS_ENDPOINT:https://sqs.us-east-1.amazonaws.com}
+        region: ${SQS_REGION:us-east-1}
   servlet:
     multipart:
       max-file-size: 2MB
@@ -53,10 +58,19 @@ server:
 
 sqs:
   queue-name: ${SQS_QUEUE_NAME:keycloak-event-listener-queue}
-  thumbnail-queue-name: ${SQS_QUEUE_NAME:thumbnail-event-listener-queue}
+  thumbnail-queue-name: ${SQS_THUMB_QUEUE_NAME:thumbnail-event-listener-queue}
 s3:
   bucketName: ${AWS_S3_BUCKET_NAME:rayllanderson-raybank-bucket}
 
 logging:
   level:
     com.rayllanderson.raybank: ${LOGGING_LEVEL:INFO}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never

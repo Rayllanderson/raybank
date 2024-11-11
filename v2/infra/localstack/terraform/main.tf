@@ -50,7 +50,7 @@ resource "aws_sqs_queue" "s3_event_dlq" {
 ####### LAMBDA FUNCTION ##########
 resource "aws_lambda_function" "create_thumbnail_lambda" {
   function_name = "lambda_function"
-  filename      = "${path.module}/../lambda/my_deployment_package.zip"
+  filename      = "${path.module}/../../lambda/my_deployment_package.zip"
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.11"
   role          = "arn:aws:iam::000000000000:role/lambda-role"

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -51,6 +52,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                         .requestMatchers(antMatcher("/api/v1/internal/**")).hasRole(ROLE_USER)
                         .requestMatchers(antMatcher("/api/v1/external/**")).hasRole(ROLE_ESTABLISHMENT)
                         .requestMatchers(antMatcher("/api/v1/admin/**")).hasRole(ROLE_ADMIN)
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/actuator/health")).permitAll()
                         .requestMatchers(antMatcher("/swagger-ui/*")).denyAll()
                         .requestMatchers(antMatcher("/v3/api-docs/**")).denyAll()
                         .anyRequest().authenticated())
