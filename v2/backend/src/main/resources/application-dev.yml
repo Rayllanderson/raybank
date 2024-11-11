@@ -32,7 +32,6 @@ postgres:
 keycloak:
   realm: raybank
   server-url: http://localhost:8443
-  servers-url-issuer-uri: https://localhost:8443/auth/realms/{realm},${keycloak.server-url}/realms/${keycloak.realm}
   credentials:
     client-secret: 8KoaQh9EpjXBN5engNI1licBfLjWdefT
     client-id: raybank-backend-create-user
