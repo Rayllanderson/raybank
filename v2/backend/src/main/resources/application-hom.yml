@@ -28,6 +28,7 @@ postgres:
 keycloak:
   realm: ${KEYCLOAK_REALM}
   server-url: ${KEYCLOAK_SERVER-URL}
+  servers-url-issuer-uri: https://localhost:8443/auth/realms/{realm},${keycloak.server-url}/realms/${keycloak.realm}
   credentials:
     client-id: ${KEYCLOAK_CLIENT-ID}
     client-secret: ${KEYCLOAK_CLIENT-SECRET}

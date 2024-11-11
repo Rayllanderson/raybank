@@ -12,7 +12,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${keycloak.server-url}/realms/${keycloak.realm}
+          issuer-uri: ${keycloak.servers-url-issuer-uri}
           jwk-set-uri: ${keycloak.server-url}/realms/${keycloak.realm}/protocol/openid-connect/certs
   datasource:
     url: jdbc:postgresql://${postgres.host}:${postgres.port}/${postgres.schema}?serverTimezone=UTC
