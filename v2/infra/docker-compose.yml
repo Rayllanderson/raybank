@@ -22,7 +22,7 @@ services:
     network_mode: "service:localhost"
     
   raybank-frontend:
-    image: raybank-nextjs-app
+    image: rayllanderson/raybank-nextjs-app:latest
     environment:
       - NODE_ENV=development
     env_file:
