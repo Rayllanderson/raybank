@@ -1,51 +1,59 @@
-version: '3.7'
-
 services:
   raybank:
     image: rayllanderson/raybank:latest
     container_name: raybank
+    restart: on-failure
     environment:
       - SPRING_PROFILES_ACTIVE=hom
       - POSTGRES_USERNAME=postgres
       - POSTGRES_PASSWORD=12345
-      - POSTGRES_HOST=postgres
+      - POSTGRES_HOST=localhost
       - POSTGRES_PORT=5432
       - POSTGRES_SCHEMA=raybank
       - KEYCLOAK_REALM=raybank
-      - KEYCLOAK_SERVER-URL=http://keycloak:8080
+      - KEYCLOAK_SERVER-URL=http://localhost:8443
       - KEYCLOAK_CLIENT-ID=raybank-backend-create-user
       - KEYCLOAK_CLIENT-SECRET=8KoaQh9EpjXBN5engNI1licBfLjWdefT
-    ports:
-      - "8080:8080"
+      - S3_ENDPOINT=http://s3.localhost.localstack.cloud:4566/
+      - SQS_ENDPOINT=http://localhost:4566
     depends_on:
       - postgres
       - keycloak
-    networks:
-      - raybank-network
+    network_mode: "service:localhost"
+    
+  raybank-frontend:
+    image: raybank-nextjs-app
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ../frontend/.env.local
+    network_mode: "service:localhost"
 
   postgres:
     image: 'postgres:alpine'
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_DB: raybank
       POSTGRES_PASSWORD: 12345
     volumes:
       - ./docker-volumes/postgres:/var/lib/postgresql/data
-    networks:
-      - raybank-network
+    network_mode: "service:localhost"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   keycloak:
     container_name: keycloak
     image: rayllanderson/raybank-keycloak:v0
-    ports:
-      - "8443:8080"
+    environment:
+      - SQS_LOCAL_URL=http://localhost:4566
     command:
       - start-dev # uma versão mais leve customizada para ambiente de desenvolvimento e testes pensada para rodar na máquina do desenvolvedor
       - --import-realm
       - -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json
-    networks:
-      - raybank-network
+      - --http-port=8443
+    network_mode: "service:localhost"
 
   localstack:
     container_name: localstack
@@ -53,9 +61,6 @@ services:
     build:
       context: localstack/.
       dockerfile: Dockerfile
-    ports:
-      - "4566:4566"
-      - "4572:4572"
     environment:
       - SERVICES=sqs,s3,lambda
       - AWS_DEFAULT_REGION=us-east-1
@@ -63,54 +68,25 @@ services:
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "./localstack/lambda:/opt/code/localstack/lambda"
+      - "./lambda/:/opt/code/lambda"
       - "./localstack/terraform:/opt/code/localstack/terraform"
       - "./localstack/script/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
       - "./localstack/script/init-aws.sh:/docker-entrypoint-initaws.d/init-aws.sh"
-    networks:
-      - raybank-network
+    network_mode: "service:localhost"
 
-# enable if you want to keycloak spi with kafka
-  # zookeeper:
-  #   image: confluentinc/cp-zookeeper:6.0.0
-  #   environment:
-  #     ZOOKEEPER_CLIENT_PORT: 2181
-  #   networks:
-  #     - raybank-network
-
-  # kafka:
-  #   image: confluentinc/cp-kafka:6.0.0
-  #   depends_on:
-  #     - zookeeper
-  #   ports:
-  #     - "29092:9092"
-  #   environment:
-  #     KAFKA_BROKER_ID: 1
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-  #     KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  #   networks:
-  #     - raybank-network
-
-  # # This "container" is a workaround to pre-create topics
-  # kafka-setup:
-  #   image: confluentinc/cp-kafka:6.0.0
-  #   hostname: kafka-setup
-  #   depends_on:
-  #     - kafka
-  #   command: "bash -c 'echo Waiting for Kafka to be ready... && \
-  #                              cub kafka-ready -b kafka:9092 1 20 && \
-  #                              kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 3 --replication-factor 1 --config retention.ms=10000 --topic keycloak-event-listener-topic'"
-  #   environment:
-  #     # The following settings are listed here only to satisfy the image's requirements.
-  #     # We override the image's `command` anyways, hence this container will not start a broker.
-  #     KAFKA_BROKER_ID: ignored
-  #     KAFKA_ZOOKEEPER_CONNECT: ignored
-  #   networks:
-  #     - raybank-network
+  localhost:
+    image: alpine:latest
+    command: sleep infinity
+    ports:
+    - "8443:8443" # Keycloak port
+    - "8080:8080" # oauth-sample port
+    - "5432:5432"
+    - "4566:4566"
+    - "4572:4572"
+    - "3000:3000" #frontend
 
 networks:
   raybank-network:
     driver: bridge
+
+    
