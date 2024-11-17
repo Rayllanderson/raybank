@@ -14,6 +14,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+//         sans: ['var(--font-nunito)'],
+//         mono: ['var(--font-nunito)'],
+      },
       backgroundSize: {
         'size-200': '200% 200%',
       },

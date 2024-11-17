@@ -78,15 +78,9 @@ services:
     image: alpine:latest
     command: sleep infinity
     ports:
-    - "8443:8443" # Keycloak port
-    - "8080:8080" # oauth-sample port
-    - "5432:5432"
-    - "4566:4566"
-    - "4572:4572"
-    - "3000:3000" #frontend
-
-networks:
-  raybank-network:
-    driver: bridge
-
-    
+    - "8443:8443" # Keycloak
+    - "8080:8080" # raybank backend port
+    - "5432:5432" # postgres
+    - "4566:4566" # SQS
+    - "4572:4572" # S3
+    - "3000:3000" # raybank frontend

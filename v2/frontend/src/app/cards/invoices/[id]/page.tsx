@@ -9,6 +9,7 @@ import { findInvoiceById, findInvoiceOrNull } from '@/services/InvoiceService'
 import { notFound } from 'next/navigation'
 import PrimaryButton from '@/components/Buttons/PrimaryButton'
 import Link from 'next/link'
+import { Card } from '@/components/cards/Card'
 
 export default async function page({ params }: { params: { id: string } }) {
   const invoice: Invoice | null = await findInvoiceOrNull(params.id)
@@ -18,13 +19,15 @@ export default async function page({ params }: { params: { id: string } }) {
   }
   return (
     <Container >
-      <div className="flex justify-center">
-        <header className={`w-full max-w-sm md:max-w-md lg:max-w-lg p-3 h-28 rounded-sm md:rounded-md  ${getBgColor(invoice)}`}>
-          <div className="flex flex-col justify-center items-center  text-white">
+      <div className="flex justify-center mb-2">
+        <header className={`w-full max-w-sm md:max-w-md lg:max-w-lg p-[0.20rem] h-26 rounded-lg md:rounded-md  ${getBgColor(invoice)}`}>
+          <Card>
+          <div className="flex flex-col justify-center items-center ">
             <p className="text-xl">{formatInvoiceStatus(invoice.status)}</p>
             <p className="text-xl">{MoneyFormatter.format(invoice.total)}</p>
             <p>Vencimento {formatDate(invoice.dueDate)}</p>
           </div>
+          </Card>
         </header>
 
         <div className="h-32"></div>
@@ -36,7 +39,7 @@ export default async function page({ params }: { params: { id: string } }) {
 
       {invoice.transactions?.map(transaction => {
         return (
-          <div className="block w-full p-3" key={transaction.id}>
+          <div className="block w-full p-[0.65rem]" key={transaction.id}>
             <InvoiceTransactionCard transaction={transaction} key={transaction.id} />
           </div>
         )
@@ -48,7 +51,7 @@ export default async function page({ params }: { params: { id: string } }) {
         (invoice.status === 'OPEN' || invoice.status === 'CLOSED' || invoice.status === 'OVERDUE') &&
         <div className="fixed bottom-0 left-0 right-0 flex justify-center items-center mb-4">
           <Link href={`/payments/invoice/${invoice.id}`}
-            className='w-full flex justify-center'>
+            className='w-[90%] max-w-sm flex justify-center'>
             <PrimaryButton className='max-w-sm'> Pagar Fatura</PrimaryButton>
           </Link>
         </div>

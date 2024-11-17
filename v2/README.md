@@ -121,11 +121,6 @@ Após o Docker concluir a inicialização dos containers, o frontend estará dis
 **Observação:** O tempo de inicialização pode variar. Caso seja a primeira vez que os containers estão sendo executados, pode demorar alguns minutos, dependendo dos recursos da sua máquina.
 
 ---
-## Telas da Versão 1.0 (Jun. 2021)
-<img src="https://user-images.githubusercontent.com/63964369/121674468-7b6c7300-ca88-11eb-9a04-c9eac58a6da8.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121675067-4876af00-ca89-11eb-9e0c-02520814aaef.png" width="49%">
-<img src="https://user-images.githubusercontent.com/63964369/121675068-4876af00-ca89-11eb-887e-061b7757656e.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121675069-490f4580-ca89-11eb-8a24-a7a162ced021.png" width="49%">
-<img src="https://user-images.githubusercontent.com/63964369/121675065-47de1880-ca89-11eb-86ca-f2da137e5dd1.png" width="49%"> <img src="https://user-images.githubusercontent.com/63964369/121674465-7ad3dc80-ca88-11eb-9f0b-0abfa449b219.png" width="49%">
-
 ## ❓ Como contribuir para o projeto
 
 1. Faça um **fork** do projeto.
