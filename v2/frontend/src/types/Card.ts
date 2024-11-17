@@ -70,9 +70,8 @@ export const createPurchaseFormSchema = z.object({
     }),
 
     installments: z.number().min(1, "Número de parcelas inválido").max(12, "Máximo de 12 parcelas"),
-    occurred_on: z.string().optional(),
+    ocurred_on: z.string().optional(),
     description: z.string(),
-
     card: z.object({
         number: z.string().length(16, "Número do cartão precisa ter 16 caracteres"),
         security_code: z.string().length(3, "CVV precisa ter 3 caracteres"),

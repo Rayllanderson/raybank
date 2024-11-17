@@ -41,7 +41,6 @@ export async function apiRequest<T>(
         else
             requestOptions.body = JSON.stringify(data);
     }
-
     try {
         const response = await fetch(`${API_URL}${endpoint}${queryString}`, requestOptions);
         const contentType = response.headers.get('content-type');

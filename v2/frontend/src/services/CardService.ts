@@ -4,11 +4,11 @@ import { getAccountIdFromToken } from "@/utils/JwtUtil";
 import { CardDetails, ChangeCardLimitFormData, CreateCardFormData, CreatePurchaseFormData, convertCardDetailsToCamelCase } from "@/types/Card";
 import { ApiErrorException } from "@/types/Error";
 
-export const CardService = {createCard, changeLimit}
+export const CardService = { createCard, changeLimit }
 
 export async function getCardByIdAndToken(token: string, sensitive: boolean = false): Promise<CardDetails> {
     const accountId = getAccountIdFromToken(token);
-    const response = await get(`/api/v1/internal/accounts/${accountId}/cards`, token, {sensitive: sensitive});
+    const response = await get(`/api/v1/internal/accounts/${accountId}/cards`, token, { sensitive: sensitive });
     return convertCardDetailsToCamelCase(response)
 }
 
@@ -44,7 +44,19 @@ export async function changeLimit(body: ChangeCardLimitFormData, token: string) 
 }
 
 
-export async function createPurchase(body: CreatePurchaseFormData) {
-    console.log(body);
-    return body
+export async function createPurchase(token: string, body: CreatePurchaseFormData) {
+    body.ocurred_on = getSaoPauloTime()
+    body.card.expiry_date = convertToBackendFormat(body.card.expiry_date)
+    return await post("/api/v1/external/cards/payment", body, token)
 }
+const convertToBackendFormat = (date: string) => {
+    const [month, year] = date.split('/');
+    return `${year}-${month}`;
+};
+
+function getSaoPauloTime(): string {
+    const date = new Date();
+    date.setTime(date.getTime() - 3 * 60 * 60 * 1000);
+    const isoString = date.toISOString();
+    return isoString;
+  }

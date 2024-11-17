@@ -1,12 +1,10 @@
 'use client'
-import Button from '@/components/Buttons/Button'
 import GradientButton from '@/components/Buttons/GradientButton'
-import PrimaryButton from '@/components/Buttons/PrimaryButton'
 import { CurrencyInput } from '@/components/inputs/InputMoney'
-import InputNumeric from '@/components/inputs/InputNumeric'
 import InputText from '@/components/inputs/InputText'
 import Select from '@/components/inputs/Select'
 import { CardDetails, CreatePurchaseFormData, createPurchaseFormSchema } from '@/types/Card'
+import { ApiErrorException } from '@/types/Error'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LabelProps } from 'flowbite-react'
 import React, { useState } from 'react'
@@ -20,7 +18,6 @@ export default function CreatePurchaseForm({ card }: { card: CardDetails }) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const onSubmit = async (data: CreatePurchaseFormData) => {
-        console.log("Dados do formulário", data);
         setIsLoading(true)
 
         try {
@@ -32,13 +29,20 @@ export default function CreatePurchaseForm({ card }: { card: CardDetails }) {
                 },
                 body: JSON.stringify(data),
             });
-
+            
             if (!response.ok) {
-                throw new Error('Erro ao enviar os dados.');
+                try {
+                    const responseError = await response.json();
+                    console.log('Erro da API:', responseError.message);
+                    toast.error( responseError.message);
+                } catch(err) {
+                    toast.error('Ocorreu um erro desconhecido.');
+                } finally {
+                    return;
+                }
             }
 
-            const result = await response.json();
-            toast.success(result.message);
+            toast.success("Compra realizada com sucesso");
         } catch (e: any) {
             console.error("Erro de validação", e.errors);
             toast.error(e.message)
