@@ -15,6 +15,7 @@ export default function StatementDetailsModal({ statement, show, setOpenModal }:
                     <ModalBody className='flex flex-col justify-start'>
                         <ReceiptBody
                             title={''}
+                            moment={statement?.moment!}
                             amount={statement?.amount!}
                             credit={statement?.credit.name!}
                             debit={statement?.debit.name!}
@@ -22,10 +23,10 @@ export default function StatementDetailsModal({ statement, show, setOpenModal }:
                             receiptListItem={statement?.installmentPlan && [{key:'Parcelamento', value: statement?.installmentPlan!.installments + 'x'}]}
                         />
                         {statement?.message &&
-                            <div className='mt-3'>
-                                <Separator />
-                                <label htmlFor="description" className="">Mensagem</label>
-                                <input id='description' disabled className="md:text-lg p-2 rounded-md w-full bg-gray-200 text-gray-500 dark:bg-black-3" value={statement?.message} />
+                            <div className='mt-4'>
+                                <Separator type='normal'/>
+                                <label htmlFor="description" className="font-semibold">Mensagem</label>
+                                <input id='description' disabled className="md:text-lg p-2 mt-1 rounded-md w-full bg-gray-200 text-gray-500 dark:bg-black-3" value={statement?.message} />
                             </div>
                         }
                     </ModalBody>

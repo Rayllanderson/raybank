@@ -1,4 +1,4 @@
-import { formatStatementMethod, hasDescription, isIncomming } from '@/utils/StatementUtil';
+import { formatStatementMethod, formatStatementMoment, hasDescription, isIncomming } from '@/utils/StatementUtil';
 import { Statement } from '../types/Statement';
 import { MoneyFormatter } from '../utils/MoneyFormatter';
 
