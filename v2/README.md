@@ -15,7 +15,7 @@
 
 ## 💳 **Cartão de Débito e Crédito**  
 - Parcelamentos com faturas reais, prazos, atrasos e tudo o que o mercado exige.  
-- Pague suas faturas com facilidad gerando boletos ou com saldo da conta.
+- Pague suas faturas com facilidade gerando boletos ou com saldo da conta.
 - Experiência de compras virtuais integrada via API.  
 - Controle total de limites, com ajustes automáticos conforme uso e pagamento. 
 
