@@ -22,6 +22,7 @@ function Receipt({ title, paymentType, amount, credit, debit, buttonTitle, butto
                     amount={amount}
                     credit={credit}
                     debit={debit}
+                    moment={new Date().toString()}
                     paymentType={paymentType}
                 />
 
