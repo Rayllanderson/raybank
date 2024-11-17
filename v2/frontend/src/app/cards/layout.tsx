@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <SideBar />
                 </div>
 
-               <main className="mx-4 mt-5 sm:mt-5 md:mt-8 lg:mt-8 mb-24 w-full h-full order-2 flex justify-center">
+               <main className="mx-4 mt-5 lg:mt-8 mb-24 w-full h-full order-2 flex justify-center">
                     {children}
                 </main>
             </div>

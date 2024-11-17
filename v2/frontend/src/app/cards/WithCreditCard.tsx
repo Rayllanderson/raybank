@@ -9,7 +9,7 @@ import { Statements } from '@/components/Statements';
 import { Page } from '@/types/Page';
 
 export async function WithCreditCard({card}: {card: CardDetails}) {
-    return <div className="cards flex w-full max-w-[23rem] md:max-w-md lg:max-w-lg flex-col">
+    return <div className="cards flex w-full max-w-[22.5rem] md:max-w-[23rem] md:max-w-md lg:max-w-lg flex-col">
         <Card>
             <div className='flex flex-col gap-2'>
                 <div className="flex">
@@ -29,7 +29,7 @@ export async function WithCreditCard({card}: {card: CardDetails}) {
             <MiniCards card={card}/>
         </Card>
 
-        <div className="mt-8 p-1">
+        <div className="mt-4 lg:mt-8 p-1">
             <Statements type="card"/>
         </div>
     </div>;

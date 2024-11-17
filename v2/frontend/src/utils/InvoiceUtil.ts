@@ -19,7 +19,7 @@ export const formatInvoiceStatus = (status: 'OPEN' | 'CLOSED' | 'NONE' | 'OVERDU
 
 export const getBgColor = (invoice: Invoice) => {
     if (invoice.status === 'OPEN')
-        return 'bg-cyan-500'
+        return 'bg-[#9B3BDA]'
     if (invoice.status === 'CLOSED')
         return 'bg-orange-600'
     if (invoice.status === 'PAID')

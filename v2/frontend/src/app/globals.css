@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    scrollbar-width: none;
+  }
+  
+  body::-webkit-scrollbar {
+    display: none;
+  }

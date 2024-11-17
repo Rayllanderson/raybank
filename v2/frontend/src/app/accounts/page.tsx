@@ -16,7 +16,7 @@ export default async function page() {
         <div className="cards flex w-full max-w-sm md:max-w-md lg:max-w-lg flex-col">
             <BankAccountCard withLinkHeader={false} account={userData.account}/>
 
-            <div className="mt-8 p-1">
+            <div className="mt-4 p-1">
                 <Statements type='account' />
             </div>
         </div>
