@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 export interface Card {
-    id:     string;
+    id: string;
     status: string;
 }
 
 export interface CardDetails {
-    id:string
+    id: string
     limit: number
     availableLimit: number
     usedLimit: number
@@ -57,3 +57,25 @@ export const changeCardLimitFormSchema = z.object({
 export type CreateCardFormData = z.infer<typeof createCardFormSchema>
 
 export type ChangeCardLimitFormData = z.infer<typeof changeCardLimitFormSchema>
+
+export type CreatePurchaseFormData = z.infer<typeof createPurchaseFormSchema>
+
+
+export const createPurchaseFormSchema = z.object({
+    amount: z.number().min(0.01, "Valor da compra precisa ser maior que 0"),
+    payment_type: z.enum(["credit", "debit"], {
+        errorMap: () => {
+            return { message: "Tipo de pagamento inválido. deve ser debit ou credit" };
+        }
+    }),
+
+    installments: z.number().min(1, "Número de parcelas inválido").max(12, "Máximo de 12 parcelas"),
+    occurred_on: z.string().optional(),
+    description: z.string(),
+
+    card: z.object({
+        number: z.string().length(16, "Número do cartão precisa ter 16 caracteres"),
+        security_code: z.string().length(3, "CVV precisa ter 3 caracteres"),
+        expiry_date: z.string().regex(/^(0[1-9]|1[0-2])\/([0-9]{4})$/, "Data de validade inválida (MM/AAAA)")
+    })
+});
