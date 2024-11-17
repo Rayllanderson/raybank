@@ -30,12 +30,7 @@ services:
     network_mode: "service:localhost"
 
   postgres:
-    image: 'postgres:alpine'
-    environment:
-      POSTGRES_DB: raybank
-      POSTGRES_PASSWORD: 12345
-    volumes:
-      - ./docker-volumes/postgres:/var/lib/postgresql/data
+    image: 'rayllanderson/raybank-custom-postgress:latest'
     network_mode: "service:localhost"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -53,6 +48,8 @@ services:
       - --import-realm
       - -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json
       - --http-port=8443
+    volumes:
+      - "./docker-volumes/keycloak/imports/realm-export.json:/opt/jboss/keycloak/imports/realm-export.json"
     network_mode: "service:localhost"
 
   localstack:
