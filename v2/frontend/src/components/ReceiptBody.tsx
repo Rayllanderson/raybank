@@ -7,7 +7,7 @@ import { formatStatementMoment } from '@/utils/StatementUtil';
 export function ReceiptBody({ receiptListItem, moment, title, paymentType, amount, credit, debit }: {
     title: string;
     paymentType: string;
-    moment:string,
+    moment?:string;
     amount: number;
     credit: string;
     debit: string;
@@ -20,7 +20,7 @@ export function ReceiptBody({ receiptListItem, moment, title, paymentType, amoun
                 <ReceiptListItem keyName='Valor' value={MoneyFormatter.format(amount)} />
                 <ReceiptListItem keyName='Tipo de transação' value={paymentType} />
                 {receiptListItem?.map((receipt) => <ReceiptListItem keyName={receipt.key} value={receipt.value} />)}
-                <ReceiptListItem keyName={formatStatementMoment(moment)} value={''} />
+                {moment && <ReceiptListItem keyName={formatStatementMoment(moment)} value={''} /> }
             </ul>
 
             <ReceiptListHeader value='Destino' />
