@@ -29,13 +29,12 @@ export default function CreatePurchaseForm({ card }: { card: CardDetails }) {
                 },
                 body: JSON.stringify(data),
             });
-            
+
             if (!response.ok) {
                 try {
                     const responseError = await response.json();
-                    console.log('Erro da API:', responseError.message);
-                    toast.error( responseError.message);
-                } catch(err) {
+                    toast.error(responseError.message);
+                } catch (err) {
                     toast.error('Ocorreu um erro desconhecido.');
                 } finally {
                     return;
@@ -76,6 +75,16 @@ export default function CreatePurchaseForm({ card }: { card: CardDetails }) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='className="flex max-w-md flex-col gap-4"'>
+            {/* Descrição */}
+            <div>
+                <Label >Descrição</Label>
+                <InputText
+                    sizing='md'
+                    placeholder="Ex: Mercado Livre"
+                    {...register("description", { required: "Descrição é obrigatória" })}
+                    className="mt-1"
+                />
+            </div>
             <div>
                 <Label>Valor da Compra</Label>
                 <CurrencyInput
@@ -121,49 +130,42 @@ export default function CreatePurchaseForm({ card }: { card: CardDetails }) {
                     </Select>
                 </div>
             )}
-            {/* Descrição */}
-            <div>
-                <Label >Descrição</Label>
-                <InputText
-                    sizing='md'
-                    placeholder="Ex: Mercado Livre"
-                    {...register("description", { required: "Descrição é obrigatória" })}
-                    className="mt-1"
-                />
-            </div>
-
             {/* Dados do Cartão */}
-            <div>
-                <Label>Número do Cartão</Label>
-                <InputText
-                    sizing='md'
-                    placeholder="Número do cartão"
-                    {...register("card.number", { required: "Número do cartão é obrigatório" })}
-                    className="mt-1"
-                    defaultValue={card.number}
-                />
+            <div className="flex space-x-4">
+                <div className="flex-1">
+                    <Label>Número do Cartão</Label>
+                    <InputText
+                        sizing="md"
+                        placeholder="Número do cartão"
+                        {...register("card.number", { required: "Número do cartão é obrigatório" })}
+                        className="mt-1"
+                        defaultValue={card.number}
+                    />
+                </div>
             </div>
 
-            <div>
-                <Label >Código de Segurança (CVV)</Label>
-                <InputText
-                    sizing='md'
-                    placeholder="Código de segurança"
-                    {...register("card.security_code", { required: "Código de segurança é obrigatório" })}
-                    className="mt-1"
-                    defaultValue={card.securityCode}
-                />
-            </div>
+            <div className="flex space-x-4">
+                <div className="flex-1">
+                    <Label>Data de Validade</Label>
+                    <InputText
+                        sizing="md"
+                        placeholder="MM/AA"
+                        {...register("card.expiry_date", { required: "Data de validade é obrigatória" })}
+                        className="mt-1"
+                        defaultValue={formatExpiryDate(card.expiryDate)}
+                    />
+                </div>
 
-            <div>
-                <Label >Data de Validade</Label>
-                <InputText
-                    sizing="md"
-                    placeholder="MM/AA"
-                    {...register("card.expiry_date", { required: "Data de validade é obrigatória" })}
-                    className="mt-1"
-                    defaultValue={formatExpiryDate(card.expiryDate)}
-                />
+                <div className="flex-1">
+                    <Label>Código de Segurança (CVV)</Label>
+                    <InputText
+                        sizing="md"
+                        placeholder="Código de segurança"
+                        {...register("card.security_code", { required: "Código de segurança é obrigatório" })}
+                        className="mt-1"
+                        defaultValue={card.securityCode}
+                    />
+                </div>
             </div>
 
             <div className="mt-5">
