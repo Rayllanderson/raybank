@@ -1,0 +1,57 @@
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'v2/frontend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set env
+      run: echo "DATE=$(date +%s)" >> $GITHUB_ENV
+
+    - name: Build the Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: ./v2/frontend
+        dockerfile: Dockerfile
+        push: false
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank-nextjs-app:${{ env.DATE }}
+
+    - name: Build the Latest Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: ./v2/frontend
+        dockerfile: Dockerfile
+        push: false
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank-nextjs-app:latest
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Push the Docker image to Docker Hub
+      uses: docker/build-push-action@v4
+      with:
+        context: ./v2/frontend
+        dockerfile: Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank-nextjs-app:${{ env.DATE }}
+
+    - name: Push the Docker Latest image to Docker Hub
+      uses: docker/build-push-action@v4
+      with:
+        context: ./v2/frontend
+        dockerfile: Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/raybank-nextjs-app:latest
