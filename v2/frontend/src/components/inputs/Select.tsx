@@ -1,24 +1,23 @@
 import React, { forwardRef, InputHTMLAttributes } from 'react';
 
-export interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface SelectProps extends InputHTMLAttributes<HTMLSelectElement> {
   sizing?: 'sm' | 'md' | 'lg';
-  className?: string;
+  className?: string
 }
 
-const InputText: React.ForwardRefRenderFunction<HTMLInputElement, InputTextProps> = ({ sizing = 'lg', className, ...props }, ref) => {
+const Select: React.ForwardRefRenderFunction<HTMLSelectElement, SelectProps> = ({ sizing = 'lg', className, ...props }, ref) => {
 
 
   return (
-    <input
+    <select
       {...props}
       ref={ref}
-      type="text"
       className={`rounded-md w-full pl-2 border-0 bg-gray-100 dark:bg-black-3 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-1 ${getSize(sizing)} ${className}`}
     />
   );
 }
 
-export default forwardRef(InputText);
+export default forwardRef(Select);
 
 const getSize = (size: 'sm' | 'md' | 'lg') => {
   if (size === 'lg')

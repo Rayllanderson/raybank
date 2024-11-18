@@ -51,15 +51,32 @@ export function Statements({ type }: Props) {
 
     async function fetchItems() {
         setLoading(true);
-        const data: Page<Statement> = await getAllCardStatementsWithToken(session?.token!, { type: type!, page: page, size: 10, sort: 'moment,desc', ...(search ? { search: search } : {}) })
-        setPagination(prevPagination => ({
-            ...data,
-            items: [...prevPagination.items, ...data.items]
-        }))
+    
+        const data: Page<Statement> = await getAllCardStatementsWithToken(session?.token!, {
+            type: type!,
+            page: page,
+            size: 10,
+            sort: 'moment,desc',
+            ...(search ? { search: search } : {}),
+        });
+    
+        setPagination(prevPagination => {
+            if (page === 0) {
+                return {
+                    ...data,
+                    items: [...data.items]
+                };
+            } else {
+                return {
+                    ...data,
+                    items: [...prevPagination.items, ...data.items]
+                };
+            }
+        });
+    
         setCanFetch(data.items.length > 0);
         setLoading(false);
     }
-
     useEffect(() => {
 
         fetchItems();

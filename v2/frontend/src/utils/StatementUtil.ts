@@ -1,4 +1,6 @@
-import { FinancialMovementType, Statement } from "@/types/Statement";
+import { Statement } from "@/types/Statement";
+import moment from 'moment'
+import 'moment/locale/pt'
 
 export function isIncomming(financialMovementType: string): boolean {
     return financialMovementType === 'CREDIT'
@@ -6,6 +8,10 @@ export function isIncomming(financialMovementType: string): boolean {
 
 export function hasDescription(statement: Statement): boolean {
     return statement.method.toString() !== 'ACCOUNT'
+}
+
+export function formatStatementMoment(momento: string): string {
+    return moment(momento).locale('pt-br').format('dddd, D [de] MMMM [de] YYYY, HH[h]mm');
 }
 
 export function formatStatementMethod(method: string): string {

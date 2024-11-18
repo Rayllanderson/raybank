@@ -539,6 +539,66 @@
   "webAuthnPolicyPasswordlessAcceptableAaguids": [],
   "users": [
     {
+      "id": "52e4b6ea-4ad7-4ad8-ac4d-7ae319f8d12e",
+      "createdTimestamp": 1731862165224,
+      "username": "kaguya",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "firstName": "Kaguya",
+      "lastName": "Shinomiya",
+      "email": "kaguya@sama.com",
+      "credentials": [
+        {
+          "id": "bf8971f0-ba69-4ce8-be94-fade964b3ecd",
+          "type": "password",
+          "createdDate": 1731862165400,
+          "secretData": "{\"value\":\"XheazTCvaQYfnzIdmp6kbt7K5Y2jSuwO3ylszfuMNE+ZjalaAuP00SCG/E7T0NEbggPya7grngUZ0njiuJCEbQ==\",\"salt\":\"KeSdH/yn6tdrn4lLcI/NVg==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "default-roles-raybank"
+      ],
+      "notBefore": 0,
+      "groups": [
+        "/USER"
+      ]
+    },
+    {
+      "id": "0e4fde69-73cb-4fd1-b671-fdcd616eb6b9",
+      "createdTimestamp": 1731872368101,
+      "username": "raybank",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "firstName": "Raybank",
+      "lastName": "Gateway ",
+      "email": "raybank@suport.com",
+      "credentials": [
+        {
+          "id": "d6e2bb40-b661-4c3e-8316-a65528b5dac9",
+          "type": "password",
+          "userLabel": "My password",
+          "createdDate": 1731872377273,
+          "secretData": "{\"value\":\"Jb1WgQ4Zc9Ov8RaZzCWVrW6aU0B+NidSDhE7tv1UGrWYEGu/ZfPo6YjuSwZe3DuJA+fd4/IvLO7vhqv3hGr23g==\",\"salt\":\"Kv3GPhoZzTWdzeSOQevY1A==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "default-roles-raybank"
+      ],
+      "notBefore": 0,
+      "groups": [
+        "/ESTABLISHMENT",
+        "/USER"
+      ]
+    },
+    {
       "id": "59832eab-ffae-41a1-bfb4-e8ed2ee07288",
       "createdTimestamp": 1715352821742,
       "username": "service-account-front-end-raybank-next-js",
@@ -546,6 +606,7 @@
       "totp": false,
       "emailVerified": false,
       "serviceAccountClientId": "front-end-raybank-next-js",
+      "credentials": [],
       "disableableCredentialTypes": [],
       "requiredActions": [],
       "realmRoles": [
@@ -569,6 +630,7 @@
       "totp": false,
       "emailVerified": false,
       "serviceAccountClientId": "raybank-backend-create-user",
+      "credentials": [],
       "disableableCredentialTypes": [],
       "requiredActions": [],
       "realmRoles": [
@@ -2552,7 +2614,7 @@
     "oauth2DeviceCodeLifespan": "600",
     "parRequestUriLifespan": "60",
     "clientSessionMaxLifespan": "0",
-    "frontendUrl": "http://keycloak:8080,http://localhost:8443",
+    "frontendUrl": "http://localhost:8443",
     "acr.loa.map": "{}"
   },
   "keycloakVersion": "20.0.3",
