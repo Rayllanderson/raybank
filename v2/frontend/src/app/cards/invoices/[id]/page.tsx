@@ -20,7 +20,7 @@ export default async function page({ params }: { params: { id: string } }) {
   return (
     <Container >
       <div className="flex justify-center mb-2">
-        <header className={`w-full max-w-sm md:max-w-md lg:max-w-lg p-[0.20rem] h-26 rounded-lg md:rounded-md  ${getBgColor(invoice)}`}>
+        <header className={`w-full max-w-sm md:max-w-md lg:max-w-lg p-[0.20rem] h-26 rounded-lg md:rounded-md bg-[#9B3BDA] ${getBgColor(invoice)}`}>
           <Card>
           <div className="flex flex-col justify-center items-center ">
             <p className="text-xl">{formatInvoiceStatus(invoice.status)}</p>
