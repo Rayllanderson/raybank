@@ -29,6 +29,9 @@ postgres:
   port: 5432
   schema: raybank
 
+RESOURCE_SERVER_ISSUER: http://localhost:8443/realms/raybank
+RESOURCE_SERVER_JWK_SET_URI: http://localhost:8443/realms/raybank/protocol/openid-connect/certs
+
 keycloak:
   realm: raybank
   server-url: http://localhost:8443
