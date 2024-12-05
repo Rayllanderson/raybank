@@ -14,7 +14,6 @@ export async function getAuthAccount(): Promise<AccountResponse | null> {
     try {
         return await getAccount(await getToken())
     } catch (err) {
-        console.log(err)
         return null
     }
 }

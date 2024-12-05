@@ -36,7 +36,6 @@ export const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputPro
       placeholder="R$ 0,00"
       ref={ref}
       inputMode="numeric"
-      //  pattern="[0-9]*"
     />
   );
 });
