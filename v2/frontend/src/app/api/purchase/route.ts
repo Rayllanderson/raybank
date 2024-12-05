@@ -1,7 +1,7 @@
 import { createPurchase } from '@/services/CardService'
 import { createPurchaseFormSchema } from '@/types/Card'
 import { ApiErrorException } from '@/types/Error'
-import { CognitoIdentityProviderClient, InitiateAuthCommand } from "@aws-sdk/client-cognito-identity-provider";
+import { CognitoIdentityProviderClient, InitiateAuthCommand, InitiateAuthCommandInput } from "@aws-sdk/client-cognito-identity-provider";
 
 const client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
@@ -29,7 +29,7 @@ export async function POST(
 async function getEstablishmentToken() {
     if (process.env.PROVIDER === 'cognito') {
 
-        const params = {
+        const params:InitiateAuthCommandInput = {
             AuthFlow: 'USER_PASSWORD_AUTH',
             ClientId: process.env.PROVIDER_PURCHASE_CLIENT_ID || '',
             AuthParameters: {
@@ -41,7 +41,7 @@ async function getEstablishmentToken() {
         try {
             const command = new InitiateAuthCommand(params);
             const response = await client.send(command);
-            return response.AuthenticationResult.AccessToken;
+            return response.AuthenticationResult!.AccessToken;
         } catch (err) {
             console.error("Authentication error:", err);
         }
