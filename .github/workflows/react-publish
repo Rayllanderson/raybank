@@ -1,3 +1,6 @@
+
+name: Yarn build & Publish to Docker
+
 on:
   push:
     branches: [ "main" ]
