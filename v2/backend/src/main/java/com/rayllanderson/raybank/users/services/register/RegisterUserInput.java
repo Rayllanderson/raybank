@@ -30,7 +30,15 @@ public class RegisterUserInput {
     }
 
     public enum RegisterType {
-        USER, ESTABLISHMENT
+        USER, ESTABLISHMENT;
+
+        public static RegisterType from(String s) {
+            try {
+                return RegisterType.valueOf(s.toUpperCase());
+            } catch (Exception e) {
+                return USER;
+            }
+        }
     }
 
 }

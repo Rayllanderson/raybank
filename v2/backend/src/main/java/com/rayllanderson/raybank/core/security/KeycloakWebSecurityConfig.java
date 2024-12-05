@@ -2,9 +2,9 @@ package com.rayllanderson.raybank.core.security;
 
 import com.rayllanderson.raybank.core.security.keycloak.KeycloakRealmRoleConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -28,15 +28,16 @@ import java.util.Arrays;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
-@Profile("!prod")
+@ConditionalOnProperty(prefix = "oauth", name = "provider-name", havingValue = "keycloak")
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class WebSecurityDevConfig implements WebMvcConfigurer {
+public class KeycloakWebSecurityConfig implements WebMvcConfigurer {
 
     private static final String ROLE_USER = "USER";
     private static final String ROLE_ESTABLISHMENT = "ESTABLISHMENT";
+    private static final String ROLE_ADMIN = "ADMIN";
 
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
@@ -49,12 +50,13 @@ public class WebSecurityDevConfig implements WebMvcConfigurer {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .requestCache(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/users/register")).permitAll()
                         .requestMatchers(antMatcher("/api/v1/internal/**")).hasRole(ROLE_USER)
                         .requestMatchers(antMatcher("/api/v1/external/**")).hasRole(ROLE_ESTABLISHMENT)
-                        .requestMatchers(antMatcher("/swagger-ui/**")).permitAll()
-                        .requestMatchers(antMatcher("/v3/api-docs/**")).permitAll()
-                        .anyRequest().permitAll())
+                        .requestMatchers(antMatcher("/api/v1/admin/**")).hasRole(ROLE_ADMIN)
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/actuator/health")).permitAll()
+                        .requestMatchers(antMatcher("/swagger-ui/*")).denyAll()
+                        .requestMatchers(antMatcher("/v3/api-docs/**")).denyAll()
+                        .anyRequest().authenticated())
                 .headers(headers ->
                         headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )

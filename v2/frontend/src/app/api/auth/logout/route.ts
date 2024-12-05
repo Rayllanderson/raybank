@@ -8,9 +8,9 @@ export async function GET() {
   
       const refreshToken = session.refreshToken;
   
-      var url = `${process.env.KEYCLOAK_LOGOUT_URL}?client_id=${process.env.KEYCLOAK_ID}&refresh_token=${refreshToken}`;
+      var url = `${process.env.LOGOUT_URL}?client_id=${process.env.PROVIDER_CLIENT_ID}&refresh_token=${refreshToken}`;
       try {
-        const resp = await fetch(url, { method: "POST", headers: { 'Content-Type': "application/x-www-form-urlencoded", 'Authorization': 'Bearer ' + session.token } });
+        const resp = await fetch(url, { method: "GET"});
         if (!resp.ok) {
           throw new Error('failed to logout ' + resp.status)
         }

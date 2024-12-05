@@ -6,14 +6,20 @@ spring:
         region: ${SQS_REGION:us-east-1}
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: ${MAX_FILE_SIZE:5MB}
+      max-request-size: ${MAX_FILE_SIZE:5MB}
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${keycloak.server-url}/realms/${keycloak.realm}
-          jwk-set-uri: ${keycloak.server-url}/realms/${keycloak.realm}/protocol/openid-connect/certs
+          issuer-uri: ${RESOURCE_SERVER_ISSUER}
+          jwk-set-uri: ${RESOURCE_SERVER_JWK_SET_URI}
+        provider:
+          cognito:
+            issuerUri: ${COGNITO_ISSUER_URI:}
+            clientId: ${COGNITO_CLIENT_ID:}
+            client-secret: ${COGNITO_CLIENT_SECRET:}
+            user-name-attribute: username
   datasource:
     url: jdbc:postgresql://${postgres.host}:${postgres.port}/${postgres.schema}?serverTimezone=UTC
     driver-class-name: org.postgresql.Driver
@@ -59,6 +65,7 @@ server:
 sqs:
   queue-name: ${SQS_QUEUE_NAME:keycloak-event-listener-queue}
   thumbnail-queue-name: ${SQS_THUMB_QUEUE_NAME:thumbnail-event-listener-queue}
+  cognito-register-queue-name: ${SQS_COGNITO_QUEUE_NAME:cognito-event-listener-queue}
 s3:
   bucketName: ${AWS_S3_BUCKET_NAME:rayllanderson-raybank-bucket}
 
@@ -74,3 +81,6 @@ management:
   endpoint:
     health:
       show-details: never
+
+oauth:
+  provider-name: ${OAUTH_PROVIDER_NAME:keycloak}

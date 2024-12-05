@@ -2,6 +2,7 @@ import Session from '@/types/Session';
 import { User } from '@/types/User';
 import { TokenSet, getServerSession } from 'next-auth';
 import KeycloakProvider from "next-auth/providers/keycloak";
+import CognitoProvider from "next-auth/providers/cognito";
 import { redirect } from 'next/navigation';
 
 
@@ -12,10 +13,16 @@ export const authOptions = {
             clientId: process.env.KEYCLOAK_ID!,
             clientSecret: process.env.KEYCLOAK_SECRET!,
             issuer: process.env.KEYCLOAK_ISSUER!,
+        }),
+        CognitoProvider({
+            clientId: process.env.COGNITO_CLIENT_ID || '',
+            clientSecret: process.env.COGNITO_CLIENT_SECRET || '',
+            issuer: process.env.COGNITO_ISSUER || '',
         })
     ],
 
     callbacks: {
+
         async jwt({ account, token }: { account: any, token: any }) {
             if (account) {
                 token.user = account
@@ -27,7 +34,7 @@ export const authOptions = {
                     const response = await fetch(process.env.REFRESH_TOKEN_URL!, {
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: new URLSearchParams({
-                            client_id: process.env.KEYCLOAK_ID!,
+                            client_id: process.env.PROVIDER_CLIENT_ID!,
                             client_secret: process.env.KEYCLOAK_SECRET!,
                             grant_type: "refresh_token",
                             refresh_token: token.user.refresh_token,
@@ -42,7 +49,7 @@ export const authOptions = {
                     token.user.access_token = refreshToken.access_token
 
                     token.user.expires_at = Math.floor(Date.now() / 1000) + (refreshToken?.expires_in as number ?? 0)
-                    
+
                     if (refreshToken.refresh_token)
                         token.user.refresh_token = refreshToken.refresh_token
                     else throw refreshToken
@@ -55,13 +62,23 @@ export const authOptions = {
             }
         },
         session: async ({ session, token }: { session: any; token: any }) => {
-            const user = { name: token.name, email: token.email, id: token.sub };
-            session.user = user
-            session.token = token.user.access_token
-            session.refreshToken = token.user.refresh_token
-            session.expiresAt = token.user.expires_at
-            session.error = token.error
-            return session;
+            if (token.user.provider === "cognito") {
+                const user = { name: session.user.Name ?? token.name, email: session.user.email, id: token.sub };
+                session.user = user
+                session.token = token.user.access_token
+                session.refreshToken = token.user.refresh_token
+                session.expiresAt = token.user.expires_at
+                session.error = token.error
+                return session;
+            } else {
+                const user = { name: token.name, email: token.email, id: token.sub };
+                session.user = user
+                session.token = token.user.access_token
+                session.refreshToken = token.user.refresh_token
+                session.expiresAt = token.user.expires_at
+                session.error = token.error
+                return session;
+            }
         },
 
     },
@@ -86,7 +103,7 @@ export async function refreshToken(token: any) {
 
         token.user.access_token = refreshToken.access_token
         token.user.expires_at = Math.floor(Date.now() / 1000) + (refreshToken?.expires_in as number ?? 0),
-        token.user.refresh_token = refreshToken.refresh_token ?? token.user.refresh_token
+            token.user.refresh_token = refreshToken.refresh_token ?? token.user.refresh_token
         return token
     } catch (error) {
         console.error("Error refreshing access token", error)

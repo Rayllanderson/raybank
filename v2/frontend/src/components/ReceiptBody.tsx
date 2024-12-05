@@ -19,7 +19,7 @@ export function ReceiptBody({ receiptListItem, moment, title, paymentType, amoun
             <ul>
                 <ReceiptListItem keyName='Valor' value={MoneyFormatter.format(amount)} />
                 <ReceiptListItem keyName='Tipo de transação' value={paymentType} />
-                {receiptListItem?.map((receipt) => <ReceiptListItem keyName={receipt.key} value={receipt.value} />)}
+                {receiptListItem?.map((receipt) => <ReceiptListItem key={receipt.key} keyName={receipt.key} value={receipt.value} />)}
                 {moment && <ReceiptListItem keyName={formatStatementMoment(moment)} value={''} /> }
             </ul>
 
