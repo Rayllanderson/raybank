@@ -8,6 +8,10 @@ on:
     branches: [ "main" ]
     paths:
       - 'v2/backend/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'v2/backend/**'
 
 jobs:
   build:
