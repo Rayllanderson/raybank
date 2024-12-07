@@ -5,16 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +33,7 @@ public class S3Service {
 
         S3PresignUrlOutput s3PresignUrlOutput = this.generatePresignedUrl(objectKey);
 
-        return new S3UploadOutput(objectKey, s3PresignUrlOutput.url().toString(), s3PresignUrlOutput.expiration());
+        return new S3UploadOutput(objectKey, s3PresignUrlOutput.url().toExternalForm(), s3PresignUrlOutput.expiration());
     }
 
     private static String getContentType(MultipartFile file) {
@@ -48,16 +47,19 @@ public class S3Service {
     }
 
     public S3PresignUrlOutput generatePresignedUrl(final String objectKey) {
-        Consumer<PutObjectRequest.Builder> putObjectRequest = builder -> builder
+        GetObjectRequest objectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
-                .key(Objects.requireNonNull(objectKey, "objectKey cannot be null"))
+                .key(objectKey)
                 .build();
 
-        PresignedPutObjectRequest presignedPutObjectRequest = s3Presigner
-                .presignPutObject(r -> r.signatureDuration(Duration.ofHours(PRE_SIGN_EXPIRATION_HOURS))
-                        .putObjectRequest(putObjectRequest));
+        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofHours(PRE_SIGN_EXPIRATION_HOURS))
+                .getObjectRequest(objectRequest)
+                .build();
 
-        return new S3PresignUrlOutput(presignedPutObjectRequest.url(), presignedPutObjectRequest.expiration().minusSeconds(ONE_HOUR_IN_SECONDS));
+        PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
+
+        return new S3PresignUrlOutput(presignedRequest.url(), presignedRequest.expiration().minusSeconds(ONE_HOUR_IN_SECONDS));
 
     }
 }
