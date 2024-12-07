@@ -33,7 +33,7 @@
 - Cada pagamento, transferência e movimentação são registrados em extratos detalhados.
 
 ## 🔐 Segurança em Primeiro Lugar  
-- Proteção de dados garantida com **OAuth2 e Keycloak** para uma experiência confiável.  
+- Proteção de dados garantida com **OAuth2, Keycloak e Cognito** para uma experiência confiável.  
 
 ## Telas
 ![img](https://github.com/user-attachments/assets/e47eff92-d017-479a-82ca-ee1312685368)
@@ -77,8 +77,8 @@ A mensageria é feita com **SQS**, e o processamento de imagens e thumbnails é 
 - **LocalStack** para emulação local de serviços AWS.
 
 ### 🔒 **Autenticação e Autorização**
-- **OAuth2** com **Keycloak** para controle de acesso seguro.
-- Webhook para eventos de criação de usuário utilizando **SQS** para gerenciar eventos.
+- **OAuth2** com **Keycloak** ou **Cognito** para controle de acesso seguro.
+- Webhook para eventos de criação de usuário utilizando **SQS** para gerenciar eventos, com o **Cognito** disparando um trigger de "Post Confirmation Lambda" para escutar registros de usuários.
 
 ### 🖼️ **Processamento de Imagens**
 - **Python** para geração de thumbnails.
@@ -87,6 +87,11 @@ A mensageria é feita com **SQS**, e o processamento de imagens e thumbnails é 
 ## 📡 Arquitetura e Infraestrutura  
 A arquitetura do RayBank é projetada para alta escalabilidade, com utilização de **AWS** e mensageria.  
 Veja abaixo a arquitetura completa:
+
+### Utilizando Cognito
+![cognit2o](https://github.com/user-attachments/assets/d0a4608b-a94d-478b-aa22-1d805f1c5cca)
+
+### Utilizando Keycloak
 ![infra drawio2](https://github.com/user-attachments/assets/2c4b2648-6bb2-49f3-ad4d-332b45688f2a)
 
 ---
