@@ -4,23 +4,32 @@ import { TokenSet, getServerSession } from 'next-auth';
 import KeycloakProvider from "next-auth/providers/keycloak";
 import CognitoProvider from "next-auth/providers/cognito";
 import { redirect } from 'next/navigation';
+import { OAuthConfig } from 'next-auth/providers/oauth';
 
+const provider = process.env.PROVIDER
 
-export const authOptions = {
+const getProviders = (): OAuthConfig<any>[] => {
+    const providers: OAuthConfig<any>[] = [];
 
-    providers: [
-        KeycloakProvider({
-            clientId: process.env.KEYCLOAK_ID!,
-            clientSecret: process.env.KEYCLOAK_SECRET!,
-            issuer: process.env.KEYCLOAK_ISSUER!,
-        }),
-        CognitoProvider({
+    if (provider === 'keycloak') {
+        providers.push(KeycloakProvider({
+            clientId: process.env.KEYCLOAK_ID || '',
+            clientSecret: process.env.KEYCLOAK_SECRET || '',
+            issuer: process.env.KEYCLOAK_ISSUER || '',
+        }))
+    } else {
+        providers.push(CognitoProvider({
             clientId: process.env.COGNITO_CLIENT_ID || '',
             clientSecret: process.env.COGNITO_CLIENT_SECRET || '',
             issuer: process.env.COGNITO_ISSUER || '',
-        })
-    ],
+        }))
+    }
 
+    return providers
+}
+
+export const authOptions = {
+    providers: getProviders(),
     callbacks: {
 
         async jwt({ account, token }: { account: any, token: any }) {
