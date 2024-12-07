@@ -27,10 +27,10 @@ public class CloseInvoiceSchedulerTask {
     public void process() {
         LockAssert.assertLocked();
 
-        log.info("fetching all invoices to close, {}", LocalDateTime.now());
+        log.debug("fetching all invoices to close, {}", LocalDateTime.now());
 
         closeInvoiceService.execute();
 
-        log.info("completed close scheduler task -> {}", LocalDateTime.now());
+        log.debug("completed close scheduler task -> {}", LocalDateTime.now());
     }
 }

@@ -27,10 +27,10 @@ public class BoletoRefundSchedulerTask {
     public void process() {
         LockAssert.assertLocked();
 
-        log.info("fetching all boletos to refund payment, {}", LocalDateTime.now());
+        log.debug("fetching all boletos to refund payment, {}", LocalDateTime.now());
 
         boletoRefundService.refundUnprocessed();
 
-        log.info("completed 'refund boleto payment' scheduler task -> {}", LocalDateTime.now());
+        log.debug("completed 'refund boleto payment' scheduler task -> {}", LocalDateTime.now());
     }
 }

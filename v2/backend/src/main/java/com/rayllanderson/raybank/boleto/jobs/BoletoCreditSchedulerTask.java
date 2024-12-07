@@ -27,10 +27,10 @@ public class BoletoCreditSchedulerTask {
     public void process() {
         LockAssert.assertLocked();
 
-        log.info("fetching all boletos to finalize payment, {}", LocalDateTime.now());
+        log.debug("fetching all boletos to finalize payment, {}", LocalDateTime.now());
 
         boletoCreditService.credit();
 
-        log.info("completed 'finalize boleto payment' scheduler task -> {}", LocalDateTime.now());
+        log.debug("completed 'finalize boleto payment' scheduler task -> {}", LocalDateTime.now());
     }
 }

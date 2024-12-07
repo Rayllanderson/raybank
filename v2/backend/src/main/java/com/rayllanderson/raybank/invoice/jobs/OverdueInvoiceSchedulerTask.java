@@ -27,10 +27,10 @@ public class OverdueInvoiceSchedulerTask {
     public void process() {
         LockAssert.assertLocked();
 
-        log.info("fetching all invoices to overdue, {}", LocalDateTime.now());
+        log.debug("fetching all invoices to overdue, {}", LocalDateTime.now());
 
         overdueInvoiceService.execute();
 
-        log.info("completed overdue scheduler task -> {}", LocalDateTime.now());
+        log.debug("completed overdue scheduler task -> {}", LocalDateTime.now());
     }
 }
