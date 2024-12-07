@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -26,7 +27,7 @@ public class RegisterUserService {
 
     private final UserRepository userRepository;
     private final TempUserRepository tempUserRepository;
-    private final KeycloakProvider keycloakProvider;
+    private final Optional<KeycloakProvider> keycloakProvider;
     private final CreateBankAccountService createBankAccountService;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -49,9 +50,12 @@ public class RegisterUserService {
 
     @Transactional
     public void registerEstablishment(final TempUserCreatedEvent event) {
+        if (keycloakProvider.isEmpty()) {
+            throw new IllegalStateException("Keycloak is not configured.");
+        }
         final var user = event.user();
 
-        UserResource userResource = keycloakProvider.getRealmInstance().users().get(user.getId());
+        UserResource userResource = keycloakProvider.get().getRealmInstance().users().get(user.getId());
         List<GroupRepresentation> userGroups = userResource.groups();
 
         final boolean isEstablishment = userGroups.stream().anyMatch(g -> g.getName().equalsIgnoreCase(UserType.ESTABLISHMENT.name()));

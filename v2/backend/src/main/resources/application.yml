@@ -60,7 +60,7 @@ invoice:
     overdue: 3600
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
 sqs:
   queue-name: ${SQS_QUEUE_NAME:keycloak-event-listener-queue}

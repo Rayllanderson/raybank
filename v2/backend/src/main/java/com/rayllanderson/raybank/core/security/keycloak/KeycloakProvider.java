@@ -5,11 +5,13 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Objects;
 
 @Configuration
+@ConditionalOnProperty(name = "oauth.provider-name", havingValue = "keycloak")
 public class KeycloakProvider {
 
     private Keycloak keycloak;
