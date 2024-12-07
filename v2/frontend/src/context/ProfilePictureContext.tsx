@@ -121,7 +121,7 @@ export const ProfilePictureProvider = ({ children }: { children: ReactNode }) =>
                 setIsThumbCreating(false);
                 console.log('Limite de tentativas atingido. Miniatura não encontrada.');
             }
-        }, 1000);
+        }, 2000);
     }
 
     return (

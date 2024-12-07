@@ -14,6 +14,14 @@ resource "aws_sqs_queue" "thumbnail_event_listener_queue" {
   visibility_timeout_seconds = 30
 }
 
+resource "aws_sqs_queue" "cognito_queue" {
+  name                       = "cognito-event-listener-queue"
+  delay_seconds              = 0
+  max_message_size           = 262144
+  message_retention_seconds  = 345600
+  visibility_timeout_seconds = 30
+}
+
 resource "aws_sqs_queue" "s3_event_queue" {
   name                       = "create-thumb-sqs"
   delay_seconds              = 0
@@ -42,6 +50,28 @@ resource "aws_sqs_queue_policy" "sqs_policy" {
         },
         Action = "sqs:SendMessage",
         Resource = aws_sqs_queue.s3_event_queue.arn,
+        Condition = {
+          ArnLike = {
+            "aws:SourceArn": aws_s3_bucket.raybank_bucket.arn
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_sqs_queue_policy" "sqs_policy_thumbnail_event_listener_queue" {
+  queue_url = aws_sqs_queue.thumbnail_event_listener_queue.id
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "s3.amazonaws.com"
+        },
+        Action = "sqs:SendMessage",
+        Resource = aws_sqs_queue.thumbnail_event_listener_queue.arn,
         Condition = {
           ArnLike = {
             "aws:SourceArn": aws_s3_bucket.raybank_bucket.arn
