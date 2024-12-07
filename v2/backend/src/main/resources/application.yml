@@ -4,6 +4,8 @@ spring:
       sqs:
         endpoint: ${SQS_ENDPOINT:https://sqs.us-east-1.amazonaws.com}
         region: ${SQS_REGION:us-east-1}
+      s3:
+        region: ${S3_REGION:us-east-1}
   servlet:
     multipart:
       max-file-size: ${MAX_FILE_SIZE:5MB}
