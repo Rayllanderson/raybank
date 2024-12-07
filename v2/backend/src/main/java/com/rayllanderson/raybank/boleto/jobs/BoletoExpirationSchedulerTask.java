@@ -27,10 +27,10 @@ public class BoletoExpirationSchedulerTask {
     public void process() {
         LockAssert.assertLocked();
 
-        log.info("fetching all boletos to expire, {}", LocalDateTime.now());
+        log.debug("fetching all boletos to expire, {}", LocalDateTime.now());
 
         boletoExpirationService.expire();
 
-        log.info("completed 'boleto expire' scheduler task -> {}", LocalDateTime.now());
+        log.debug("completed 'boleto expire' scheduler task -> {}", LocalDateTime.now());
     }
 }
