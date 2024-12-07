@@ -10,15 +10,12 @@ postgres:
   port: ${POSTGRES_PORT}
   schema: ${POSTGRES_SCHEMA}
 
-RESOURCE_SERVER_ISSUER: ${KEYCLOAK_SERVER-URL}/realms/${KEYCLOAK_REALM}
-RESOURCE_SERVER_JWK_SET_URI: ${KEYCLOAK_SERVER-URL}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/certs
-
 keycloak:
-  realm: ${KEYCLOAK_REALM}
-  server-url: ${KEYCLOAK_SERVER-URL}
+  realm: ${KEYCLOAK_REALM:}
+  server-url: ${KEYCLOAK_SERVER-URL:}
   credentials:
-    client-id: ${KEYCLOAK_CLIENT-ID}
-    client-secret: ${KEYCLOAK_CLIENT-SECRET}
+    client-id: ${KEYCLOAK_CLIENT-ID:}
+    client-secret: ${KEYCLOAK_CLIENT-SECRET:}
 
 boleto:
   lock:
