@@ -31,7 +31,23 @@ resource "aws_iam_role_policy" "ecs_task_execution_role_policy" {
         ]
         Effect   = "Allow"
         Resource = "*"
-      }
+      },
+      {
+        Action = [
+          "ssm:GetParametersByPath",
+          "ssm:GetParameters",
+          "ssm:GetParameter"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "kms:Decrypt"
+        ],
+        "Resource" : "*"
+      },
     ]
   })
 }
@@ -87,9 +103,15 @@ resource "aws_iam_role_policy" "ecs_task_role_policy" {
         Effect = "Allow"
         Action = [
           "s3:PutObject",
-          "s3:GetObject"
+          "s3:PutObjectAcl",
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:DeleteObject"
         ]
-        Resource = "arn:aws:s3:::rayllanderson-raybank-bucket/*"
+        Resource = [
+          "arn:aws:s3:::rayllanderson-raybank-bucket/*",
+          "arn:aws:s3:::rayllanderson-raybank-bucket"
+        ]
       },
       {
         Effect = "Allow"
@@ -99,7 +121,7 @@ resource "aws_iam_role_policy" "ecs_task_role_policy" {
           "sqs:DeleteMessage",
           "sqs:ReceiveMessage"
         ]
-        Resource = "arn:aws:sqs:us-east-1:*:keycloak-event-listener-queue"
+        Resource = "*"
       }
     ]
   })
