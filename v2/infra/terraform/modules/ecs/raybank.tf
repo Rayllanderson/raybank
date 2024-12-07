@@ -1,8 +1,9 @@
 resource "aws_ecs_service" "raybank_service" {
-  name            = "raybank-service"
-  cluster         = aws_ecs_cluster.raybank_cluster.id
-  task_definition = aws_ecs_task_definition.raybank_task.arn
-  desired_count   = 1
+  name                              = "raybank-service"
+  cluster                           = aws_ecs_cluster.raybank_cluster.id
+  task_definition                   = aws_ecs_task_definition.raybank_task.arn
+  health_check_grace_period_seconds = 120
+  desired_count                     = 1
 
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
@@ -27,8 +28,8 @@ resource "aws_ecs_task_definition" "raybank_task" {
   family                   = "raybank-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "256" # 0.25 vCPU
-  memory                   = "512" # 512 MB
+  cpu                      = "512" # 0.5 vCPU
+  memory                   = "1024"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
 
@@ -36,8 +37,8 @@ resource "aws_ecs_task_definition" "raybank_task" {
     {
       name      = "raybank-container"
       image     = var.raybank_image
-      cpu       = 256
-      memory    = 512
+      cpu       = 512
+      memory    = 1024
       essential = true
       portMappings = [
         {
@@ -63,52 +64,60 @@ resource "aws_ecs_task_definition" "raybank_task" {
           valueFrom = "arn:aws:ssm:${data.aws_region.current_region.name}:${data.aws_caller_identity.current.account_id}:parameter/DB_USERNAME"
         },
         {
-          name      = "KEYCLOAK_SERVER_URL"
-          valueFrom = "arn:aws:ssm:${data.aws_region.current_region.name}:${data.aws_caller_identity.current.account_id}:parameter/KEYCLOAK_SERVER-URL"
+          name      = "RESOURCE_SERVER_ISSUER"
+          valueFrom = "arn:aws:ssm:${data.aws_region.current_region.name}:${data.aws_caller_identity.current.account_id}:parameter/RESOURCE_SERVER_ISSUER"
         },
         {
-          name      = "KEYCLOAK_CLIENT_SECRET"
-          valueFrom = "arn:aws:ssm:${data.aws_region.current_region.name}:${data.aws_caller_identity.current.account_id}:parameter/KEYCLOAK_CLIENT-SECRET"
+          name      = "RESOURCE_SERVER_JWK_SET_URI"
+          valueFrom = "arn:aws:ssm:${data.aws_region.current_region.name}:${data.aws_caller_identity.current.account_id}:parameter/RESOURCE_SERVER_JWK_SET_URI"
         },
+        {
+          name      = "COGNITO_ISSUER_URI"
+          valueFrom = "arn:aws:ssm:${data.aws_region.current_region.name}:${data.aws_caller_identity.current.account_id}:parameter/RESOURCE_SERVER_ISSUER"
+        },
+        {
+          name      = "COGNITO_CLIENT_ID"
+          valueFrom = "arn:aws:ssm:${data.aws_region.current_region.name}:${data.aws_caller_identity.current.account_id}:parameter/COGNITO_CLIENT_ID"
+        },
+        {
+          name      = "COGNITO_CLIENT_SECRET"
+          valueFrom = "arn:aws:ssm:${data.aws_region.current_region.name}:${data.aws_caller_identity.current.account_id}:parameter/COGNITO_CLIENT_SECRET"
+        }
+
       ]
       environment = [
+        {
+          name  = "TZ"
+          value = "America/Sao_Paulo"
+        },
         {
           name  = "SPRING_PROFILES_ACTIVE"
           value = "prod"
         },
-
         {
           name  = "POSTGRES_SCHEMA"
           value = "raybank"
-        },
-        {
-          name  = "KEYCLOAK_REALM"
-          value = "raybank"
-        },
-        {
-          name  = "KEYCLOAK_CLIENT_ID"
-          value = "raybank-backend-create-user"
         },
         {
           name  = "JAVA_OPTS"
           value = "-Xms512m -Xmx512m"
         },
         {
-          name  = "SQS_ENDPOINT"
-          value = "https://sqs.us-east-1.amazonaws.com"
+          name  = "OAUTH_PROVIDER_NAME"
+          value = "cognito"
         },
         {
-          name  = "SQS_REGION"
-          value = "us-east-1"
-        },
+          name  = "S3_REGION"
+          value = "${data.aws_region.current_region.name}"
+        }
       ],
-      healthCheck = {
-        command     = ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"],
-        interval    = 30,
-        timeout     = 5,
-        retries     = 3,
-        startPeriod = 300
-      },
+      health_check = {
+        path                = "/actuator/health"
+        interval            = 120
+        timeout             = 30
+        healthy_threshold   = 3
+        unhealthy_threshold = 3
+      }
       logConfiguration = {
         logDriver = "awslogs"
         options = {

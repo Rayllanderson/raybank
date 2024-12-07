@@ -4,6 +4,12 @@ variable "subnet_ids" {
   default     = []
 }
 
+variable "database_security_groups_ids" {
+  description = "List of Subnet IDs"
+  type        = list(string)
+  default     = []
+}
+
 variable "raybank_image" {
   description = "Docker image for Raybank"
   default     = "rayllanderson/raybank:latest"
@@ -19,7 +25,7 @@ variable "raybank_tg_arn" {
   type        = string
 }
 
-variable "keycloak_tg_arn" {
-  description = "ARN do Target Group para Keycloak"
-  type        = string
-}
+# variable "keycloak_tg_arn" {
+#   description = "ARN do Target Group para Keycloak"
+#   type        = string
+# }
