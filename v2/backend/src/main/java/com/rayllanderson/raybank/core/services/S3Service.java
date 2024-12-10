@@ -1,6 +1,7 @@
 package com.rayllanderson.raybank.core.services;
 
 import io.awspring.cloud.s3.S3Operations;
+import io.awspring.cloud.s3.S3Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,9 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +24,8 @@ public class S3Service {
 
     @Value("${s3.bucketName}")
     private String bucketName;
+    @Value("${spring.cloud.aws.s3.region}")
+    private String s3Region;
     private final S3Operations s3Operations;
     private final S3Presigner s3Presigner;
     public static final int PRE_SIGN_EXPIRATION_HOURS = 28;
@@ -29,11 +34,21 @@ public class S3Service {
     public S3UploadOutput uploadFile(final MultipartFile file) throws IOException {
         final String objectKey = "uploads/" + UUID.randomUUID() + "." + getContentType(file);
 
-        s3Operations.upload(bucketName, objectKey, file.getInputStream());
+        final S3Resource upload = s3Operations.upload(bucketName, objectKey, file.getInputStream());
 
-        S3PresignUrlOutput s3PresignUrlOutput = this.generatePresignedUrl(objectKey);
+        return new S3UploadOutput(objectKey, upload.getURL().toExternalForm(), Instant.MAX);
+    }
 
-        return new S3UploadOutput(objectKey, s3PresignUrlOutput.url().toExternalForm(), s3PresignUrlOutput.expiration());
+    public URL getFileUrlByKey(final String key)  {
+        try {
+            String urlString = String.format(
+                    "https://%s.s3.%s.amazonaws.com/%s",
+                    bucketName, s3Region, key
+            );
+            return new URL(urlString);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao construir a URL para o arquivo com chave: " + key, e);
+        }
     }
 
     private static String getContentType(MultipartFile file) {
