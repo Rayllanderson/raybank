@@ -1,5 +1,6 @@
 package com.rayllanderson.raybank.core.services;
 
+import com.rayllanderson.raybank.utils.InstantUtil;
 import io.awspring.cloud.s3.S3Operations;
 import io.awspring.cloud.s3.S3Resource;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class S3Service {
 
         final S3Resource upload = s3Operations.upload(bucketName, objectKey, file.getInputStream());
 
-        return new S3UploadOutput(objectKey, upload.getURL().toExternalForm(), Instant.MAX);
+        return new S3UploadOutput(objectKey, upload.getURL().toExternalForm(), InstantUtil.MAX_SUPPORTED_INSTANT);
     }
 
     public URL getFileUrlByKey(final String key)  {
