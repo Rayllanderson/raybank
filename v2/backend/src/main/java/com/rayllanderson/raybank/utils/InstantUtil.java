@@ -9,6 +9,5 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class InstantUtil {
 
-    public static final Instant MAX_SUPPORTED_INSTANT = Instant.parse("294276-01-01T00:00:00Z");
-
+    public static final Instant MAX_SUPPORTED_INSTANT = Instant.parse("9999-12-31T23:59:59Z");
 }
