@@ -2,7 +2,7 @@
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/Rayllanderson/raybank/blob/main/LICENSE) 
 
 ## Sobre o projeto
-**[https://raybank.vercel.app](https://raybank.vercel.app)**  (O sistema está disponível para uso das **08:00 AM** às **20:00 PM**.)
+<!-- **[https://raybank.vercel.app](https://raybank.vercel.app)**  (O sistema está disponível para uso das **08:00 AM** às **20:00 PM**.) -->
 
 **Raybank** é um sistema bancário digital desenvolvido para oferecer uma experiência completa de transações de sistemas financeiros reais. Raybank oferece uma ampla gama de funcionalidades, como transferências via Pix, cartões de débito e crédito, emissão e pagamento de boletos, depósitos e pagamentos diversos, além de uma interface de usuário intuitiva e responsiva.
 
